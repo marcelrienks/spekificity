@@ -1,0 +1,21 @@
+{
+  "workflow": "speckit",
+  "specName": "001-specificity-platform",
+  "branch": "001-specificity-platform",
+  "selectedAt": "2026-04-29T15:14:48.881Z",
+  "currentStep": "specify",
+  "status": "completed",
+  "stepHistory": {},
+  "transitions": [
+    {
+      "step": "specify",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-04-29T15:16:25.539Z"
+    }
+  ]
+}

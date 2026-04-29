@@ -1,0 +1,33 @@
+# Spekificity — .gitignore
+
+# ── OS / Editor ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# ── Obsidian app workspace state (regenerates on open) ───────
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+
+# vault/graph/ is regeneratable — gitignore on large repos.
+# Remove the next two lines to commit your graph (recommended for small projects).
+vault/graph/graph.json
+vault/graph/graph.html
+# vault/graph/nodes/        ← uncomment to exclude all auto-generated node files (>500 nodes)
+
+# ── Logs / temp ───────────────────────────────────────────────
+*.log
+*.bak
+
+# ── Python (uv / tool envs) ──────────────────────────────────
+__pycache__/
+*.pyc
+.venv/
+venv/
+.python-version
