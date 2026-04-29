@@ -1,4 +1,4 @@
-# Specification Quality Checklist: Specificity Platform — Core Project Foundation
+# Specification Quality Checklist: Spekificity Platform — Core Project Foundation
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning  
 **Created**: 2026-04-29  

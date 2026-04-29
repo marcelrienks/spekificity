@@ -1,10 +1,10 @@
-# Contracts: Specificity Platform — Skill Interface Specifications
+# Contracts: Spekificity Platform — Skill Interface Specifications
 
 **Phase**: 1 — Design  
 **Date**: 2026-04-29  
-**Feature**: 001-specificity-platform
+**Feature**: 001-spekificity-platform
 
-This document defines the invocation contracts for all Specificity custom skills. Each contract specifies:
+This document defines the invocation contracts for all Spekificity custom skills. Each contract specifies:
 - Command name (how the developer/AI invokes it)
 - Preconditions (what must be true before it runs)
 - Inputs (what the skill needs)
@@ -19,7 +19,7 @@ This document defines the invocation contracts for all Specificity custom skills
 **Purpose**: Build or refresh the Graphify → Obsidian graph map of the current project.
 
 ### Preconditions
-- Specificity has been initialised in the project (init workflow complete)
+- Spekificity has been initialised in the project (init workflow complete)
 - `graphifyy` is installed globally (`graphify --version` succeeds)
 - Current directory is the project root
 

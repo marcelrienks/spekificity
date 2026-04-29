@@ -1,11 +1,11 @@
-# Implementation Plan: Specificity Platform — Core Project Foundation
+# Implementation Plan: Spekificity Platform — Core Project Foundation
 
-**Branch**: `001-specificity-platform` | **Date**: 2026-04-29 | **Spec**: [spec.md](spec.md)  
-**Input**: Feature specification from `specs/001-specificity-platform/spec.md`
+**Branch**: `001-spekificity-platform` | **Date**: 2026-04-29 | **Spec**: [spec.md](spec.md)  
+**Input**: Feature specification from `specs/001-spekificity-platform/spec.md`
 
 ## Summary
 
-Build the complete Specificity platform: a documentation-only meta-tooling layer that connects Graphify, Obsidian, SpecKit/Specify, and the Caveman skill into a cohesive AI-assisted development workflow. The deliverables are six AI skills, four workflow documents, three setup guides, a vault schema, and the project documentation suite. No application code is produced — every artefact is a markdown file. The init mechanism is an AI-executable setup guide backed by a shell prerequisite checker.
+Build the complete Spekificity platform: a documentation-only meta-tooling layer that connects Graphify, Obsidian, SpecKit/Specify, and the Caveman skill into a cohesive AI-assisted development workflow. The deliverables are six AI skills, four workflow documents, three setup guides, a vault schema, and the project documentation suite. No application code is produced — every artefact is a markdown file. The init mechanism is an AI-executable setup guide backed by a shell prerequisite checker.
 
 **Research findings**: All NEEDS CLARIFICATION items resolved. See [research.md](research.md).  
 - Graphify (`graphifyy`) installs globally via `uv tool install graphifyy`; has built-in `--obsidian` flag  
@@ -32,9 +32,9 @@ Build the complete Specificity platform: a documentation-only meta-tooling layer
 | Principle | Check | Status |
 |-----------|-------|--------|
 | I. Skills and Workflows — Not Application Code | All deliverables are markdown skill/workflow files | ✓ PASS |
-| II. Decorator Pattern | Specificity skills invoke `/speckit.*` commands; they do not replace them | ✓ PASS |
+| II. Decorator Pattern | Spekificity skills invoke `/speckit.*` commands; they do not replace them | ✓ PASS |
 | III. Modular Independence | Each tool accessed only via its CLI/filesystem interface; no internal API assumptions | ✓ PASS |
-| IV. Global SpecKit, Local Customisation | SpecKit installed globally via `uv tool`; Specificity skills are local per-project | ✓ PASS |
+| IV. Global SpecKit, Local Customisation | SpecKit installed globally via `uv tool`; Spekificity skills are local per-project | ✓ PASS |
 | V. Graph-First Context Loading | `/context-load` skill loads vault before source scanning; skills enforce this ordering | ✓ PASS |
 | VI. Token Efficiency by Design | Caveman integration in all workflow steps; graph-indexed context replaces file scanning | ✓ PASS |
 | VII. AI-Executable Setup | Init delivered as a markdown guide; all steps are terminal commands or AI instructions | ✓ PASS |
@@ -45,7 +45,7 @@ Build the complete Specificity platform: a documentation-only meta-tooling layer
 ### Documentation (this feature)
 
 ```text
-specs/001-specificity-platform/
+specs/001-spekificity-platform/
 ├── plan.md              ← This file
 ├── spec.md              ← Feature specification
 ├── research.md          ← Phase 0 research (all unknowns resolved)
@@ -61,7 +61,7 @@ specs/001-specificity-platform/
 ### Project Deliverables (repository root)
 
 ```text
-specificity/
+spekificity/
 │
 ├── docs/                           ← Project documentation (exists)
 │   ├── INIT.md                     ← Project overview
@@ -69,7 +69,7 @@ specificity/
 │   ├── ARCHITECTURE.md             ← Architecture document
 │   └── GLOSSARY.md                 ← Terminology
 │
-├── skills/                         ← Specificity custom AI skills (to create)
+├── skills/                         ← Spekificity custom AI skills (to create)
 │   ├── map-codebase/
 │   │   └── SKILL.md
 │   ├── lessons-learnt/
@@ -104,7 +104,7 @@ specificity/
 │       └── patterns.md
 │
 └── specs/                          ← SpecKit specs (exists)
-    └── 001-specificity-platform/
+    └── 001-spekificity-platform/
 ```
 
 **Structure Decision**: Documentation project — no `src/` or `tests/` directories. All deliverables are markdown files in `skills/`, `workflows/`, and `setup-guides/`. The `vault/` directory is the runtime artefact created when `/map-codebase` is first run.

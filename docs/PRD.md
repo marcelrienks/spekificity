@@ -1,4 +1,4 @@
-# Specificity — Product Requirements Document (PRD)
+# Spekificity — Product Requirements Document (PRD)
 
 **Version**: 1.0.0  
 **Status**: Draft  
@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary
 
-Specificity is a meta-tooling project that enhances AI-assisted software development by connecting four existing tools — Graphify, Obsidian, GitHub SpecKit/Specify, and the Caveman skill — into a single, cohesive workflow. It does not produce executable application code. Instead, it produces a structured library of skills, workflow guides, and AI agent instructions that any developer can install into any project to gain persistent context, token-efficient AI interactions, and a supercharged SpecKit development lifecycle.
+Spekificity is a meta-tooling project that enhances AI-assisted software development by connecting four existing tools — Graphify, Obsidian, GitHub SpecKit/Specify, and the Caveman skill — into a single, cohesive workflow. It does not produce executable application code. Instead, it produces a structured library of skills, workflow guides, and AI agent instructions that any developer can install into any project to gain persistent context, token-efficient AI interactions, and a supercharged SpecKit development lifecycle.
 
 **Primary value proposition**: Reduce the friction, token cost, and context loss of AI-assisted development without replacing or forking any existing tool.
 
@@ -55,7 +55,7 @@ AI agents produce verbose responses by default. In long sessions this accumulate
 - Providing a GUI or web interface
 - Supporting AI agents beyond Copilot and Claude Code
 - Cloud sync or multi-user vault sharing
-- Automatic merge conflict resolution between SpecKit upstream updates and Specificity custom skills
+- Automatic merge conflict resolution between SpecKit upstream updates and Spekificity custom skills
 
 ---
 
@@ -77,8 +77,8 @@ AI agents produce verbose responses by default. In long sessions this accumulate
 
 ```
 1. Developer creates a new project folder
-2. Runs: specificity init  (or follows AI-guided setup)
-3. Specificity detects tool status (installed / missing)
+2. Runs: spekificity init  (or follows AI-guided setup)
+3. Spekificity detects tool status (installed / missing)
 4. Missing tools are installed or flagged as prerequisites
 5. Custom skills and workflow docs are installed locally
 6. Developer receives a summary of what was installed and next steps
@@ -109,7 +109,7 @@ AI agents produce verbose responses by default. In long sessions this accumulate
 ```
 1. SpecKit releases a new version
 2. Developer runs: npm update -g specify
-3. Specificity custom skills continue to work unchanged
+3. Spekificity custom skills continue to work unchanged
 4. If the SpecKit API changed, only the relevant adapter skill needs updating
 ```
 
@@ -120,7 +120,7 @@ AI agents produce verbose responses by default. In long sessions this accumulate
 | ID | Requirement | Priority |
 |----|-------------|----------|
 | FR-001 | Init command installs/links Graphify, Obsidian, SpecKit | P1 |
-| FR-002 | Init installs Specificity custom skills locally | P1 |
+| FR-002 | Init installs Spekificity custom skills locally | P1 |
 | FR-003 | Init is idempotent | P1 |
 | FR-004 | SpecKit is installed globally; custom skills are local | P1 |
 | FR-005 | Mapping skill builds Graphify graph stored as Obsidian vault | P1 |
@@ -153,10 +153,10 @@ AI agents produce verbose responses by default. In long sessions this accumulate
 ### Component Map
 
 ```
-specificity/
+spekificity/
 ├── .agents/                    # Global: SpecKit (installed globally, not here)
 │
-├── skills/                     # Specificity custom skills (local per-project)
+├── skills/                     # Spekificity custom skills (local per-project)
 │   ├── map-codebase/           # Graphify → Obsidian mapping skill
 │   ├── lessons-learnt/         # Structured lessons capture skill
 │   ├── speckit-enrich/         # Decorator skills for SpecKit steps
@@ -199,7 +199,7 @@ Source files / Docs
    AI Agent Session
         │  consults vault instead of scanning files
         ▼
-  SpecKit Lifecycle  ◄──── Specificity decorator skills
+  SpecKit Lifecycle  ◄──── Spekificity decorator skills
         │
         ▼
   Lessons Learnt ──► Obsidian Vault (feedback loop)
@@ -211,7 +211,7 @@ Source files / Docs
 
 | Integration | Direction | Protocol |
 |-------------|-----------|----------|
-| Graphify | Specificity → Graphify | CLI command invocation |
+| Graphify | Spekificity → Graphify | CLI command invocation |
 | Obsidian vault | Read/write | Local filesystem (markdown) |
 | SpecKit / Specify | Decorator wrapping | Skill file invocation |
 | GitHub Copilot | AI consumes skills | `.github/copilot-instructions.md` + `.agents/` |
@@ -227,7 +227,7 @@ Source files / Docs
 | Init completion time | ≤ 30 minutes (first-time) | Stopwatch from command to first `/speckit.specify` |
 | Token reduction | ≥ 40% on cross-cutting queries | Compare token counts: mapped vs. unmapped project |
 | Caveman verbosity reduction | ≥ 60% character count | Compare response lengths: caveman on vs. off |
-| Component update effort | ≤ 5 minutes per component | Time a SpecKit global update with Specificity active |
+| Component update effort | ≤ 5 minutes per component | Time a SpecKit global update with Spekificity active |
 | Developer onboarding | Usable without prior knowledge of tools | Usability test with an unfamiliar developer |
 
 ---

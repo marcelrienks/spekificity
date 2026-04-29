@@ -1,8 +1,8 @@
-# Specificity — Project Initialisation Document
+# Spekificity — Project Initialisation Document
 
 ## What Is This Project?
 
-**Specificity** is a meta-tooling layer that orchestrates four existing tools into a unified, AI-assisted development workflow:
+**Spekificity** is a meta-tooling layer that orchestrates four existing tools into a unified, AI-assisted development workflow:
 
 | Tool | Role |
 |------|------|
@@ -11,7 +11,7 @@
 | **GitHub SpecKit / Specify** | Drives spec-first, AI-guided feature development lifecycle |
 | **Caveman skill** | Compresses AI prompts and responses to minimise token usage |
 
-Specificity itself contains **no application code**. It is a curated collection of skills, workflow guides, and setup documentation that tells any AI agent how to initialise, configure, and operate the full stack on any project.
+Spekificity itself contains **no application code**. It is a curated collection of skills, workflow guides, and setup documentation that tells any AI agent how to initialise, configure, and operate the full stack on any project.
 
 ---
 
@@ -23,15 +23,15 @@ Vanilla AI-assisted development suffers from three recurring problems:
 2. **High token consumption** — Agents read every file recursively to answer cross-cutting questions, which is expensive and slow.
 3. **Shallow SpecKit usage** — The speckit lifecycle lacks awareness of existing code structure, so specs and plans are not grounded in the actual codebase.
 
-Specificity solves all three by wiring Graphify → Obsidian as a persistent, graph-indexed context store, then decorating SpecKit's workflow with skills that consult that store.
+Spekificity solves all three by wiring Graphify → Obsidian as a persistent, graph-indexed context store, then decorating SpecKit's workflow with skills that consult that store.
 
 ---
 
 ## Design Principles
 
-- **Decorator pattern**: Specificity skills wrap, not replace, standard SpecKit commands. Vanilla SpecKit remains untouched and upgradable.
-- **Modular independence**: Graphify, Obsidian, SpecKit, and the Specificity custom layer can each be updated independently.
-- **Global SpecKit, local customisation**: SpecKit/Specify is installed globally so upstream updates apply immediately. Specificity installs its custom skills locally per-project.
+- **Decorator pattern**: Spekificity skills wrap, not replace, standard SpecKit commands. Vanilla SpecKit remains untouched and upgradable.
+- **Modular independence**: Graphify, Obsidian, SpecKit, and the Spekificity custom layer can each be updated independently.
+- **Global SpecKit, local customisation**: SpecKit/Specify is installed globally so upstream updates apply immediately. Spekificity installs its custom skills locally per-project.
 - **AI-executable setup**: Wherever CLI automation is impractical, setup is documented as step-by-step guides that an AI agent can follow.
 - **Token efficiency by default**: Caveman mode and graph-based context loading are first-class citizens, not afterthoughts.
 
@@ -44,7 +44,7 @@ Specificity solves all three by wiring Graphify → Obsidian as a persistent, gr
          │
          ▼
 ┌────────────────────────────────────────────┐
-│           Specificity Init                 │
+│           Spekificity Init                 │
 │  1. Install / verify Graphify              │
 │  2. Install / verify Obsidian              │
 │  3. Install / verify SpecKit (global)      │
@@ -57,7 +57,7 @@ Specificity solves all three by wiring Graphify → Obsidian as a persistent, gr
          │
          ▼
 ┌────────────────────────────────────────────┐
-│         Specificity Workflow               │
+│         Spekificity Workflow               │
 │                                            │
 │  /map-codebase ──► Graphify ──► Obsidian  │
 │  /speckit.specify (enriched with graph)    │
@@ -73,9 +73,9 @@ Specificity solves all three by wiring Graphify → Obsidian as a persistent, gr
 
 ## Intended Workflow (Step by Step)
 
-1. Developer runs the Specificity init command inside a project folder (empty or populated).
+1. Developer runs the Spekificity init command inside a project folder (empty or populated).
 2. Init detects installed tools; installs or links missing ones.
-3. Custom Specificity skills and workflow docs are installed locally.
+3. Custom Spekificity skills and workflow docs are installed locally.
 4. Developer invokes `/map-codebase` to build the Graphify → Obsidian context graph.
 5. Developer begins a SpecKit feature lifecycle (`/speckit.specify`, `/speckit.plan`, etc.).
 6. At each SpecKit step the AI agent reads from the Obsidian vault rather than scanning all files.
@@ -88,10 +88,10 @@ Specificity solves all three by wiring Graphify → Obsidian as a persistent, gr
 
 | Component | Owned By | Update Path |
 |-----------|----------|-------------|
-| Graphify | Third party | Update independently; Specificity adapts |
+| Graphify | Third party | Update independently; Spekificity adapts |
 | Obsidian | Third party | Update independently; vault format is stable markdown |
 | SpecKit / Specify | Third party (global) | `npm update -g specify` or equivalent |
-| Specificity custom skills | This project | Pull latest from this repo |
+| Spekificity custom skills | This project | Pull latest from this repo |
 
 ---
 
@@ -107,4 +107,4 @@ Specificity solves all three by wiring Graphify → Obsidian as a persistent, gr
 - Any GUI or web interface
 - Multi-user / shared vault synchronisation
 - Support for AI agents beyond Copilot and Claude Code
-- Automatic conflict resolution between SpecKit upstream changes and Specificity customisations
+- Automatic conflict resolution between SpecKit upstream changes and Spekificity customisations

@@ -1,9 +1,9 @@
-# Quickstart: Specificity Platform
+# Quickstart: Spekificity Platform
 
 **Date**: 2026-04-29  
 **Time to complete**: ~20–30 minutes (first-time setup)
 
-This guide gets you from zero to a running Specificity-enabled project. Follow the steps in order. Each step is executable by an AI agent or a developer in a terminal.
+This guide gets you from zero to a running Spekificity-enabled project. Follow the steps in order. Each step is executable by an AI agent or a developer in a terminal.
 
 ---
 
@@ -69,15 +69,15 @@ This installs the standard SpecKit workflow into `.github/agents/` and `.specify
 
 ---
 
-## Step 4 — Install Specificity Custom Skills
+## Step 4 — Install Spekificity Custom Skills
 
-Clone or copy the Specificity `skills/` and `workflows/` directories into your project:
+Clone or copy the Spekificity `skills/` and `workflows/` directories into your project:
 
 ```bash
-# If using Specificity as a reference repo:
-cp -r /path/to/specificity/skills ./skills
-cp -r /path/to/specificity/workflows ./workflows
-cp -r /path/to/specificity/setup-guides ./setup-guides
+# If using Spekificity as a reference repo:
+cp -r /path/to/spekificity/skills ./skills
+cp -r /path/to/spekificity/workflows ./workflows
+cp -r /path/to/spekificity/setup-guides ./setup-guides
 ```
 
 For GitHub Copilot — copy skills to agent directory:
@@ -132,7 +132,7 @@ Your enriched SpecKit workflow is ready. Use these commands in order:
 /speckit-enrich-implement          ← Implement + auto-update vault
 ```
 
-Or use standard SpecKit commands directly — Specificity is additive:
+Or use standard SpecKit commands directly — Spekificity is additive:
 ```
 /speckit.specify
 /speckit.plan
@@ -158,18 +158,18 @@ For workflow steps that require structured output (specs, plans), use lite mode 
 
 ## Updating Components Independently
 
-| Component | Update Command | Specificity changes needed |
+| Component | Update Command | Spekificity changes needed |
 |-----------|---------------|---------------------------|
 | SpecKit | `uv tool upgrade specify-cli` | None (unless SpecKit command interface changed) |
 | Graphify | `uv tool upgrade graphifyy` | Update `skills/map-codebase/SKILL.md` if CLI args changed |
 | Obsidian app | Download from obsidian.md | None (vault is plain markdown) |
-| Specificity skills | `git pull` in Specificity repo → re-copy skills | Run Step 4 again |
+| Spekificity skills | `git pull` in Spekificity repo → re-copy skills | Run Step 4 again |
 
 ---
 
 ## Obsidian App (Optional)
 
-Obsidian is **not required** for the Specificity workflow. The vault is plain markdown — AI agents read it directly.
+Obsidian is **not required** for the Spekificity workflow. The vault is plain markdown — AI agents read it directly.
 
 If you want a visual graph browser:
 1. Download Obsidian from [obsidian.md](https://obsidian.md)

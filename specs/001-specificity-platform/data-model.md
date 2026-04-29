@@ -1,10 +1,10 @@
-# Data Model: Specificity Platform — Core Project Foundation
+# Data Model: Spekificity Platform — Core Project Foundation
 
 **Phase**: 1 — Design  
 **Date**: 2026-04-29  
-**Feature**: 001-specificity-platform
+**Feature**: 001-spekificity-platform
 
-Specificity is a documentation-only project. Its "data model" defines the structure and schema of the markdown artefacts it produces and manages. These are the entities the system creates, reads, and writes.
+Spekificity is a documentation-only project. Its "data model" defines the structure and schema of the markdown artefacts it produces and manages. These are the entities the system creates, reads, and writes.
 
 ---
 
@@ -115,7 +115,7 @@ Specificity is a documentation-only project. Its "data model" defines the struct
 # Setup Guide: <Tool Name>
 
 ## Overview
-<What this tool does and why it is needed in the Specificity stack.>
+<What this tool does and why it is needed in the Spekificity stack.>
 
 ## Install Mode
 **Global** | **Local** | **Desktop App**
@@ -134,7 +134,7 @@ Specificity is a documentation-only project. Its "data model" defines the struct
 <Any config files, environment variables, or settings that must be applied.>
 
 ## Version Compatibility
-| Tool Version | Specificity Compatible | Notes |
+| Tool Version | Spekificity Compatible | Notes |
 |-------------|----------------------|-------|
 | X.Y.Z | ✓ | - |
 
