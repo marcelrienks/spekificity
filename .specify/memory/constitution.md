@@ -1,50 +1,67 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Specificity Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Skills and Workflows — Not Application Code
+Specificity delivers markdown-based skills, workflow guides, and AI agent instructions. It contains no executable application code. Every contribution must be expressible as a skill file, a workflow document, or a setup guide. If something requires code, it belongs in a third-party tool, not in this project.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Decorator Pattern — Never Replace, Always Extend
+All Specificity skills MUST wrap and extend standard SpecKit commands without modifying or forking the underlying SpecKit installation. SpecKit remains the authoritative source of its own behaviour. Specificity adds a layer on top. Breaking this principle makes upstream SpecKit updates impossible to absorb.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Modular Independence (NON-NEGOTIABLE)
+Each component (Graphify, Obsidian, SpecKit, Specificity custom layer) MUST be independently updatable. No component may hard-wire assumptions about the internal structure of another. When a third-party tool changes, only the adapter skill for that tool should need updating.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Global SpecKit, Local Customisation
+SpecKit/Specify MUST be installed globally so it receives upstream updates normally. Specificity's custom skills MUST be installed locally per-project. This separation ensures that `npm update -g specify` (or equivalent) never requires changes to project-level Specificity files.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Graph-First Context Loading
+AI agents interacting with a Specificity-enabled project MUST consult the Obsidian vault graph before reading source files or documentation directories directly. Direct recursive file scanning is the fallback of last resort, not the default. Skills that violate this principle waste tokens and defeat the primary value proposition.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### VI. Token Efficiency by Design
+Every skill and workflow MUST consider token consumption. Prompts MUST be as concise as technically safe. Caveman mode integration MUST be available at every workflow step. Verbose context is a defect, not a feature.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### VII. AI-Executable Setup
+Any setup step that cannot be fully automated via CLI MUST be documented as a step-by-step guide that an AI agent can execute without human interpretation. Ambiguous or hand-wavy setup instructions are unacceptable.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### VIII. Idempotent Initialisation
+The init command MUST be safe to run multiple times. Re-running it on an already-initialised project MUST update without destroying or duplicating configuration. Partial failures MUST leave the project in a consistent, recoverable state.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+---
+
+## Supported Environments
+
+- **Operating Systems**: macOS, Linux
+- **AI Agents**: GitHub Copilot, Claude Code (initial version)
+- **Skill Format**: Markdown (`.agent.md`, `.instructions.md`, `SKILL.md`) compatible with the `.agents/` directory convention
+- **No GUI**: All interactions are terminal or AI-chat based
+
+---
+
+## Development Workflow
+
+- All features follow the full SpecKit lifecycle: specify → plan → tasks → implement
+- Every skill file MUST include a clear description, trigger conditions, and step-by-step instructions
+- Workflow documents MUST specify the order of skill invocations, expected inputs, and expected outputs
+- Lessons learnt from each feature MUST be appended to the Obsidian vault before the feature branch is merged
+
+---
+
+## Quality Standards
+
+- A skill is complete only when it can be followed by an AI agent with no additional clarification from the developer
+- Setup guides must be validated on a clean environment before being considered complete
+- All Specificity skills MUST be tested against both supported AI agents before release
+- No skill may assume the developer has knowledge beyond basic terminal usage and git
+
+---
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other project guidelines. Amendments require:
+1. A documented rationale
+2. An updated version number
+3. A review of all skills and workflows affected by the change
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+All work on this project must verify compliance with these principles before merging.
+
+**Version**: 1.0.0 | **Ratified**: 2026-04-29 | **Last Amended**: 2026-04-29
