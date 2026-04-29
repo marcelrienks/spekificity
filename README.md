@@ -1,5 +1,7 @@
 # Spekificity
 
+> ⚠️ **Status**: Under active development. APIs and documentation subject to change.
+
 **A documentation-only meta-tooling layer** that connects [Graphify](https://github.com/graphify/graphifyy), [Obsidian](https://obsidian.md), [SpecKit/Specify](https://github.com/github/spec-kit), and the [Caveman skill](https://github.com/marcelrienks/.agents/skills/caveman) into a cohesive, context-aware, token-efficient AI development workflow.
 
 Spekificity produces **no executable application code**. Every artefact is a markdown skill, workflow guide, or setup document that an AI agent can read and follow.
