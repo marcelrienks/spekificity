@@ -2,7 +2,7 @@
 
 ## what is this project?
 
-**spekificity** is a platform that connects four existing tools into a single ai development workflow:
+**spekificity** is an agentic focused toolset that connects four existing tools into a single ai-driven development workflow. designed to be executed by ai agents (github copilot, claude code):
 
 | tool | role |
 |------|------|

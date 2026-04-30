@@ -9,7 +9,7 @@
 
 ## 1. executive summary
 
-spekificity is a platform that enhances ai-assisted software development by connecting four existing tools — graphify, obsidian, github speckit/specify, and the caveman skill — into a single workflow. it does not produce executable application code. instead it produces markdown skills, workflow guides, and ai agent instructions that any developer can install into any project to gain persistent context, token-efficient ai interactions, and an enriched speckit development lifecycle.
+spekificity is an agentic focused toolset that enhances ai-assisted software development by connecting four existing tools — graphify, obsidian, github speckit/specify, and the caveman skill — into a single workflow. designed from the ground up to be executed by ai agents (github copilot, claude code), spekificity provides markdown-based skills, workflow guides, and instructions that agents read and execute to automate development tasks, generate code artifacts, and maintain persistent context across sessions.
 
 **primary value proposition**: reduce the friction, token cost, and context loss of ai-assisted development without replacing or forking any existing tool.
 
@@ -138,13 +138,9 @@ ai agents produce verbose responses by default. in long sessions this accumulate
 
 | id | requirement |
 |----|-------------|
-| nfr-001 | first-time init completes in under 10 minutes on a standard dev machine |
-| nfr-002 | token consumption for cross-cutting queries reduced ≥40% vs. unmapped equivalent |
-| nfr-003 | caveman mode reduces response verbosity ≥60% by character count |
-| nfr-004 | all skills operate on macos and linux |
-| nfr-005 | no backend server or cloud service required (fully local) |
-| nfr-006 | lessons-learnt entries are surfaced to ai within 2 seconds of session start |
-| nfr-007 | a developer with basic terminal/git knowledge can complete setup in under 30 minutes |
+| nfr-001 | all skills operate on macos and linux |
+| nfr-002 | no backend server or cloud service required (fully local) |
+| nfr-003 | lessons-learnt entries are surfaced to ai at session start |
 
 ---
 
@@ -217,18 +213,6 @@ source files / docs
 | github copilot | ai consumes skills | `.github/copilot-instructions.md` + `.agents/` |
 | claude code | ai consumes skills | `agents.md` + `.agents/` |
 | caveman skill | invoked within sessions | `/caveman` command |
-
----
-
-## 10. success metrics
-
-| metric | target | measurement method |
-|--------|--------|-------------------|
-| init completion time | ≤ 30 minutes (first-time) | stopwatch from command to first `/speckit.specify` |
-| token reduction | ≥ 40% on cross-cutting queries | compare token counts: mapped vs. unmapped project |
-| caveman verbosity reduction | ≥ 60% character count | compare response lengths: caveman on vs. off |
-| component update effort | ≤ 5 minutes per component | time a speckit global update with spekificity active |
-| developer onboarding | usable without prior knowledge of tools | usability test with an unfamiliar developer |
 
 ---
 

@@ -2,9 +2,9 @@
 
 > ⚠️ **Status**: Under active development. APIs and documentation subject to change.
 
-**A documentation-only platform** that connects [Graphify](https://github.com/graphify/graphifyy), [Obsidian](https://obsidian.md), [SpecKit/Specify](https://github.com/github/spec-kit), and the [Caveman skill](https://github.com/marcelrienks/.agents/skills/caveman) to solve persistent AI context loss, excessive token consumption, and shallow feature planning. Produces zero executable code—only markdown skills, workflows, and setup guides that developers install once, then use to run enriched SpecKit feature lifecycles with persistent context and 40–75% token reduction.
+**An agentic focused toolset** that connects [Graphify](https://github.com/graphify/graphifyy), [Obsidian](https://obsidian.md), [SpecKit/Specify](https://github.com/github/spec-kit), and the [Caveman skill](https://github.com/marcelrienks/.agents/skills/caveman) to solve persistent AI context loss, excessive token consumption, and shallow feature planning. Delivered as markdown skills, workflows, and setup guides that AI agents execute to run enriched SpecKit feature lifecycles with persistent context.
 
-Spekificity produces **no executable application code**. Every artefact is a markdown skill, workflow guide, or setup document that an AI agent can read and follow.
+Spekificity is **built for AI agents**. Every artefact is a skill or workflow that an AI agent reads and executes—enabling code generation, artifact creation, and automation through agentic orchestration.
 
 ---
 

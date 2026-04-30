@@ -10,7 +10,7 @@
 an ai-powered assistant integrated into a developer's editor or terminal (e.g., github copilot, claude code) that can read skill files, follow workflow instructions, and generate code or documentation.
 
 ### caveman mode / caveman skill
-a skill (`/caveman`) that compresses ai prompts and responses into ultra-concise, technically accurate language, reducing token consumption by approximately 60–75% compared to default verbosity.
+a skill (`/caveman`) that compresses ai prompts and responses into ultra-concise, technically accurate language without sacrificing technical content.
 
 ### decorator pattern
 a design approach where spekificity skills add behaviour to standard speckit commands without modifying or replacing them. the underlying speckit command remains unchanged; the spekificity skill wraps it with additional context loading, graph queries, or output processing.
@@ -43,7 +43,7 @@ a markdown file containing structured instructions that an ai agent reads and ex
 a third-party cli tool (installed globally) that drives a spec-first, ai-guided software development lifecycle. speckit provides the core workflow commands (`/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`). specify is the package that installs speckit.
 
 ### spekificity
-this project. a platform that connects graphify, obsidian, speckit, and caveman into a single ai development workflow. contains no application code — only skills, workflows, and setup documentation.
+this project. an agentic focused toolset designed for ai agents that connects graphify, obsidian, speckit, and caveman into a single workflow. delivered as markdown skills, workflows, and setup guides that agents execute. contains no application code — only agent-executable artifacts.
 
 ### spekificity custom layer
 the set of skills, workflow documents, and setup guides that spekificity installs locally per-project. distinct from globally-installed speckit — this layer is project-scoped and can be updated independently.

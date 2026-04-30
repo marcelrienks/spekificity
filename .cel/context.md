@@ -7,7 +7,7 @@ version: 2.0
 
 ## executive summary
 
-**spekificity** connects graphify (codebase mapping), obsidian (persistent vault), speckit/specify (spec-first cli), and caveman (token compression) to solve persistent ai context loss, excessive token consumption, and shallow feature planning. produces zero executable code—only markdown skills, workflows, and setup guides that developers install once, then use to run enriched speckit feature lifecycles with persistent context and 40–75% token reduction.
+**spekificity** is an agentic focused toolset designed for ai agents (github copilot, claude code) that connects graphify (codebase mapping), obsidian (persistent vault), speckit/specify (spec-first cli), and caveman (token compression). solves persistent ai context loss, excessive token consumption, and shallow feature planning. delivered as executable markdown skills, workflows, and setup guides that agents read and run to automate enriched speckit feature lifecycles with persistent context.
 
 ---
 
@@ -16,9 +16,9 @@ version: 2.0
 | problem | spekificity solution |
 |---------|---------------------|
 | ai agents lose context between sessions | obsidian vault stores graph, decisions, lessons; `/context-load` restores at session start |
-| token bloat from re-reading all files | graphify generates graph once; ai queries graph instead of scanning files (≥40% reduction) |
+| token bloat from re-reading all files | graphify generates graph once; ai queries graph instead of scanning files |
 | speckit specs/plans disconnected from codebase | `/speckit-enrich-specify` and `/speckit-enrich-plan` inject graph context |
-| verbose ai responses consume tokens | caveman skill compresses outputs 60–75% without losing technical content |
+| verbose ai responses consume tokens | caveman skill compresses outputs while preserving technical accuracy |
 
 ---
 
@@ -43,7 +43,7 @@ version: 2.0
 - **graphify** (global): analyzes source + docs → dependency/relationship graph
 - **obsidian vault** (local): plain markdown storage (filesystem + optional obsidian app); holds graph index + lessons + decisions/patterns
 - **speckit/specify** (global): spec-first cli; vanilla commands unchanged; spekificity wraps via decorator pattern
-- **caveman skill** (global or local): response compression ~60–75% reduction
+- **caveman skill** (global or local): response compression for token efficiency
 - **ai agents**: github copilot + claude code (native skill/agent support)
 
 **delivery model**: all skills, workflows, docs are **markdown files**. no binaries. ai agents read and execute directly.
@@ -105,10 +105,11 @@ result: feature complete + knowledge persisted for next session
 
 ## token efficiency strategy
 
-1. **graph-based context** (~40% reduction): query dependency map instead of reading all files
-2. **caveman compression** (~60–75% reduction): terse notation, no fluff, full technical content
-3. **persistent memory** (~50% reduction on cross-session): load lessons/decisions at start, not re-explained
-4. **incremental mapping** (~20% reduction): update only changed nodes, not full regeneration
+**mechanisms**:
+1. **graph-based context**: query dependency map instead of reading all files
+2. **caveman compression**: terse notation, no fluff, full technical content
+3. **persistent memory**: load lessons/decisions at start, not re-explained
+4. **incremental mapping**: update only changed nodes, not full regeneration
 
 **invocation**: `/caveman lite` (for spec/plan work) or `/caveman` (for implementation)
 
@@ -131,17 +132,13 @@ result: feature complete + knowledge persisted for next session
 
 ---
 
-## success metrics (measurable)
+## core outcomes
 
-| metric | target |
-|--------|--------|
-| **sc-001** | init + skill deployment completes in <10 min; first feature in <30 min total |
-| **sc-002** | token consumption for cross-cutting queries reduced ≥40% (mapped vs unmapped) |
-| **sc-003** | caveman mode reduces response verbosity ≥60% (character count) |
-| **sc-004** | 100% of speckit lifecycle steps enriched with graph context |
-| **sc-005** | single component update <5 min developer effort; zero changes to other components |
-| **sc-006** | `context-load` completes in single ai step (~2s) |
-| **sc-007** | operational on macos + linux |
+- **operational**: all tools are installed and connected; ai agents can execute skills
+- **enriched**: all speckit lifecycle steps are decorated with graph context
+- **persistent**: lessons learnt and decisions are captured and surfaced in future sessions
+- **multi-platform**: operational on macos + linux
+- **modular**: each component is independently updatable
 
 ---
 
@@ -176,7 +173,6 @@ result: feature complete + knowledge persisted for next session
 | **architecture** | `docs/architecture.md` | component roles, data flows, directory structure, vault design |
 | **glossary** | `docs/glossary.md` | term definitions (caveman, decorator, graphify, obsidian, speckit, etc.) |
 | **init guide** | `docs/init.md` | high-level narrative, design principles, tool roles |
-| **validation** | `docs/validation.md` | testing strategy, acceptance criteria, edge cases |
 | **feature spec** | `specs/001-specificity-platform/spec.md` | detailed user stories, requirements, success criteria, assumptions |
 | **quickstart** | `specs/001-specificity-platform/quickstart.md` | step-by-step first-time setup |
 | **skills** | `skills/<skill>/skill.md` | triggerable ai tasks (agent-agnostic format) |
@@ -198,11 +194,7 @@ result: feature complete + knowledge persisted for next session
 - cloud sync or multi-user vault sharing
 - automatic merge conflict resolution with speckit upstream updates
 
-- init completes in <30 min; token savings ≥40% on mapped projects; caveman ≥60% compression
-- all speckit steps enriched when map available
-- independent component updates (no cross-breaking changes)
-- macos + linux support
-- no cloud/server required (fully local)
+**v1 scope**: all speckit steps enriched when map available; independent component updates (no cross-breaking changes); macos + linux support; fully local operation (no cloud/server required)
 
 ---
 

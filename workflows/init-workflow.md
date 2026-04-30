@@ -4,8 +4,6 @@
 
 get a developer from zero to a fully operational spekificity-enabled project. after completing this workflow, all tools are installed, all custom skills are active in the ai agent, and the developer can immediately begin a speckit feature lifecycle with graph-aware context.
 
-**time to complete**: ~10 minutes for tool installation; ~20–30 minutes total including first map build.
-
 > **token efficiency tip**: activate `/caveman lite` before starting this workflow to compress ai confirmation messages without losing step accuracy.
 
 ## prerequisites
