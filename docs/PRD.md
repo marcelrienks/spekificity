@@ -178,10 +178,10 @@ spekificity/
 │   └── context/                # Persistent AI context notes
 │
 └── docs/                       # Project-level documentation
-    ├── INIT.md
-    ├── PRD.md
-    ├── ARCHITECTURE.md
-    └── GLOSSARY.md
+    ├── init.md
+    ├── prd.md
+    ├── architecture.md
+    └── glossary.md
 ```
 
 ### Data Flow

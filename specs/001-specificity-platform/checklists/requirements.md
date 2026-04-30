@@ -34,5 +34,5 @@
 ## Notes
 
 - Spec validated on 2026-04-29 — all items pass
-- Open architecture questions (Graphify install mode, Obsidian headless write, vault location) are documented in ARCHITECTURE.md as open decisions, not as spec gaps
+- Open architecture questions (Graphify install mode, Obsidian headless write, vault location) are documented in architecture.md as open decisions, not as spec gaps
 - Ready to proceed to `/speckit.clarify` or `/speckit.plan`

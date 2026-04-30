@@ -78,10 +78,10 @@ spekificity/
 │       ├── decisions.md
 │       └── patterns.md
 └── docs/                          ← Project documentation
-    ├── INIT.md
-    ├── PRD.md
-    ├── ARCHITECTURE.md
-    └── GLOSSARY.md
+    ├── init.md
+    ├── prd.md
+    ├── architecture.md
+    └── glossary.md
 ```
 
 ---

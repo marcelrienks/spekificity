@@ -64,10 +64,10 @@ specs/001-spekificity-platform/
 spekificity/
 │
 ├── docs/                           ← Project documentation (exists)
-│   ├── INIT.md                     ← Project overview
-│   ├── PRD.md                      ← Product requirements document
-│   ├── ARCHITECTURE.md             ← Architecture document
-│   └── GLOSSARY.md                 ← Terminology
+│   ├── init.md                     ← Project overview
+│   ├── prd.md                      ← Product requirements document
+│   ├── architecture.md             ← Architecture document
+│   └── glossary.md                 ← Terminology
 │
 ├── skills/                         ← Spekificity custom AI skills (to create)
 │   ├── map-codebase/

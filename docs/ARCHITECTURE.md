@@ -23,10 +23,10 @@ Spekificity has no runtime components. Its "architecture" is the structure of it
 spekificity/                        ← This project (meta-tooling repo)
 │
 ├── docs/                           ← Project documentation
-│   ├── INIT.md                     ← Project overview and initialisation narrative
-│   ├── PRD.md                      ← Product requirements document
-│   ├── ARCHITECTURE.md             ← This file
-│   └── GLOSSARY.md                 ← Terminology reference
+│   ├── init.md                     ← Project overview and initialisation narrative
+│   ├── prd.md                      ← Product requirements document
+│   ├── architecture.md             ← This file
+│   └── glossary.md                 ← Terminology reference
 │
 ├── skills/                         ← Spekificity custom AI skills
 │   ├── map-codebase/
