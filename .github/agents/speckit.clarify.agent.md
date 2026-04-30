@@ -1,247 +1,247 @@
 ---
-description: Identify underspecified areas in the current feature spec by asking up to 5 highly targeted clarification questions and encoding answers back into the spec.
+description: identify underspecified areas in the current feature spec by asking up to 5 highly targeted clarification questions and encoding answers back into the spec.
 handoffs: 
-  - label: Build Technical Plan
+  - label: build technical plan
     agent: speckit.plan
-    prompt: Create a plan for the spec. I am building with...
+    prompt: create a plan for the spec. i am building with...
 ---
 
-## User Input
+## user input
 
 ```text
-$ARGUMENTS
+$arguments
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
+you **must** consider the user input before proceeding (if not empty).
 
-## Pre-Execution Checks
+## pre-execution checks
 
-**Check for extension hooks (before clarification)**:
-- Check if `.specify/extensions.yml` exists in the project root.
-- If it exists, read it and look for entries under the `hooks.before_clarify` key
-- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-- For each executable hook, output the following based on its `optional` flag:
-  - **Optional hook** (`optional: true`):
+**check for extension hooks (before clarification)**:
+- check if `.specify/extensions.yml` exists in the project root.
+- if it exists, read it and look for entries under the `hooks.before_clarify` key
+- if the yaml cannot be parsed or is invalid, skip hook checking silently and continue normally
+- filter out hooks where `enabled` is explicitly `false`. treat hooks without an `enabled` field as enabled by default.
+- for each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
+  - if the hook has no `condition` field, or it is null/empty, treat the hook as executable
+  - if the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the hookexecutor implementation
+- for each executable hook, output the following based on its `optional` flag:
+  - **optional hook** (`optional: true`):
     ```
-    ## Extension Hooks
+    ## extension hooks
 
-    **Optional Pre-Hook**: {extension}
-    Command: `/{command}`
-    Description: {description}
+    **optional pre-hook**: {extension}
+    command: `/{command}`
+    description: {description}
 
-    Prompt: {prompt}
-    To execute: `/{command}`
+    prompt: {prompt}
+    to execute: `/{command}`
     ```
-  - **Mandatory hook** (`optional: false`):
+  - **mandatory hook** (`optional: false`):
     ```
-    ## Extension Hooks
+    ## extension hooks
 
-    **Automatic Pre-Hook**: {extension}
-    Executing: `/{command}`
-    EXECUTE_COMMAND: {command}
+    **automatic pre-hook**: {extension}
+    executing: `/{command}`
+    execute_command: {command}
 
-    Wait for the result of the hook command before proceeding to the Outline.
+    wait for the result of the hook command before proceeding to the outline.
     ```
-- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
+- if no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
-## Outline
+## outline
 
-Goal: Detect and reduce ambiguity or missing decision points in the active feature specification and record the clarifications directly in the spec file.
+goal: detect and reduce ambiguity or missing decision points in the active feature specification and record the clarifications directly in the spec file.
 
-Note: This clarification workflow is expected to run (and be completed) BEFORE invoking `/speckit.plan`. If the user explicitly states they are skipping clarification (e.g., exploratory spike), you may proceed, but must warn that downstream rework risk increases.
+note: this clarification workflow is expected to run (and be completed) before invoking `/speckit.plan`. if the user explicitly states they are skipping clarification (e.g., exploratory spike), you may proceed, but must warn that downstream rework risk increases.
 
-Execution steps:
+execution steps:
 
-1. Run `.specify/scripts/bash/check-prerequisites.sh --json --paths-only` from repo root **once** (combined `--json --paths-only` mode / `-Json -PathsOnly`). Parse minimal JSON payload fields:
-   - `FEATURE_DIR`
-   - `FEATURE_SPEC`
-   - (Optionally capture `IMPL_PLAN`, `TASKS` for future chained flows.)
-   - If JSON parsing fails, abort and instruct user to re-run `/speckit.specify` or verify feature branch environment.
-   - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
+1. run `.specify/scripts/bash/check-prerequisites.sh --json --paths-only` from repo root **once** (combined `--json --paths-only` mode / `-json -pathsonly`). parse minimal json payload fields:
+   - `feature_dir`
+   - `feature_spec`
+   - (optionally capture `impl_plan`, `tasks` for future chained flows.)
+   - if json parsing fails, abort and instruct user to re-run `/speckit.specify` or verify feature branch environment.
+   - for single quotes in args like "i'm groot", use escape syntax: e.g 'i'\''m groot' (or double-quote if possible: "i'm groot").
 
-2. Load the current spec file. Perform a structured ambiguity & coverage scan using this taxonomy. For each category, mark status: Clear / Partial / Missing. Produce an internal coverage map used for prioritization (do not output raw map unless no questions will be asked).
+2. load the current spec file. perform a structured ambiguity & coverage scan using this taxonomy. for each category, mark status: clear / partial / missing. produce an internal coverage map used for prioritization (do not output raw map unless no questions will be asked).
 
-   Functional Scope & Behavior:
-   - Core user goals & success criteria
-   - Explicit out-of-scope declarations
-   - User roles / personas differentiation
+   functional scope & behavior:
+   - core user goals & success criteria
+   - explicit out-of-scope declarations
+   - user roles / personas differentiation
 
-   Domain & Data Model:
-   - Entities, attributes, relationships
-   - Identity & uniqueness rules
-   - Lifecycle/state transitions
-   - Data volume / scale assumptions
+   domain & data model:
+   - entities, attributes, relationships
+   - identity & uniqueness rules
+   - lifecycle/state transitions
+   - data volume / scale assumptions
 
-   Interaction & UX Flow:
-   - Critical user journeys / sequences
-   - Error/empty/loading states
-   - Accessibility or localization notes
+   interaction & ux flow:
+   - critical user journeys / sequences
+   - error/empty/loading states
+   - accessibility or localization notes
 
-   Non-Functional Quality Attributes:
-   - Performance (latency, throughput targets)
-   - Scalability (horizontal/vertical, limits)
-   - Reliability & availability (uptime, recovery expectations)
-   - Observability (logging, metrics, tracing signals)
-   - Security & privacy (authN/Z, data protection, threat assumptions)
-   - Compliance / regulatory constraints (if any)
+   non-functional quality attributes:
+   - performance (latency, throughput targets)
+   - scalability (horizontal/vertical, limits)
+   - reliability & availability (uptime, recovery expectations)
+   - observability (logging, metrics, tracing signals)
+   - security & privacy (authn/z, data protection, threat assumptions)
+   - compliance / regulatory constraints (if any)
 
-   Integration & External Dependencies:
-   - External services/APIs and failure modes
-   - Data import/export formats
-   - Protocol/versioning assumptions
+   integration & external dependencies:
+   - external services/apis and failure modes
+   - data import/export formats
+   - protocol/versioning assumptions
 
-   Edge Cases & Failure Handling:
-   - Negative scenarios
-   - Rate limiting / throttling
-   - Conflict resolution (e.g., concurrent edits)
+   edge cases & failure handling:
+   - negative scenarios
+   - rate limiting / throttling
+   - conflict resolution (e.g., concurrent edits)
 
-   Constraints & Tradeoffs:
-   - Technical constraints (language, storage, hosting)
-   - Explicit tradeoffs or rejected alternatives
+   constraints & tradeoffs:
+   - technical constraints (language, storage, hosting)
+   - explicit tradeoffs or rejected alternatives
 
-   Terminology & Consistency:
-   - Canonical glossary terms
-   - Avoided synonyms / deprecated terms
+   terminology & consistency:
+   - canonical glossary terms
+   - avoided synonyms / deprecated terms
 
-   Completion Signals:
-   - Acceptance criteria testability
-   - Measurable Definition of Done style indicators
+   completion signals:
+   - acceptance criteria testability
+   - measurable definition of done style indicators
 
-   Misc / Placeholders:
-   - TODO markers / unresolved decisions
-   - Ambiguous adjectives ("robust", "intuitive") lacking quantification
+   misc / placeholders:
+   - todo markers / unresolved decisions
+   - ambiguous adjectives ("robust", "intuitive") lacking quantification
 
-   For each category with Partial or Missing status, add a candidate question opportunity unless:
-   - Clarification would not materially change implementation or validation strategy
-   - Information is better deferred to planning phase (note internally)
+   for each category with partial or missing status, add a candidate question opportunity unless:
+   - clarification would not materially change implementation or validation strategy
+   - information is better deferred to planning phase (note internally)
 
-3. Generate (internally) a prioritized queue of candidate clarification questions (maximum 5). Do NOT output them all at once. Apply these constraints:
-    - Maximum of 5 total questions across the whole session.
-    - Each question must be answerable with EITHER:
-       - A short multiple‑choice selection (2–5 distinct, mutually exclusive options), OR
-       - A one-word / short‑phrase answer (explicitly constrain: "Answer in <=5 words").
-    - Only include questions whose answers materially impact architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, or compliance validation.
-    - Ensure category coverage balance: attempt to cover the highest impact unresolved categories first; avoid asking two low-impact questions when a single high-impact area (e.g., security posture) is unresolved.
-    - Exclude questions already answered, trivial stylistic preferences, or plan-level execution details (unless blocking correctness).
-    - Favor clarifications that reduce downstream rework risk or prevent misaligned acceptance tests.
-    - If more than 5 categories remain unresolved, select the top 5 by (Impact * Uncertainty) heuristic.
+3. generate (internally) a prioritized queue of candidate clarification questions (maximum 5). do not output them all at once. apply these constraints:
+    - maximum of 5 total questions across the whole session.
+    - each question must be answerable with either:
+       - a short multiple‑choice selection (2–5 distinct, mutually exclusive options), or
+       - a one-word / short‑phrase answer (explicitly constrain: "answer in <=5 words").
+    - only include questions whose answers materially impact architecture, data modeling, task decomposition, test design, ux behavior, operational readiness, or compliance validation.
+    - ensure category coverage balance: attempt to cover the highest impact unresolved categories first; avoid asking two low-impact questions when a single high-impact area (e.g., security posture) is unresolved.
+    - exclude questions already answered, trivial stylistic preferences, or plan-level execution details (unless blocking correctness).
+    - favor clarifications that reduce downstream rework risk or prevent misaligned acceptance tests.
+    - if more than 5 categories remain unresolved, select the top 5 by (impact * uncertainty) heuristic.
 
-4. Sequential questioning loop (interactive):
-    - Present EXACTLY ONE question at a time.
-    - For multiple‑choice questions:
-       - **Analyze all options** and determine the **most suitable option** based on:
-          - Best practices for the project type
-          - Common patterns in similar implementations
-          - Risk reduction (security, performance, maintainability)
-          - Alignment with any explicit project goals or constraints visible in the spec
-       - Present your **recommended option prominently** at the top with clear reasoning (1-2 sentences explaining why this is the best choice).
-       - Format as: `**Recommended:** Option [X] - <reasoning>`
-       - Then render all options as a Markdown table:
+4. sequential questioning loop (interactive):
+    - present exactly one question at a time.
+    - for multiple‑choice questions:
+       - **analyze all options** and determine the **most suitable option** based on:
+          - best practices for the project type
+          - common patterns in similar implementations
+          - risk reduction (security, performance, maintainability)
+          - alignment with any explicit project goals or constraints visible in the spec
+       - present your **recommended option prominently** at the top with clear reasoning (1-2 sentences explaining why this is the best choice).
+       - format as: `**recommended:** option [x] - <reasoning>`
+       - then render all options as a markdown table:
 
-       | Option | Description |
+       | option | description |
        |--------|-------------|
-       | A | <Option A description> |
-       | B | <Option B description> |
-       | C | <Option C description> (add D/E as needed up to 5) |
-       | Short | Provide a different short answer (<=5 words) (Include only if free-form alternative is appropriate) |
+       | a | <option a description> |
+       | b | <option b description> |
+       | c | <option c description> (add d/e as needed up to 5) |
+       | short | provide a different short answer (<=5 words) (include only if free-form alternative is appropriate) |
 
-       - After the table, add: `You can reply with the option letter (e.g., "A"), accept the recommendation by saying "yes" or "recommended", or provide your own short answer.`
-    - For short‑answer style (no meaningful discrete options):
-       - Provide your **suggested answer** based on best practices and context.
-       - Format as: `**Suggested:** <your proposed answer> - <brief reasoning>`
-       - Then output: `Format: Short answer (<=5 words). You can accept the suggestion by saying "yes" or "suggested", or provide your own answer.`
-    - After the user answers:
-       - If the user replies with "yes", "recommended", or "suggested", use your previously stated recommendation/suggestion as the answer.
-       - Otherwise, validate the answer maps to one option or fits the <=5 word constraint.
-       - If ambiguous, ask for a quick disambiguation (count still belongs to same question; do not advance).
-       - Once satisfactory, record it in working memory (do not yet write to disk) and move to the next queued question.
-    - Stop asking further questions when:
-       - All critical ambiguities resolved early (remaining queued items become unnecessary), OR
-       - User signals completion ("done", "good", "no more"), OR
-       - You reach 5 asked questions.
-    - Never reveal future queued questions in advance.
-    - If no valid questions exist at start, immediately report no critical ambiguities.
+       - after the table, add: `you can reply with the option letter (e.g., "a"), accept the recommendation by saying "yes" or "recommended", or provide your own short answer.`
+    - for short‑answer style (no meaningful discrete options):
+       - provide your **suggested answer** based on best practices and context.
+       - format as: `**suggested:** <your proposed answer> - <brief reasoning>`
+       - then output: `format: short answer (<=5 words). you can accept the suggestion by saying "yes" or "suggested", or provide your own answer.`
+    - after the user answers:
+       - if the user replies with "yes", "recommended", or "suggested", use your previously stated recommendation/suggestion as the answer.
+       - otherwise, validate the answer maps to one option or fits the <=5 word constraint.
+       - if ambiguous, ask for a quick disambiguation (count still belongs to same question; do not advance).
+       - once satisfactory, record it in working memory (do not yet write to disk) and move to the next queued question.
+    - stop asking further questions when:
+       - all critical ambiguities resolved early (remaining queued items become unnecessary), or
+       - user signals completion ("done", "good", "no more"), or
+       - you reach 5 asked questions.
+    - never reveal future queued questions in advance.
+    - if no valid questions exist at start, immediately report no critical ambiguities.
 
-5. Integration after EACH accepted answer (incremental update approach):
-    - Maintain in-memory representation of the spec (loaded once at start) plus the raw file contents.
-    - For the first integrated answer in this session:
-       - Ensure a `## Clarifications` section exists (create it just after the highest-level contextual/overview section per the spec template if missing).
-       - Under it, create (if not present) a `### Session YYYY-MM-DD` subheading for today.
-    - Append a bullet line immediately after acceptance: `- Q: <question> → A: <final answer>`.
-    - Then immediately apply the clarification to the most appropriate section(s):
-       - Functional ambiguity → Update or add a bullet in Functional Requirements.
-       - User interaction / actor distinction → Update User Stories or Actors subsection (if present) with clarified role, constraint, or scenario.
-       - Data shape / entities → Update Data Model (add fields, types, relationships) preserving ordering; note added constraints succinctly.
-       - Non-functional constraint → Add/modify measurable criteria in Success Criteria > Measurable Outcomes (convert vague adjective to metric or explicit target).
-       - Edge case / negative flow → Add a new bullet under Edge Cases / Error Handling (or create such subsection if template provides placeholder for it).
-       - Terminology conflict → Normalize term across spec; retain original only if necessary by adding `(formerly referred to as "X")` once.
-    - If the clarification invalidates an earlier ambiguous statement, replace that statement instead of duplicating; leave no obsolete contradictory text.
-    - Save the spec file AFTER each integration to minimize risk of context loss (atomic overwrite).
-    - Preserve formatting: do not reorder unrelated sections; keep heading hierarchy intact.
-    - Keep each inserted clarification minimal and testable (avoid narrative drift).
+5. integration after each accepted answer (incremental update approach):
+    - maintain in-memory representation of the spec (loaded once at start) plus the raw file contents.
+    - for the first integrated answer in this session:
+       - ensure a `## clarifications` section exists (create it just after the highest-level contextual/overview section per the spec template if missing).
+       - under it, create (if not present) a `### session yyyy-mm-dd` subheading for today.
+    - append a bullet line immediately after acceptance: `- q: <question> → a: <final answer>`.
+    - then immediately apply the clarification to the most appropriate section(s):
+       - functional ambiguity → update or add a bullet in functional requirements.
+       - user interaction / actor distinction → update user stories or actors subsection (if present) with clarified role, constraint, or scenario.
+       - data shape / entities → update data model (add fields, types, relationships) preserving ordering; note added constraints succinctly.
+       - non-functional constraint → add/modify measurable criteria in success criteria > measurable outcomes (convert vague adjective to metric or explicit target).
+       - edge case / negative flow → add a new bullet under edge cases / error handling (or create such subsection if template provides placeholder for it).
+       - terminology conflict → normalize term across spec; retain original only if necessary by adding `(formerly referred to as "x")` once.
+    - if the clarification invalidates an earlier ambiguous statement, replace that statement instead of duplicating; leave no obsolete contradictory text.
+    - save the spec file after each integration to minimize risk of context loss (atomic overwrite).
+    - preserve formatting: do not reorder unrelated sections; keep heading hierarchy intact.
+    - keep each inserted clarification minimal and testable (avoid narrative drift).
 
-6. Validation (performed after EACH write plus final pass):
-   - Clarifications session contains exactly one bullet per accepted answer (no duplicates).
-   - Total asked (accepted) questions ≤ 5.
-   - Updated sections contain no lingering vague placeholders the new answer was meant to resolve.
-   - No contradictory earlier statement remains (scan for now-invalid alternative choices removed).
-   - Markdown structure valid; only allowed new headings: `## Clarifications`, `### Session YYYY-MM-DD`.
-   - Terminology consistency: same canonical term used across all updated sections.
+6. validation (performed after each write plus final pass):
+   - clarifications session contains exactly one bullet per accepted answer (no duplicates).
+   - total asked (accepted) questions ≤ 5.
+   - updated sections contain no lingering vague placeholders the new answer was meant to resolve.
+   - no contradictory earlier statement remains (scan for now-invalid alternative choices removed).
+   - markdown structure valid; only allowed new headings: `## clarifications`, `### session yyyy-mm-dd`.
+   - terminology consistency: same canonical term used across all updated sections.
 
-7. Write the updated spec back to `FEATURE_SPEC`.
+7. write the updated spec back to `feature_spec`.
 
-8. Report completion (after questioning loop ends or early termination):
-   - Number of questions asked & answered.
-   - Path to updated spec.
-   - Sections touched (list names).
-   - Coverage summary table listing each taxonomy category with Status: Resolved (was Partial/Missing and addressed), Deferred (exceeds question quota or better suited for planning), Clear (already sufficient), Outstanding (still Partial/Missing but low impact).
-   - If any Outstanding or Deferred remain, recommend whether to proceed to `/speckit.plan` or run `/speckit.clarify` again later post-plan.
-   - Suggested next command.
+8. report completion (after questioning loop ends or early termination):
+   - number of questions asked & answered.
+   - path to updated spec.
+   - sections touched (list names).
+   - coverage summary table listing each taxonomy category with status: resolved (was partial/missing and addressed), deferred (exceeds question quota or better suited for planning), clear (already sufficient), outstanding (still partial/missing but low impact).
+   - if any outstanding or deferred remain, recommend whether to proceed to `/speckit.plan` or run `/speckit.clarify` again later post-plan.
+   - suggested next command.
 
-Behavior rules:
+behavior rules:
 
-- If no meaningful ambiguities found (or all potential questions would be low-impact), respond: "No critical ambiguities detected worth formal clarification." and suggest proceeding.
-- If spec file missing, instruct user to run `/speckit.specify` first (do not create a new spec here).
-- Never exceed 5 total asked questions (clarification retries for a single question do not count as new questions).
-- Avoid speculative tech stack questions unless the absence blocks functional clarity.
-- Respect user early termination signals ("stop", "done", "proceed").
-- If no questions asked due to full coverage, output a compact coverage summary (all categories Clear) then suggest advancing.
-- If quota reached with unresolved high-impact categories remaining, explicitly flag them under Deferred with rationale.
+- if no meaningful ambiguities found (or all potential questions would be low-impact), respond: "no critical ambiguities detected worth formal clarification." and suggest proceeding.
+- if spec file missing, instruct user to run `/speckit.specify` first (do not create a new spec here).
+- never exceed 5 total asked questions (clarification retries for a single question do not count as new questions).
+- avoid speculative tech stack questions unless the absence blocks functional clarity.
+- respect user early termination signals ("stop", "done", "proceed").
+- if no questions asked due to full coverage, output a compact coverage summary (all categories clear) then suggest advancing.
+- if quota reached with unresolved high-impact categories remaining, explicitly flag them under deferred with rationale.
 
-Context for prioritization: $ARGUMENTS
+context for prioritization: $arguments
 
-## Post-Execution Checks
+## post-execution checks
 
-**Check for extension hooks (after clarification)**:
-Check if `.specify/extensions.yml` exists in the project root.
-- If it exists, read it and look for entries under the `hooks.after_clarify` key
-- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-- For each executable hook, output the following based on its `optional` flag:
-  - **Optional hook** (`optional: true`):
+**check for extension hooks (after clarification)**:
+check if `.specify/extensions.yml` exists in the project root.
+- if it exists, read it and look for entries under the `hooks.after_clarify` key
+- if the yaml cannot be parsed or is invalid, skip hook checking silently and continue normally
+- filter out hooks where `enabled` is explicitly `false`. treat hooks without an `enabled` field as enabled by default.
+- for each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
+  - if the hook has no `condition` field, or it is null/empty, treat the hook as executable
+  - if the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the hookexecutor implementation
+- for each executable hook, output the following based on its `optional` flag:
+  - **optional hook** (`optional: true`):
     ```
-    ## Extension Hooks
+    ## extension hooks
 
-    **Optional Hook**: {extension}
-    Command: `/{command}`
-    Description: {description}
+    **optional hook**: {extension}
+    command: `/{command}`
+    description: {description}
 
-    Prompt: {prompt}
-    To execute: `/{command}`
+    prompt: {prompt}
+    to execute: `/{command}`
     ```
-  - **Mandatory hook** (`optional: false`):
+  - **mandatory hook** (`optional: false`):
     ```
-    ## Extension Hooks
+    ## extension hooks
 
-    **Automatic Hook**: {extension}
-    Executing: `/{command}`
-    EXECUTE_COMMAND: {command}
+    **automatic hook**: {extension}
+    executing: `/{command}`
+    execute_command: {command}
     ```
-- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
+- if no hooks are registered or `.specify/extensions.yml` does not exist, skip silently

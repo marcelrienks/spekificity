@@ -1,108 +1,108 @@
-# Lessons Learnt
+# lessons learnt
 
-## Description
+## description
 
-Captures structured lessons at the end of a SpecKit feature lifecycle and writes them to the Obsidian vault. The entry records what worked, what was harder than expected, decisions made, and patterns identified — making this knowledge available to future AI sessions via `/context-load`.
+captures structured lessons at the end of a speckit feature lifecycle and writes them to the obsidian vault. the entry records what worked, what was harder than expected, decisions made, and patterns identified — making this knowledge available to future ai sessions via `/context-load`.
 
-Run this skill after a feature implementation is complete (or at a meaningful checkpoint). It is invoked automatically by `/speckit-enrich-implement` at the end of each feature.
+run this skill after a feature implementation is complete (or at a meaningful checkpoint). it is invoked automatically by `/speckit-enrich-implement` at the end of each feature.
 
-## Trigger
+## trigger
 
-Invoked by the developer in the AI chat session:
+invoked by the developer in the ai chat session:
 ```
 /lessons-learnt
 ```
 
-## Prerequisites
+## prerequisites
 
-- A SpecKit feature implementation is complete or at a meaningful checkpoint
+- a speckit feature implementation is complete or at a meaningful checkpoint
 - `vault/lessons/` directory exists (created by init workflow or `/map-codebase`)
-- Current feature branch name is accessible via git
+- current feature branch name is accessible via git
 
-## Inputs
+## inputs
 
-| Input | Description | Required |
+| input | description | required |
 |-------|-------------|----------|
-| Feature branch | Auto-detected from `git branch --show-current` | Yes (auto) |
-| Date | Auto-detected (today's date, ISO 8601) | Yes (auto) |
-| AI model name | Name of AI agent and model (e.g., "GitHub Copilot / Claude Sonnet 4.6") | Yes (auto-detected or ask) |
+| feature branch | auto-detected from `git branch --show-current` | yes (auto) |
+| date | auto-detected (today's date, iso 8601) | yes (auto) |
+| ai model name | name of ai agent and model (e.g., "github copilot / claude sonnet 4.6") | yes (auto-detected or ask) |
 
-## Steps
+## steps
 
-1. **Detect current git branch**:
+1. **detect current git branch**:
    ```bash
    git branch --show-current
    ```
-   Extract the feature slug (e.g., `001-spekificity-platform` from `001-spekificity-platform`).
+   extract the feature slug (e.g., `001-spekificity-platform` from `001-spekificity-platform`).
 
-2. **AI reflection** — ask the AI to answer these four questions based on what happened during the feature:
-   - *What worked well?* (approaches, tools, patterns that saved time or produced quality output)
-   - *What was harder than expected?* (blockers, surprises, things that required rework)
-   - *What decisions were made?* (architectural, design, or process choices made during this feature)
-   - *What patterns were identified?* (reusable approaches worth applying in future features)
+2. **ai reflection** — ask the ai to answer these four questions based on what happened during the feature:
+   - *what worked well?* (approaches, tools, patterns that saved time or produced quality output)
+   - *what was harder than expected?* (blockers, surprises, things that required rework)
+   - *what decisions were made?* (architectural, design, or process choices made during this feature)
+   - *what patterns were identified?* (reusable approaches worth applying in future features)
 
-3. **Write lessons entry** to `vault/lessons/<YYYY-MM-DD>-<feature-slug>.md` using this schema:
+3. **write lessons entry** to `vault/lessons/<yyyy-mm-dd>-<feature-slug>.md` using this schema:
 
    ```markdown
    ---
-   date: YYYY-MM-DD
+   date: yyyy-mm-dd
    feature: <feature-slug>
    branch: <full-branch-name>
    ai_model: <model name>
    status: complete
    ---
 
-   # Lessons Learnt: <Feature Name>
+   # lessons learnt: <feature name>
 
-   ## What Worked Well
+   ## what worked well
    - <bullet>
 
-   ## What Was Harder Than Expected
+   ## what was harder than expected
    - <bullet>
 
-   ## Decisions Made
-   | Decision | Rationale | Alternatives Considered |
+   ## decisions made
+   | decision | rationale | alternatives considered |
    |----------|-----------|------------------------|
    | <decision> | <why> | <what else was considered> |
 
-   ## Patterns Identified
+   ## patterns identified
    - <bullet>
 
-   ## Changelog
-   | Version | Change | Detail |
+   ## changelog
+   | version | change | detail |
    |---------|--------|--------|
-   | 1.0 | Initial | Created by /lessons-learnt |
+   | 1.0 | initial | created by /lessons-learnt |
    ```
 
-4. **Append to `vault/context/patterns.md`**: For each new pattern identified, add a bullet:
+4. **append to `vault/context/patterns.md`**: for each new pattern identified, add a bullet:
    ```
-   - YYYY-MM-DD [feature-slug]: <pattern summary>
-   ```
-
-5. **Append to `vault/context/decisions.md`**: For each decision made, add a bullet:
-   ```
-   - YYYY-MM-DD [feature-slug]: <decision summary>
+   - yyyy-mm-dd [feature-slug]: <pattern summary>
    ```
 
-6. **Report** to developer: "Lessons written to `vault/lessons/<filename>.md`. Patterns and decisions updated."
+5. **append to `vault/context/decisions.md`**: for each decision made, add a bullet:
+   ```
+   - yyyy-mm-dd [feature-slug]: <decision summary>
+   ```
 
-## Outputs
+6. **report** to developer: "lessons written to `vault/lessons/<filename>.md`. patterns and decisions updated."
 
-| Output | Path | Description |
+## outputs
+
+| output | path | description |
 |--------|------|-------------|
-| Lessons entry | `vault/lessons/<date>-<slug>.md` | Full structured lessons record |
-| Updated patterns | `vault/context/patterns.md` | Appended with new patterns |
-| Updated decisions | `vault/context/decisions.md` | Appended with new decisions |
+| lessons entry | `vault/lessons/<date>-<slug>.md` | full structured lessons record |
+| updated patterns | `vault/context/patterns.md` | appended with new patterns |
+| updated decisions | `vault/context/decisions.md` | appended with new decisions |
 
-## Error Handling
+## error handling
 
-- **`vault/lessons/` missing**: Create the directory (`mkdir -p vault/lessons`) and proceed.
-- **git command fails** (not a git repo or detached HEAD): Ask the developer to provide the feature slug manually. Do not halt.
-- **Duplicate entry** (same date + slug already exists): Append `-v2` to the filename (e.g., `2026-04-29-my-feature-v2.md`) rather than overwriting.
+- **`vault/lessons/` missing**: create the directory (`mkdir -p vault/lessons`) and proceed.
+- **git command fails** (not a git repo or detached head): ask the developer to provide the feature slug manually. do not halt.
+- **duplicate entry** (same date + slug already exists): append `-v2` to the filename (e.g., `2026-04-29-my-feature-v2.md`) rather than overwriting.
 
-## Notes
+## notes
 
-- This skill is invoked automatically at the end of `/speckit-enrich-implement`. You can also invoke it manually at any checkpoint.
-- If Caveman mode is active, reflect answers may be compressed — expand them before writing to the vault for future readability.
-- Future `/context-load` calls will surface this entry automatically.
-- Related: [skills/context-load/SKILL.md](../context-load/SKILL.md), [workflows/feature-lifecycle.md](../../workflows/feature-lifecycle.md)
+- this skill is invoked automatically at the end of `/speckit-enrich-implement`. you can also invoke it manually at any checkpoint.
+- if caveman mode is active, reflect answers may be compressed — expand them before writing to the vault for future readability.
+- future `/context-load` calls will surface this entry automatically.
+- related: [skills/context-load/skill.md](../context-load/skill.md), [workflows/feature-lifecycle.md](../../workflows/feature-lifecycle.md)

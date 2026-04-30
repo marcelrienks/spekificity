@@ -1,86 +1,86 @@
-# Setup Guide: SpecKit / Specify
+# setup guide: speckit / specify
 
-## Overview
+## overview
 
-SpecKit (installed via the `specify-cli` package) is the spec-driven development workflow engine that Spekificity is built on top of. It provides the `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, and `/speckit.implement` commands that structure the AI development lifecycle. Spekificity wraps these commands with graph-aware context — it does not replace them.
+speckit (installed via the `specify-cli` package) is the spec-driven development workflow engine that spekificity is built on top of. it provides the `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, and `/speckit.implement` commands that structure the ai development lifecycle. spekificity wraps these commands with graph-aware context — it does not replace them.
 
-## Install Mode
+## install mode
 
-**Global** — installed per machine via `uv tool install`. Spekificity custom skills are installed per project (layered on top).
+**global** — installed per machine via `uv tool install`. spekificity custom skills are installed per project (layered on top).
 
-## Prerequisites
+## prerequisites
 
-- Python 3.11+
+- python 3.11+
 - `uv` installed (`uv --version` returns a version)
 - `git` installed (`git --version` returns a version)
-- Internet access for initial install
+- internet access for initial install
 
-## Installation Steps
+## installation steps
 
-1. Install SpecKit globally:
+1. install speckit globally:
    ```bash
    uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
    ```
 
-2. Confirm the `specify` command is on your PATH:
+2. confirm the `specify` command is on your path:
    ```bash
    which specify
-   # Expected: /Users/<you>/.local/bin/specify or similar
+   # expected: /users/<you>/.local/bin/specify or similar
    ```
 
-3. Initialise SpecKit in your project:
+3. initialise speckit in your project:
    ```bash
    cd /path/to/your/project
    specify init .
    ```
 
-   When prompted:
-   - **AI assistant**: Select `copilot` (GitHub Copilot) or `claude` (Claude Code)
-   - **Script type**: Select `sh`
+   when prompted:
+   - **ai assistant**: select `copilot` (github copilot) or `claude` (claude code)
+   - **script type**: select `sh`
 
-   This creates:
-   - `.specify/` — SpecKit configuration, templates, scripts, extensions
-   - `.github/agents/` — Agent skill files (Copilot)
-   - `.github/copilot-instructions.md` — Copilot context pointer
+   this creates:
+   - `.specify/` — speckit configuration, templates, scripts, extensions
+   - `.github/agents/` — agent skill files (copilot)
+   - `.github/copilot-instructions.md` — copilot context pointer
 
-## Verification
+## verification
 
 ```bash
 specify --version
-# Expected output: specify-cli X.X.X
+# expected output: specify-cli x.x.x
 ```
 
-After `specify init .`:
+after `specify init .`:
 ```bash
 ls .specify/
-# Expected: extensions.yml  memory/  scripts/  templates/
+# expected: extensions.yml  memory/  scripts/  templates/
 ```
 
-## Configuration
+## configuration
 
-SpecKit configuration lives in `.specify/`:
+speckit configuration lives in `.specify/`:
 
-- **`.specify/extensions.yml`** — Hook definitions for `before_specify`, `before_plan`, `before_implement`, etc. Spekificity enrichment skills can be registered here.
-- **`.specify/memory/constitution.md`** — Project constitution. Edit this to add project-specific principles.
-- **`.specify/templates/`** — Override SpecKit default templates for spec, plan, and tasks.
+- **`.specify/extensions.yml`** — hook definitions for `before_specify`, `before_plan`, `before_implement`, etc. spekificity enrichment skills can be registered here.
+- **`.specify/memory/constitution.md`** — project constitution. edit this to add project-specific principles.
+- **`.specify/templates/`** — override speckit default templates for spec, plan, and tasks.
 
-## Version Compatibility
+## version compatibility
 
-| SpecKit Version | Spekificity Compatible | Notes |
+| speckit version | spekificity compatible | notes |
 |----------------|----------------------|-------|
-| ≥ 0.8.0 | ✓ | Extensions/hooks system required |
-| 0.7.x | ⚠ | No extensions.yml; enrichment skills must be invoked manually |
-| < 0.7.0 | ✗ | Unsupported |
+| ≥ 0.8.0 | ✓ | extensions/hooks system required |
+| 0.7.x | ⚠ | no extensions.yml; enrichment skills must be invoked manually |
+| < 0.7.0 | ✗ | unsupported |
 
-## The `specify init .` Workflow
+## the `specify init .` workflow
 
-Running `specify init .` is **idempotent** — safe to run multiple times:
-- If SpecKit is already initialised, it updates templates and scripts without overwriting your constitution or custom configuration.
-- New SpecKit versions: run `uv tool upgrade specify-cli` then re-run `specify init .` to pick up new templates.
+running `specify init .` is **idempotent** — safe to run multiple times:
+- if speckit is already initialised, it updates templates and scripts without overwriting your constitution or custom configuration.
+- new speckit versions: run `uv tool upgrade specify-cli` then re-run `specify init .` to pick up new templates.
 
-## Troubleshooting
+## troubleshooting
 
-- **Symptom**: `specify: command not found` → **Fix**: Run the install command above; ensure `~/.local/bin` is in your `PATH`
-- **Symptom**: `specify init .` fails with git error → **Fix**: Ensure the project folder is a git repository (`git init` first) or create it first
-- **Symptom**: Hooks in `extensions.yml` not firing → **Fix**: Check `enabled: true` and `optional: false` for mandatory hooks; confirm you are using SpecKit ≥ 0.8.0
-- **Symptom**: Templates not applied → **Fix**: Check `.specify/templates/` for overrides; run `specify init .` again to refresh
+- **symptom**: `specify: command not found` → **fix**: run the install command above; ensure `~/.local/bin` is in your `path`
+- **symptom**: `specify init .` fails with git error → **fix**: ensure the project folder is a git repository (`git init` first) or create it first
+- **symptom**: hooks in `extensions.yml` not firing → **fix**: check `enabled: true` and `optional: false` for mandatory hooks; confirm you are using speckit ≥ 0.8.0
+- **symptom**: templates not applied → **fix**: check `.specify/templates/` for overrides; run `specify init .` again to refresh

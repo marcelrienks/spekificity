@@ -1,96 +1,96 @@
-# docs/VALIDATION.md
+# docs/validation.md
 
-## Purpose
+## purpose
 
-Validation methodology for the two quantitative success criteria defined in the Spekificity platform spec.
+validation methodology for the two quantitative success criteria defined in the spekificity platform spec.
 
 ---
 
-## SC-002: Vault Graph Eliminates Redundant Context Queries
+## sc-002: vault graph eliminates redundant context queries
 
-**Target**: ≥40% reduction in token usage for cross-cutting "where is X" queries when vault graph is available vs. unavailable.
+**target**: ≥40% reduction in token usage for cross-cutting "where is x" queries when vault graph is available vs. unavailable.
 
-### Methodology
+### methodology
 
-Token counts are obtained via AI provider token counting. For GitHub Copilot: use the Copilot token counter in the VS Code extension or count programmatically. For Claude Code: use the context window usage displayed in the session.
+token counts are obtained via ai provider token counting. for github copilot: use the copilot token counter in the vs code extension or count programmatically. for claude code: use the context window usage displayed in the session.
 
-**Procedure**:
+**procedure**:
 
-1. Select 5 representative cross-cutting queries from the table below.
-2. For each query, run two AI sessions:
-   - **Without vault** (`vault/graph/index.md` absent or empty): Query the AI directly with no vault context.
-   - **With vault** (`/context-load` run first): Same query, with vault primed.
-3. Record the input token count for each session in the log table.
-4. Compute reduction percentage: `(tokens_without - tokens_with) / tokens_without * 100`
+1. select 5 representative cross-cutting queries from the table below.
+2. for each query, run two ai sessions:
+   - **without vault** (`vault/graph/index.md` absent or empty): query the ai directly with no vault context.
+   - **with vault** (`/context-load` run first): same query, with vault primed.
+3. record the input token count for each session in the log table.
+4. compute reduction percentage: `(tokens_without - tokens_with) / tokens_without * 100`
 
-**Reference queries**:
+**reference queries**:
 
-| # | Query |
+| # | query |
 |---|-------|
-| 1 | "Which files define the entity model?" |
-| 2 | "Where is authentication handled?" |
-| 3 | "List all API endpoints" |
-| 4 | "What decisions were made about the database schema?" |
-| 5 | "Which files will be affected if I change the User entity?" |
+| 1 | "which files define the entity model?" |
+| 2 | "where is authentication handled?" |
+| 3 | "list all api endpoints" |
+| 4 | "what decisions were made about the database schema?" |
+| 5 | "which files will be affected if i change the user entity?" |
 
-**Log table** (fill in during validation):
+**log table** (fill in during validation):
 
-| Query | Tokens without vault | Tokens with vault | Reduction (%) | Pass (≥40%)? |
+| query | tokens without vault | tokens with vault | reduction (%) | pass (≥40%)? |
 |-------|---------------------|-------------------|---------------|--------------|
 | 1 | | | | |
 | 2 | | | | |
 | 3 | | | | |
 | 4 | | | | |
 | 5 | | | | |
-| **Average** | | | | |
+| **average** | | | | |
 
-**Validation result**: If the average reduction is ≥40%, SC-002 PASSES.
+**validation result**: if the average reduction is ≥40%, sc-002 passes.
 
 ---
 
-## SC-003: Caveman Mode Reduces AI Response Verbosity
+## sc-003: caveman mode reduces ai response verbosity
 
-**Target**: ≥60% reduction in character count for AI explanatory responses when Caveman mode is active vs. inactive.
+**target**: ≥60% reduction in character count for ai explanatory responses when caveman mode is active vs. inactive.
 
-### Methodology
+### methodology
 
-Character counts are measured on AI responses (not user prompts). Use a word count / character count tool or simply count characters in the response text.
+character counts are measured on ai responses (not user prompts). use a word count / character count tool or simply count characters in the response text.
 
-**Procedure**:
+**procedure**:
 
-1. Select 3 representative AI explanation requests from the table below.
-2. For each request, run two AI sessions:
-   - **Without Caveman** (no `/caveman` invocation): Ask the question normally.
-   - **With Caveman** (`/caveman` activated): Ask the same question.
-3. Record the character count of the AI response in the log table.
-4. Compute reduction percentage: `(chars_without - chars_with) / chars_without * 100`
+1. select 3 representative ai explanation requests from the table below.
+2. for each request, run two ai sessions:
+   - **without caveman** (no `/caveman` invocation): ask the question normally.
+   - **with caveman** (`/caveman` activated): ask the same question.
+3. record the character count of the ai response in the log table.
+4. compute reduction percentage: `(chars_without - chars_with) / chars_without * 100`
 
-**Reference requests**:
+**reference requests**:
 
-| # | Request |
+| # | request |
 |---|---------|
-| 1 | "Explain what the vault/context/decisions.md file is used for" |
-| 2 | "Walk me through what /speckit-enrich-implement does" |
-| 3 | "Describe the Spekificity decorator pattern" |
+| 1 | "explain what the vault/context/decisions.md file is used for" |
+| 2 | "walk me through what /speckit-enrich-implement does" |
+| 3 | "describe the spekificity decorator pattern" |
 
-**Log table** (fill in during validation):
+**log table** (fill in during validation):
 
-| Request | Chars without Caveman | Chars with Caveman | Reduction (%) | Pass (≥60%)? |
+| request | chars without caveman | chars with caveman | reduction (%) | pass (≥60%)? |
 |---------|-----------------------|--------------------|---------------|--------------|
 | 1 | | | | |
 | 2 | | | | |
 | 3 | | | | |
-| **Average** | | | | |
+| **average** | | | | |
 
-**Validation result**: If the average reduction is ≥60%, SC-003 PASSES.
+**validation result**: if the average reduction is ≥60%, sc-003 passes.
 
 ---
 
-## How to Log Validation Results
+## how to log validation results
 
-When you have completed a validation run, update this file with results in the log tables. Commit the updated file to make the validation record durable.
+when you have completed a validation run, update this file with results in the log tables. commit the updated file to make the validation record durable.
 
 ```bash
-git add docs/VALIDATION.md
-git commit -m "docs(validation): record SC-002/SC-003 validation results"
+git add docs/validation.md
+git commit -m "docs(validation): record sc-002/sc-003 validation results"
 ```

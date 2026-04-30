@@ -1,126 +1,126 @@
-# Implementation Plan: Spekificity Platform — Core Project Foundation
+# implementation plan: spekificity platform — core project foundation
 
-**Branch**: `001-spekificity-platform` | **Date**: 2026-04-29 | **Spec**: [spec.md](spec.md)  
-**Input**: Feature specification from `specs/001-spekificity-platform/spec.md`
+**branch**: `001-spekificity-platform` | **date**: 2026-04-29 | **spec**: [spec.md](spec.md)  
+**input**: feature specification from `specs/001-spekificity-platform/spec.md`
 
-## Summary
+## summary
 
-Build the complete Spekificity platform: a documentation-only meta-tooling layer that connects Graphify, Obsidian, SpecKit/Specify, and the Caveman skill into a cohesive AI-assisted development workflow. The deliverables are six AI skills, four workflow documents, three setup guides, a vault schema, and the project documentation suite. No application code is produced — every artefact is a markdown file. The init mechanism is an AI-executable setup guide backed by a shell prerequisite checker.
+build the complete spekificity platform: a documentation-only connection of graphify, obsidian, speckit/specify, and the caveman skill into a unified ai development workflow. the deliverables are six ai skills, four workflow documents, three setup guides, a vault schema, and the project documentation suite. no application code is produced — every artefact is a markdown file. the init mechanism is an ai-executable setup guide backed by a shell prerequisite checker.
 
-**Research findings**: All NEEDS CLARIFICATION items resolved. See [research.md](research.md).  
-- Graphify (`graphifyy`) installs globally via `uv tool install graphifyy`; has built-in `--obsidian` flag  
-- Obsidian vault = plain markdown files; writable via filesystem without the app  
-- SpecKit 0.8.0+ with extensions.yml hooks; skill files go to `.github/agents/` (Copilot) and `.claude/commands/` (Claude)  
-- Caveman is already global; no install action needed  
+**research findings**: all needs clarification items resolved. see [research.md](research.md).  
+- graphify (`graphifyy`) installs globally via `uv tool install graphifyy`; has built-in `--obsidian` flag  
+- obsidian vault = plain markdown files; writable via filesystem without the app  
+- speckit 0.8.0+ with extensions.yml hooks; skill files go to `.github/agents/` (copilot) and `.claude/commands/` (claude)  
+- caveman is already global; no install action needed  
 
-## Technical Context
+## technical context
 
-**Language/Version**: N/A — documentation project (markdown only)  
-**Primary Dependencies**: `graphifyy` ≥0.5.5 (Python, global), SpecKit/Specify ≥0.8.0 (Python, global), git  
-**Storage**: Local filesystem — Obsidian vault (plain markdown + JSON graph)  
-**Testing**: Manual validation — AI agent executes each skill against a test project; spot-check outputs  
-**Target Platform**: macOS + Linux (terminal + AI agent IDE integration)  
-**Project Type**: Skill library / documentation suite  
-**Performance Goals**: Init ≤30min; token reduction ≥40% on cross-cutting queries; Caveman ≥60% verbosity reduction  
-**Constraints**: No application code; no GUI required; no cloud/backend services; fully local  
-**Scale/Scope**: Single developer to small team; vault up to ~10k nodes before gitignore optimisation needed  
+**language/version**: n/a — documentation project (markdown only)  
+**primary dependencies**: `graphifyy` ≥0.5.5 (python, global), speckit/specify ≥0.8.0 (python, global), git  
+**storage**: local filesystem — obsidian vault (plain markdown + json graph)  
+**testing**: manual validation — ai agent executes each skill against a test project; spot-check outputs  
+**target platform**: macos + linux (terminal + ai agent ide integration)  
+**project type**: skill library / documentation suite  
+**performance goals**: init ≤30min; token reduction ≥40% on cross-cutting queries; caveman ≥60% verbosity reduction  
+**constraints**: no application code; no gui required; no cloud/backend services; fully local  
+**scale/scope**: single developer to small team; vault up to ~10k nodes before gitignore optimisation needed  
 
-## Constitution Check
+## constitution check
 
-*GATE: All principles pass — no violations.*
+*gate: all principles pass — no violations.*
 
-| Principle | Check | Status |
+| principle | check | status |
 |-----------|-------|--------|
-| I. Skills and Workflows — Not Application Code | All deliverables are markdown skill/workflow files | ✓ PASS |
-| II. Decorator Pattern | Spekificity skills invoke `/speckit.*` commands; they do not replace them | ✓ PASS |
-| III. Modular Independence | Each tool accessed only via its CLI/filesystem interface; no internal API assumptions | ✓ PASS |
-| IV. Global SpecKit, Local Customisation | SpecKit installed globally via `uv tool`; Spekificity skills are local per-project | ✓ PASS |
-| V. Graph-First Context Loading | `/context-load` skill loads vault before source scanning; skills enforce this ordering | ✓ PASS |
-| VI. Token Efficiency by Design | Caveman integration in all workflow steps; graph-indexed context replaces file scanning | ✓ PASS |
-| VII. AI-Executable Setup | Init delivered as a markdown guide; all steps are terminal commands or AI instructions | ✓ PASS |
-| VIII. Idempotent Initialisation | Init guide documents idempotency checks at each step (detect-before-install pattern) | ✓ PASS |
+| i. skills and workflows — not application code | all deliverables are markdown skill/workflow files | ✓ pass |
+| ii. decorator pattern | spekificity skills invoke `/speckit.*` commands; they do not replace them | ✓ pass |
+| iii. modular independence | each tool accessed only via its cli/filesystem interface; no internal api assumptions | ✓ pass |
+| iv. global speckit, local customisation | speckit installed globally via `uv tool`; spekificity skills are local per-project | ✓ pass |
+| v. graph-first context loading | `/context-load` skill loads vault before source scanning; skills enforce this ordering | ✓ pass |
+| vi. token efficiency by design | caveman integration in all workflow steps; graph-indexed context replaces file scanning | ✓ pass |
+| vii. ai-executable setup | init delivered as a markdown guide; all steps are terminal commands or ai instructions | ✓ pass |
+| viii. idempotent initialisation | init guide documents idempotency checks at each step (detect-before-install pattern) | ✓ pass |
 
-## Project Structure
+## project structure
 
-### Documentation (this feature)
+### documentation (this feature)
 
 ```text
 specs/001-spekificity-platform/
-├── plan.md              ← This file
-├── spec.md              ← Feature specification
-├── research.md          ← Phase 0 research (all unknowns resolved)
-├── data-model.md        ← Phase 1 entity schemas
-├── quickstart.md        ← Phase 1 developer quickstart
+├── plan.md              ← this file
+├── spec.md              ← feature specification
+├── research.md          ← phase 0 research (all unknowns resolved)
+├── data-model.md        ← phase 1 entity schemas
+├── quickstart.md        ← phase 1 developer quickstart
 ├── contracts/
-│   └── skill-contracts.md   ← Phase 1 skill invocation contracts
+│   └── skill-contracts.md   ← phase 1 skill invocation contracts
 ├── checklists/
-│   └── requirements.md ← Spec quality checklist
-└── tasks.md             ← Phase 2 output (generated by /speckit.tasks)
+│   └── requirements.md ← spec quality checklist
+└── tasks.md             ← phase 2 output (generated by /speckit.tasks)
 ```
 
-### Project Deliverables (repository root)
+### project deliverables (repository root)
 
 ```text
 spekificity/
 │
-├── docs/                           ← Project documentation (exists)
-│   ├── init.md                     ← Project overview
-│   ├── prd.md                      ← Product requirements document
-│   ├── architecture.md             ← Architecture document
-│   └── glossary.md                 ← Terminology
+├── docs/                           ← project documentation (exists)
+│   ├── init.md                     ← project overview
+│   ├── prd.md                      ← product requirements document
+│   ├── architecture.md             ← architecture document
+│   └── glossary.md                 ← terminology
 │
-├── skills/                         ← Spekificity custom AI skills (to create)
+├── skills/                         ← spekificity custom ai skills (to create)
 │   ├── map-codebase/
-│   │   └── SKILL.md
+│   │   └── skill.md
 │   ├── lessons-learnt/
-│   │   └── SKILL.md
+│   │   └── skill.md
 │   ├── context-load/
-│   │   └── SKILL.md
+│   │   └── skill.md
 │   └── speckit-enrich/
 │       ├── specify-enrich.md
 │       ├── plan-enrich.md
 │       └── implement-enrich.md
 │
-├── workflows/                      ← Workflow sequence documents (to create)
+├── workflows/                      ← workflow sequence documents (to create)
 │   ├── init-workflow.md
 │   ├── feature-lifecycle.md
 │   ├── map-refresh.md
 │   └── component-update.md
 │
-├── setup-guides/                   ← Tool setup instructions (to create)
+├── setup-guides/                   ← tool setup instructions (to create)
 │   ├── graphify-setup.md
 │   ├── obsidian-setup.md
 │   └── speckit-setup.md
 │
-├── vault/                          ← Obsidian vault (schema defined; created at runtime)
+├── vault/                          ← obsidian vault (schema defined; created at runtime)
 │   ├── graph/
 │   │   ├── index.md
 │   │   ├── nodes/
 │   │   ├── graph.json
-│   │   └── GRAPH_REPORT.md
+│   │   └── graph_report.md
 │   ├── lessons/
 │   └── context/
 │       ├── decisions.md
 │       └── patterns.md
 │
-└── specs/                          ← SpecKit specs (exists)
+└── specs/                          ← speckit specs (exists)
     └── 001-spekificity-platform/
 ```
 
-**Structure Decision**: Documentation project — no `src/` or `tests/` directories. All deliverables are markdown files in `skills/`, `workflows/`, and `setup-guides/`. The `vault/` directory is the runtime artefact created when `/map-codebase` is first run.
+**structure decision**: documentation project — no `src/` or `tests/` directories. all deliverables are markdown files in `skills/`, `workflows/`, and `setup-guides/`. the `vault/` directory is the runtime artefact created when `/map-codebase` is first run.
 
-## Design Decisions
+## design decisions
 
-| Decision | Choice | Rationale |
+| decision | choice | rationale |
 |----------|--------|-----------|
-| Init mechanism | AI-executable markdown guide (not a compiled CLI) | No application code (Principle I); more maintainable than a shell script |
-| Graphify install mode | Global (`uv tool install graphifyy`) | Graphify does not support local project installs; treat as prerequisite |
-| Obsidian dependency | Optional — vault is plain markdown | App not required for AI reads/writes; avoids hard GUI dependency |
-| Vault location | `vault/` in project root | Predictable, gitignore-friendly, clear ownership |
-| Skill canonical location | `skills/<name>/SKILL.md` | Agent-agnostic; copies to `.github/agents/` and `.claude/commands/` |
-| Caveman activation | Opt-in per session (`/caveman`) | Session-level choice; `/caveman lite` recommended for structured output steps |
-| Vault commit strategy | Commit vault; gitignore `vault/graph/` on large repos | Lessons/decisions are long-lived artefacts; graph is regeneratable |
+| init mechanism | ai-executable markdown guide (not a compiled cli) | no application code (principle i); more maintainable than a shell script |
+| graphify install mode | global (`uv tool install graphifyy`) | graphify does not support local project installs; treat as prerequisite |
+| obsidian dependency | optional — vault is plain markdown | app not required for ai reads/writes; avoids hard gui dependency |
+| vault location | `vault/` in project root | predictable, gitignore-friendly, clear ownership |
+| skill canonical location | `skills/<name>/skill.md` | agent-agnostic; copies to `.github/agents/` and `.claude/commands/` |
+| caveman activation | opt-in per session (`/caveman`) | session-level choice; `/caveman lite` recommended for structured output steps |
+| vault commit strategy | commit vault; gitignore `vault/graph/` on large repos | lessons/decisions are long-lived artefacts; graph is regeneratable |
 
-## Complexity Tracking
+## complexity tracking
 
-*No constitution violations — this section is not required.*
+*no constitution violations — this section is not required.*

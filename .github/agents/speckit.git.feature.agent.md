@@ -1,70 +1,70 @@
 ---
-description: Create a feature branch with sequential or timestamp numbering
+description: create a feature branch with sequential or timestamp numbering
 ---
 
 
-<!-- Extension: git -->
-<!-- Config: .specify/extensions/git/ -->
-# Create Feature Branch
+<!-- extension: git -->
+<!-- config: .specify/extensions/git/ -->
+# create feature branch
 
-Create and switch to a new git feature branch for the given specification. This command handles **branch creation only** — the spec directory and files are created by the core `/speckit.specify` workflow.
+create and switch to a new git feature branch for the given specification. this command handles **branch creation only** — the spec directory and files are created by the core `/speckit.specify` workflow.
 
-## User Input
+## user input
 
 ```text
-$ARGUMENTS
+$arguments
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
+you **must** consider the user input before proceeding (if not empty).
 
-## Environment Variable Override
+## environment variable override
 
-If the user explicitly provided `GIT_BRANCH_NAME` (e.g., via environment variable, argument, or in their request), pass it through to the script by setting the `GIT_BRANCH_NAME` environment variable before invoking the script. When `GIT_BRANCH_NAME` is set:
-- The script uses the exact value as the branch name, bypassing all prefix/suffix generation
+if the user explicitly provided `git_branch_name` (e.g., via environment variable, argument, or in their request), pass it through to the script by setting the `git_branch_name` environment variable before invoking the script. when `git_branch_name` is set:
+- the script uses the exact value as the branch name, bypassing all prefix/suffix generation
 - `--short-name`, `--number`, and `--timestamp` flags are ignored
-- `FEATURE_NUM` is extracted from the name if it starts with a numeric prefix, otherwise set to the full branch name
+- `feature_num` is extracted from the name if it starts with a numeric prefix, otherwise set to the full branch name
 
-## Prerequisites
+## prerequisites
 
-- Verify Git is available by running `git rev-parse --is-inside-work-tree 2>/dev/null`
-- If Git is not available, warn the user and skip branch creation
+- verify git is available by running `git rev-parse --is-inside-work-tree 2>/dev/null`
+- if git is not available, warn the user and skip branch creation
 
-## Branch Numbering Mode
+## branch numbering mode
 
-Determine the branch numbering strategy by checking configuration in this order:
+determine the branch numbering strategy by checking configuration in this order:
 
-1. Check `.specify/extensions/git/git-config.yml` for `branch_numbering` value
-2. Check `.specify/init-options.json` for `branch_numbering` value (backward compatibility)
-3. Default to `sequential` if neither exists
+1. check `.specify/extensions/git/git-config.yml` for `branch_numbering` value
+2. check `.specify/init-options.json` for `branch_numbering` value (backward compatibility)
+3. default to `sequential` if neither exists
 
-## Execution
+## execution
 
-Generate a concise short name (2-4 words) for the branch:
-- Analyze the feature description and extract the most meaningful keywords
-- Use action-noun format when possible (e.g., "add-user-auth", "fix-payment-bug")
-- Preserve technical terms and acronyms (OAuth2, API, JWT, etc.)
+generate a concise short name (2-4 words) for the branch:
+- analyze the feature description and extract the most meaningful keywords
+- use action-noun format when possible (e.g., "add-user-auth", "fix-payment-bug")
+- preserve technical terms and acronyms (oauth2, api, jwt, etc.)
 
-Run the appropriate script based on your platform:
+run the appropriate script based on your platform:
 
-- **Bash**: `.specify/extensions/git/scripts/bash/create-new-feature.sh --json --short-name "<short-name>" "<feature description>"`
-- **Bash (timestamp)**: `.specify/extensions/git/scripts/bash/create-new-feature.sh --json --timestamp --short-name "<short-name>" "<feature description>"`
-- **PowerShell**: `.specify/extensions/git/scripts/powershell/create-new-feature.ps1 -Json -ShortName "<short-name>" "<feature description>"`
-- **PowerShell (timestamp)**: `.specify/extensions/git/scripts/powershell/create-new-feature.ps1 -Json -Timestamp -ShortName "<short-name>" "<feature description>"`
+- **bash**: `.specify/extensions/git/scripts/bash/create-new-feature.sh --json --short-name "<short-name>" "<feature description>"`
+- **bash (timestamp)**: `.specify/extensions/git/scripts/bash/create-new-feature.sh --json --timestamp --short-name "<short-name>" "<feature description>"`
+- **powershell**: `.specify/extensions/git/scripts/powershell/create-new-feature.ps1 -json -shortname "<short-name>" "<feature description>"`
+- **powershell (timestamp)**: `.specify/extensions/git/scripts/powershell/create-new-feature.ps1 -json -timestamp -shortname "<short-name>" "<feature description>"`
 
-**IMPORTANT**:
-- Do NOT pass `--number` — the script determines the correct next number automatically
-- Always include the JSON flag (`--json` for Bash, `-Json` for PowerShell) so the output can be parsed reliably
-- You must only ever run this script once per feature
-- The JSON output will contain `BRANCH_NAME` and `FEATURE_NUM`
+**important**:
+- do not pass `--number` — the script determines the correct next number automatically
+- always include the json flag (`--json` for bash, `-json` for powershell) so the output can be parsed reliably
+- you must only ever run this script once per feature
+- the json output will contain `branch_name` and `feature_num`
 
-## Graceful Degradation
+## graceful degradation
 
-If Git is not installed or the current directory is not a Git repository:
-- Branch creation is skipped with a warning: `[specify] Warning: Git repository not detected; skipped branch creation`
-- The script still outputs `BRANCH_NAME` and `FEATURE_NUM` so the caller can reference them
+if git is not installed or the current directory is not a git repository:
+- branch creation is skipped with a warning: `[specify] warning: git repository not detected; skipped branch creation`
+- the script still outputs `branch_name` and `feature_num` so the caller can reference them
 
-## Output
+## output
 
-The script outputs JSON with:
-- `BRANCH_NAME`: The branch name (e.g., `003-user-auth` or `20260319-143022-user-auth`)
-- `FEATURE_NUM`: The numeric or timestamp prefix used
+the script outputs json with:
+- `branch_name`: the branch name (e.g., `003-user-auth` or `20260319-143022-user-auth`)
+- `feature_num`: the numeric or timestamp prefix used

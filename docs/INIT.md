@@ -1,110 +1,110 @@
-# Spekificity — Project Initialisation Document
+# spekificity — project initialisation document
 
-## What Is This Project?
+## what is this project?
 
-**Spekificity** is a meta-tooling layer that orchestrates four existing tools into a unified, AI-assisted development workflow:
+**spekificity** is a platform that connects four existing tools into a single ai development workflow:
 
-| Tool | Role |
+| tool | role |
 |------|------|
-| **Graphify** | Generates dependency/relationship graphs of source code and documentation |
-| **Obsidian** | Stores and navigates those graphs as a local markdown vault, providing persistent AI context |
-| **GitHub SpecKit / Specify** | Drives spec-first, AI-guided feature development lifecycle |
-| **Caveman skill** | Compresses AI prompts and responses to minimise token usage |
+| **graphify** | generates dependency/relationship graphs of source code and documentation |
+| **obsidian** | stores and navigates those graphs as a local markdown vault, providing persistent ai context |
+| **github speckit / specify** | drives spec-first, ai-guided feature development lifecycle |
+| **caveman skill** | compresses ai prompts and responses to minimise token usage |
 
-Spekificity itself contains **no application code**. It is a curated collection of skills, workflow guides, and setup documentation that tells any AI agent how to initialise, configure, and operate the full stack on any project.
-
----
-
-## Core Problem Being Solved
-
-Vanilla AI-assisted development suffers from three recurring problems:
-
-1. **Context loss between sessions** — AI agents have no persistent memory of past decisions, making every session start from scratch.
-2. **High token consumption** — Agents read every file recursively to answer cross-cutting questions, which is expensive and slow.
-3. **Shallow SpecKit usage** — The speckit lifecycle lacks awareness of existing code structure, so specs and plans are not grounded in the actual codebase.
-
-Spekificity solves all three by wiring Graphify → Obsidian as a persistent, graph-indexed context store, then decorating SpecKit's workflow with skills that consult that store.
+spekificity itself contains **no application code**. it is a collection of skills, workflow guides, and setup documentation that tells any ai agent how to initialise, configure, and operate the full stack on any project.
 
 ---
 
-## Design Principles
+## core problem being solved
 
-- **Decorator pattern**: Spekificity skills wrap, not replace, standard SpecKit commands. Vanilla SpecKit remains untouched and upgradable.
-- **Modular independence**: Graphify, Obsidian, SpecKit, and the Spekificity custom layer can each be updated independently.
-- **Global SpecKit, local customisation**: SpecKit/Specify is installed globally so upstream updates apply immediately. Spekificity installs its custom skills locally per-project.
-- **AI-executable setup**: Wherever CLI automation is impractical, setup is documented as step-by-step guides that an AI agent can follow.
-- **Token efficiency by default**: Caveman mode and graph-based context loading are first-class citizens, not afterthoughts.
+vanilla ai-assisted development suffers from three recurring problems:
+
+1. **context loss between sessions** — ai agents have no persistent memory of past decisions, making every session start from scratch.
+2. **high token consumption** — agents read every file recursively to answer cross-cutting questions, which is expensive and slow.
+3. **shallow speckit usage** — the speckit lifecycle lacks awareness of existing code structure, so specs and plans are not grounded in the actual codebase.
+
+spekificity solves all three by wiring graphify → obsidian as a persistent, graph-indexed context store, then decorating speckit's workflow with skills that consult that store.
 
 ---
 
-## High-Level Architecture
+## design principles
+
+- **decorator pattern**: spekificity skills wrap, not replace, standard speckit commands. vanilla speckit remains untouched and upgradable.
+- **modular independence**: graphify, obsidian, speckit, and the spekificity custom layer can each be updated independently.
+- **global speckit, local customisation**: speckit/specify is installed globally so upstream updates apply immediately. spekificity installs its custom skills locally per-project.
+- **ai-executable setup**: wherever cli automation is impractical, setup is documented as step-by-step guides that an ai agent can follow.
+- **token efficiency by default**: caveman mode and graph-based context loading are first-class citizens, not afterthoughts.
+
+---
+
+## high-level architecture
 
 ```
-[Developer runs init command]
+[developer runs init command]
          │
          ▼
 ┌────────────────────────────────────────────┐
-│           Spekificity Init                 │
-│  1. Install / verify Graphify              │
-│  2. Install / verify Obsidian              │
-│  3. Install / verify SpecKit (global)      │
-│  4. Install custom skills & workflows      │
+│           spekificity init                 │
+│  1. install / verify graphify              │
+│  2. install / verify obsidian              │
+│  3. install / verify speckit (global)      │
+│  4. install custom skills & workflows      │
 │     (local, per-project)                   │
 └────────────────────────────────────────────┘
          │
          ▼
-[Developer starts AI session]
+[developer starts ai session]
          │
          ▼
 ┌────────────────────────────────────────────┐
-│         Spekificity Workflow               │
+│         spekificity workflow               │
 │                                            │
-│  /map-codebase ──► Graphify ──► Obsidian  │
+│  /map-codebase ──► graphify ──► obsidian  │
 │  /speckit.specify (enriched with graph)    │
 │  /speckit.plan    (enriched with graph)    │
 │  /speckit.tasks                            │
 │  /speckit.implement                        │
-│  /lessons-learnt ──► Obsidian vault        │
+│  /lessons-learnt ──► obsidian vault        │
 │  /caveman (active throughout)              │
 └────────────────────────────────────────────┘
 ```
 
 ---
 
-## Intended Workflow (Step by Step)
+## intended workflow (step by step)
 
-1. Developer runs the Spekificity init command inside a project folder (empty or populated).
-2. Init detects installed tools; installs or links missing ones.
-3. Custom Spekificity skills and workflow docs are installed locally.
-4. Developer invokes `/map-codebase` to build the Graphify → Obsidian context graph.
-5. Developer begins a SpecKit feature lifecycle (`/speckit.specify`, `/speckit.plan`, etc.).
-6. At each SpecKit step the AI agent reads from the Obsidian vault rather than scanning all files.
-7. On feature completion, `/lessons-learnt` appends a structured entry to the vault.
-8. Caveman mode is available at any point to compress context and reduce token costs.
+1. developer runs the spekificity init command inside a project folder (empty or populated).
+2. init detects installed tools; installs or links missing ones.
+3. custom spekificity skills and workflow docs are installed locally.
+4. developer invokes `/map-codebase` to build the graphify → obsidian context graph.
+5. developer begins a speckit feature lifecycle (`/speckit.specify`, `/speckit.plan`, etc.).
+6. at each speckit step the ai agent reads from the obsidian vault rather than scanning all files.
+7. on feature completion, `/lessons-learnt` appends a structured entry to the vault.
+8. caveman mode is available at any point to compress context and reduce token costs.
 
 ---
 
-## Component Boundaries
+## component boundaries
 
-| Component | Owned By | Update Path |
+| component | owned by | update path |
 |-----------|----------|-------------|
-| Graphify | Third party | Update independently; Spekificity adapts |
-| Obsidian | Third party | Update independently; vault format is stable markdown |
-| SpecKit / Specify | Third party (global) | `npm update -g specify` or equivalent |
-| Spekificity custom skills | This project | Pull latest from this repo |
+| graphify | third party | update independently; spekificity adapts |
+| obsidian | third party | update independently; vault format is stable markdown |
+| speckit / specify | third party (global) | `npm update -g specify` or equivalent |
+| spekificity custom skills | this project | pull latest from this repo |
 
 ---
 
-## Supported AI Agents (Initial Version)
+## supported ai agents (initial version)
 
-- GitHub Copilot
-- Claude Code
+- github copilot
+- claude code
 
 ---
 
-## Out of Scope (v1)
+## out of scope (v1)
 
-- Any GUI or web interface
-- Multi-user / shared vault synchronisation
-- Support for AI agents beyond Copilot and Claude Code
-- Automatic conflict resolution between SpecKit upstream changes and Spekificity customisations
+- any gui or web interface
+- multi-user / shared vault synchronisation
+- support for ai agents beyond copilot and claude code
+- automatic conflict resolution between speckit upstream changes and spekificity customisations

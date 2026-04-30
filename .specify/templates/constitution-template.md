@@ -1,50 +1,50 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# [project_name] constitution
+<!-- example: spec constitution, taskflow constitution, etc. -->
 
-## Core Principles
+## core principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### [principle_1_name]
+<!-- example: i. library-first -->
+[principle_1_description]
+<!-- example: every feature starts as a standalone library; libraries must be self-contained, independently testable, documented; clear purpose required - no organizational-only libraries -->
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### [principle_2_name]
+<!-- example: ii. cli interface -->
+[principle_2_description]
+<!-- example: every library exposes functionality via cli; text in/out protocol: stdin/args → stdout, errors → stderr; support json + human-readable formats -->
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### [principle_3_name]
+<!-- example: iii. test-first (non-negotiable) -->
+[principle_3_description]
+<!-- example: tdd mandatory: tests written → user approved → tests fail → then implement; red-green-refactor cycle strictly enforced -->
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### [principle_4_name]
+<!-- example: iv. integration testing -->
+[principle_4_description]
+<!-- example: focus areas requiring integration tests: new library contract tests, contract changes, inter-service communication, shared schemas -->
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### [principle_5_name]
+<!-- example: v. observability, vi. versioning & breaking changes, vii. simplicity -->
+[principle_5_description]
+<!-- example: text i/o ensures debuggability; structured logging required; or: major.minor.build format; or: start simple, yagni principles -->
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## [section_2_name]
+<!-- example: additional constraints, security requirements, performance standards, etc. -->
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+[section_2_content]
+<!-- example: technology stack requirements, compliance standards, deployment policies, etc. -->
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## [section_3_name]
+<!-- example: development workflow, review process, quality gates, etc. -->
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+[section_3_content]
+<!-- example: code review requirements, testing gates, deployment approval process, etc. -->
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+## governance
+<!-- example: constitution supersedes all other practices; amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+[governance_rules]
+<!-- example: all prs/reviews must verify compliance; complexity must be justified; use [guidance_file] for runtime development guidance -->
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**version**: [constitution_version] | **ratified**: [ratification_date] | **last amended**: [last_amended_date]
+<!-- example: version: 2.1.1 | ratified: 2025-06-13 | last amended: 2025-07-16 -->

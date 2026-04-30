@@ -1,49 +1,49 @@
 ---
-description: "Initialize a Git repository with an initial commit"
+description: "initialize a git repository with an initial commit"
 ---
 
-# Initialize Git Repository
+# initialize git repository
 
-Initialize a Git repository in the current project directory if one does not already exist.
+initialize a git repository in the current project directory if one does not already exist.
 
-## Execution
+## execution
 
-Run the appropriate script from the project root:
+run the appropriate script from the project root:
 
-- **Bash**: `.specify/extensions/git/scripts/bash/initialize-repo.sh`
-- **PowerShell**: `.specify/extensions/git/scripts/powershell/initialize-repo.ps1`
+- **bash**: `.specify/extensions/git/scripts/bash/initialize-repo.sh`
+- **powershell**: `.specify/extensions/git/scripts/powershell/initialize-repo.ps1`
 
-If the extension scripts are not found, fall back to:
-- **Bash**: `git init && git add . && git commit -m "Initial commit from Specify template"`
-- **PowerShell**: `git init; git add .; git commit -m "Initial commit from Specify template"`
+if the extension scripts are not found, fall back to:
+- **bash**: `git init && git add . && git commit -m "initial commit from specify template"`
+- **powershell**: `git init; git add .; git commit -m "initial commit from specify template"`
 
-The script handles all checks internally:
-- Skips if Git is not available
-- Skips if already inside a Git repository
-- Runs `git init`, `git add .`, and `git commit` with an initial commit message
+the script handles all checks internally:
+- skips if git is not available
+- skips if already inside a git repository
+- runs `git init`, `git add .`, and `git commit` with an initial commit message
 
-## Customization
+## customization
 
-Replace the script to add project-specific Git initialization steps:
-- Custom `.gitignore` templates
-- Default branch naming (`git config init.defaultBranch`)
-- Git LFS setup
-- Git hooks installation
-- Commit signing configuration
-- Git Flow initialization
+replace the script to add project-specific git initialization steps:
+- custom `.gitignore` templates
+- default branch naming (`git config init.defaultbranch`)
+- git lfs setup
+- git hooks installation
+- commit signing configuration
+- git flow initialization
 
-## Output
+## output
 
-On success:
-- `✓ Git repository initialized`
+on success:
+- `✓ git repository initialized`
 
-## Graceful Degradation
+## graceful degradation
 
-If Git is not installed:
-- Warn the user
-- Skip repository initialization
-- The project continues to function without Git (specs can still be created under `specs/`)
+if git is not installed:
+- warn the user
+- skip repository initialization
+- the project continues to function without git (specs can still be created under `specs/`)
 
-If Git is installed but `git init`, `git add .`, or `git commit` fails:
-- Surface the error to the user
-- Stop this command rather than continuing with a partially initialized repository
+if git is installed but `git init`, `git add .`, or `git commit` fails:
+- surface the error to the user
+- stop this command rather than continuing with a partially initialized repository

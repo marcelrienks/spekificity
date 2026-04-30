@@ -1,75 +1,75 @@
-# Setup Guide: Graphify
+# setup guide: graphify
 
-## Overview
+## overview
 
-Graphify (`graphifyy`) is a headless CLI tool that builds a dependency and relationship graph of a codebase using AST analysis and stores it as an Obsidian vault. In the Spekificity workflow, Graphify is the engine behind the `/map-codebase` skill — it produces the vault graph that AI agents use for context-efficient session loading.
+graphify (`graphifyy`) is a headless cli tool that builds a dependency and relationship graph of a codebase using ast analysis and stores it as an obsidian vault. in the spekificity workflow, graphify is the engine behind the `/map-codebase` skill — it produces the vault graph that ai agents use for context-efficient session loading.
 
-Code extraction uses tree-sitter AST locally (no API key required; supports 25+ languages). Optional semantic extraction of documentation and markdown requires a Claude API key.
+code extraction uses tree-sitter ast locally (no api key required; supports 25+ languages). optional semantic extraction of documentation and markdown requires a claude api key.
 
-## Install Mode
+## install mode
 
-**Global** — installed per machine via `uv tool install`, not per project.
+**global** — installed per machine via `uv tool install`, not per project.
 
-## Prerequisites
+## prerequisites
 
-- Python 3.11+
+- python 3.11+
 - `uv` installed (`uv --version` returns a version)
-- Internet access for initial install
+- internet access for initial install
 
-## Installation Steps
+## installation steps
 
-1. Install Graphify globally:
+1. install graphify globally:
    ```bash
    uv tool install graphifyy
    ```
 
-2. Confirm the `graphify` command is on your PATH:
+2. confirm the `graphify` command is on your path:
    ```bash
    which graphify
-   # Expected: /Users/<you>/.local/bin/graphify or similar
+   # expected: /users/<you>/.local/bin/graphify or similar
    ```
 
-## Verification
+## verification
 
 ```bash
 graphify --version
-# Expected output: graphifyy X.X.X
+# expected output: graphifyy x.x.x
 ```
 
-## Usage in Spekificity
+## usage in spekificity
 
-The `/map-codebase` skill runs:
+the `/map-codebase` skill runs:
 
 ```bash
 graphify . --obsidian --output vault/graph/
 ```
 
 - `.` — map the current project directory
-- `--obsidian` — generate Obsidian vault files (markdown nodes + `index.md`)
+- `--obsidian` — generate obsidian vault files (markdown nodes + `index.md`)
 - `--output vault/graph/` — write all output to the `vault/graph/` directory
 
-**Optional: semantic extraction of docs** (requires Claude API key):
+**optional: semantic extraction of docs** (requires claude api key):
 
 ```bash
-CLAUDE_API_KEY=sk-... graphify . --obsidian --output vault/graph/
+claude_api_key=sk-... graphify . --obsidian --output vault/graph/
 ```
 
-Without the key, code AST extraction still runs fully — only markdown/doc semantic summaries are skipped.
+without the key, code ast extraction still runs fully — only markdown/doc semantic summaries are skipped.
 
-## Configuration
+## configuration
 
-No configuration file required. All options are passed as CLI flags.
+no configuration file required. all options are passed as cli flags.
 
-## Version Compatibility
+## version compatibility
 
-| Graphify Version | Spekificity Compatible | Notes |
+| graphify version | spekificity compatible | notes |
 |-----------------|----------------------|-------|
 | ≥ 0.5.5 | ✓ | `--obsidian` flag required |
 | < 0.5.5 | ✗ | `--obsidian` flag not available |
 
-## Troubleshooting
+## troubleshooting
 
-- **Symptom**: `graphify: command not found` → **Fix**: Run `uv tool install graphifyy`; ensure `~/.local/bin` is in your `PATH` (`export PATH="$HOME/.local/bin:$PATH"`)
-- **Symptom**: `Permission denied: vault/graph/` → **Fix**: Ensure the project root is writable (`chmod u+w .`)
-- **Symptom**: Graph is empty / no nodes → **Fix**: Confirm you are running `graphify` from the project root, not a subdirectory
-- **Symptom**: Incremental refresh not updating changed files → **Fix**: Run with `--full` flag to force a full regeneration: `graphify . --obsidian --output vault/graph/ --full`
+- **symptom**: `graphify: command not found` → **fix**: run `uv tool install graphifyy`; ensure `~/.local/bin` is in your `path` (`export path="$home/.local/bin:$path"`)
+- **symptom**: `permission denied: vault/graph/` → **fix**: ensure the project root is writable (`chmod u+w .`)
+- **symptom**: graph is empty / no nodes → **fix**: confirm you are running `graphify` from the project root, not a subdirectory
+- **symptom**: incremental refresh not updating changed files → **fix**: run with `--full` flag to force a full regeneration: `graphify . --obsidian --output vault/graph/ --full`

@@ -1,62 +1,62 @@
-# Implementation Plan: [FEATURE]
+# implementation plan: [feature]
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**branch**: `[###-feature-name]` | **date**: [date] | **spec**: [link]
+**input**: feature specification from `/specs/[###-feature-name]/spec.md`
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
+**note**: this template is filled in by the `/speckit.plan` command. see `.specify/templates/plan-template.md` for the execution workflow.
 
-## Summary
+## summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+[extract from feature spec: primary requirement + technical approach from research]
 
-## Technical Context
+## technical context
 
 <!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
+  action required: replace the content in this section with the technical details
+  for the project. the structure here is presented in advisory capacity to guide
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**language/version**: [e.g., python 3.11, swift 5.9, rust 1.75 or needs clarification]  
+**primary dependencies**: [e.g., fastapi, uikit, llvm or needs clarification]  
+**storage**: [if applicable, e.g., postgresql, coredata, files or n/a]  
+**testing**: [e.g., pytest, xctest, cargo test or needs clarification]  
+**target platform**: [e.g., linux server, ios 15+, wasm or needs clarification]
+**project type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or needs clarification]  
+**performance goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or needs clarification]  
+**constraints**: [domain-specific, e.g., <200ms p95, <100mb memory, offline-capable or needs clarification]  
+**scale/scope**: [domain-specific, e.g., 10k users, 1m loc, 50 screens or needs clarification]
 
-## Constitution Check
+## constitution check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*gate: must pass before phase 0 research. re-check after phase 1 design.*
 
-[Gates determined based on constitution file]
+[gates determined based on constitution file]
 
-## Project Structure
+## project structure
 
-### Documentation (this feature)
+### documentation (this feature)
 
 ```text
 specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+├── plan.md              # this file (/speckit.plan command output)
+├── research.md          # phase 0 output (/speckit.plan command)
+├── data-model.md        # phase 1 output (/speckit.plan command)
+├── quickstart.md        # phase 1 output (/speckit.plan command)
+├── contracts/           # phase 1 output (/speckit.plan command)
+└── tasks.md             # phase 2 output (/speckit.tasks command - not created by /speckit.plan)
 ```
 
-### Source Code (repository root)
+### source code (repository root)
 <!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
+  action required: replace the placeholder tree below with the concrete layout
+  for this feature. delete unused options and expand the chosen structure with
+  real paths (e.g., apps/admin, packages/something). the delivered plan must
+  not include option labels.
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+# [remove if unused] option 1: single project (default)
 src/
 ├── models/
 ├── services/
@@ -68,7 +68,7 @@ tests/
 ├── integration/
 └── unit/
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+# [remove if unused] option 2: web application (when "frontend" + "backend" detected)
 backend/
 ├── src/
 │   ├── models/
@@ -83,22 +83,22 @@ frontend/
 │   └── services/
 └── tests/
 
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+# [remove if unused] option 3: mobile + api (when "ios/android" detected)
 api/
 └── [same as backend above]
 
 ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+└── [platform-specific structure: feature modules, ui flows, platform tests]
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
+**structure decision**: [document the selected structure and reference the real
 directories captured above]
 
-## Complexity Tracking
+## complexity tracking
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
+> **fill only if constitution check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
+| violation | why needed | simpler alternative rejected because |
 |-----------|------------|-------------------------------------|
 | [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| [e.g., repository pattern] | [specific problem] | [why direct db access insufficient] |

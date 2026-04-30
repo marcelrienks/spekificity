@@ -1,149 +1,149 @@
 ---
-description: Execute the implementation planning workflow using the plan template to generate design artifacts.
+description: execute the implementation planning workflow using the plan template to generate design artifacts.
 handoffs: 
-  - label: Create Tasks
+  - label: create tasks
     agent: speckit.tasks
-    prompt: Break the plan into tasks
+    prompt: break the plan into tasks
     send: true
-  - label: Create Checklist
+  - label: create checklist
     agent: speckit.checklist
-    prompt: Create a checklist for the following domain...
+    prompt: create a checklist for the following domain...
 ---
 
-## User Input
+## user input
 
 ```text
-$ARGUMENTS
+$arguments
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
+you **must** consider the user input before proceeding (if not empty).
 
-## Pre-Execution Checks
+## pre-execution checks
 
-**Check for extension hooks (before planning)**:
-- Check if `.specify/extensions.yml` exists in the project root.
-- If it exists, read it and look for entries under the `hooks.before_plan` key
-- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-- For each executable hook, output the following based on its `optional` flag:
-  - **Optional hook** (`optional: true`):
+**check for extension hooks (before planning)**:
+- check if `.specify/extensions.yml` exists in the project root.
+- if it exists, read it and look for entries under the `hooks.before_plan` key
+- if the yaml cannot be parsed or is invalid, skip hook checking silently and continue normally
+- filter out hooks where `enabled` is explicitly `false`. treat hooks without an `enabled` field as enabled by default.
+- for each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
+  - if the hook has no `condition` field, or it is null/empty, treat the hook as executable
+  - if the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the hookexecutor implementation
+- for each executable hook, output the following based on its `optional` flag:
+  - **optional hook** (`optional: true`):
     ```
-    ## Extension Hooks
+    ## extension hooks
 
-    **Optional Pre-Hook**: {extension}
-    Command: `/{command}`
-    Description: {description}
+    **optional pre-hook**: {extension}
+    command: `/{command}`
+    description: {description}
 
-    Prompt: {prompt}
-    To execute: `/{command}`
+    prompt: {prompt}
+    to execute: `/{command}`
     ```
-  - **Mandatory hook** (`optional: false`):
+  - **mandatory hook** (`optional: false`):
     ```
-    ## Extension Hooks
+    ## extension hooks
 
-    **Automatic Pre-Hook**: {extension}
-    Executing: `/{command}`
-    EXECUTE_COMMAND: {command}
+    **automatic pre-hook**: {extension}
+    executing: `/{command}`
+    execute_command: {command}
 
-    Wait for the result of the hook command before proceeding to the Outline.
+    wait for the result of the hook command before proceeding to the outline.
     ```
-- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
+- if no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
-## Outline
+## outline
 
-1. **Setup**: Run `.specify/scripts/bash/setup-plan.sh --json` from repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
+1. **setup**: run `.specify/scripts/bash/setup-plan.sh --json` from repo root and parse json for feature_spec, impl_plan, specs_dir, branch. for single quotes in args like "i'm groot", use escape syntax: e.g 'i'\''m groot' (or double-quote if possible: "i'm groot").
 
-2. **Load context**: Read FEATURE_SPEC and `.specify/memory/constitution.md`. Load IMPL_PLAN template (already copied).
+2. **load context**: read feature_spec and `.specify/memory/constitution.md`. load impl_plan template (already copied).
 
-3. **Execute plan workflow**: Follow the structure in IMPL_PLAN template to:
-   - Fill Technical Context (mark unknowns as "NEEDS CLARIFICATION")
-   - Fill Constitution Check section from constitution
-   - Evaluate gates (ERROR if violations unjustified)
-   - Phase 0: Generate research.md (resolve all NEEDS CLARIFICATION)
-   - Phase 1: Generate data-model.md, contracts/, quickstart.md
-   - Phase 1: Update agent context by running the agent script
-   - Re-evaluate Constitution Check post-design
+3. **execute plan workflow**: follow the structure in impl_plan template to:
+   - fill technical context (mark unknowns as "needs clarification")
+   - fill constitution check section from constitution
+   - evaluate gates (error if violations unjustified)
+   - phase 0: generate research.md (resolve all needs clarification)
+   - phase 1: generate data-model.md, contracts/, quickstart.md
+   - phase 1: update agent context by running the agent script
+   - re-evaluate constitution check post-design
 
-4. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts.
+4. **stop and report**: command ends after phase 2 planning. report branch, impl_plan path, and generated artifacts.
 
-5. **Check for extension hooks**: After reporting, check if `.specify/extensions.yml` exists in the project root.
-   - If it exists, read it and look for entries under the `hooks.after_plan` key
-   - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-   - Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-   - For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-     - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-     - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-   - For each executable hook, output the following based on its `optional` flag:
-     - **Optional hook** (`optional: true`):
+5. **check for extension hooks**: after reporting, check if `.specify/extensions.yml` exists in the project root.
+   - if it exists, read it and look for entries under the `hooks.after_plan` key
+   - if the yaml cannot be parsed or is invalid, skip hook checking silently and continue normally
+   - filter out hooks where `enabled` is explicitly `false`. treat hooks without an `enabled` field as enabled by default.
+   - for each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
+     - if the hook has no `condition` field, or it is null/empty, treat the hook as executable
+     - if the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the hookexecutor implementation
+   - for each executable hook, output the following based on its `optional` flag:
+     - **optional hook** (`optional: true`):
        ```
-       ## Extension Hooks
+       ## extension hooks
 
-       **Optional Hook**: {extension}
-       Command: `/{command}`
-       Description: {description}
+       **optional hook**: {extension}
+       command: `/{command}`
+       description: {description}
 
-       Prompt: {prompt}
-       To execute: `/{command}`
+       prompt: {prompt}
+       to execute: `/{command}`
        ```
-     - **Mandatory hook** (`optional: false`):
+     - **mandatory hook** (`optional: false`):
        ```
-       ## Extension Hooks
+       ## extension hooks
 
-       **Automatic Hook**: {extension}
-       Executing: `/{command}`
-       EXECUTE_COMMAND: {command}
+       **automatic hook**: {extension}
+       executing: `/{command}`
+       execute_command: {command}
        ```
-   - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
+   - if no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
-## Phases
+## phases
 
-### Phase 0: Outline & Research
+### phase 0: outline & research
 
-1. **Extract unknowns from Technical Context** above:
-   - For each NEEDS CLARIFICATION → research task
-   - For each dependency → best practices task
-   - For each integration → patterns task
+1. **extract unknowns from technical context** above:
+   - for each needs clarification → research task
+   - for each dependency → best practices task
+   - for each integration → patterns task
 
-2. **Generate and dispatch research agents**:
+2. **generate and dispatch research agents**:
 
    ```text
-   For each unknown in Technical Context:
-     Task: "Research {unknown} for {feature context}"
-   For each technology choice:
-     Task: "Find best practices for {tech} in {domain}"
+   for each unknown in technical context:
+     task: "research {unknown} for {feature context}"
+   for each technology choice:
+     task: "find best practices for {tech} in {domain}"
    ```
 
-3. **Consolidate findings** in `research.md` using format:
-   - Decision: [what was chosen]
-   - Rationale: [why chosen]
-   - Alternatives considered: [what else evaluated]
+3. **consolidate findings** in `research.md` using format:
+   - decision: [what was chosen]
+   - rationale: [why chosen]
+   - alternatives considered: [what else evaluated]
 
-**Output**: research.md with all NEEDS CLARIFICATION resolved
+**output**: research.md with all needs clarification resolved
 
-### Phase 1: Design & Contracts
+### phase 1: design & contracts
 
-**Prerequisites:** `research.md` complete
+**prerequisites:** `research.md` complete
 
-1. **Extract entities from feature spec** → `data-model.md`:
-   - Entity name, fields, relationships
-   - Validation rules from requirements
-   - State transitions if applicable
+1. **extract entities from feature spec** → `data-model.md`:
+   - entity name, fields, relationships
+   - validation rules from requirements
+   - state transitions if applicable
 
-2. **Define interface contracts** (if project has external interfaces) → `/contracts/`:
-   - Identify what interfaces the project exposes to users or other systems
-   - Document the contract format appropriate for the project type
-   - Examples: public APIs for libraries, command schemas for CLI tools, endpoints for web services, grammars for parsers, UI contracts for applications
-   - Skip if project is purely internal (build scripts, one-off tools, etc.)
+2. **define interface contracts** (if project has external interfaces) → `/contracts/`:
+   - identify what interfaces the project exposes to users or other systems
+   - document the contract format appropriate for the project type
+   - examples: public apis for libraries, command schemas for cli tools, endpoints for web services, grammars for parsers, ui contracts for applications
+   - skip if project is purely internal (build scripts, one-off tools, etc.)
 
-3. **Agent context update**:
-   - Update the plan reference between the `<!-- SPECKIT START -->` and `<!-- SPECKIT END -->` markers in `.github/copilot-instructions.md` to point to the plan file created in step 1 (the IMPL_PLAN path)
+3. **agent context update**:
+   - update the plan reference between the `<!-- speckit start -->` and `<!-- speckit end -->` markers in `.github/copilot-instructions.md` to point to the plan file created in step 1 (the impl_plan path)
 
-**Output**: data-model.md, /contracts/*, quickstart.md, updated agent context file
+**output**: data-model.md, /contracts/*, quickstart.md, updated agent context file
 
-## Key rules
+## key rules
 
-- Use absolute paths for filesystem operations; use project-relative paths for references in documentation and agent context files
-- ERROR on gate failures or unresolved clarifications
+- use absolute paths for filesystem operations; use project-relative paths for references in documentation and agent context files
+- error on gate failures or unresolved clarifications

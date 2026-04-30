@@ -1,157 +1,157 @@
-# Data Model: Spekificity Platform — Core Project Foundation
+# data model: spekificity platform — core project foundation
 
-**Phase**: 1 — Design  
-**Date**: 2026-04-29  
-**Feature**: 001-spekificity-platform
+**phase**: 1 — design  
+**date**: 2026-04-29  
+**feature**: 001-spekificity-platform
 
-Spekificity is a documentation-only project. Its "data model" defines the structure and schema of the markdown artefacts it produces and manages. These are the entities the system creates, reads, and writes.
+spekificity is a documentation-only project. its "data model" defines the structure and schema of the markdown artefacts it produces and manages. these are the entities the system creates, reads, and writes.
 
 ---
 
-## Entities
+## entities
 
-### 1. Skill File
+### 1. skill file
 
-**What it represents**: A self-contained, AI-executable instruction set for a single named capability.
+**what it represents**: a self-contained, ai-executable instruction set for a single named capability.
 
-**Location**: `skills/<skill-name>/SKILL.md`  
-**Agent-specific copies**:  
-- Copilot: `.github/agents/<skill-name>.agent.md`  
-- Claude Code: `.claude/commands/<skill-name>.md`
+**location**: `skills/<skill-name>/skill.md`  
+**agent-specific copies**:  
+- copilot: `.github/agents/<skill-name>.agent.md`  
+- claude code: `.claude/commands/<skill-name>.md`
 
-**Schema**:
+**schema**:
 
 ```markdown
-# <Skill Name>
+# <skill name>
 
-## Description
-<One-paragraph description of what this skill does and its value.>
+## description
+<one-paragraph description of what this skill does and its value.>
 
-## Trigger
-<When/how this skill is invoked. Command name, conditions, or context that activates it.>
+## trigger
+<when/how this skill is invoked. command name, conditions, or context that activates it.>
 
-## Prerequisites
-- <What must be true or in place before this skill runs>
-- <e.g., "Project must be initialised (init-workflow.md complete)">
+## prerequisites
+- <what must be true or in place before this skill runs>
+- <e.g., "project must be initialised (init-workflow.md complete)">
 
-## Inputs
-| Input | Description | Required |
+## inputs
+| input | description | required |
 |-------|-------------|----------|
-| <name> | <what it is> | Yes/No |
+| <name> | <what it is> | yes/no |
 
-## Steps
-1. <Ordered, unambiguous instruction>
-2. <Ordered, unambiguous instruction>
-   - Sub-step if needed
+## steps
+1. <ordered, unambiguous instruction>
+2. <ordered, unambiguous instruction>
+   - sub-step if needed
 3. ...
 
-## Outputs
-| Output | Location | Description |
+## outputs
+| output | location | description |
 |--------|----------|-------------|
 | <name> | <path> | <what it contains> |
 
-## Error Handling
-- <What to do if X fails>
-- <What to do if Y is missing>
+## error handling
+- <what to do if x fails>
+- <what to do if y is missing>
 
-## Notes
-<Any caveats, version-specific behaviour, or links to related skills/workflows.>
+## notes
+<any caveats, version-specific behaviour, or links to related skills/workflows.>
 ```
 
-**Validation rules**:  
-- All sections are mandatory  
-- Steps must be independently executable — no implicit knowledge assumed  
-- Outputs must specify exact file paths or directory locations  
+**validation rules**:  
+- all sections are mandatory  
+- steps must be independently executable — no implicit knowledge assumed  
+- outputs must specify exact file paths or directory locations  
 
 ---
 
-### 2. Workflow Document
+### 2. workflow document
 
-**What it represents**: A documented sequence of skill invocations composing a multi-step process.
+**what it represents**: a documented sequence of skill invocations composing a multi-step process.
 
-**Location**: `workflows/<workflow-name>.md`
+**location**: `workflows/<workflow-name>.md`
 
-**Schema**:
+**schema**:
 
 ```markdown
-# Workflow: <Workflow Name>
+# workflow: <workflow name>
 
-## Purpose
-<What goal this workflow achieves and when to use it.>
+## purpose
+<what goal this workflow achieves and when to use it.>
 
-## Prerequisites
-- <What must be true before starting>
+## prerequisites
+- <what must be true before starting>
 
-## Steps
+## steps
 
-### Step 1: <Name>
-**Skill**: `/<skill-command>` (see `skills/<skill-name>/SKILL.md`)  
-**Input**: <what this step needs>  
-**Output**: <what this step produces>  
-**On failure**: <recovery action>
+### step 1: <name>
+**skill**: `/<skill-command>` (see `skills/<skill-name>/skill.md`)  
+**input**: <what this step needs>  
+**output**: <what this step produces>  
+**on failure**: <recovery action>
 
-### Step 2: <Name>
+### step 2: <name>
 ...
 
-## Decision Points
-- **If** <condition>: proceed to Step X
-- **If** <condition>: skip to Step Y, note reason
+## decision points
+- **if** <condition>: proceed to step x
+- **if** <condition>: skip to step y, note reason
 
-## Expected Final State
-<Description of what the project looks like after this workflow completes successfully.>
+## expected final state
+<description of what the project looks like after this workflow completes successfully.>
 ```
 
 ---
 
-### 3. Setup Guide
+### 3. setup guide
 
-**What it represents**: An AI-executable installation and configuration guide for a single third-party tool.
+**what it represents**: an ai-executable installation and configuration guide for a single third-party tool.
 
-**Location**: `setup-guides/<tool-name>-setup.md`
+**location**: `setup-guides/<tool-name>-setup.md`
 
-**Schema**:
+**schema**:
 
 ```markdown
-# Setup Guide: <Tool Name>
+# setup guide: <tool name>
 
-## Overview
-<What this tool does and why it is needed in the Spekificity stack.>
+## overview
+<what this tool does and why it is needed in the spekificity stack.>
 
-## Install Mode
-**Global** | **Local** | **Desktop App**
+## install mode
+**global** | **local** | **desktop app**
 
-## Prerequisites
-- <OS / runtime requirements>
+## prerequisites
+- <os / runtime requirements>
 
-## Installation Steps
-1. <Terminal command or exact action>
+## installation steps
+1. <terminal command or exact action>
 2. ...
 
-## Verification
-<Command to run and expected output that confirms the tool is correctly installed.>
+## verification
+<command to run and expected output that confirms the tool is correctly installed.>
 
-## Configuration
-<Any config files, environment variables, or settings that must be applied.>
+## configuration
+<any config files, environment variables, or settings that must be applied.>
 
-## Version Compatibility
-| Tool Version | Spekificity Compatible | Notes |
+## version compatibility
+| tool version | spekificity compatible | notes |
 |-------------|----------------------|-------|
-| X.Y.Z | ✓ | - |
+| x.y.z | ✓ | - |
 
-## Troubleshooting
-- **Symptom**: <problem> → **Fix**: <resolution>
+## troubleshooting
+- **symptom**: <problem> → **fix**: <resolution>
 ```
 
 ---
 
-### 4. Vault Graph Node
+### 4. vault graph node
 
-**What it represents**: A single node in the Graphify-generated codebase/documentation graph, stored as a markdown file in the Obsidian vault.
+**what it represents**: a single node in the graphify-generated codebase/documentation graph, stored as a markdown file in the obsidian vault.
 
-**Location**: `vault/graph/nodes/<node-id>.md`  
-**Index**: `vault/graph/index.md`
+**location**: `vault/graph/nodes/<node-id>.md`  
+**index**: `vault/graph/index.md`
 
-**Schema** (generated by Graphify `--obsidian`):
+**schema** (generated by graphify `--obsidian`):
 
 ```markdown
 ---
@@ -159,124 +159,124 @@ id: <unique-node-id>
 type: <file | module | class | function | document | external>
 path: <relative path in project>
 language: <language or "markdown">
-last_updated: <ISO 8601 date>
+last_updated: <iso 8601 date>
 connections:
   - target: <node-id>
     relationship: <imports | calls | references | documents>
     confidence: <0.0–1.0>
 ---
 
-# <Node Display Name>
+# <node display name>
 
-## Summary
-<AI-generated or AST-extracted one-paragraph description of this node's purpose.>
+## summary
+<ai-generated or ast-extracted one-paragraph description of this node's purpose.>
 
-## Connections
-| Target | Relationship | Confidence |
+## connections
+| target | relationship | confidence |
 |--------|-------------|-----------|
 | <node-id> | <type> | <score> |
 
-## Source Location
+## source location
 `<path>` lines <start>–<end>
 ```
 
-**Validation rules**:  
+**validation rules**:  
 - `id` must be unique across vault  
 - `type` must be one of the enumerated values  
-- `last_updated` is set on each Graphify run  
+- `last_updated` is set on each graphify run  
 
 ---
 
-### 5. Lessons Learnt Entry
+### 5. lessons learnt entry
 
-**What it represents**: A structured record of decisions, discoveries, and recommendations captured at the end of a SpecKit feature lifecycle.
+**what it represents**: a structured record of decisions, discoveries, and recommendations captured at the end of a speckit feature lifecycle.
 
-**Location**: `vault/lessons/<YYYY-MM-DD>-<feature-slug>.md`
+**location**: `vault/lessons/<yyyy-mm-dd>-<feature-slug>.md`
 
-**Schema**:
+**schema**:
 
 ```markdown
 ---
-date: <YYYY-MM-DD>
+date: <yyyy-mm-dd>
 feature: <feature-branch-name>
-author: <AI agent name + model, e.g., "GitHub Copilot / Claude Sonnet 4.6">
+author: <ai agent name + model, e.g., "github copilot / claude sonnet 4.6">
 tags:
   - <tag1>
   - <tag2>
 ---
 
-# Lessons Learnt: <Feature Name>
+# lessons learnt: <feature name>
 
-## What Worked Well
-- <Observation>
+## what worked well
+- <observation>
 
-## What Was Harder Than Expected
-- <Observation with root cause>
+## what was harder than expected
+- <observation with root cause>
 
-## Decisions Made
-| Decision | Rationale | Alternatives Rejected |
+## decisions made
+| decision | rationale | alternatives rejected |
 |----------|-----------|----------------------|
 | <what> | <why> | <what else was considered> |
 
-## Patterns Identified
-- <Reusable pattern name>: <brief description>
+## patterns identified
+- <reusable pattern name>: <brief description>
 
-## Recommendations for Future Features
-- <Actionable recommendation>
+## recommendations for future features
+- <actionable recommendation>
 
-## Graph Nodes Affected
-| Node ID | Change Type | Notes |
+## graph nodes affected
+| node id | change type | notes |
 |---------|-------------|-------|
 | <id> | <added / modified / deprecated> | <detail> |
 ```
 
 ---
 
-### 6. Persistent Context Note
+### 6. persistent context note
 
-**What it represents**: A free-form AI-maintained note capturing cross-cutting context that should survive across sessions.
+**what it represents**: a free-form ai-maintained note capturing cross-cutting context that should survive across sessions.
 
-**Location**: `vault/context/<topic>.md`  
-**Standard files**: `decisions.md`, `patterns.md`, `dependencies.md`
+**location**: `vault/context/<topic>.md`  
+**standard files**: `decisions.md`, `patterns.md`, `dependencies.md`
 
-**Schema**:
+**schema**:
 
 ```markdown
 ---
-last_updated: <ISO 8601 datetime>
-updated_by: <AI agent name>
+last_updated: <iso 8601 datetime>
+updated_by: <ai agent name>
 ---
 
-# <Topic Title>
+# <topic title>
 
-<Maintained by the context-load and lessons-learnt skills. Written in present tense. 
-Kept concise — each entry is a bullet point or table row, not a paragraph.>
+<maintained by the context-load and lessons-learnt skills. written in present tense. 
+kept concise — each entry is a bullet point or table row, not a paragraph.>
 ```
 
 ---
 
-## Entity Relationships
+## entity relationships
 
 ```
                     ┌─────────────┐
-                    │  Skill File │
+                    │  skill file │
                     └──────┬──────┘
                            │ invoked in sequence by
                            ▼
                   ┌──────────────────┐
-                  │ Workflow Document│
+                  │ workflow document│
                   └────────┬─────────┘
                            │ references
                            ▼
                ┌───────────────────────┐
-               │   Setup Guide         │◄── describes install of
+               │   setup guide         │◄── describes install of
                └───────────┬───────────┘    third-party tools
                            │
          ┌─────────────────┼──────────────────┐
          ▼                 ▼                  ▼
   ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐
-  │ Vault Graph │  │  Lessons     │  │  Persistent      │
-  │ Node        │  │  Learnt      │  │  Context Note    │
+  │ vault graph │  │  lessons     │  │  persistent      │
+  │ node        │  │  learnt      │  │  context note    │
   └─────────────┘  └──────────────┘  └──────────────────┘
         ▲                  │                  ▲
         │       updates    │       updates    │
@@ -286,9 +286,9 @@ Kept concise — each entry is a bullet point or table row, not a paragraph.>
 
 ---
 
-## State Transitions
+## state transitions
 
-### Vault Graph Node lifecycle
+### vault graph node lifecycle
 
 ```
 [not exists] → /map-codebase → [current]
@@ -297,7 +297,7 @@ Kept concise — each entry is a bullet point or table row, not a paragraph.>
 [deprecated] → manual prune → [removed]
 ```
 
-### Lessons Learnt Entry lifecycle
+### lessons learnt entry lifecycle
 
 ```
 [not exists] → /lessons-learnt → [draft]

@@ -1,51 +1,51 @@
 ---
-description: Auto-commit changes after a Spec Kit command completes
+description: auto-commit changes after a spec kit command completes
 ---
 
 
-<!-- Extension: git -->
-<!-- Config: .specify/extensions/git/ -->
-# Auto-Commit Changes
+<!-- extension: git -->
+<!-- config: .specify/extensions/git/ -->
+# auto-commit changes
 
-Automatically stage and commit all changes after a Spec Kit command completes.
+automatically stage and commit all changes after a spec kit command completes.
 
-## Behavior
+## behavior
 
-This command is invoked as a hook after (or before) core commands. It:
+this command is invoked as a hook after (or before) core commands. it:
 
-1. Determines the event name from the hook context (e.g., if invoked as an `after_specify` hook, the event is `after_specify`; if `before_plan`, the event is `before_plan`)
-2. Checks `.specify/extensions/git/git-config.yml` for the `auto_commit` section
-3. Looks up the specific event key to see if auto-commit is enabled
-4. Falls back to `auto_commit.default` if no event-specific key exists
-5. Uses the per-command `message` if configured, otherwise a default message
-6. If enabled and there are uncommitted changes, runs `git add .` + `git commit`
+1. determines the event name from the hook context (e.g., if invoked as an `after_specify` hook, the event is `after_specify`; if `before_plan`, the event is `before_plan`)
+2. checks `.specify/extensions/git/git-config.yml` for the `auto_commit` section
+3. looks up the specific event key to see if auto-commit is enabled
+4. falls back to `auto_commit.default` if no event-specific key exists
+5. uses the per-command `message` if configured, otherwise a default message
+6. if enabled and there are uncommitted changes, runs `git add .` + `git commit`
 
-## Execution
+## execution
 
-Determine the event name from the hook that triggered this command, then run the script:
+determine the event name from the hook that triggered this command, then run the script:
 
-- **Bash**: `.specify/extensions/git/scripts/bash/auto-commit.sh <event_name>`
-- **PowerShell**: `.specify/extensions/git/scripts/powershell/auto-commit.ps1 <event_name>`
+- **bash**: `.specify/extensions/git/scripts/bash/auto-commit.sh <event_name>`
+- **powershell**: `.specify/extensions/git/scripts/powershell/auto-commit.ps1 <event_name>`
 
-Replace `<event_name>` with the actual hook event (e.g., `after_specify`, `before_plan`, `after_implement`).
+replace `<event_name>` with the actual hook event (e.g., `after_specify`, `before_plan`, `after_implement`).
 
-## Configuration
+## configuration
 
-In `.specify/extensions/git/git-config.yml`:
+in `.specify/extensions/git/git-config.yml`:
 
 ```yaml
 auto_commit:
-  default: false          # Global toggle — set true to enable for all commands
+  default: false          # global toggle — set true to enable for all commands
   after_specify:
-    enabled: true          # Override per-command
-    message: "[Spec Kit] Add specification"
+    enabled: true          # override per-command
+    message: "[spec kit] add specification"
   after_plan:
     enabled: false
-    message: "[Spec Kit] Add implementation plan"
+    message: "[spec kit] add implementation plan"
 ```
 
-## Graceful Degradation
+## graceful degradation
 
-- If Git is not available or the current directory is not a repository: skips with a warning
-- If no config file exists: skips (disabled by default)
-- If no changes to commit: skips with a message
+- if git is not available or the current directory is not a repository: skips with a warning
+- if no config file exists: skips (disabled by default)
+- if no changes to commit: skips with a message

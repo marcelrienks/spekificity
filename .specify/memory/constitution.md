@@ -1,67 +1,67 @@
-# Specificity Constitution
+# specificity constitution
 
-## Core Principles
+## core principles
 
-### I. Skills and Workflows — Not Application Code
-Specificity delivers markdown-based skills, workflow guides, and AI agent instructions. It contains no executable application code. Every contribution must be expressible as a skill file, a workflow document, or a setup guide. If something requires code, it belongs in a third-party tool, not in this project.
+### i. skills and workflows — not application code
+specificity delivers markdown-based skills, workflow guides, and ai agent instructions. it contains no executable application code. every contribution must be expressible as a skill file, a workflow document, or a setup guide. if something requires code, it belongs in a third-party tool, not in this project.
 
-### II. Decorator Pattern — Never Replace, Always Extend
-All Specificity skills MUST wrap and extend standard SpecKit commands without modifying or forking the underlying SpecKit installation. SpecKit remains the authoritative source of its own behaviour. Specificity adds a layer on top. Breaking this principle makes upstream SpecKit updates impossible to absorb.
+### ii. decorator pattern — never replace, always extend
+all specificity skills must wrap and extend standard speckit commands without modifying or forking the underlying speckit installation. speckit remains the authoritative source of its own behaviour. specificity adds a layer on top. breaking this principle makes upstream speckit updates impossible to absorb.
 
-### III. Modular Independence (NON-NEGOTIABLE)
-Each component (Graphify, Obsidian, SpecKit, Specificity custom layer) MUST be independently updatable. No component may hard-wire assumptions about the internal structure of another. When a third-party tool changes, only the adapter skill for that tool should need updating.
+### iii. modular independence (non-negotiable)
+each component (graphify, obsidian, speckit, specificity custom layer) must be independently updatable. no component may hard-wire assumptions about the internal structure of another. when a third-party tool changes, only the adapter skill for that tool should need updating.
 
-### IV. Global SpecKit, Local Customisation
-SpecKit/Specify MUST be installed globally so it receives upstream updates normally. Specificity's custom skills MUST be installed locally per-project. This separation ensures that `npm update -g specify` (or equivalent) never requires changes to project-level Specificity files.
+### iv. global speckit, local customisation
+speckit/specify must be installed globally so it receives upstream updates normally. specificity's custom skills must be installed locally per-project. this separation ensures that `npm update -g specify` (or equivalent) never requires changes to project-level specificity files.
 
-### V. Graph-First Context Loading
-AI agents interacting with a Specificity-enabled project MUST consult the Obsidian vault graph before reading source files or documentation directories directly. Direct recursive file scanning is the fallback of last resort, not the default. Skills that violate this principle waste tokens and defeat the primary value proposition.
+### v. graph-first context loading
+ai agents interacting with a specificity-enabled project must consult the obsidian vault graph before reading source files or documentation directories directly. direct recursive file scanning is the fallback of last resort, not the default. skills that violate this principle waste tokens and defeat the primary value proposition.
 
-### VI. Token Efficiency by Design
-Every skill and workflow MUST consider token consumption. Prompts MUST be as concise as technically safe. Caveman mode integration MUST be available at every workflow step. Verbose context is a defect, not a feature.
+### vi. token efficiency by design
+every skill and workflow must consider token consumption. prompts must be as concise as technically safe. caveman mode integration must be available at every workflow step. verbose context is a defect, not a feature.
 
-### VII. AI-Executable Setup
-Any setup step that cannot be fully automated via CLI MUST be documented as a step-by-step guide that an AI agent can execute without human interpretation. Ambiguous or hand-wavy setup instructions are unacceptable.
+### vii. ai-executable setup
+any setup step that cannot be fully automated via cli must be documented as a step-by-step guide that an ai agent can execute without human interpretation. ambiguous or hand-wavy setup instructions are unacceptable.
 
-### VIII. Idempotent Initialisation
-The init command MUST be safe to run multiple times. Re-running it on an already-initialised project MUST update without destroying or duplicating configuration. Partial failures MUST leave the project in a consistent, recoverable state.
-
----
-
-## Supported Environments
-
-- **Operating Systems**: macOS, Linux
-- **AI Agents**: GitHub Copilot, Claude Code (initial version)
-- **Skill Format**: Markdown (`.agent.md`, `.instructions.md`, `SKILL.md`) compatible with the `.agents/` directory convention
-- **No GUI**: All interactions are terminal or AI-chat based
+### viii. idempotent initialisation
+the init command must be safe to run multiple times. re-running it on an already-initialised project must update without destroying or duplicating configuration. partial failures must leave the project in a consistent, recoverable state.
 
 ---
 
-## Development Workflow
+## supported environments
 
-- All features follow the full SpecKit lifecycle: specify → plan → tasks → implement
-- Every skill file MUST include a clear description, trigger conditions, and step-by-step instructions
-- Workflow documents MUST specify the order of skill invocations, expected inputs, and expected outputs
-- Lessons learnt from each feature MUST be appended to the Obsidian vault before the feature branch is merged
-
----
-
-## Quality Standards
-
-- A skill is complete only when it can be followed by an AI agent with no additional clarification from the developer
-- Setup guides must be validated on a clean environment before being considered complete
-- All Specificity skills MUST be tested against both supported AI agents before release
-- No skill may assume the developer has knowledge beyond basic terminal usage and git
+- **operating systems**: macos, linux
+- **ai agents**: github copilot, claude code (initial version)
+- **skill format**: markdown (`.agent.md`, `.instructions.md`, `skill.md`) compatible with the `.agents/` directory convention
+- **no gui**: all interactions are terminal or ai-chat based
 
 ---
 
-## Governance
+## development workflow
 
-This constitution supersedes all other project guidelines. Amendments require:
-1. A documented rationale
-2. An updated version number
-3. A review of all skills and workflows affected by the change
+- all features follow the full speckit lifecycle: specify → plan → tasks → implement
+- every skill file must include a clear description, trigger conditions, and step-by-step instructions
+- workflow documents must specify the order of skill invocations, expected inputs, and expected outputs
+- lessons learnt from each feature must be appended to the obsidian vault before the feature branch is merged
 
-All work on this project must verify compliance with these principles before merging.
+---
 
-**Version**: 1.0.0 | **Ratified**: 2026-04-29 | **Last Amended**: 2026-04-29
+## quality standards
+
+- a skill is complete only when it can be followed by an ai agent with no additional clarification from the developer
+- setup guides must be validated on a clean environment before being considered complete
+- all specificity skills must be tested against both supported ai agents before release
+- no skill may assume the developer has knowledge beyond basic terminal usage and git
+
+---
+
+## governance
+
+this constitution supersedes all other project guidelines. amendments require:
+1. a documented rationale
+2. an updated version number
+3. a review of all skills and workflows affected by the change
+
+all work on this project must verify compliance with these principles before merging.
+
+**version**: 1.0.0 | **ratified**: 2026-04-29 | **last amended**: 2026-04-29

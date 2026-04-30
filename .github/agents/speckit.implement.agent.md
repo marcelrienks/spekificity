@@ -1,198 +1,198 @@
 ---
-description: Execute the implementation plan by processing and executing all tasks defined in tasks.md
+description: execute the implementation plan by processing and executing all tasks defined in tasks.md
 ---
 
-## User Input
+## user input
 
 ```text
-$ARGUMENTS
+$arguments
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
+you **must** consider the user input before proceeding (if not empty).
 
-## Pre-Execution Checks
+## pre-execution checks
 
-**Check for extension hooks (before implementation)**:
-- Check if `.specify/extensions.yml` exists in the project root.
-- If it exists, read it and look for entries under the `hooks.before_implement` key
-- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-- For each executable hook, output the following based on its `optional` flag:
-  - **Optional hook** (`optional: true`):
+**check for extension hooks (before implementation)**:
+- check if `.specify/extensions.yml` exists in the project root.
+- if it exists, read it and look for entries under the `hooks.before_implement` key
+- if the yaml cannot be parsed or is invalid, skip hook checking silently and continue normally
+- filter out hooks where `enabled` is explicitly `false`. treat hooks without an `enabled` field as enabled by default.
+- for each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
+  - if the hook has no `condition` field, or it is null/empty, treat the hook as executable
+  - if the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the hookexecutor implementation
+- for each executable hook, output the following based on its `optional` flag:
+  - **optional hook** (`optional: true`):
     ```
-    ## Extension Hooks
+    ## extension hooks
 
-    **Optional Pre-Hook**: {extension}
-    Command: `/{command}`
-    Description: {description}
+    **optional pre-hook**: {extension}
+    command: `/{command}`
+    description: {description}
 
-    Prompt: {prompt}
-    To execute: `/{command}`
+    prompt: {prompt}
+    to execute: `/{command}`
     ```
-  - **Mandatory hook** (`optional: false`):
+  - **mandatory hook** (`optional: false`):
     ```
-    ## Extension Hooks
+    ## extension hooks
 
-    **Automatic Pre-Hook**: {extension}
-    Executing: `/{command}`
-    EXECUTE_COMMAND: {command}
+    **automatic pre-hook**: {extension}
+    executing: `/{command}`
+    execute_command: {command}
     
-    Wait for the result of the hook command before proceeding to the Outline.
+    wait for the result of the hook command before proceeding to the outline.
     ```
-- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
+- if no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
-## Outline
+## outline
 
-1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
+1. run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` from repo root and parse feature_dir and available_docs list. all paths must be absolute. for single quotes in args like "i'm groot", use escape syntax: e.g 'i'\''m groot' (or double-quote if possible: "i'm groot").
 
-2. **Check checklists status** (if FEATURE_DIR/checklists/ exists):
-   - Scan all checklist files in the checklists/ directory
-   - For each checklist, count:
-     - Total items: All lines matching `- [ ]` or `- [X]` or `- [x]`
-     - Completed items: Lines matching `- [X]` or `- [x]`
-     - Incomplete items: Lines matching `- [ ]`
-   - Create a status table:
+2. **check checklists status** (if feature_dir/checklists/ exists):
+   - scan all checklist files in the checklists/ directory
+   - for each checklist, count:
+     - total items: all lines matching `- [ ]` or `- [x]` or `- [x]`
+     - completed items: lines matching `- [x]` or `- [x]`
+     - incomplete items: lines matching `- [ ]`
+   - create a status table:
 
      ```text
-     | Checklist | Total | Completed | Incomplete | Status |
+     | checklist | total | completed | incomplete | status |
      |-----------|-------|-----------|------------|--------|
-     | ux.md     | 12    | 12        | 0          | ✓ PASS |
-     | test.md   | 8     | 5         | 3          | ✗ FAIL |
-     | security.md | 6   | 6         | 0          | ✓ PASS |
+     | ux.md     | 12    | 12        | 0          | ✓ pass |
+     | test.md   | 8     | 5         | 3          | ✗ fail |
+     | security.md | 6   | 6         | 0          | ✓ pass |
      ```
 
-   - Calculate overall status:
-     - **PASS**: All checklists have 0 incomplete items
-     - **FAIL**: One or more checklists have incomplete items
+   - calculate overall status:
+     - **pass**: all checklists have 0 incomplete items
+     - **fail**: one or more checklists have incomplete items
 
-   - **If any checklist is incomplete**:
-     - Display the table with incomplete item counts
-     - **STOP** and ask: "Some checklists are incomplete. Do you want to proceed with implementation anyway? (yes/no)"
-     - Wait for user response before continuing
-     - If user says "no" or "wait" or "stop", halt execution
-     - If user says "yes" or "proceed" or "continue", proceed to step 3
+   - **if any checklist is incomplete**:
+     - display the table with incomplete item counts
+     - **stop** and ask: "some checklists are incomplete. do you want to proceed with implementation anyway? (yes/no)"
+     - wait for user response before continuing
+     - if user says "no" or "wait" or "stop", halt execution
+     - if user says "yes" or "proceed" or "continue", proceed to step 3
 
-   - **If all checklists are complete**:
-     - Display the table showing all checklists passed
-     - Automatically proceed to step 3
+   - **if all checklists are complete**:
+     - display the table showing all checklists passed
+     - automatically proceed to step 3
 
-3. Load and analyze the implementation context:
-   - **REQUIRED**: Read tasks.md for the complete task list and execution plan
-   - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
-   - **IF EXISTS**: Read data-model.md for entities and relationships
-   - **IF EXISTS**: Read contracts/ for API specifications and test requirements
-   - **IF EXISTS**: Read research.md for technical decisions and constraints
-   - **IF EXISTS**: Read quickstart.md for integration scenarios
+3. load and analyze the implementation context:
+   - **required**: read tasks.md for the complete task list and execution plan
+   - **required**: read plan.md for tech stack, architecture, and file structure
+   - **if exists**: read data-model.md for entities and relationships
+   - **if exists**: read contracts/ for api specifications and test requirements
+   - **if exists**: read research.md for technical decisions and constraints
+   - **if exists**: read quickstart.md for integration scenarios
 
-4. **Project Setup Verification**:
-   - **REQUIRED**: Create/verify ignore files based on actual project setup:
+4. **project setup verification**:
+   - **required**: create/verify ignore files based on actual project setup:
 
-   **Detection & Creation Logic**:
-   - Check if the following command succeeds to determine if the repository is a git repo (create/verify .gitignore if so):
+   **detection & creation logic**:
+   - check if the following command succeeds to determine if the repository is a git repo (create/verify .gitignore if so):
 
      ```sh
      git rev-parse --git-dir 2>/dev/null
      ```
 
-   - Check if Dockerfile* exists or Docker in plan.md → create/verify .dockerignore
-   - Check if .eslintrc* exists → create/verify .eslintignore
-   - Check if eslint.config.* exists → ensure the config's `ignores` entries cover required patterns
-   - Check if .prettierrc* exists → create/verify .prettierignore
-   - Check if .npmrc or package.json exists → create/verify .npmignore (if publishing)
-   - Check if terraform files (*.tf) exist → create/verify .terraformignore
-   - Check if .helmignore needed (helm charts present) → create/verify .helmignore
+   - check if dockerfile* exists or docker in plan.md → create/verify .dockerignore
+   - check if .eslintrc* exists → create/verify .eslintignore
+   - check if eslint.config.* exists → ensure the config's `ignores` entries cover required patterns
+   - check if .prettierrc* exists → create/verify .prettierignore
+   - check if .npmrc or package.json exists → create/verify .npmignore (if publishing)
+   - check if terraform files (*.tf) exist → create/verify .terraformignore
+   - check if .helmignore needed (helm charts present) → create/verify .helmignore
 
-   **If ignore file already exists**: Verify it contains essential patterns, append missing critical patterns only
-   **If ignore file missing**: Create with full pattern set for detected technology
+   **if ignore file already exists**: verify it contains essential patterns, append missing critical patterns only
+   **if ignore file missing**: create with full pattern set for detected technology
 
-   **Common Patterns by Technology** (from plan.md tech stack):
-   - **Node.js/JavaScript/TypeScript**: `node_modules/`, `dist/`, `build/`, `*.log`, `.env*`
-   - **Python**: `__pycache__/`, `*.pyc`, `.venv/`, `venv/`, `dist/`, `*.egg-info/`
-   - **Java**: `target/`, `*.class`, `*.jar`, `.gradle/`, `build/`
-   - **C#/.NET**: `bin/`, `obj/`, `*.user`, `*.suo`, `packages/`
-   - **Go**: `*.exe`, `*.test`, `vendor/`, `*.out`
-   - **Ruby**: `.bundle/`, `log/`, `tmp/`, `*.gem`, `vendor/bundle/`
-   - **PHP**: `vendor/`, `*.log`, `*.cache`, `*.env`
-   - **Rust**: `target/`, `debug/`, `release/`, `*.rs.bk`, `*.rlib`, `*.prof*`, `.idea/`, `*.log`, `.env*`
-   - **Kotlin**: `build/`, `out/`, `.gradle/`, `.idea/`, `*.class`, `*.jar`, `*.iml`, `*.log`, `.env*`
-   - **C++**: `build/`, `bin/`, `obj/`, `out/`, `*.o`, `*.so`, `*.a`, `*.exe`, `*.dll`, `.idea/`, `*.log`, `.env*`
-   - **C**: `build/`, `bin/`, `obj/`, `out/`, `*.o`, `*.a`, `*.so`, `*.exe`, `*.dll`, `autom4te.cache/`, `config.status`, `config.log`, `.idea/`, `*.log`, `.env*`
-   - **Swift**: `.build/`, `DerivedData/`, `*.swiftpm/`, `Packages/`
-   - **R**: `.Rproj.user/`, `.Rhistory`, `.RData`, `.Ruserdata`, `*.Rproj`, `packrat/`, `renv/`
-   - **Universal**: `.DS_Store`, `Thumbs.db`, `*.tmp`, `*.swp`, `.vscode/`, `.idea/`
+   **common patterns by technology** (from plan.md tech stack):
+   - **node.js/javascript/typescript**: `node_modules/`, `dist/`, `build/`, `*.log`, `.env*`
+   - **python**: `__pycache__/`, `*.pyc`, `.venv/`, `venv/`, `dist/`, `*.egg-info/`
+   - **java**: `target/`, `*.class`, `*.jar`, `.gradle/`, `build/`
+   - **c#/.net**: `bin/`, `obj/`, `*.user`, `*.suo`, `packages/`
+   - **go**: `*.exe`, `*.test`, `vendor/`, `*.out`
+   - **ruby**: `.bundle/`, `log/`, `tmp/`, `*.gem`, `vendor/bundle/`
+   - **php**: `vendor/`, `*.log`, `*.cache`, `*.env`
+   - **rust**: `target/`, `debug/`, `release/`, `*.rs.bk`, `*.rlib`, `*.prof*`, `.idea/`, `*.log`, `.env*`
+   - **kotlin**: `build/`, `out/`, `.gradle/`, `.idea/`, `*.class`, `*.jar`, `*.iml`, `*.log`, `.env*`
+   - **c++**: `build/`, `bin/`, `obj/`, `out/`, `*.o`, `*.so`, `*.a`, `*.exe`, `*.dll`, `.idea/`, `*.log`, `.env*`
+   - **c**: `build/`, `bin/`, `obj/`, `out/`, `*.o`, `*.a`, `*.so`, `*.exe`, `*.dll`, `autom4te.cache/`, `config.status`, `config.log`, `.idea/`, `*.log`, `.env*`
+   - **swift**: `.build/`, `deriveddata/`, `*.swiftpm/`, `packages/`
+   - **r**: `.rproj.user/`, `.rhistory`, `.rdata`, `.ruserdata`, `*.rproj`, `packrat/`, `renv/`
+   - **universal**: `.ds_store`, `thumbs.db`, `*.tmp`, `*.swp`, `.vscode/`, `.idea/`
 
-   **Tool-Specific Patterns**:
-   - **Docker**: `node_modules/`, `.git/`, `Dockerfile*`, `.dockerignore`, `*.log*`, `.env*`, `coverage/`
-   - **ESLint**: `node_modules/`, `dist/`, `build/`, `coverage/`, `*.min.js`
-   - **Prettier**: `node_modules/`, `dist/`, `build/`, `coverage/`, `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`
-   - **Terraform**: `.terraform/`, `*.tfstate*`, `*.tfvars`, `.terraform.lock.hcl`
-   - **Kubernetes/k8s**: `*.secret.yaml`, `secrets/`, `.kube/`, `kubeconfig*`, `*.key`, `*.crt`
+   **tool-specific patterns**:
+   - **docker**: `node_modules/`, `.git/`, `dockerfile*`, `.dockerignore`, `*.log*`, `.env*`, `coverage/`
+   - **eslint**: `node_modules/`, `dist/`, `build/`, `coverage/`, `*.min.js`
+   - **prettier**: `node_modules/`, `dist/`, `build/`, `coverage/`, `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`
+   - **terraform**: `.terraform/`, `*.tfstate*`, `*.tfvars`, `.terraform.lock.hcl`
+   - **kubernetes/k8s**: `*.secret.yaml`, `secrets/`, `.kube/`, `kubeconfig*`, `*.key`, `*.crt`
 
-5. Parse tasks.md structure and extract:
-   - **Task phases**: Setup, Tests, Core, Integration, Polish
-   - **Task dependencies**: Sequential vs parallel execution rules
-   - **Task details**: ID, description, file paths, parallel markers [P]
-   - **Execution flow**: Order and dependency requirements
+5. parse tasks.md structure and extract:
+   - **task phases**: setup, tests, core, integration, polish
+   - **task dependencies**: sequential vs parallel execution rules
+   - **task details**: id, description, file paths, parallel markers [p]
+   - **execution flow**: order and dependency requirements
 
-6. Execute implementation following the task plan:
-   - **Phase-by-phase execution**: Complete each phase before moving to the next
-   - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together  
-   - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks
-   - **File-based coordination**: Tasks affecting the same files must run sequentially
-   - **Validation checkpoints**: Verify each phase completion before proceeding
+6. execute implementation following the task plan:
+   - **phase-by-phase execution**: complete each phase before moving to the next
+   - **respect dependencies**: run sequential tasks in order, parallel tasks [p] can run together  
+   - **follow tdd approach**: execute test tasks before their corresponding implementation tasks
+   - **file-based coordination**: tasks affecting the same files must run sequentially
+   - **validation checkpoints**: verify each phase completion before proceeding
 
-7. Implementation execution rules:
-   - **Setup first**: Initialize project structure, dependencies, configuration
-   - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
-   - **Core development**: Implement models, services, CLI commands, endpoints
-   - **Integration work**: Database connections, middleware, logging, external services
-   - **Polish and validation**: Unit tests, performance optimization, documentation
+7. implementation execution rules:
+   - **setup first**: initialize project structure, dependencies, configuration
+   - **tests before code**: if you need to write tests for contracts, entities, and integration scenarios
+   - **core development**: implement models, services, cli commands, endpoints
+   - **integration work**: database connections, middleware, logging, external services
+   - **polish and validation**: unit tests, performance optimization, documentation
 
-8. Progress tracking and error handling:
-   - Report progress after each completed task
-   - Halt execution if any non-parallel task fails
-   - For parallel tasks [P], continue with successful tasks, report failed ones
-   - Provide clear error messages with context for debugging
-   - Suggest next steps if implementation cannot proceed
-   - **IMPORTANT** For completed tasks, make sure to mark the task off as [X] in the tasks file.
+8. progress tracking and error handling:
+   - report progress after each completed task
+   - halt execution if any non-parallel task fails
+   - for parallel tasks [p], continue with successful tasks, report failed ones
+   - provide clear error messages with context for debugging
+   - suggest next steps if implementation cannot proceed
+   - **important** for completed tasks, make sure to mark the task off as [x] in the tasks file.
 
-9. Completion validation:
-   - Verify all required tasks are completed
-   - Check that implemented features match the original specification
-   - Validate that tests pass and coverage meets requirements
-   - Confirm the implementation follows the technical plan
-   - Report final status with summary of completed work
+9. completion validation:
+   - verify all required tasks are completed
+   - check that implemented features match the original specification
+   - validate that tests pass and coverage meets requirements
+   - confirm the implementation follows the technical plan
+   - report final status with summary of completed work
 
-Note: This command assumes a complete task breakdown exists in tasks.md. If tasks are incomplete or missing, suggest running `/speckit.tasks` first to regenerate the task list.
+note: this command assumes a complete task breakdown exists in tasks.md. if tasks are incomplete or missing, suggest running `/speckit.tasks` first to regenerate the task list.
 
-10. **Check for extension hooks**: After completion validation, check if `.specify/extensions.yml` exists in the project root.
-    - If it exists, read it and look for entries under the `hooks.after_implement` key
-    - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-    - Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-    - For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-      - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-      - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-    - For each executable hook, output the following based on its `optional` flag:
-      - **Optional hook** (`optional: true`):
+10. **check for extension hooks**: after completion validation, check if `.specify/extensions.yml` exists in the project root.
+    - if it exists, read it and look for entries under the `hooks.after_implement` key
+    - if the yaml cannot be parsed or is invalid, skip hook checking silently and continue normally
+    - filter out hooks where `enabled` is explicitly `false`. treat hooks without an `enabled` field as enabled by default.
+    - for each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
+      - if the hook has no `condition` field, or it is null/empty, treat the hook as executable
+      - if the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the hookexecutor implementation
+    - for each executable hook, output the following based on its `optional` flag:
+      - **optional hook** (`optional: true`):
         ```
-        ## Extension Hooks
+        ## extension hooks
 
-        **Optional Hook**: {extension}
-        Command: `/{command}`
-        Description: {description}
+        **optional hook**: {extension}
+        command: `/{command}`
+        description: {description}
 
-        Prompt: {prompt}
-        To execute: `/{command}`
+        prompt: {prompt}
+        to execute: `/{command}`
         ```
-      - **Mandatory hook** (`optional: false`):
+      - **mandatory hook** (`optional: false`):
         ```
-        ## Extension Hooks
+        ## extension hooks
 
-        **Automatic Hook**: {extension}
-        Executing: `/{command}`
-        EXECUTE_COMMAND: {command}
+        **automatic hook**: {extension}
+        executing: `/{command}`
+        execute_command: {command}
         ```
-    - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
+    - if no hooks are registered or `.specify/extensions.yml` does not exist, skip silently

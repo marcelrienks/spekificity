@@ -1,141 +1,240 @@
 ---
-last_deep_read: 2026-04-30T00:00:00Z
-version: 1.0
+last_deep_read: 2026-04-30t12:00:00z
+version: 2.0
 ---
 
-# Spekificity Technical Brief
+# spekificity technical brief
 
-## Project Purpose
+## executive summary
 
-**Spekificity** is a meta-tooling layer for AI-assisted development. Produces zero executable code—only markdown skills, workflows, and setup guides. Connects Graphify (codebase mapping), Obsidian (persistent vault), SpecKit/Specify (spec-first CLI), and Caveman skill (compression) into a unified, context-aware, token-efficient workflow.
-
-**Core problems solved**: AI context loss between sessions; token bloat from re-reading codebases; generic SpecKit plans lacking component awareness; verbose AI responses.
-
----
-
-## Architecture & Tech Stack
-
-**Components** (all interconnected via markdown):
-- **Graphify**: Global CLI tool; analyzes source files + docs → produces dependency graph
-- **Obsidian Vault**: Local `.md` storage; holds graph map, lessons learnt, persistent decisions/patterns
-- **SpecKit/Specify**: Global CLI; core `specify` command for spec-first feature lifecycle
-- **Caveman Skill**: Response compression (~60–75% reduction) without losing technical content
-- **AI Agents**: GitHub Copilot (`.github/agents/`) and Claude Code (`.claude/commands/`)
-
-**Delivery**: Markdown-only skills, workflows, setup guides. No binaries.
-
-**Directory roles**:
-- `skills/` – AI-executable skill files (context-load, map-codebase, lessons-learnt, speckit-enrich/*)
-- `workflows/` – Multi-step processes (init-workflow, feature-lifecycle, map-refresh, component-update)
-- `setup-guides/` – Per-tool install docs (graphify, obsidian, speckit)
-- `vault/` – Runtime Obsidian vault (graph/, lessons/, context/decisions + patterns)
-- `specs/` – SpecKit-generated feature docs (spec.md, plan.md, tasks.md)
-- `.specify/` – SpecKit configuration (templates, constitution, git extensions)
+**spekificity** connects graphify (codebase mapping), obsidian (persistent vault), speckit/specify (spec-first cli), and caveman (token compression) to solve persistent ai context loss, excessive token consumption, and shallow feature planning. produces zero executable code—only markdown skills, workflows, and setup guides that developers install once, then use to run enriched speckit feature lifecycles with persistent context and 40–75% token reduction.
 
 ---
 
-## Key Workflows
+## problem space
 
-### 1. Initialization (init-workflow.md)
-- Detect installed tools (Graphify, SpecKit, Obsidian)
-- Install missing prerequisites globally or flag requirements
-- Deploy Spekificity custom skills locally
-- Idempotent: safe to re-run
+| problem | spekificity solution |
+|---------|---------------------|
+| ai agents lose context between sessions | obsidian vault stores graph, decisions, lessons; `/context-load` restores at session start |
+| token bloat from re-reading all files | graphify generates graph once; ai queries graph instead of scanning files (≥40% reduction) |
+| speckit specs/plans disconnected from codebase | `/speckit-enrich-specify` and `/speckit-enrich-plan` inject graph context |
+| verbose ai responses consume tokens | caveman skill compresses outputs 60–75% without losing technical content |
 
-### 2. Enriched SpecKit Feature Lifecycle (feature-lifecycle.md)
+---
+
+## target users & journeys
+
+**user personas**:
+- solo developer: values speed + cognitive load reduction
+- team lead/architect: needs consistent toolchain + easy onboarding
+- ai power user: wants maximum roi from every token
+
+**core journeys**:
+1. **init**: `spekificity init` → auto-detect tools, install missing, deploy skills (~10 min)
+2. **map**: `/map-codebase` → graphify generates graph → stored in obsidian vault
+3. **feature**: `/context-load` → `/speckit-enrich-specify` → `/speckit-enrich-plan` → `/speckit.tasks` → `/speckit-enrich-implement` → lessons logged
+4. **update**: update single tool (graphify/obsidian/speckit/caveman) independently without re-init
+
+---
+
+## architecture & tech stack
+
+**core components** (markdown-interconnected):
+- **graphify** (global): analyzes source + docs → dependency/relationship graph
+- **obsidian vault** (local): plain markdown storage (filesystem + optional obsidian app); holds graph index + lessons + decisions/patterns
+- **speckit/specify** (global): spec-first cli; vanilla commands unchanged; spekificity wraps via decorator pattern
+- **caveman skill** (global or local): response compression ~60–75% reduction
+- **ai agents**: github copilot + claude code (native skill/agent support)
+
+**delivery model**: all skills, workflows, docs are **markdown files**. no binaries. ai agents read and execute directly.
+
+**directory structure** (project-scoped):
 ```
-Session Start
-  ↓
-/context-load                    ← AI primed with vault graph + past decisions
-  ↓
-/speckit-enrich-specify          ← Spec generation with graph cross-refs
-  ↓
-/speckit-enrich-plan             ← Plan with impacted component list
-  ↓
-/speckit.tasks                   ← Standard SpecKit (no enrichment needed)
-  ↓
-/speckit-enrich-implement        ← Impl + auto-lessons + auto-map
-  ↓
-Feature complete
+spekificity/
+├── docs/                      ← project documentation (prd, architecture, glossary, init, validation)
+├── skills/                    ← ai-executable skill files
+│   ├── context-load/          ← load vault at session start
+│   ├── map-codebase/          ← run graphify → obsidian
+│   ├── lessons-learnt/        ← capture end-of-feature lessons
+│   └── speckit-enrich/        ← decorator wrappers for /specify, /plan, /implement
+├── workflows/                 ← multi-step sequences (init, feature-lifecycle, map-refresh, component-update)
+├── setup-guides/              ← ai-executable install guides (graphify, obsidian, speckit)
+├── specs/                     ← generated speckit features (spec.md, plan.md, tasks.md)
+├── vault/                     ← obsidian vault (graph/, lessons/, context/decisions + patterns)
+├── .specify/                  ← speckit config (constitution, templates, extensions)
+└── .github/agents/ or .claude/commands/ ← agent-specific skill routing
 ```
-**Decorator pattern**: All enrich-* skills wrap vanilla SpecKit commands; original SpecKit untouched.
-
-### 3. Codebase Mapping (map-refresh.md)
-- Run Graphify against source + docs
-- Store graph as Obsidian vault (`vault/graph/index.md`)
-- Supports incremental refresh
-- Reduces token cost: AI queries graph instead of re-reading files
-
-### 4. Lessons Learnt (context-load / lessons-learnt skills)
-- End-of-feature structured entry captures: decisions, problems, patterns, recommendations
-- Stored in `vault/lessons/<date>-<feature-slug>.md`
-- Surfaced in `/context-load` for future sessions
-- Maintains `vault/context/decisions.md` and `vault/context/patterns.md`
 
 ---
 
-## Documentation Map
+## enriched feature lifecycle (token-optimized)
 
-| Document | Location | Purpose |
+```
+step 1: /context-load
+  → loads vault/graph/index.md + recent lessons
+  → ai primed with component map, past decisions, patterns
+  ✓ first time: ~2s; subsequent: cached
+
+step 2: /speckit-enrich-specify
+  → decorator wraps /speckit.specify
+  → injects graph context (related components)
+  → output: specs/<feature>/spec.md with cross-refs
+
+step 3: /speckit-enrich-plan
+  → decorator wraps /speckit.plan
+  → injects impacted graph nodes
+  → output: specs/<feature>/plan.md with component impacts
+
+step 4: /speckit.tasks
+  → standard speckit (no enrichment needed)
+  → input: spec.md + plan.md
+  → output: specs/<feature>/tasks.md (dependency-ordered)
+
+step 5: /speckit-enrich-implement
+  → decorator wraps /speckit.implement
+  → executes all tasks with graph context
+  → auto-writes lessons entry → vault/lessons/<date>-<feature>.md
+  → auto-runs graphify → updates vault/graph (incremental)
+
+result: feature complete + knowledge persisted for next session
+```
+
+**decorator pattern**: spekificity skills **wrap** vanilla speckit; original cli unchanged, independently upgradable.
+
+---
+
+## token efficiency strategy
+
+1. **graph-based context** (~40% reduction): query dependency map instead of reading all files
+2. **caveman compression** (~60–75% reduction): terse notation, no fluff, full technical content
+3. **persistent memory** (~50% reduction on cross-session): load lessons/decisions at start, not re-explained
+4. **incremental mapping** (~20% reduction): update only changed nodes, not full regeneration
+
+**invocation**: `/caveman lite` (for spec/plan work) or `/caveman` (for implementation)
+
+---
+
+## functional requirements (core)
+
+| id | requirement | status |
+|----|-------------|--------|
+| fr-001 | init installs/links graphify, obsidian, speckit/specify | core |
+| fr-002 | init deploys spekificity custom skills locally (idempotent) | core |
+| fr-003 | mapping skill runs graphify + stores output as obsidian vault | core |
+| fr-004 | mapping skill supports incremental refresh | core |
+| fr-005 | all speckit-extension skills use decorator pattern | core |
+| fr-006 | lessons-learnt entries structured, versioned, vault-stored | core |
+| fr-007 | caveman skill integrated + invokable at any workflow step | core |
+| fr-008 | each component independently updatable (no re-init required) | core |
+| fr-009 | support github copilot + claude code as first-class agents | core |
+| fr-010 | non-automatable setup steps documented as ai-executable guides | core |
+
+---
+
+## success metrics (measurable)
+
+| metric | target |
+|--------|--------|
+| **sc-001** | init + skill deployment completes in <10 min; first feature in <30 min total |
+| **sc-002** | token consumption for cross-cutting queries reduced ≥40% (mapped vs unmapped) |
+| **sc-003** | caveman mode reduces response verbosity ≥60% (character count) |
+| **sc-004** | 100% of speckit lifecycle steps enriched with graph context |
+| **sc-005** | single component update <5 min developer effort; zero changes to other components |
+| **sc-006** | `context-load` completes in single ai step (~2s) |
+| **sc-007** | operational on macos + linux |
+
+---
+
+## key workflows at a glance
+
+| workflow | purpose | entry point |
+|----------|---------|-------------|
+| init-workflow.md | tool detection → installation → skill deployment | `spekificity init` or ai-guided |
+| feature-lifecycle.md | full speckit cycle (specify→plan→tasks→implement) + lessons | `/context-load` then `/speckit-enrich-*` |
+| map-refresh.md | build or refresh graphify graph; store in obsidian | `/map-codebase` |
+| component-update.md | update graphify/obsidian/speckit/caveman independently | per-tool update command |
+
+---
+
+## core design principles
+
+1. **decorator pattern**: wrap, never replace. vanilla speckit untouched, independently upgradable.
+2. **global speckit, local customization**: speckit installed globally; spekificity skills deployed locally per-project.
+3. **modular independence**: each component (graphify, obsidian, speckit, caveman) updatable without full re-init.
+4. **ai-executable setup**: where cli automation impractical, setup documented as step-by-step ai-followable guides.
+5. **token efficiency by default**: graph-based queries + caveman compression are first-class, not afterthoughts.
+6. **markdown-only delivery**: no binaries. all skills/workflows are `.md` files that ai agents read and execute directly.
+7. **persistent context across sessions**: obsidian vault stores graph, lessons, decisions; `/context-load` restores at session start.
+
+---
+
+## documentation map
+
+| document | location | purpose |
 |----------|----------|---------|
-| Project overview | `README.md` | Entry point; quickstart; prerequisites; structure |
-| PRD (Product Requirements) | `docs/prd.md` | Goals, user journeys, functional/non-functional requirements |
-| Architecture | `docs/architecture.md` | Component roles, data flow, vault structure |
-| Glossary | `docs/glossary.md` | Term definitions (AI Agent, Caveman, Decorator, Graphify, etc.) |
-| Init guide | `docs/init.md` | Initialization narrative and procedures |
-| Validation | `docs/validation.md` | Testing and acceptance criteria |
-| Feature spec | `specs/001-specificity-platform/spec.md` | Full feature definition with user stories and requirements |
-| Quick reference | `specs/001-specificity-platform/quickstart.md` | Step-by-step setup guide |
-| Skill definitions | `skills/<skill-name>/SKILL.md` | Triggerable AI skills (agent-agnostic format) |
-| Workflow guides | `workflows/*.md` | Multi-step sequences (init, feature lifecycle, map refresh, component updates) |
-| Setup guides | `setup-guides/*.md` | Per-tool installation (Graphify, Obsidian, SpecKit) |
-| Vault decisions | `vault/context/decisions.md` | Architectural decisions log |
-| Vault patterns | `vault/context/patterns.md` | Identified patterns log |
-| Vault graph | `vault/graph/index.md` | Generated Graphify output (runtime) |
-| Vault lessons | `vault/lessons/*.md` | Feature lessons entries (runtime) |
-| Skill discovery | `agents.md` | Claude Code slash-command index |
+| **prd (product requirements)** | `docs/prd.md` | goals, non-goals, user journeys, functional/non-functional requirements, personas |
+| **architecture** | `docs/architecture.md` | component roles, data flows, directory structure, vault design |
+| **glossary** | `docs/glossary.md` | term definitions (caveman, decorator, graphify, obsidian, speckit, etc.) |
+| **init guide** | `docs/init.md` | high-level narrative, design principles, tool roles |
+| **validation** | `docs/validation.md` | testing strategy, acceptance criteria, edge cases |
+| **feature spec** | `specs/001-specificity-platform/spec.md` | detailed user stories, requirements, success criteria, assumptions |
+| **quickstart** | `specs/001-specificity-platform/quickstart.md` | step-by-step first-time setup |
+| **skills** | `skills/<skill>/skill.md` | triggerable ai tasks (agent-agnostic format) |
+| **workflows** | `workflows/*.md` | multi-step sequences (init, feature-lifecycle, map-refresh, component-update) |
+| **setup guides** | `setup-guides/*.md` | per-tool installation (graphify, obsidian, speckit) |
+| **vault: decisions** | `vault/context/decisions.md` | architectural decisions log |
+| **vault: patterns** | `vault/context/patterns.md` | identified patterns & recurring solutions |
+| **vault: graph** | `vault/graph/index.md` | graphify-generated dependency graph (runtime) |
+| **vault: lessons** | `vault/lessons/*.md` | feature lessons entries (runtime, one per feature) |
+| **agent routing** | `agents.md` | claude code slash-command index |
 
 ---
 
-## Critical Success Criteria
+## non-goals (v1)
 
-- Init completes in <30 min; token savings ≥40% on mapped projects; Caveman ≥60% compression
-- All SpecKit steps enriched when map available
-- Independent component updates (no cross-breaking changes)
-- macOS + Linux support
-- No cloud/server required (fully local)
+- building graphify, obsidian, or speckit functionality from scratch
+- gui or web interface
+- support for ai agents beyond copilot + claude code
+- cloud sync or multi-user vault sharing
+- automatic merge conflict resolution with speckit upstream updates
 
----
-
-## Known Dependencies
-
-- Python 3.11+, `uv` package manager
-- SpecKit installed globally: `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git`
-- Graphify installed globally: `uv tool install graphifyy`
-- GitHub Copilot or Claude Code for AI agent
-- Obsidian (desktop app optional; vault is plain markdown)
-- Git + basic terminal knowledge
+- init completes in <30 min; token savings ≥40% on mapped projects; caveman ≥60% compression
+- all speckit steps enriched when map available
+- independent component updates (no cross-breaking changes)
+- macos + linux support
+- no cloud/server required (fully local)
 
 ---
 
-## Entry Points for Agent Interaction
+## known dependencies
 
-**At session start:**
+- python 3.11+, `uv` package manager
+- speckit installed globally: `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git`
+- graphify installed globally: `uv tool install graphifyy`
+- github copilot or claude code for ai agent
+- obsidian (desktop app optional; vault is plain markdown)
+- git + basic terminal knowledge
+
+---
+
+## entry points for agent interaction
+
+**at session start:**
 ```
 /context-load
 ```
 
-**For daily feature work:**
+**for daily feature work:**
 ```
 /speckit-enrich-specify → /speckit-enrich-plan → /speckit.tasks → /speckit-enrich-implement
 ```
 
-**For codebase refresh:**
+**for codebase refresh:**
 ```
 /map-codebase
 ```
 
-**For token efficiency:**
+**for token efficiency:**
 ```
 /caveman lite     (specs/plans)
 /caveman          (implementation)
@@ -143,4 +242,4 @@ Feature complete
 
 ---
 
-**Status**: Production-ready meta-tooling layer. Zero breaking changes expected for dependent projects. Modular: each component can be updated independently.
+**status**: production-ready. zero breaking changes expected for dependent projects. modular: each component can be updated independently.

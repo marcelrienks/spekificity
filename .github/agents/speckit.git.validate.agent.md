@@ -1,52 +1,52 @@
 ---
-description: Validate current branch follows feature branch naming conventions
+description: validate current branch follows feature branch naming conventions
 ---
 
 
-<!-- Extension: git -->
-<!-- Config: .specify/extensions/git/ -->
-# Validate Feature Branch
+<!-- extension: git -->
+<!-- config: .specify/extensions/git/ -->
+# validate feature branch
 
-Validate that the current Git branch follows the expected feature branch naming conventions.
+validate that the current git branch follows the expected feature branch naming conventions.
 
-## Prerequisites
+## prerequisites
 
-- Check if Git is available by running `git rev-parse --is-inside-work-tree 2>/dev/null`
-- If Git is not available, output a warning and skip validation:
+- check if git is available by running `git rev-parse --is-inside-work-tree 2>/dev/null`
+- if git is not available, output a warning and skip validation:
   ```
-  [specify] Warning: Git repository not detected; skipped branch validation
+  [specify] warning: git repository not detected; skipped branch validation
   ```
 
-## Validation Rules
+## validation rules
 
-Get the current branch name:
+get the current branch name:
 
 ```bash
-git rev-parse --abbrev-ref HEAD
+git rev-parse --abbrev-ref head
 ```
 
-The branch name must match one of these patterns:
+the branch name must match one of these patterns:
 
-1. **Sequential**: `^[0-9]{3,}-` (e.g., `001-feature-name`, `042-fix-bug`, `1000-big-feature`)
-2. **Timestamp**: `^[0-9]{8}-[0-9]{6}-` (e.g., `20260319-143022-feature-name`)
+1. **sequential**: `^[0-9]{3,}-` (e.g., `001-feature-name`, `042-fix-bug`, `1000-big-feature`)
+2. **timestamp**: `^[0-9]{8}-[0-9]{6}-` (e.g., `20260319-143022-feature-name`)
 
-## Execution
+## execution
 
-If on a feature branch (matches either pattern):
-- Output: `✓ On feature branch: <branch-name>`
-- Check if the corresponding spec directory exists under `specs/`:
-  - For sequential branches, look for `specs/<prefix>-*` where prefix matches the numeric portion
-  - For timestamp branches, look for `specs/<prefix>-*` where prefix matches the `YYYYMMDD-HHMMSS` portion
-- If spec directory exists: `✓ Spec directory found: <path>`
-- If spec directory missing: `⚠ No spec directory found for prefix <prefix>`
+if on a feature branch (matches either pattern):
+- output: `✓ on feature branch: <branch-name>`
+- check if the corresponding spec directory exists under `specs/`:
+  - for sequential branches, look for `specs/<prefix>-*` where prefix matches the numeric portion
+  - for timestamp branches, look for `specs/<prefix>-*` where prefix matches the `yyyymmdd-hhmmss` portion
+- if spec directory exists: `✓ spec directory found: <path>`
+- if spec directory missing: `⚠ no spec directory found for prefix <prefix>`
 
-If NOT on a feature branch:
-- Output: `✗ Not on a feature branch. Current branch: <branch-name>`
-- Output: `Feature branches should be named like: 001-feature-name or 20260319-143022-feature-name`
+if not on a feature branch:
+- output: `✗ not on a feature branch. current branch: <branch-name>`
+- output: `feature branches should be named like: 001-feature-name or 20260319-143022-feature-name`
 
-## Graceful Degradation
+## graceful degradation
 
-If Git is not installed or the directory is not a Git repository:
-- Check the `SPECIFY_FEATURE` environment variable as a fallback
-- If set, validate that value against the naming patterns
-- If not set, skip validation with a warning
+if git is not installed or the directory is not a git repository:
+- check the `specify_feature` environment variable as a fallback
+- if set, validate that value against the naming patterns
+- if not set, skip validation with a warning

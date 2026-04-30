@@ -1,83 +1,83 @@
-# Context Load
+# context load
 
-## Description
+## description
 
-Loads persistent context from the Obsidian vault into the AI agent's session at the start of a work session. This primes the AI with the current graph structure, architectural decisions, identified patterns, and recent lessons learnt — without requiring the AI to scan source files or read documentation directories directly.
+loads persistent context from the obsidian vault into the ai agent's session at the start of a work session. this primes the ai with the current graph structure, architectural decisions, identified patterns, and recent lessons learnt — without requiring the ai to scan source files or read documentation directories directly.
 
-Run this skill at the start of every AI session on a Spekificity-enabled project. It is the graph-first entry point mandated by Constitution Principle V.
+run this skill at the start of every ai session on a spekificity-enabled project. it is the graph-first entry point mandated by constitution principle v.
 
-## Trigger
+## trigger
 
-Invoked by the developer in the AI chat session:
+invoked by the developer in the ai chat session:
 ```
 /context-load
 ```
 
-Optional scope arguments:
+optional scope arguments:
 ```
-/context-load graph-only      ← Load only the graph index (fastest)
-/context-load lessons-only    ← Load only recent lessons entries
-/context-load full            ← Load everything (default)
+/context-load graph-only      ← load only the graph index (fastest)
+/context-load lessons-only    ← load only recent lessons entries
+/context-load full            ← load everything (default)
 ```
 
-Optional feature filter (loads lessons relevant to a specific branch):
+optional feature filter (loads lessons relevant to a specific branch):
 ```
 /context-load full my-feature-branch
 ```
 
-## Prerequisites
+## prerequisites
 
 - `vault/` directory exists at the project root
 - `vault/graph/index.md` exists (run `/map-codebase` first if missing)
 
-## Inputs
+## inputs
 
-| Input | Description | Required |
+| input | description | required |
 |-------|-------------|----------|
-| Scope | `full` (default), `graph-only`, or `lessons-only` | No |
-| Feature filter | Branch name or feature slug to filter lessons context | No |
+| scope | `full` (default), `graph-only`, or `lessons-only` | no |
+| feature filter | branch name or feature slug to filter lessons context | no |
 
-## Steps
+## steps
 
-1. **Read `vault/graph/index.md`**: Load the node list and key relationship summary. Note the total node count and any god nodes listed.
+1. **read `vault/graph/index.md`**: load the node list and key relationship summary. note the total node count and any god nodes listed.
 
-2. **Read `vault/context/decisions.md`**: Load all recorded architectural decisions.
+2. **read `vault/context/decisions.md`**: load all recorded architectural decisions.
 
-3. **Read `vault/context/patterns.md`**: Load all identified patterns.
+3. **read `vault/context/patterns.md`**: load all identified patterns.
 
-4. **Load relevant lessons** (skip if scope is `graph-only`):
-   - Check `vault/lessons/` for entries matching the current feature (by branch name or feature slug if a filter was provided)
-   - If no filter, load the most recent lessons entry (alphabetically last filename)
-   - If `vault/lessons/` is empty, skip silently
+4. **load relevant lessons** (skip if scope is `graph-only`):
+   - check `vault/lessons/` for entries matching the current feature (by branch name or feature slug if a filter was provided)
+   - if no filter, load the most recent lessons entry (alphabetically last filename)
+   - if `vault/lessons/` is empty, skip silently
 
-5. **Summarise loaded context** in a brief header of ≤5 bullet points. If Caveman mode is active, use Caveman compression. Example:
+5. **summarise loaded context** in a brief header of ≤5 bullet points. if caveman mode is active, use caveman compression. example:
    ```
-   Context loaded:
-   - Graph: 42 nodes, 3 god nodes (README.md, src/core.py, specs/)
-   - Decisions: 7 recorded (latest: 2026-04-29 — decorator pattern chosen)
-   - Patterns: 3 identified (latest: idempotent init guard)
-   - Lessons: 1 entry loaded (001-spekificity-platform)
-   - Ready.
+   context loaded:
+   - graph: 42 nodes, 3 god nodes (readme.md, src/core.py, specs/)
+   - decisions: 7 recorded (latest: 2026-04-29 — decorator pattern chosen)
+   - patterns: 3 identified (latest: idempotent init guard)
+   - lessons: 1 entry loaded (001-spekificity-platform)
+   - ready.
    ```
 
-6. **Confirm to developer**: Output the summary and confirm the AI is ready to work.
+6. **confirm to developer**: output the summary and confirm the ai is ready to work.
 
-## Outputs
+## outputs
 
-| Output | Location | Description |
+| output | location | description |
 |--------|----------|-------------|
-| Active context | AI working memory | Graph structure, decisions, patterns, lessons held in session |
+| active context | ai working memory | graph structure, decisions, patterns, lessons held in session |
 
-## Error Handling
+## error handling
 
-- **`vault/graph/index.md` missing**: Inform developer: "Vault graph not found. Run `/map-codebase` to build it first." Proceed with only decisions and patterns if they exist; do not halt.
-- **`vault/` missing entirely**: Inform developer: "Vault not initialised. Run the init workflow (workflows/init-workflow.md) to create it." Halt.
-- **Empty vault** (no meaningful content): Load silently with message: "Vault is empty — no prior context available. Ready."
+- **`vault/graph/index.md` missing**: inform developer: "vault graph not found. run `/map-codebase` to build it first." proceed with only decisions and patterns if they exist; do not halt.
+- **`vault/` missing entirely**: inform developer: "vault not initialised. run the init workflow (workflows/init-workflow.md) to create it." halt.
+- **empty vault** (no meaningful content): load silently with message: "vault is empty — no prior context available. ready."
 
-## Notes
+## notes
 
-- This skill does not modify any files. It is read-only.
-- Recommended to run at the very start of every AI session, before any `/speckit-enrich-*` command.
-- For the fastest session start (large vaults), use `/context-load graph-only` and load full context on demand.
-- If Caveman mode is active (`/caveman` or `/caveman lite`), the summary output will be compressed automatically.
-- Related: [workflows/feature-lifecycle.md](../../workflows/feature-lifecycle.md)
+- this skill does not modify any files. it is read-only.
+- recommended to run at the very start of every ai session, before any `/speckit-enrich-*` command.
+- for the fastest session start (large vaults), use `/context-load graph-only` and load full context on demand.
+- if caveman mode is active (`/caveman` or `/caveman lite`), the summary output will be compressed automatically.
+- related: [workflows/feature-lifecycle.md](../../workflows/feature-lifecycle.md)

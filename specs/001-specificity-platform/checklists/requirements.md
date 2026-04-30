@@ -1,38 +1,38 @@
-# Specification Quality Checklist: Spekificity Platform — Core Project Foundation
+# specification quality checklist: spekificity platform — core project foundation
 
-**Purpose**: Validate specification completeness and quality before proceeding to planning  
-**Created**: 2026-04-29  
-**Feature**: [spec.md](../spec.md)
+**purpose**: validate specification completeness and quality before proceeding to planning  
+**created**: 2026-04-29  
+**feature**: [spec.md](../spec.md)
 
 ---
 
-## Content Quality
+## content quality
 
-- [x] No implementation details (languages, frameworks, APIs)
-- [x] Focused on user value and business needs
-- [x] Written for non-technical stakeholders
-- [x] All mandatory sections completed
+- [x] no implementation details (languages, frameworks, apis)
+- [x] focused on user value and business needs
+- [x] written for non-technical stakeholders
+- [x] all mandatory sections completed
 
-## Requirement Completeness
+## requirement completeness
 
-- [x] No [NEEDS CLARIFICATION] markers remain
-- [x] Requirements are testable and unambiguous
-- [x] Success criteria are measurable
-- [x] Success criteria are technology-agnostic (no implementation details)
-- [x] All acceptance scenarios are defined
-- [x] Edge cases are identified
-- [x] Scope is clearly bounded
-- [x] Dependencies and assumptions identified
+- [x] no [needs clarification] markers remain
+- [x] requirements are testable and unambiguous
+- [x] success criteria are measurable
+- [x] success criteria are technology-agnostic (no implementation details)
+- [x] all acceptance scenarios are defined
+- [x] edge cases are identified
+- [x] scope is clearly bounded
+- [x] dependencies and assumptions identified
 
-## Feature Readiness
+## feature readiness
 
-- [x] All functional requirements have clear acceptance criteria
-- [x] User scenarios cover primary flows
-- [x] Feature meets measurable outcomes defined in Success Criteria
-- [x] No implementation details leak into specification
+- [x] all functional requirements have clear acceptance criteria
+- [x] user scenarios cover primary flows
+- [x] feature meets measurable outcomes defined in success criteria
+- [x] no implementation details leak into specification
 
-## Notes
+## notes
 
-- Spec validated on 2026-04-29 — all items pass
-- Open architecture questions (Graphify install mode, Obsidian headless write, vault location) are documented in architecture.md as open decisions, not as spec gaps
-- Ready to proceed to `/speckit.clarify` or `/speckit.plan`
+- spec validated on 2026-04-29 — all items pass
+- open architecture questions (graphify install mode, obsidian headless write, vault location) are documented in architecture.md as open decisions, not as spec gaps
+- ready to proceed to `/speckit.clarify` or `/speckit.plan`

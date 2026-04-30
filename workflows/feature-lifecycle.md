@@ -1,203 +1,203 @@
-# Workflow: Enriched SpecKit Feature Lifecycle
+# workflow: enriched speckit feature lifecycle
 
-## Purpose
+## purpose
 
-The complete Spekificity-enriched SpecKit feature lifecycle. Each SpecKit step is decorated with graph-aware context from the Obsidian vault, and lessons are automatically persisted at the end. Use this workflow for every feature in a Spekificity-enabled project.
+the complete spekificity-enriched speckit feature lifecycle. each speckit step is decorated with graph-aware context from the obsidian vault, and lessons are automatically persisted at the end. use this workflow for every feature in a spekificity-enabled project.
 
-> **Token efficiency**: See the [Token Efficiency](#token-efficiency) section for Caveman invocation guidance at each step.
+> **token efficiency**: see the [token efficiency](#token-efficiency) section for caveman invocation guidance at each step.
 
-## Prerequisites
+## prerequisites
 
-- Spekificity initialised (see [init-workflow.md](init-workflow.md))
-- Vault graph built (`vault/graph/index.md` exists) — if not, run [map-refresh.md](map-refresh.md) first
-- SpecKit installed (`specify --version` succeeds)
-- AI agent session open (GitHub Copilot or Claude Code)
+- spekificity initialised (see [init-workflow.md](init-workflow.md))
+- vault graph built (`vault/graph/index.md` exists) — if not, run [map-refresh.md](map-refresh.md) first
+- speckit installed (`specify --version` succeeds)
+- ai agent session open (github copilot or claude code)
 
 ---
 
-## Decision: Is the vault mapped?
+## decision: is the vault mapped?
 
 ```
 vault/graph/index.md exists?
-├── YES → proceed to Step 1
-└── NO  → run /map-codebase first (see workflows/map-refresh.md), then return here
+├── yes → proceed to step 1
+└── no  → run /map-codebase first (see workflows/map-refresh.md), then return here
 ```
 
 ---
 
-## Step 1 — Load Context
+## step 1 — load context
 
-**Skill**: `/context-load` (see [skills/context-load/SKILL.md](../skills/context-load/SKILL.md))  
-**Input**: none (reads vault automatically)  
-**Output**: AI working memory primed with graph, decisions, patterns, recent lessons
+**skill**: `/context-load` (see [skills/context-load/skill.md](../skills/context-load/skill.md))  
+**input**: none (reads vault automatically)  
+**output**: ai working memory primed with graph, decisions, patterns, recent lessons
 
 ```
 /context-load
 ```
 
-**Expected state after step 1**: AI confirms "Context loaded. [N] graph nodes, [M] decisions, [K] patterns. Ready."
+**expected state after step 1**: ai confirms "context loaded. [n] graph nodes, [m] decisions, [k] patterns. ready."
 
-**On failure**: If vault is missing, run init workflow Step 5. If vault is empty, proceed — context-load continues gracefully.
+**on failure**: if vault is missing, run init workflow step 5. if vault is empty, proceed — context-load continues gracefully.
 
 ---
 
-## Step 2 — Write the Spec (Graph-Aware)
+## step 2 — write the spec (graph-aware)
 
-**Skill**: `/speckit-enrich-specify` (see [skills/speckit-enrich/specify-enrich.md](../skills/speckit-enrich/specify-enrich.md))  
-**Input**: Feature description (your words)  
-**Output**: `specs/<feature-dir>/spec.md` enriched with graph cross-references
+**skill**: `/speckit-enrich-specify` (see [skills/speckit-enrich/specify-enrich.md](../skills/speckit-enrich/specify-enrich.md))  
+**input**: feature description (your words)  
+**output**: `specs/<feature-dir>/spec.md` enriched with graph cross-references
 
 ```
 /speckit-enrich-specify
 ```
 
-Provide your feature description when prompted. The skill enriches it with related graph nodes before passing it to `/speckit.specify`.
+provide your feature description when prompted. the skill enriches it with related graph nodes before passing it to `/speckit.specify`.
 
-**Expected state after step 2**: `specs/<feature-dir>/spec.md` exists and contains related component references in Assumptions.
+**expected state after step 2**: `specs/<feature-dir>/spec.md` exists and contains related component references in assumptions.
 
-**On failure**: If graph enrichment fails, SpecKit still runs. Check `spec.md` for completeness.
+**on failure**: if graph enrichment fails, speckit still runs. check `spec.md` for completeness.
 
 ---
 
-## Step 3 — Write the Plan (Graph-Aware)
+## step 3 — write the plan (graph-aware)
 
-**Skill**: `/speckit-enrich-plan` (see [skills/speckit-enrich/plan-enrich.md](../skills/speckit-enrich/plan-enrich.md))  
-**Input**: Current `spec.md` (read automatically)  
-**Output**: `specs/<feature-dir>/plan.md` with impacted graph nodes in Technical Context
+**skill**: `/speckit-enrich-plan` (see [skills/speckit-enrich/plan-enrich.md](../skills/speckit-enrich/plan-enrich.md))  
+**input**: current `spec.md` (read automatically)  
+**output**: `specs/<feature-dir>/plan.md` with impacted graph nodes in technical context
 
 ```
 /speckit-enrich-plan
 ```
 
-**Expected state after step 3**: `specs/<feature-dir>/plan.md` exists and Technical Context lists impacted graph nodes.
+**expected state after step 3**: `specs/<feature-dir>/plan.md` exists and technical context lists impacted graph nodes.
 
-**On failure**: If plan enrichment fails, SpecKit still runs. Manually review plan for missing component references.
+**on failure**: if plan enrichment fails, speckit still runs. manually review plan for missing component references.
 
 ---
 
-## Step 4 — Generate Tasks
+## step 4 — generate tasks
 
-**Skill**: `/speckit.tasks` (standard SpecKit — no Spekificity enrichment needed)  
-**Input**: `spec.md` and `plan.md` (read automatically by SpecKit)  
-**Output**: `specs/<feature-dir>/tasks.md`
+**skill**: `/speckit.tasks` (standard speckit — no spekificity enrichment needed)  
+**input**: `spec.md` and `plan.md` (read automatically by speckit)  
+**output**: `specs/<feature-dir>/tasks.md`
 
 ```
 /speckit.tasks
 ```
 
-**Expected state after step 4**: `specs/<feature-dir>/tasks.md` exists with a complete, dependency-ordered task list.
+**expected state after step 4**: `specs/<feature-dir>/tasks.md` exists with a complete, dependency-ordered task list.
 
 ---
 
-## Step 5 — Implement (Graph-Aware, with Auto Lessons + Map)
+## step 5 — implement (graph-aware, with auto lessons + map)
 
-**Skill**: `/speckit-enrich-implement` (see [skills/speckit-enrich/implement-enrich.md](../skills/speckit-enrich/implement-enrich.md))  
-**Input**: `tasks.md` (read automatically)  
-**Output**: All tasks completed + lessons entry written + vault graph updated
+**skill**: `/speckit-enrich-implement` (see [skills/speckit-enrich/implement-enrich.md](../skills/speckit-enrich/implement-enrich.md))  
+**input**: `tasks.md` (read automatically)  
+**output**: all tasks completed + lessons entry written + vault graph updated
 
 ```
 /speckit-enrich-implement
 ```
 
-This skill automatically invokes `/lessons-learnt` and `/map-codebase` when implementation completes.
+this skill automatically invokes `/lessons-learnt` and `/map-codebase` when implementation completes.
 
-**Expected state after step 5**: All tasks `[X]`; `vault/lessons/<date>-<slug>.md` exists; `vault/graph/index.md` timestamp is current.
+**expected state after step 5**: all tasks `[x]`; `vault/lessons/<date>-<slug>.md` exists; `vault/graph/index.md` timestamp is current.
 
-**On failure mid-task**: SpecKit will report the failing task. Resolve it, then continue with `/speckit.implement` (standard). When complete, manually run `/lessons-learnt` and `/map-codebase`.
+**on failure mid-task**: speckit will report the failing task. resolve it, then continue with `/speckit.implement` (standard). when complete, manually run `/lessons-learnt` and `/map-codebase`.
 
 ---
 
-## Step 6 — Verify Lessons and Graph
+## step 6 — verify lessons and graph
 
-After step 5, confirm:
+after step 5, confirm:
 
 ```bash
 ls vault/lessons/       # should contain a new entry for this feature
 cat vault/graph/index.md | head -10  # last_updated should be today
 ```
 
-In your AI session:
+in your ai session:
 ```
 /context-load
-# Verify the new lessons entry appears in the summary
+# verify the new lessons entry appears in the summary
 ```
 
 ---
 
-## Step 7 — (Optional) Archive or Close Feature
+## step 7 — (optional) archive or close feature
 
-Standard git workflow:
+standard git workflow:
 ```bash
-git add -A
+git add -a
 git commit -m "feat(001-feature-name): implement feature"
 git push
-# Open PR / merge
+# open pr / merge
 ```
 
 ---
 
-## Full Sequence Summary
+## full sequence summary
 
 ```
-Session start
+session start
     │
     ▼
-/context-load                        ← Step 1: Load vault context
+/context-load                        ← step 1: load vault context
     │
     ▼
-/speckit-enrich-specify              ← Step 2: Write spec (graph-aware)
+/speckit-enrich-specify              ← step 2: write spec (graph-aware)
     │
     ▼
-/speckit-enrich-plan                 ← Step 3: Write plan (graph-aware)
+/speckit-enrich-plan                 ← step 3: write plan (graph-aware)
     │
     ▼
-/speckit.tasks                       ← Step 4: Generate tasks (standard SpecKit)
+/speckit.tasks                       ← step 4: generate tasks (standard speckit)
     │
     ▼
-/speckit-enrich-implement            ← Step 5: Implement + auto-lessons + auto-map
+/speckit-enrich-implement            ← step 5: implement + auto-lessons + auto-map
     │                   │
     │              /lessons-learnt   ← auto-invoked at completion
     │              /map-codebase     ← auto-invoked at completion
     ▼
-Feature complete
+feature complete
 ```
 
 ---
 
-## Recovery Instructions
+## recovery instructions
 
-| Failure point | Recovery action |
+| failure point | recovery action |
 |---------------|----------------|
-| Step 1 — vault missing | Run `workflows/init-workflow.md` Step 5 |
-| Step 1 — vault empty | Proceed; context-load is graceful with empty vault |
-| Step 2 — spec enrichment fails | Run `/speckit.specify` directly; manually add graph refs |
-| Step 3 — plan enrichment fails | Run `/speckit.plan` directly; manually add impacted nodes |
-| Step 4 — task generation fails | Check `spec.md` and `plan.md` exist; re-run `/speckit.tasks` |
-| Step 5 — task fails mid-way | Fix the failing task; re-run `/speckit.implement`; run `/lessons-learnt` manually |
-| Step 5 — `/lessons-learnt` fails | Run `/lessons-learnt` manually after implementation |
-| Step 5 — `/map-codebase` fails | Run `/map-codebase` manually after implementation |
+| step 1 — vault missing | run `workflows/init-workflow.md` step 5 |
+| step 1 — vault empty | proceed; context-load is graceful with empty vault |
+| step 2 — spec enrichment fails | run `/speckit.specify` directly; manually add graph refs |
+| step 3 — plan enrichment fails | run `/speckit.plan` directly; manually add impacted nodes |
+| step 4 — task generation fails | check `spec.md` and `plan.md` exist; re-run `/speckit.tasks` |
+| step 5 — task fails mid-way | fix the failing task; re-run `/speckit.implement`; run `/lessons-learnt` manually |
+| step 5 — `/lessons-learnt` fails | run `/lessons-learnt` manually after implementation |
+| step 5 — `/map-codebase` fails | run `/map-codebase` manually after implementation |
 
 ---
 
-## Token Efficiency
+## token efficiency
 
-See notes at each step for Caveman recommendations. Summary:
+see notes at each step for caveman recommendations. summary:
 
-| Step | Recommended Caveman mode | Why |
+| step | recommended caveman mode | why |
 |------|--------------------------|-----|
-| Step 1 (context-load) | `/caveman lite` | Structured summary output — lite avoids over-compression |
-| Step 2 (specify) | `/caveman lite` | Spec requires structured content — lite preserves formatting |
-| Step 3 (plan) | `/caveman lite` | Same as specify |
-| Step 4 (tasks) | `/caveman lite` | Task list format must stay precise |
-| Step 5 (implement) | `/caveman` (full) | Implementation narration benefits from full compression |
-| Step 6 (verify) | off or `/caveman lite` | Short verification step |
+| step 1 (context-load) | `/caveman lite` | structured summary output — lite avoids over-compression |
+| step 2 (specify) | `/caveman lite` | spec requires structured content — lite preserves formatting |
+| step 3 (plan) | `/caveman lite` | same as specify |
+| step 4 (tasks) | `/caveman lite` | task list format must stay precise |
+| step 5 (implement) | `/caveman` (full) | implementation narration benefits from full compression |
+| step 6 (verify) | off or `/caveman lite` | short verification step |
 
-Activate at session start:
+activate at session start:
 ```
 /caveman lite
 ```
 
-Switch to full mode before implementation:
+switch to full mode before implementation:
 ```
 /caveman
 ```

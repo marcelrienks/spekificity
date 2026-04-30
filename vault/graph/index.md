@@ -1,56 +1,56 @@
 ---
-last_updated: YYYY-MM-DDTHH:MM:SSZ
+last_updated: yyyy-mm-ddthh:mm:ssz
 generated_by: graphifyy
 node_count: 0
 god_node_count: 0
 ---
 
-# Vault Graph Index
+# vault graph index
 
-> **Note**: This file is a template. It is overwritten by `/map-codebase` (Graphify) at runtime. Do not edit manually — changes will be lost on the next map run.
+> **note**: this file is a template. it is overwritten by `/map-codebase` (graphify) at runtime. do not edit manually — changes will be lost on the next map run.
 >
-> After running `/map-codebase`, this file will contain a live index of all project nodes.
+> after running `/map-codebase`, this file will contain a live index of all project nodes.
 
 ---
 
-## Last Run
+## last run
 
-| Field | Value |
+| field | value |
 |-------|-------|
-| Generated | *(timestamp written by Graphify)* |
-| Total nodes | *(count written by Graphify)* |
-| God nodes | *(count written by Graphify)* |
-| Run mode | incremental / full |
+| generated | *(timestamp written by graphify)* |
+| total nodes | *(count written by graphify)* |
+| god nodes | *(count written by graphify)* |
+| run mode | incremental / full |
 
 ---
 
-## God Nodes
+## god nodes
 
-God nodes are files with unusually high connectivity — they are the most important files to understand when assessing the impact of any change.
+god nodes are files with unusually high connectivity — they are the most important files to understand when assessing the impact of any change.
 
-| Node ID | Path | Connections |
+| node id | path | connections |
 |---------|------|-------------|
-| *(populated by Graphify)* | | |
+| *(populated by graphify)* | | |
 
 ---
 
-## All Nodes
+## all nodes
 
-| Node ID | Type | Path | Language | Last Updated |
+| node id | type | path | language | last updated |
 |---------|------|------|----------|-------------|
-| *(populated by Graphify)* | | | | |
+| *(populated by graphify)* | | | | |
 
 ---
 
-## How to Use This Index
+## how to use this index
 
-**For AI agents**:
-1. Read this file at session start (or use `/context-load` which reads it automatically)
-2. Use node IDs to navigate to `vault/graph/nodes/<node-id>.md` for detailed information about a specific file
-3. Reference god nodes first when assessing the blast radius of any change
-4. Do not scan source directories recursively — use this index instead
+**for ai agents**:
+1. read this file at session start (or use `/context-load` which reads it automatically)
+2. use node ids to navigate to `vault/graph/nodes/<node-id>.md` for detailed information about a specific file
+3. reference god nodes first when assessing the blast radius of any change
+4. do not scan source directories recursively — use this index instead
 
-**For developers**:
-- Run `/map-codebase` to refresh this index after adding or deleting files
-- Run `/map-codebase --full` after large refactors
-- See [workflows/map-refresh.md](../../workflows/map-refresh.md) for refresh timing guidance
+**for developers**:
+- run `/map-codebase` to refresh this index after adding or deleting files
+- run `/map-codebase --full` after large refactors
+- see [workflows/map-refresh.md](../../workflows/map-refresh.md) for refresh timing guidance

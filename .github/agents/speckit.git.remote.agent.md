@@ -1,48 +1,48 @@
 ---
-description: Detect Git remote URL for GitHub integration
+description: detect git remote url for github integration
 ---
 
 
-<!-- Extension: git -->
-<!-- Config: .specify/extensions/git/ -->
-# Detect Git Remote URL
+<!-- extension: git -->
+<!-- config: .specify/extensions/git/ -->
+# detect git remote url
 
-Detect the Git remote URL for integration with GitHub services (e.g., issue creation).
+detect the git remote url for integration with github services (e.g., issue creation).
 
-## Prerequisites
+## prerequisites
 
-- Check if Git is available by running `git rev-parse --is-inside-work-tree 2>/dev/null`
-- If Git is not available, output a warning and return empty:
+- check if git is available by running `git rev-parse --is-inside-work-tree 2>/dev/null`
+- if git is not available, output a warning and return empty:
   ```
-  [specify] Warning: Git repository not detected; cannot determine remote URL
+  [specify] warning: git repository not detected; cannot determine remote url
   ```
 
-## Execution
+## execution
 
-Run the following command to get the remote URL:
+run the following command to get the remote url:
 
 ```bash
 git config --get remote.origin.url
 ```
 
-## Output
+## output
 
-Parse the remote URL and determine:
+parse the remote url and determine:
 
-1. **Repository owner**: Extract from the URL (e.g., `github` from `https://github.com/github/spec-kit.git`)
-2. **Repository name**: Extract from the URL (e.g., `spec-kit` from `https://github.com/github/spec-kit.git`)
-3. **Is GitHub**: Whether the remote points to a GitHub repository
+1. **repository owner**: extract from the url (e.g., `github` from `https://github.com/github/spec-kit.git`)
+2. **repository name**: extract from the url (e.g., `spec-kit` from `https://github.com/github/spec-kit.git`)
+3. **is github**: whether the remote points to a github repository
 
-Supported URL formats:
-- HTTPS: `https://github.com/<owner>/<repo>.git`
-- SSH: `git@github.com:<owner>/<repo>.git`
+supported url formats:
+- https: `https://github.com/<owner>/<repo>.git`
+- ssh: `git@github.com:<owner>/<repo>.git`
 
-> [!CAUTION]
-> ONLY report a GitHub repository if the remote URL actually points to github.com.
-> Do NOT assume the remote is GitHub if the URL format doesn't match.
+> [!caution]
+> only report a github repository if the remote url actually points to github.com.
+> do not assume the remote is github if the url format doesn't match.
 
-## Graceful Degradation
+## graceful degradation
 
-If Git is not installed, the directory is not a Git repository, or no remote is configured:
-- Return an empty result
-- Do NOT error — other workflows should continue without Git remote information
+if git is not installed, the directory is not a git repository, or no remote is configured:
+- return an empty result
+- do not error — other workflows should continue without git remote information

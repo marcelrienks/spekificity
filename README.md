@@ -2,7 +2,7 @@
 
 > ⚠️ **Status**: Under active development. APIs and documentation subject to change.
 
-**A documentation-only meta-tooling layer** that connects [Graphify](https://github.com/graphify/graphifyy), [Obsidian](https://obsidian.md), [SpecKit/Specify](https://github.com/github/spec-kit), and the [Caveman skill](https://github.com/marcelrienks/.agents/skills/caveman) into a cohesive, context-aware, token-efficient AI development workflow.
+**A documentation-only platform** that connects [Graphify](https://github.com/graphify/graphifyy), [Obsidian](https://obsidian.md), [SpecKit/Specify](https://github.com/github/spec-kit), and the [Caveman skill](https://github.com/marcelrienks/.agents/skills/caveman) to solve persistent AI context loss, excessive token consumption, and shallow feature planning. Produces zero executable code—only markdown skills, workflows, and setup guides that developers install once, then use to run enriched SpecKit feature lifecycles with persistent context and 40–75% token reduction.
 
 Spekificity produces **no executable application code**. Every artefact is a markdown skill, workflow guide, or setup document that an AI agent can read and follow.
 
@@ -47,6 +47,22 @@ Short version:
 6. Start your feature lifecycle with `/context-load` → `/speckit-enrich-specify` → ...
 
 See [workflows/init-workflow.md](workflows/init-workflow.md) for the full init checklist.
+
+---
+
+## Documentation Guide
+
+**Start here**: [README.md](README.md) (you are here)
+
+**Next**: Choose your path:
+- **Understand the project**: Read [docs/prd.md](docs/prd.md) (problems, goals, user journeys)
+- **Set up your first project**: Follow [specs/001-specificity-platform/quickstart.md](specs/001-specificity-platform/quickstart.md)
+- **Learn the architecture**: See [docs/architecture.md](docs/architecture.md)
+- **Run into issues**: Check [docs/troubleshooting.md](docs/troubleshooting.md)
+
+**Daily usage**: [workflows/feature-lifecycle.md](workflows/feature-lifecycle.md) — complete enriched SpecKit workflow
+
+**Reference**: [docs/glossary.md](docs/glossary.md) — terminology, [docs/init.md](docs/init.md) — initialization narrative
 
 ---
 

@@ -1,128 +1,128 @@
-# Feature Specification: [FEATURE NAME]
+# feature specification: [feature name]
 
-**Feature Branch**: `[###-feature-name]`  
-**Created**: [DATE]  
-**Status**: Draft  
-**Input**: User description: "$ARGUMENTS"
+**feature branch**: `[###-feature-name]`  
+**created**: [date]  
+**status**: draft  
+**input**: user description: "$arguments"
 
-## User Scenarios & Testing *(mandatory)*
+## user scenarios & testing *(mandatory)*
 
 <!--
-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
-  Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
+  important: user stories should be prioritized as user journeys ordered by importance.
+  each user story/journey must be independently testable - meaning if you implement just one of them,
+  you should still have a viable mvp (minimum viable product) that delivers value.
   
-  Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
-  Think of each story as a standalone slice of functionality that can be:
-  - Developed independently
-  - Tested independently
-  - Deployed independently
-  - Demonstrated to users independently
+  assign priorities (p1, p2, p3, etc.) to each story, where p1 is the most critical.
+  think of each story as a standalone slice of functionality that can be:
+  - developed independently
+  - tested independently
+  - deployed independently
+  - demonstrated to users independently
 -->
 
-### User Story 1 - [Brief Title] (Priority: P1)
+### user story 1 - [brief title] (priority: p1)
 
-[Describe this user journey in plain language]
+[describe this user journey in plain language]
 
-**Why this priority**: [Explain the value and why it has this priority level]
+**why this priority**: [explain the value and why it has this priority level]
 
-**Independent Test**: [Describe how this can be tested independently - e.g., "Can be fully tested by [specific action] and delivers [specific value]"]
+**independent test**: [describe how this can be tested independently - e.g., "can be fully tested by [specific action] and delivers [specific value]"]
 
-**Acceptance Scenarios**:
+**acceptance scenarios**:
 
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-2. **Given** [initial state], **When** [action], **Then** [expected outcome]
+1. **given** [initial state], **when** [action], **then** [expected outcome]
+2. **given** [initial state], **when** [action], **then** [expected outcome]
 
 ---
 
-### User Story 2 - [Brief Title] (Priority: P2)
+### user story 2 - [brief title] (priority: p2)
 
-[Describe this user journey in plain language]
+[describe this user journey in plain language]
 
-**Why this priority**: [Explain the value and why it has this priority level]
+**why this priority**: [explain the value and why it has this priority level]
 
-**Independent Test**: [Describe how this can be tested independently]
+**independent test**: [describe how this can be tested independently]
 
-**Acceptance Scenarios**:
+**acceptance scenarios**:
 
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-
----
-
-### User Story 3 - [Brief Title] (Priority: P3)
-
-[Describe this user journey in plain language]
-
-**Why this priority**: [Explain the value and why it has this priority level]
-
-**Independent Test**: [Describe how this can be tested independently]
-
-**Acceptance Scenarios**:
-
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+1. **given** [initial state], **when** [action], **then** [expected outcome]
 
 ---
 
-[Add more user stories as needed, each with an assigned priority]
+### user story 3 - [brief title] (priority: p3)
 
-### Edge Cases
+[describe this user journey in plain language]
+
+**why this priority**: [explain the value and why it has this priority level]
+
+**independent test**: [describe how this can be tested independently]
+
+**acceptance scenarios**:
+
+1. **given** [initial state], **when** [action], **then** [expected outcome]
+
+---
+
+[add more user stories as needed, each with an assigned priority]
+
+### edge cases
 
 <!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right edge cases.
+  action required: the content in this section represents placeholders.
+  fill them out with the right edge cases.
 -->
 
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
+- what happens when [boundary condition]?
+- how does system handle [error scenario]?
 
-## Requirements *(mandatory)*
+## requirements *(mandatory)*
 
 <!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right functional requirements.
+  action required: the content in this section represents placeholders.
+  fill them out with the right functional requirements.
 -->
 
-### Functional Requirements
+### functional requirements
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **fr-001**: system must [specific capability, e.g., "allow users to create accounts"]
+- **fr-002**: system must [specific capability, e.g., "validate email addresses"]  
+- **fr-003**: users must be able to [key interaction, e.g., "reset their password"]
+- **fr-004**: system must [data requirement, e.g., "persist user preferences"]
+- **fr-005**: system must [behavior, e.g., "log all security events"]
 
-*Example of marking unclear requirements:*
+*example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **fr-006**: system must authenticate users via [needs clarification: auth method not specified - email/password, sso, oauth?]
+- **fr-007**: system must retain user data for [needs clarification: retention period not specified]
 
-### Key Entities *(include if feature involves data)*
+### key entities *(include if feature involves data)*
 
-- **[Entity 1]**: [What it represents, key attributes without implementation]
-- **[Entity 2]**: [What it represents, relationships to other entities]
+- **[entity 1]**: [what it represents, key attributes without implementation]
+- **[entity 2]**: [what it represents, relationships to other entities]
 
-## Success Criteria *(mandatory)*
+## success criteria *(mandatory)*
 
 <!--
-  ACTION REQUIRED: Define measurable success criteria.
-  These must be technology-agnostic and measurable.
+  action required: define measurable success criteria.
+  these must be technology-agnostic and measurable.
 -->
 
-### Measurable Outcomes
+### measurable outcomes
 
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+- **sc-001**: [measurable metric, e.g., "users can complete account creation in under 2 minutes"]
+- **sc-002**: [measurable metric, e.g., "system handles 1000 concurrent users without degradation"]
+- **sc-003**: [user satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
+- **sc-004**: [business metric, e.g., "reduce support tickets related to [x] by 50%"]
 
-## Assumptions
+## assumptions
 
 <!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right assumptions based on reasonable defaults
+  action required: the content in this section represents placeholders.
+  fill them out with the right assumptions based on reasonable defaults
   chosen when the feature description did not specify certain details.
 -->
 
-- [Assumption about target users, e.g., "Users have stable internet connectivity"]
-- [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
-- [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
-- [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+- [assumption about target users, e.g., "users have stable internet connectivity"]
+- [assumption about scope boundaries, e.g., "mobile support is out of scope for v1"]
+- [assumption about data/environment, e.g., "existing authentication system will be reused"]
+- [dependency on existing system/service, e.g., "requires access to the existing user profile api"]

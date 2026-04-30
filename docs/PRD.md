@@ -1,273 +1,273 @@
-# Spekificity — Product Requirements Document (PRD)
+# spekificity — product requirements document (prd)
 
-**Version**: 1.0.0  
-**Status**: Draft  
-**Date**: 2026-04-29  
-**Owner**: Project Initiator
-
----
-
-## 1. Executive Summary
-
-Spekificity is a meta-tooling project that enhances AI-assisted software development by connecting four existing tools — Graphify, Obsidian, GitHub SpecKit/Specify, and the Caveman skill — into a single, cohesive workflow. It does not produce executable application code. Instead, it produces a structured library of skills, workflow guides, and AI agent instructions that any developer can install into any project to gain persistent context, token-efficient AI interactions, and a supercharged SpecKit development lifecycle.
-
-**Primary value proposition**: Reduce the friction, token cost, and context loss of AI-assisted development without replacing or forking any existing tool.
+**version**: 1.0.0  
+**status**: draft  
+**date**: 2026-04-29  
+**owner**: project initiator
 
 ---
 
-## 2. Problem Statement
+## 1. executive summary
 
-### 2.1 Context Loss Between Sessions
+spekificity is a platform that enhances ai-assisted software development by connecting four existing tools — graphify, obsidian, github speckit/specify, and the caveman skill — into a single workflow. it does not produce executable application code. instead it produces markdown skills, workflow guides, and ai agent instructions that any developer can install into any project to gain persistent context, token-efficient ai interactions, and an enriched speckit development lifecycle.
 
-AI agents have no memory between sessions. Every session restart requires the developer to re-orient the agent to the codebase, past decisions, and ongoing design choices. This is time-consuming, error-prone, and expensive in tokens.
-
-### 2.2 High Token Consumption
-
-When an AI agent needs to understand the codebase or documentation, it typically reads every file recursively. On medium or large projects this consumes significant token budget and slows responses, pushing developers toward truncating context — which degrades quality.
-
-### 2.3 Shallow SpecKit Lifecycle
-
-SpecKit provides an excellent spec-first workflow, but without awareness of the existing codebase the AI produces specs and plans disconnected from reality. Developers must manually feed context, which is tedious and inconsistent.
-
-### 2.4 Verbose AI Interactions
-
-AI agents produce verbose responses by default. In long sessions this accumulates into very large context windows, increasing latency and cost.
+**primary value proposition**: reduce the friction, token cost, and context loss of ai-assisted development without replacing or forking any existing tool.
 
 ---
 
-## 3. Goals and Non-Goals
+## 2. problem statement
 
-### Goals
+### 2.1 context loss between sessions
 
-| # | Goal |
+ai agents have no memory between sessions. every session restart requires the developer to re-orient the agent to the codebase, past decisions, and ongoing design choices. this is time-consuming, error-prone, and expensive in tokens.
+
+### 2.2 high token consumption
+
+when an ai agent needs to understand the codebase or documentation, it typically reads every file recursively. on medium or large projects this consumes significant token budget and slows responses, pushing developers toward truncating context — which degrades quality.
+
+### 2.3 shallow speckit lifecycle
+
+speckit provides an excellent spec-first workflow, but without awareness of the existing codebase the ai produces specs and plans disconnected from reality. developers must manually feed context, which is tedious and inconsistent.
+
+### 2.4 verbose ai interactions
+
+ai agents produce verbose responses by default. in long sessions this accumulates into very large context windows, increasing latency and cost.
+
+---
+
+## 3. goals and non-goals
+
+### goals
+
+| # | goal |
 |---|------|
-| G1 | Provide a one-command (or AI-guided) initialisation that wires all tools together |
-| G2 | Build and maintain a persistent, graph-indexed context store (Graphify → Obsidian) |
-| G3 | Decorate the SpecKit workflow with graph-aware, context-rich skills |
-| G4 | Integrate Caveman mode throughout to minimise token usage |
-| G5 | Capture and surface lessons learnt across the speckit lifecycle |
-| G6 | Allow each component to be updated independently |
-| G7 | Support GitHub Copilot and Claude Code as first-class AI agents |
+| g1 | provide a one-command (or ai-guided) initialisation that wires all tools together |
+| g2 | build and maintain a persistent, graph-indexed context store (graphify → obsidian) |
+| g3 | decorate the speckit workflow with graph-aware, context-rich skills |
+| g4 | integrate caveman mode throughout to minimise token usage |
+| g5 | capture and surface lessons learnt across the speckit lifecycle |
+| g6 | allow each component to be updated independently |
+| g7 | support github copilot and claude code as first-class ai agents |
 
-### Non-Goals (v1)
+### non-goals (v1)
 
-- Building any of Graphify, Obsidian, or SpecKit functionality from scratch
-- Providing a GUI or web interface
-- Supporting AI agents beyond Copilot and Claude Code
-- Cloud sync or multi-user vault sharing
-- Automatic merge conflict resolution between SpecKit upstream updates and Spekificity custom skills
+- building any of graphify, obsidian, or speckit functionality from scratch
+- providing a gui or web interface
+- supporting ai agents beyond copilot and claude code
+- cloud sync or multi-user vault sharing
+- automatic merge conflict resolution between speckit upstream updates and spekificity custom skills
 
 ---
 
-## 4. Target Users
+## 4. target users
 
-| Persona | Description |
+| persona | description |
 |---------|-------------|
-| **Solo Developer** | Individual working on personal or side projects; values speed and reduced cognitive load |
-| **Team Lead / Architect** | Sets up the toolchain for a team; values consistency and onboarding simplicity |
-| **AI Power User** | Highly familiar with Copilot/Claude; wants to squeeze maximum value from every token |
+| **solo developer** | individual working on personal or side projects; values speed and reduced cognitive load |
+| **team lead / architect** | sets up the toolchain for a team; values consistency and onboarding simplicity |
+| **ai power user** | highly familiar with copilot/claude; wants to squeeze maximum value from every token |
 
-**Minimum viable user**: A developer comfortable with a terminal, git, and basic AI agent interaction who wants structured AI assistance without manual context management.
-
----
-
-## 5. User Journeys
-
-### Journey 1 — Initialise a New Project
-
-```
-1. Developer creates a new project folder
-2. Runs: spekificity init  (or follows AI-guided setup)
-3. Spekificity detects tool status (installed / missing)
-4. Missing tools are installed or flagged as prerequisites
-5. Custom skills and workflow docs are installed locally
-6. Developer receives a summary of what was installed and next steps
-```
-
-### Journey 2 — Map an Existing Codebase
-
-```
-1. Developer opens AI chat in the project
-2. Invokes: /map-codebase
-3. AI runs Graphify against source files and docs
-4. Graph is stored as an Obsidian vault inside the project
-5. Future AI sessions load the vault index instead of scanning files
-```
-
-### Journey 3 — Run a SpecKit Feature Lifecycle (Enriched)
-
-```
-1. /speckit.specify  → AI reads vault + user description → produces richer spec
-2. /speckit.plan     → AI reads vault + spec → plan references existing components
-3. /speckit.tasks    → Generates dependency-ordered tasks
-4. /speckit.implement → AI implements, guided by vault context
-5. /lessons-learnt   → Structured entry appended to Obsidian vault
-```
-
-### Journey 4 — Update a Single Component
-
-```
-1. SpecKit releases a new version
-2. Developer runs: npm update -g specify
-3. Spekificity custom skills continue to work unchanged
-4. If the SpecKit API changed, only the relevant adapter skill needs updating
-```
+**minimum viable user**: a developer comfortable with a terminal, git, and basic ai agent interaction who wants structured ai assistance without manual context management.
 
 ---
 
-## 6. Functional Requirements
+## 5. user journeys
 
-| ID | Requirement | Priority |
+### journey 1 — initialise a new project
+
+```
+1. developer creates a new project folder
+2. runs: spekificity init  (or follows ai-guided setup)
+3. spekificity detects tool status (installed / missing)
+4. missing tools are installed or flagged as prerequisites
+5. custom skills and workflow docs are installed locally
+6. developer receives a summary of what was installed and next steps
+```
+
+### journey 2 — map an existing codebase
+
+```
+1. developer opens ai chat in the project
+2. invokes: /map-codebase
+3. ai runs graphify against source files and docs
+4. graph is stored as an obsidian vault inside the project
+5. future ai sessions load the vault index instead of scanning files
+```
+
+### journey 3 — run a speckit feature lifecycle (enriched)
+
+```
+1. /speckit.specify  → ai reads vault + user description → produces richer spec
+2. /speckit.plan     → ai reads vault + spec → plan references existing components
+3. /speckit.tasks    → generates dependency-ordered tasks
+4. /speckit.implement → ai implements, guided by vault context
+5. /lessons-learnt   → structured entry appended to obsidian vault
+```
+
+### journey 4 — update a single component
+
+```
+1. speckit releases a new version
+2. developer runs: npm update -g specify
+3. spekificity custom skills continue to work unchanged
+4. if the speckit api changed, only the relevant adapter skill needs updating
+```
+
+---
+
+## 6. functional requirements
+
+| id | requirement | priority |
 |----|-------------|----------|
-| FR-001 | Init command installs/links Graphify, Obsidian, SpecKit | P1 |
-| FR-002 | Init installs Spekificity custom skills locally | P1 |
-| FR-003 | Init is idempotent | P1 |
-| FR-004 | SpecKit is installed globally; custom skills are local | P1 |
-| FR-005 | Mapping skill builds Graphify graph stored as Obsidian vault | P1 |
-| FR-006 | Mapping skill supports incremental refresh | P2 |
-| FR-007 | All SpecKit-extension skills follow decorator pattern | P1 |
-| FR-008 | Lessons-learnt skill writes structured entries to Obsidian vault | P2 |
-| FR-009 | Caveman skill is invokable at any workflow step | P2 |
-| FR-010 | Each component is independently updatable | P1 |
-| FR-011 | System supports GitHub Copilot and Claude Code | P1 |
-| FR-012 | All non-automatable setup steps are documented as AI-executable guides | P1 |
+| fr-001 | init command installs/links graphify, obsidian, speckit | p1 |
+| fr-002 | init installs spekificity custom skills locally | p1 |
+| fr-003 | init is idempotent | p1 |
+| fr-004 | speckit is installed globally; custom skills are local | p1 |
+| fr-005 | mapping skill builds graphify graph stored as obsidian vault | p1 |
+| fr-006 | mapping skill supports incremental refresh | p2 |
+| fr-007 | all speckit-extension skills follow decorator pattern | p1 |
+| fr-008 | lessons-learnt skill writes structured entries to obsidian vault | p2 |
+| fr-009 | caveman skill is invokable at any workflow step | p2 |
+| fr-010 | each component is independently updatable | p1 |
+| fr-011 | system supports github copilot and claude code | p1 |
+| fr-012 | all non-automatable setup steps are documented as ai-executable guides | p1 |
 
 ---
 
-## 7. Non-Functional Requirements
+## 7. non-functional requirements
 
-| ID | Requirement |
+| id | requirement |
 |----|-------------|
-| NFR-001 | First-time init completes in under 10 minutes on a standard dev machine |
-| NFR-002 | Token consumption for cross-cutting queries reduced ≥40% vs. unmapped equivalent |
-| NFR-003 | Caveman mode reduces response verbosity ≥60% by character count |
-| NFR-004 | All skills operate on macOS and Linux |
-| NFR-005 | No backend server or cloud service required (fully local) |
-| NFR-006 | Lessons-learnt entries are surfaced to AI within 2 seconds of session start |
-| NFR-007 | A developer with basic terminal/git knowledge can complete setup in under 30 minutes |
+| nfr-001 | first-time init completes in under 10 minutes on a standard dev machine |
+| nfr-002 | token consumption for cross-cutting queries reduced ≥40% vs. unmapped equivalent |
+| nfr-003 | caveman mode reduces response verbosity ≥60% by character count |
+| nfr-004 | all skills operate on macos and linux |
+| nfr-005 | no backend server or cloud service required (fully local) |
+| nfr-006 | lessons-learnt entries are surfaced to ai within 2 seconds of session start |
+| nfr-007 | a developer with basic terminal/git knowledge can complete setup in under 30 minutes |
 
 ---
 
-## 8. Architecture Overview
+## 8. architecture overview
 
-### Component Map
+### component map
 
 ```
 spekificity/
-├── .agents/                    # Global: SpecKit (installed globally, not here)
+├── .agents/                    # global: speckit (installed globally, not here)
 │
-├── skills/                     # Spekificity custom skills (local per-project)
-│   ├── map-codebase/           # Graphify → Obsidian mapping skill
-│   ├── lessons-learnt/         # Structured lessons capture skill
-│   ├── speckit-enrich/         # Decorator skills for SpecKit steps
-│   └── context-load/           # Vault context loading skill
+├── skills/                     # spekificity custom skills (local per-project)
+│   ├── map-codebase/           # graphify → obsidian mapping skill
+│   ├── lessons-learnt/         # structured lessons capture skill
+│   ├── speckit-enrich/         # decorator skills for speckit steps
+│   └── context-load/           # vault context loading skill
 │
-├── workflows/                  # Documented workflow sequences
+├── workflows/                  # documented workflow sequences
 │   ├── init-workflow.md
 │   ├── feature-lifecycle.md
 │   └── update-component.md
 │
-├── setup-guides/               # AI-executable setup instructions
+├── setup-guides/               # ai-executable setup instructions
 │   ├── graphify-setup.md
 │   ├── obsidian-setup.md
 │   └── speckit-setup.md
 │
-├── vault/                      # Obsidian vault (per-project, gitignored or committed)
-│   ├── graph/                  # Graphify-generated graph nodes
-│   ├── lessons/                # Lessons learnt entries
-│   └── context/                # Persistent AI context notes
+├── vault/                      # obsidian vault (per-project, gitignored or committed)
+│   ├── graph/                  # graphify-generated graph nodes
+│   ├── lessons/                # lessons learnt entries
+│   └── context/                # persistent ai context notes
 │
-└── docs/                       # Project-level documentation
+└── docs/                       # project-level documentation
     ├── init.md
     ├── prd.md
     ├── architecture.md
     └── glossary.md
 ```
 
-### Data Flow
+### data flow
 
 ```
-Source files / Docs
+source files / docs
         │
         ▼
-    Graphify
+    graphify
         │  generates dependency graph
         ▼
-  Obsidian Vault
+  obsidian vault
         │  provides indexed context
         ▼
-   AI Agent Session
+   ai agent session
         │  consults vault instead of scanning files
         ▼
-  SpecKit Lifecycle  ◄──── Spekificity decorator skills
+  speckit lifecycle  ◄──── spekificity decorator skills
         │
         ▼
-  Lessons Learnt ──► Obsidian Vault (feedback loop)
+  lessons learnt ──► obsidian vault (feedback loop)
 ```
 
 ---
 
-## 9. Integration Points
+## 9. integration points
 
-| Integration | Direction | Protocol |
+| integration | direction | protocol |
 |-------------|-----------|----------|
-| Graphify | Spekificity → Graphify | CLI command invocation |
-| Obsidian vault | Read/write | Local filesystem (markdown) |
-| SpecKit / Specify | Decorator wrapping | Skill file invocation |
-| GitHub Copilot | AI consumes skills | `.github/copilot-instructions.md` + `.agents/` |
-| Claude Code | AI consumes skills | `AGENTS.md` + `.agents/` |
-| Caveman skill | Invoked within sessions | `/caveman` command |
+| graphify | spekificity → graphify | cli command invocation |
+| obsidian vault | read/write | local filesystem (markdown) |
+| speckit / specify | decorator wrapping | skill file invocation |
+| github copilot | ai consumes skills | `.github/copilot-instructions.md` + `.agents/` |
+| claude code | ai consumes skills | `agents.md` + `.agents/` |
+| caveman skill | invoked within sessions | `/caveman` command |
 
 ---
 
-## 10. Success Metrics
+## 10. success metrics
 
-| Metric | Target | Measurement Method |
+| metric | target | measurement method |
 |--------|--------|-------------------|
-| Init completion time | ≤ 30 minutes (first-time) | Stopwatch from command to first `/speckit.specify` |
-| Token reduction | ≥ 40% on cross-cutting queries | Compare token counts: mapped vs. unmapped project |
-| Caveman verbosity reduction | ≥ 60% character count | Compare response lengths: caveman on vs. off |
-| Component update effort | ≤ 5 minutes per component | Time a SpecKit global update with Spekificity active |
-| Developer onboarding | Usable without prior knowledge of tools | Usability test with an unfamiliar developer |
+| init completion time | ≤ 30 minutes (first-time) | stopwatch from command to first `/speckit.specify` |
+| token reduction | ≥ 40% on cross-cutting queries | compare token counts: mapped vs. unmapped project |
+| caveman verbosity reduction | ≥ 60% character count | compare response lengths: caveman on vs. off |
+| component update effort | ≤ 5 minutes per component | time a speckit global update with spekificity active |
+| developer onboarding | usable without prior knowledge of tools | usability test with an unfamiliar developer |
 
 ---
 
-## 11. Risks and Mitigations
+## 11. risks and mitigations
 
-| Risk | Likelihood | Impact | Mitigation |
+| risk | likelihood | impact | mitigation |
 |------|-----------|--------|------------|
-| Graphify requires global install (cannot be local) | Medium | Medium | Document as prerequisite; init verifies before proceeding |
-| Obsidian vault format changes in a future release | Low | High | Vault uses plain markdown; format is stable |
-| SpecKit API changes break decorator skills | Medium | High | Adapter skill pattern isolates breakage to one file |
-| AI agent skill format changes (Copilot, Claude) | Medium | Medium | Skills are plain markdown; format is resilient |
-| Very large vaults slow context loading | Medium | Medium | Incremental refresh + selective vault loading by skill |
+| graphify requires global install (cannot be local) | medium | medium | document as prerequisite; init verifies before proceeding |
+| obsidian vault format changes in a future release | low | high | vault uses plain markdown; format is stable |
+| speckit api changes break decorator skills | medium | high | adapter skill pattern isolates breakage to one file |
+| ai agent skill format changes (copilot, claude) | medium | medium | skills are plain markdown; format is resilient |
+| very large vaults slow context loading | medium | medium | incremental refresh + selective vault loading by skill |
 
 ---
 
-## 12. Open Questions
+## 12. open questions
 
-1. Can Graphify be installed as a local `node_modules` dependency, or must it be global?
-2. Does Obsidian support headless/CLI operation for vault writes, or does it require the GUI app?
-3. What is the preferred vault commit strategy — vault checked into git, or gitignored?
-4. Should Caveman mode be opt-in per-session or always-on by default?
+1. can graphify be installed as a local `node_modules` dependency, or must it be global?
+2. does obsidian support headless/cli operation for vault writes, or does it require the gui app?
+3. what is the preferred vault commit strategy — vault checked into git, or gitignored?
+4. should caveman mode be opt-in per-session or always-on by default?
 
 ---
 
-## 13. Dependencies and Prerequisites
+## 13. dependencies and prerequisites
 
-| Dependency | Version | Notes |
+| dependency | version | notes |
 |------------|---------|-------|
-| Graphify | Latest stable | Install mode TBD (local vs global) |
-| Obsidian | Latest stable | May require GUI app as prerequisite |
-| SpecKit / Specify | ≥ 0.8.0 | Installed globally |
-| Git | Any modern version | Required for feature branch workflow |
-| Node.js / npm | LTS | Required for Specify/SpecKit |
-| GitHub Copilot or Claude Code | Current | At least one must be active |
+| graphify | latest stable | install mode tbd (local vs global) |
+| obsidian | latest stable | may require gui app as prerequisite |
+| speckit / specify | ≥ 0.8.0 | installed globally |
+| git | any modern version | required for feature branch workflow |
+| node.js / npm | lts | required for specify/speckit |
+| github copilot or claude code | current | at least one must be active |
 
 ---
 
-## 14. Revision History
+## 14. revision history
 
-| Version | Date | Author | Changes |
+| version | date | author | changes |
 |---------|------|--------|---------|
-| 1.0.0 | 2026-04-29 | Project Initiator | Initial draft |
+| 1.0.0 | 2026-04-29 | project initiator | initial draft |
