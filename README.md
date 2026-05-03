@@ -34,6 +34,73 @@ Spekificity is **built for AI agents**. Every artefact is a skill or workflow th
 
 ---
 
+## Full Feature Lifecycle
+
+For the complete enriched SpecKit workflow step-by-step, see [docs/guide.md](docs/guide.md).
+
+---
+
+## Design Principles
+
+- **Decorator pattern**: Spekificity skills wrap, not replace, standard SpecKit commands
+- **Modular independence**: Each component (Graphify, Obsidian, SpecKit, Spekificity layer) can be updated independently
+- **Global SpecKit, local customisation**: SpecKit installs globally; Spekificity skills install locally per-project
+
+---
+
+## Documentation
+
+- [docs/architecture.md](docs/architecture.md) — Directory structure, component roles, data flow, update strategy
+- [docs/guide.md](docs/guide.md) — Full feature lifecycle workflow, enriched SpecKit lifecycle
+- [docs/glossary.md](docs/glossary.md) — Terminology reference
+- [docs/faq.md](docs/faq.md) — Troubleshooting and common questions
+- [docs/validation.md](docs/validation.md) — Success criteria validation methodology
+
+---
+
+## Core Problems Solved
+
+1. **Context loss between sessions** — AI agents have no persistent memory of past decisions. Spekificity stores decisions, patterns, and lessons in an Obsidian vault that agents can read at session start.
+2. **High token consumption** — Agents typically read every file recursively to understand a codebase. Spekificity indexes the codebase as a graph, replacing recursive file scans with targeted vault queries (40%+ token savings).
+3. **Shallow SpecKit lifecycle** — SpecKit lacks awareness of existing code structure. Spekificity decorates SpecKit steps with graph-aware skills that ground specs and plans in reality.
+4. **Verbose AI interactions** — Agents are verbose by default. Caveman mode compresses responses 60%+ without losing technical accuracy.
+
+---
+
+## Session Start (Required)
+
+> **Always run `/context-load` before any feature work.** This loads the Obsidian vault graph, architectural decisions, patterns, and recent lessons into working memory.
+
+```
+/context-load
+```
+
+---
+
+## Available Skills
+
+| Command | Description |
+|---------|-------------|
+| `/context-load` | Load vault context (graph, decisions, patterns, lessons) into AI session |
+| `/map-codebase` | Run Graphify to build or refresh the Obsidian vault graph |
+| `/lessons-learnt` | Write structured lessons to the vault at the end of a feature |
+| `/speckit-enrich-specify` | Graph-aware decorator for `/speckit.specify` |
+| `/speckit-enrich-plan` | Graph-aware decorator for `/speckit.plan` |
+| `/speckit-enrich-implement` | Graph-aware decorator for `/speckit.implement` — automatically runs lessons + map update |
+
+---
+
+## Token Efficiency
+
+Activate caveman mode to reduce response verbosity and token consumption:
+
+```
+/caveman lite      ← for spec/plan work (preserves structure)
+/caveman           ← for implementation sessions (full compression)
+```
+
+---
+
 ## Getting Started (MVP v1.0.0)
 
 The spekificity platform is now ready for use! Use the unified `spek` command for setup and initialization.

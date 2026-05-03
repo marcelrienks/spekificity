@@ -87,10 +87,7 @@ spekificity/                        ← this project
     ├── copilot-instructions.md
     └── agents/                     ← speckit agent definition files
 ```
-
----component roles
-
-###omponent roles
+## 3. Component Roles
 
 ### 3.1 skills (`skills/`)
 
