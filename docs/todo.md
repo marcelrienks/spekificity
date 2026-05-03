@@ -86,3 +86,92 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 ---
 
 *Items above should be resolved before implementing `specs/003-spek-full-workflow-cli/tasks.md`.*
+
+---
+
+## [ ] 7. Define naming conventions for custom skills and workflows
+
+**Question**: What should custom skills and workflows be called, and should speckit's own skill names be prefixed too?
+
+### Custom spekificity skills (`spek.*`)
+
+Current naming uses `spek.` as the namespace prefix for spekificity-owned skills:
+- `spek.context-load`, `spek.map-codebase`, `spek.lessons-learnt`
+- `spek.prepare`, `spek.post`, `spek.automate` (planned for 003)
+
+Decide and document:
+- Is `spek.` the canonical namespace for all spekificity platform skills? (yes/no — commit to it)
+- Should workflow-level commands (prepare, post, automate) use the same `spek.` prefix, or a separate one (e.g. `spek.workflow.*` or just `spek.*` flat)?
+- Should skill file names match the command name exactly (e.g. `skills/spek.prepare/SKILL.md`) or use a short slug (e.g. `skills/prepare/SKILL.md`) with the prefix only in the invocation?
+
+### speckit skills (`speckit.*`)
+
+speckit already uses its own `speckit.` prefix (e.g. `speckit.specify`, `speckit.plan`, `speckit.tasks`, `speckit.implement`).
+
+Decide:
+- Leave speckit skill names exactly as they are (do not re-prefix or alias them) — rely on the namespace distinction (`spek.*` vs `speckit.*`) to communicate ownership.
+- Or: introduce local aliases (e.g. `spek.specify` → calls `speckit.specify`) so all commands in the `spek automate` flow share one namespace. Consider whether this adds clarity or unnecessary indirection.
+- Recommended default: **leave speckit skills unchanged**; document the two-namespace model explicitly in `copilot-instructions.md` and the skill index so the distinction is intentional and visible.
+
+### Enriched wrappers (`speckit-enrich.*`)
+
+Current enriched wrappers use `speckit-enrich.*` (e.g. `speckit-enrich-specify`, `speckit-enrich-plan`, `speckit-enrich-implement`). This diverges from the dot-namespace pattern.
+
+Decide:
+- Rename to `spek.enrich.*` (e.g. `spek.enrich.specify`) to align with the `spek.*` namespace and dot-separator convention.
+- Or keep `speckit-enrich.*` as-is since they are thin decorators over speckit and the name communicates that relationship.
+- Consider: are these wrappers user-invoked commands or internal orchestration? If internal, they may not need a user-facing name at all.
+
+### General conventions to document
+
+- Separator style: dots (`.`) for namespacing, hyphens (`-`) within a word segment (e.g. `spek.context-load`, not `spek.contextLoad` or `spek.context_load`).
+- Casing: all lowercase.
+- Verb-noun order for action skills: `spek.map-codebase`, `spek.lessons-learnt` — or noun-verb? Decide and apply consistently.
+- Where to record the canonical list: update `.spekificity/skill-index.md` and `copilot-instructions.md` once naming is settled.
+
+**Why it matters**: inconsistent naming across `spek.*`, `speckit.*`, and `speckit-enrich.*` creates confusion about what is spekificity-owned vs. speckit-owned vs. glue code. Settling conventions before 003 implementation prevents a naming refactor later.
+
+---
+
+## [ ] 8. High-level concepts to confirm before full implementation
+
+Four foundational areas that need to be thought through and specced before the full platform is built. Each has a corresponding spec in `specs/`.
+
+### 8a. Code and document maps (`specs/004-code-and-document-maps/`)
+
+**Question**: How should the vault graph represent both code topology and documentation topology?
+
+- Currently graphify is assumed to map only source code. Confirm whether it can also index markdown directories (`docs/`, `specs/`, `skills/`).
+- If not: decide whether obsidian native wikilinks are sufficient for docs, or whether a separate map-building step is needed.
+- Define what a "document map" looks like in the vault and how skills consume it.
+- Outcome: `spek.map-codebase` (or a new `spek.map-docs`) produces a combined graph covering both code and documentation, readable by `spek prepare` and speckit enrichment wrappers.
+
+### 8b. Persistent memory and lessons (`specs/005-persistent-memory-and-lessons/`)
+
+**Question**: What is the persistence model for context across AI sessions?
+
+- Graphify nodes are a point-in-time snapshot — they do not accumulate knowledge across sessions.
+- Vault lessons are written but not loaded systematically on session start.
+- Decide: is `cel.docs.read` needed as a persistent context cache layer, or can vault lessons + decisions fill this role?
+- Define the lesson schema so entries are self-contained enough to avoid re-reading full specs in future sessions.
+- Outcome: `spek prepare` loads a known set of memory artefacts; `spek post` writes a structured lesson that replaces the need to re-read the spec.
+
+### 8c. Leveraging speckit as it is intended (`specs/006-speckit-workflow-integration/`)
+
+**Question**: What is the canonical speckit lifecycle and how does spekificity wrap it correctly?
+
+- The full flow (specify → plan → tasks → analyze → remediate → implement) is partially understood but the re-entry semantics after remediation are unclear.
+- Decide: does `spek automate` re-run `speckit.specify` after remediation, or are spec edits done in place?
+- Confirm whether `speckit.implement` expects a prior clean `speckit.analyze` pass.
+- Understand `speckit.clarify` and `speckit.checklist` — are they part of the canonical flow or optional utilities?
+- Outcome: a confirmed step sequence that `spek automate` implements, with no ambiguity about re-entry or hand-off points.
+
+### 8d. Prepare and post custom skills (`specs/007-prepare-and-post-skills/`)
+
+**Question**: What exactly should `spek prepare` and `spek post` do, step by step?
+
+- Both commands are currently underspecified. The skill definitions need concrete, ordered step lists with configuration points.
+- `spek prepare` must: activate caveman (or prompt), verify/refresh graph, load vault context (decisions + patterns + recent lessons), surface summary.
+- `spek post` must: write a rich structured lesson, run incremental graph refresh, run `cel.docs.simplify` on modified docs, update vault decisions/patterns if new ones emerged.
+- Decide: should caveman be auto-activated by `spek prepare`, or left to the developer?
+- Outcome: fully specified skill definitions for both commands that can be directly implemented.

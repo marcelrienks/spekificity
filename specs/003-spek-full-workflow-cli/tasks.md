@@ -15,7 +15,7 @@
 
 **purpose**: create project directory skeleton before any implementation begins
 
-- [ ] t001 create directory structure: `bin/`, `.spekificity/bin/`, `.spekificity/skills/` per plan.md runtime structure
+- [x] t001 create directory structure: `bin/`, `.spekificity/bin/`, `.spekificity/skills/` per plan.md runtime structure
 
 ---
 
@@ -25,9 +25,9 @@
 
 ⚠️ **critical**: no sub-command scripts can be implemented until `bin/spek` and `_lib.sh` exist
 
-- [ ] t002 create `bin/spek` bash entry point — parse `$1` sub-command and route to `.spekificity/bin/<cmd>.sh`, include `--version` and `--help` output, make executable (`chmod +x`)
-- [ ] t003 [p] create `.spekificity/bin/_lib.sh` — shared bash utilities: `print_spek()`, `print_speckit()`, `print_graphify()`, `read_config()`, `write_config()`, `check_initialized()`, `atomic_write_json()` (write to .tmp then mv)
-- [ ] t004 [p] create `.spekificity/version.txt` with initial platform version string `0.3.0`
+- [x] t002 create `bin/spek` bash entry point — parse `$1` sub-command and route to `.spekificity/bin/<cmd>.sh`, include `--version` and `--help` output, make executable (`chmod +x`)
+- [x] t003 [p] create `.spekificity/bin/_lib.sh` — shared bash utilities: `print_spek()`, `print_speckit()`, `print_graphify()`, `read_config()`, `write_config()`, `check_initialized()`, `atomic_write_json()` (write to .tmp then mv)
+- [x] t004 [p] create `.spekificity/version.txt` with initial platform version string `0.3.0`
 
 **checkpoint**: foundation ready — sub-command scripts can now be implemented
 
@@ -39,13 +39,13 @@
 
 **independent test**: run `spek setup --dry-run` on a machine with some tools present; verify all tools are checked, status lines printed with `[spek]` prefix, required/optional classification displayed, exit code 0 if all required tools present
 
-- [ ] t005 [us1] define tool prerequisite array in `.spekificity/bin/setup.sh` — name, required/optional flag, detection command, install command, manual_url for each of: python3, uv, git, specify, graphify, gh, obsidian (per data-model.md ToolPrerequisite schema)
-- [ ] t006 [us1] implement tool detection loop in `.spekificity/bin/setup.sh` — iterate array, run detection command, capture version string, print `[spek] ✓ <tool> <version>` or `[spek] ✗ <tool> — not found`
-- [ ] t007 [us1] implement auto-install execution in `.spekificity/bin/setup.sh` — run install command for missing auto-installable tools, capture output with `[speckit]`/`[graphify]` prefix, verify installation succeeded
-- [ ] t008 [us1] implement obsidian manual-only instructions block in `.spekificity/bin/setup.sh` — print step-by-step download instructions, mark as `pending` in config
-- [ ] t009 [us1] implement `config.json` tool status write after setup completes in `.spekificity/bin/setup.sh` — call `write_config()` from `_lib.sh`, set `tools.<name>.installed`, `tools.<name>.version` per SpekConfig schema in data-model.md
-- [ ] t010 [us1] implement `--dry-run` flag in `.spekificity/bin/setup.sh` — detect tools and report status, skip all install commands, exit 0
-- [ ] t011 [us1] implement `--skip-optional` flag and idempotency check in `.spekificity/bin/setup.sh` — skip optional tools when flag set; skip any tool where detection command succeeds (already installed)
+- [x] t005 [us1] define tool prerequisite array in `.spekificity/bin/setup.sh` — name, required/optional flag, detection command, install command, manual_url for each of: python3, uv, git, specify, graphify, gh, obsidian (per data-model.md ToolPrerequisite schema)
+- [x] t006 [us1] implement tool detection loop in `.spekificity/bin/setup.sh` — iterate array, run detection command, capture version string, print `[spek] ✓ <tool> <version>` or `[spek] ✗ <tool> — not found`
+- [x] t007 [us1] implement auto-install execution in `.spekificity/bin/setup.sh` — run install command for missing auto-installable tools, capture output with `[speckit]`/`[graphify]` prefix, verify installation succeeded
+- [x] t008 [us1] implement obsidian manual-only instructions block in `.spekificity/bin/setup.sh` — print step-by-step download instructions, mark as `pending` in config
+- [x] t009 [us1] implement `config.json` tool status write after setup completes in `.spekificity/bin/setup.sh` — call `write_config()` from `_lib.sh`, set `tools.<name>.installed`, `tools.<name>.version` per SpekConfig schema in data-model.md
+- [x] t010 [us1] implement `--dry-run` flag in `.spekificity/bin/setup.sh` — detect tools and report status, skip all install commands, exit 0
+- [x] t011 [us1] implement `--skip-optional` flag and idempotency check in `.spekificity/bin/setup.sh` — skip optional tools when flag set; skip any tool where detection command succeeds (already installed)
 
 **checkpoint**: `spek setup` fully functional and idempotent
 
@@ -57,14 +57,14 @@
 
 **independent test**: run `spek init` in an empty project; verify `skill-index.md` lists 6 `/spek.*` skills and all speckit skills; `spek status` reports all tools active; `spek init` can be run a second time without error
 
-- [ ] t012 [us2] create `.spekificity/bin/init.sh` scaffold — check prerequisites via `check_initialized()`, print `[spek]` prefixed progress lines, sequence: speckit → graphify → vault dirs → skills → index write
-- [ ] t013 [us2] implement `specify init` call in `.spekificity/bin/init.sh` — run `specify init`, prefix output with `[speckit]`, check exit code, print `[spek] speckit initialised ✓`
-- [ ] t014 [us2] implement vault directory creation in `.spekificity/bin/init.sh` — create `vault/`, `vault/context/`, `vault/graph/`, `vault/lessons/` with `mkdir -p`, skip if already present
-- [ ] t015 [us2] implement skill installation loop in `.spekificity/bin/init.sh` — copy each source skill file from `skills/*/skill.md` and new `.spekificity/skills/spek.*.md` to `.spekificity/skills/`, skip if destination is newer
-- [ ] t016 [us2] implement `skill-index.md` auto-generation in `.spekificity/bin/init.sh` — scan `.spekificity/skills/` for `spek.*` skills, scan `.github/agents/` for `speckit.*` skills, write formatted markdown table with command/file/description/status columns per data-model.md SkillIndex format
-- [ ] t017 [us2] implement idempotency guards for all init steps in `.spekificity/bin/init.sh` — check `config.json` for `initialized_at`; re-run if `--force` passed, otherwise verify and skip completed steps
-- [ ] t018 [p] [us2] create `.spekificity/bin/status.sh` — read `config.json` via `read_config()`, print platform version, `initialized_at`, tool versions and ✓/✗/⚠ status, skill count, graph state (call `compute_graph_state()`), active workflow from `workflow-state.json`
-- [ ] t019 [p] [us2] create `.spekificity/bin/update.sh` — check current `version.txt` against source, copy updated skills from source to `.spekificity/skills/`, re-run skill-index.md generation, print what was updated
+- [x] t012 [us2] create `.spekificity/bin/init.sh` scaffold — check prerequisites via `check_initialized()`, print `[spek]` prefixed progress lines, sequence: speckit → graphify → vault dirs → skills → index write
+- [x] t013 [us2] implement `specify init` call in `.spekificity/bin/init.sh` — run `specify init`, prefix output with `[speckit]`, check exit code, print `[spek] speckit initialised ✓`
+- [x] t014 [us2] implement vault directory creation in `.spekificity/bin/init.sh` — create `vault/`, `vault/context/`, `vault/graph/`, `vault/lessons/` with `mkdir -p`, skip if already present
+- [x] t015 [us2] implement skill installation loop in `.spekificity/bin/init.sh` — copy each source skill file from `skills/*/skill.md` and new `.spekificity/skills/spek.*.md` to `.spekificity/skills/`, skip if destination is newer
+- [x] t016 [us2] implement `skill-index.md` auto-generation in `.spekificity/bin/init.sh` — scan `.spekificity/skills/` for `spek.*` skills, scan `.github/agents/` for `speckit.*` skills, write formatted markdown table with command/file/description/status columns per data-model.md SkillIndex format
+- [x] t017 [us2] implement idempotency guards for all init steps in `.spekificity/bin/init.sh` — check `config.json` for `initialized_at`; re-run if `--force` passed, otherwise verify and skip completed steps
+- [x] t018 [p] [us2] create `.spekificity/bin/status.sh` — read `config.json` via `read_config()`, print platform version, `initialized_at`, tool versions and ✓/✗/⚠ status, skill count, graph state (call `compute_graph_state()`), active workflow from `workflow-state.json`
+- [x] t019 [p] [us2] create `.spekificity/bin/update.sh` — check current `version.txt` against source, copy updated skills from source to `.spekificity/skills/`, re-run skill-index.md generation, print what was updated
 
 **checkpoint**: `spek init` and `spek status` fully functional; all 6 spek.* skills discoverable via `skill-index.md`
 
@@ -76,11 +76,11 @@
 
 **independent test**: run `spek prepare` on project with stale graph (git commit after last graph build); verify graph is rebuilt, vault context loaded, lessons surfaced, all within 60 seconds
 
-- [ ] t020 [us3] add `compute_graph_state()` to `.spekificity/bin/_lib.sh` — compare `git log -1 --format=%ct HEAD` vs `stat` mtime on `vault/graph/index.md`, handle absent/stale/fresh tri-state, cross-platform `stat` (Darwin vs Linux)
-- [ ] t021 [us3] create `.spekificity/bin/prepare.sh` — call `compute_graph_state()`, trigger `graphify` if stale/absent, invoke `/spek.prepare` skill, support `--force-refresh` flag (skip freshness check)
-- [ ] t022 [us3] create `.spekificity/skills/spek.prepare.md` — ai skill: first read `VAULT_PATH` from `.spekificity/config.json` via `read_config()` to construct all vault file paths; then read `${VAULT_PATH}/context/decisions.md` + `${VAULT_PATH}/context/patterns.md`, list most recent 3 files from `${VAULT_PATH}/lessons/` and summarise, confirm readiness message, log `[spek] preparation complete`
-- [ ] t023 [p] [us3] update `skills/context-load/skill.md` — add step to check `workflow-state.json` for active feature context, read vault path from `config.json` rather than hardcoded `vault/`
-- [ ] t024 [p] [us3] update `skills/map-codebase/skill.md` — add incremental vs full-rebuild mode (use `--incremental` flag when graph exists), add `[graphify]` output prefix instructions, add staleness state parameter as input
+- [x] t020 [us3] add `compute_graph_state()` to `.spekificity/bin/_lib.sh` — compare `git log -1 --format=%ct HEAD` vs `stat` mtime on `vault/graph/index.md`, handle absent/stale/fresh tri-state, cross-platform `stat` (Darwin vs Linux)
+- [x] t021 [us3] create `.spekificity/bin/prepare.sh` — call `compute_graph_state()`, trigger `graphify` if stale/absent, invoke `/spek.prepare` skill, support `--force-refresh` flag (skip freshness check)
+- [x] t022 [us3] create `.spekificity/skills/spek.prepare.md` — ai skill: first read `VAULT_PATH` from `.spekificity/config.json` via `read_config()` to construct all vault file paths; then read `${VAULT_PATH}/context/decisions.md` + `${VAULT_PATH}/context/patterns.md`, list most recent 3 files from `${VAULT_PATH}/lessons/` and summarise, confirm readiness message, log `[spek] preparation complete`
+- [x] t023 [p] [us3] update `skills/context-load/skill.md` — add step to check `workflow-state.json` for active feature context, read vault path from `config.json` rather than hardcoded `vault/`
+- [x] t024 [p] [us3] update `skills/map-codebase/skill.md` — add incremental vs full-rebuild mode (use `--incremental` flag when graph exists), add `[graphify]` output prefix instructions, add staleness state parameter as input
 
 **checkpoint**: `spek prepare` functional; vault context loads correctly; graph rebuilt when stale
 
@@ -92,20 +92,20 @@
 
 **independent test**: run `spek automate "add a simple counter feature"` on initialised+prepared project; verify feature branch created, each step's output file appears in sequence, all `tasks.md` tasks end as `[x]`, PR opened (or terminal description printed)
 
-- [ ] t025 [us4] create `.spekificity/bin/automate.sh` — parse feature description arg, check git working tree clean (`git status --porcelain`), generate branch name (`NNN-kebab-case`): scan `specs/` for highest existing `NNN-` prefix and increment by 1 (zero-padded to 3 digits, start at `001` if no specs exist), convert description to kebab-case; error with exit code 2 if uncommitted changes
-- [ ] t026 [us4] implement feature branch creation in `.spekificity/bin/automate.sh` — `git checkout -b <branch>`, detect existing branch conflict (ask reuse/suffix), write `feature_branch` and `feature_dir` to initial `workflow-state.json`
-- [ ] t027 [us4] implement initial `workflow-state.json` write on fresh start in `.spekificity/bin/automate.sh` — use `atomic_write_json()` from `_lib.sh`, set schema per data-model.md WorkflowState, `status: "in-progress"`, `next_step: "spec"`, `completed_steps: ["preflight"]`
-- [ ] t028 [us4] implement `--resume` flag and completed-workflow guard in `.spekificity/bin/automate.sh` — (a) on fresh run: if `workflow-state.json` already exists with `status: "complete"`, print completion summary and exit 0 (idempotency guard for SC-007); (b) on `--resume`: read `workflow-state.json`, validate `status` is `in-progress` or `halted` (print error and exit if `complete`), print resume point, pass `next_step` and `completed_steps` to skill invocation
-- [ ] t029 [us4] implement PR creation in `.spekificity/bin/automate.sh` — check `command -v gh && gh auth status`, run `gh pr create --title "..." --body "$(head -30 specs/.../spec.md)" --base main`, set `postflight.pr_created: true` and `postflight.pr_url` in `workflow-state.json`
-- [ ] t030 [us4] implement PR terminal fallback in `.spekificity/bin/automate.sh` — if `gh` unavailable or unauthenticated, print formatted PR title, body, and `gh auth login` instructions; set `postflight.pr_created: false`
-- [ ] t031 [us4] create `.spekificity/skills/spek.automate.md` — skill header section: inputs (feature_description, feature_branch, feature_dir, workflow_state), step sequence diagram, output conventions
-- [ ] t032 [us4] add spec step to `.spekificity/skills/spek.automate.md` — read `VAULT_PATH` from `.spekificity/config.json` via `read_config()` at skill start; read `${VAULT_PATH}/context/decisions.md` + `${VAULT_PATH}/context/patterns.md`, find relevant graph nodes from `${VAULT_PATH}/graph/` matching feature keywords, inject as context prefix, invoke `/speckit.specify`, completion check: `<feature_dir>/spec.md` exists with `## requirements`
-- [ ] t033 [us4] add plan step to `.spekificity/skills/spek.automate.md` — read `VAULT_PATH` from `.spekificity/config.json` via `read_config()` at skill start; read `${VAULT_PATH}/context/decisions.md` + impacted graph nodes from `${VAULT_PATH}/graph/` (matching spec entities), inject as context prefix, invoke `/speckit.plan`, completion check: `<feature_dir>/plan.md` exists with `## summary`
-- [ ] t034 [us4] add tasks + analyse + remediation steps to `.spekificity/skills/spek.automate.md` — tasks: invoke `/speckit.tasks`, check `tasks.md` has `- [ ]` items; analyse: invoke `/speckit.analyze`; remediation: surface items with `[spek]` prefix, approval gate, high-risk threshold (>30% tasks or breaking changes)
-- [ ] t035 [us4] add implement step to `.spekificity/skills/spek.automate.md` — invoke `/speckit.implement`, after each invocation read `tasks.md` and count `- [ ]` tasks, if any remain re-invoke with "continue from last incomplete task", max 10 retries, halt with exit code 3 if limit reached
-- [ ] t036 [us4] add QA interface section to `.spekificity/skills/spek.automate.md` — `[spek] ❓` prompt format, instructions to write question to `workflow-state.json` pending_questions with `answer: null`, collect developer answer, write answer, re-invoke speckit step with answer as context
-- [ ] t037 [us4] add `workflow-state.json` update instructions to `.spekificity/skills/spek.automate.md` — after each step: add step to `completed_steps`, set `next_step` to following step, use `atomic_write_json()` pattern, set `status: "complete"` only after postflight
-- [ ] t038 [us4] add resume logic to `.spekificity/skills/spek.automate.md` — instructions to read `next_step` from `workflow-state.json` on resume, skip all steps listed in `completed_steps`, validate `status` before starting
+- [x] t025 [us4] create `.spekificity/bin/automate.sh` — parse feature description arg, check git working tree clean (`git status --porcelain`), generate branch name (`NNN-kebab-case`): scan `specs/` for highest existing `NNN-` prefix and increment by 1 (zero-padded to 3 digits, start at `001` if no specs exist), convert description to kebab-case; error with exit code 2 if uncommitted changes
+- [x] t026 [us4] implement feature branch creation in `.spekificity/bin/automate.sh` — `git checkout -b <branch>`, detect existing branch conflict (ask reuse/suffix), write `feature_branch` and `feature_dir` to initial `workflow-state.json`
+- [x] t027 [us4] implement initial `workflow-state.json` write on fresh start in `.spekificity/bin/automate.sh` — use `atomic_write_json()` from `_lib.sh`, set schema per data-model.md WorkflowState, `status: "in-progress"`, `next_step: "spec"`, `completed_steps: ["preflight"]`
+- [x] t028 [us4] implement `--resume` flag and completed-workflow guard in `.spekificity/bin/automate.sh` — (a) on fresh run: if `workflow-state.json` already exists with `status: "complete"`, print completion summary and exit 0 (idempotency guard for SC-007); (b) on `--resume`: read `workflow-state.json`, validate `status` is `in-progress` or `halted` (print error and exit if `complete`), print resume point, pass `next_step` and `completed_steps` to skill invocation
+- [x] t029 [us4] implement PR creation in `.spekificity/bin/automate.sh` — check `command -v gh && gh auth status`, run `gh pr create --title "..." --body "$(head -30 specs/.../spec.md)" --base main`, set `postflight.pr_created: true` and `postflight.pr_url` in `workflow-state.json`
+- [x] t030 [us4] implement PR terminal fallback in `.spekificity/bin/automate.sh` — if `gh` unavailable or unauthenticated, print formatted PR title, body, and `gh auth login` instructions; set `postflight.pr_created: false`
+- [x] t031 [us4] create `.spekificity/skills/spek.automate.md` — skill header section: inputs (feature_description, feature_branch, feature_dir, workflow_state), step sequence diagram, output conventions
+- [x] t032 [us4] add spec step to `.spekificity/skills/spek.automate.md` — read `VAULT_PATH` from `.spekificity/config.json` via `read_config()` at skill start; read `${VAULT_PATH}/context/decisions.md` + `${VAULT_PATH}/context/patterns.md`, find relevant graph nodes from `${VAULT_PATH}/graph/` matching feature keywords, inject as context prefix, invoke `/speckit.specify`, completion check: `<feature_dir>/spec.md` exists with `## requirements`
+- [x] t033 [us4] add plan step to `.spekificity/skills/spek.automate.md` — read `VAULT_PATH` from `.spekificity/config.json` via `read_config()` at skill start; read `${VAULT_PATH}/context/decisions.md` + impacted graph nodes from `${VAULT_PATH}/graph/` (matching spec entities), inject as context prefix, invoke `/speckit.plan`, completion check: `<feature_dir>/plan.md` exists with `## summary`
+- [x] t034 [us4] add tasks + analyse + remediation steps to `.spekificity/skills/spek.automate.md` — tasks: invoke `/speckit.tasks`, check `tasks.md` has `- [ ]` items; analyse: invoke `/speckit.analyze`; remediation: surface items with `[spek]` prefix, approval gate, high-risk threshold (>30% tasks or breaking changes)
+- [x] t035 [us4] add implement step to `.spekificity/skills/spek.automate.md` — invoke `/speckit.implement`, after each invocation read `tasks.md` and count `- [ ]` tasks, if any remain re-invoke with "continue from last incomplete task", max 10 retries, halt with exit code 3 if limit reached
+- [x] t036 [us4] add QA interface section to `.spekificity/skills/spek.automate.md` — `[spek] ❓` prompt format, instructions to write question to `workflow-state.json` pending_questions with `answer: null`, collect developer answer, write answer, re-invoke speckit step with answer as context
+- [x] t037 [us4] add `workflow-state.json` update instructions to `.spekificity/skills/spek.automate.md` — after each step: add step to `completed_steps`, set `next_step` to following step, use `atomic_write_json()` pattern, set `status: "complete"` only after postflight
+- [x] t038 [us4] add resume logic to `.spekificity/skills/spek.automate.md` — instructions to read `next_step` from `workflow-state.json` on resume, skip all steps listed in `completed_steps`, validate `status` before starting
 
 **checkpoint**: `spek automate` drives full lifecycle; resume works after interruption; PR created or terminal fallback printed
 
@@ -117,10 +117,10 @@
 
 **independent test**: complete any feature, run `spek post`; verify `vault/lessons/YYYY-MM-DD-<feature>.md` created with correct format, graph node count increases after refresh, both within 3 minutes
 
-- [ ] t039 [us5] create `.spekificity/skills/spek.post.md` — ai skill: prompt developer for key decisions + patterns, invoke `/spek.lessons-learnt` with `feature_branch` and `feature_dir` context, invoke `/spek.map-codebase` (incremental mode), write completion summary
-- [ ] t040 [us5] create `.spekificity/bin/post.sh` — check init, support `--no-lessons` and `--no-graph` flags, print `[spek]` prefixed progress, invoke `/spek.post` skill
-- [ ] t041 [p] [us5] update `skills/lessons-learnt/skill.md` — add vault write format instructions (`vault/lessons/YYYY-MM-DD-<feature>.md` per vault-integration-contract.md w-1), add append-on-collision behaviour, add developer prompt for decisions/patterns
-- [ ] t042 [us5] add postflight section to `.spekificity/skills/spek.automate.md` — first update `status: draft` → `status: complete` in `<feature_dir>/spec.md` front-matter; then invoke `/spek.post`, set `postflight.lessons_written: true`, `postflight.graph_refreshed: true` in `workflow-state.json` after each post sub-task; invoke PR creation last
+- [x] t039 [us5] create `.spekificity/skills/spek.post.md` — ai skill: prompt developer for key decisions + patterns, invoke `/spek.lessons-learnt` with `feature_branch` and `feature_dir` context, invoke `/spek.map-codebase` (incremental mode), write completion summary
+- [x] t040 [us5] create `.spekificity/bin/post.sh` — check init, support `--no-lessons` and `--no-graph` flags, print `[spek]` prefixed progress, invoke `/spek.post` skill
+- [x] t041 [p] [us5] update `skills/lessons-learnt/skill.md` — add vault write format instructions (`vault/lessons/YYYY-MM-DD-<feature>.md` per vault-integration-contract.md w-1), add append-on-collision behaviour, add developer prompt for decisions/patterns
+- [x] t042 [us5] add postflight section to `.spekificity/skills/spek.automate.md` — first update `status: draft` → `status: complete` in `<feature_dir>/spec.md` front-matter; then invoke `/spek.post`, set `postflight.lessons_written: true`, `postflight.graph_refreshed: true` in `workflow-state.json` after each post sub-task; invoke PR creation last
 
 **checkpoint**: `spek post` functional standalone and as automate postflight; lessons in vault after run
 
@@ -130,10 +130,10 @@
 
 **purpose**: vault integration validation, docs update, skill-index source template
 
-- [ ] t043 [p] update `docs/guide.md` — add `spek` cli section with setup → init → prepare → automate → post workflow table, link to `specs/003-spek-full-workflow-cli/quickstart.md`
-- [ ] t044 [p] update `docs/readme.md` — add `spek` cli overview paragraph in features section, add quickstart reference link
-- [ ] t045 [p] update `docs/architecture.md` — add `.spekificity/bin/` component description, update directory tree to include `bin/spek` and `.spekificity/bin/*.sh`
-- [ ] t046 [p] create `specs/003-spek-full-workflow-cli/acceptance-tests/` with manual verification steps for: SC-001 (setup + init ≤15 min on clean machine), SC-002 (≤5 interactions during automate), SC-004 (spec/plan references ≥2 vault components), SC-005 (spek post ≤3 min), SC-006 (spek prepare ≤60 sec with current graph) — follow format from `specs/002-spek-platform-lifecycle/acceptance-tests/`
+- [x] t043 [p] update `docs/guide.md` — add `spek` cli section with setup → init → prepare → automate → post workflow table, link to `specs/003-spek-full-workflow-cli/quickstart.md`
+- [x] t044 [p] update `docs/readme.md` — add `spek` cli overview paragraph in features section, add quickstart reference link
+- [x] t045 [p] update `docs/architecture.md` — add `.spekificity/bin/` component description, update directory tree to include `bin/spek` and `.spekificity/bin/*.sh`
+- [x] t046 [p] create `specs/003-spek-full-workflow-cli/acceptance-tests/` with manual verification steps for: SC-001 (setup + init ≤15 min on clean machine), SC-002 (≤5 interactions during automate), SC-004 (spec/plan references ≥2 vault components), SC-005 (spek post ≤3 min), SC-006 (spek prepare ≤60 sec with current graph) — follow format from `specs/002-spek-platform-lifecycle/acceptance-tests/`
 
 ---
 

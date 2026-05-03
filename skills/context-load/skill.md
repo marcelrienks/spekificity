@@ -29,6 +29,7 @@ optional feature filter (loads lessons relevant to a specific branch):
 
 - `vault/` directory exists at the project root
 - `vault/graph/index.md` exists (run `/map-codebase` first if missing)
+- `.spekificity/config.json` exists if running in a `spek init`-enabled project
 
 ## inputs
 
@@ -39,7 +40,15 @@ optional feature filter (loads lessons relevant to a specific branch):
 
 ## steps
 
-1. **read `vault/graph/index.md`**: load the node list and key relationship summary. note the total node count and any god nodes listed.
+### step 0 — resolve vault path
+
+if `.spekificity/config.json` exists, read `vault.path` from it to determine the vault root. if absent or unset, use the default `vault/`. use this as the base path for all vault file reads in steps 1–4.
+
+### step 0b — check active workflow context
+
+if `.spekificity/workflow-state.json` exists, read it. if `status` is `in-progress` or `halted`, extract the `feature_branch` and `current_step` and include them in the readiness summary: `[spek] ℹ active workflow: <feature_branch> at step <current_step>`. if `status` is `complete` or the file is absent, skip silently.
+
+1. **read `${VAULT_PATH}/graph/index.md`**: load the node list and key relationship summary. note the total node count and any god nodes listed.
 
 2. **read `vault/context/decisions.md`**: load all recorded architectural decisions.
 

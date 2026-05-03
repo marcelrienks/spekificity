@@ -53,13 +53,23 @@ ai runs graphify against your source files and documentation. the graph is store
 
 ### 3. start a feature
 
+**automated (recommended)**: use the `spek` cli to drive the full lifecycle:
+
+```bash
+spek automate "add user authentication with JWT"
+```
+
+this creates a feature branch, then drives spec → plan → tasks → analyse → implement → postflight without manual step invocations. the ai agent is invoked at each step via `/spek.automate`.
+
+**manual**: invoke speckit steps individually in your ai session:
+
 ```bash
 /speckit.specify
 ```
 
 ai reads your vault context and produces a richer spec grounded in your actual codebase.
 
-see [guide.md](guide.md) for the full speckit feature lifecycle workflow.
+see [guide.md](guide.md) for the full feature lifecycle including the `spek` cli command reference.
 
 ---
 

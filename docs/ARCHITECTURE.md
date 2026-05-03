@@ -19,6 +19,9 @@ spekificity has no runtime components. its "architecture" is the structure of it
 ```
 spekificity/                        ← this project
 │
+├── bin/                            ← globally installable cli entry point
+│   └── spek                        ← copy to /usr/local/bin/spek; dispatches all commands
+│
 ├── docs/                           ← project documentation
 │   ├── readme.md                   ← quick start and overview
 │   ├── architecture.md             ← this file
@@ -55,6 +58,24 @@ spekificity/                        ← this project
 │       ├── spec.md
 │       └── checklists/
 │
+├── .spekificity/                   ← project-local spekificity runtime
+│   ├── bin/                        ← cli orchestration scripts (invoked by spek dispatcher)
+│   │   ├── _lib.sh                 ← shared utilities (config, atomic write, graph state)
+│   │   ├── prepare.sh              ← spek prepare: graph freshness check + rebuild trigger
+│   │   ├── automate.sh             ← spek automate: preflight + branch + workflow-state init
+│   │   └── post.sh                 ← spek post: lessons + graph refresh handoff
+│   ├── setup-scripts/              ← spek setup/init/status/update implementations
+│   │   ├── setup.sh
+│   │   ├── init.sh
+│   │   ├── status.sh
+│   │   └── update.sh
+│   ├── skills/                     ← spek.* ai skill definitions
+│   │   ├── spek.prepare.md         ← vault context loading + readiness summary
+│   │   ├── spek.automate.md        ← autonomous speckit lifecycle driver
+│   │   └── spek.post.md            ← lessons capture + graph refresh
+│   ├── config.json                 ← project configuration (vault path, tool versions)
+│   └── workflow-state.json         ← active feature workflow state (created by spek automate)
+│
 ├── .specify/                       ← speckit/specify configuration (managed by specify cli)
 │   ├── memory/
 │   │   └── constitution.md         ← project constitution
@@ -81,7 +102,29 @@ skills are the primary deliverable of spekificity. each skill is a markdown file
 - **steps**: ordered, unambiguous instructions the ai follows
 - **outputs**: what the skill produces and where it is stored
 
-skilworkflows (`workflows/`)
+### 3.2 cli scripts (`.spekificity/bin/` and `bin/`)
+
+`bin/spek` is the globally-installable entry point. copy it to `/usr/local/bin/spek`. it finds the nearest `.spekificity/` directory by walking up the tree and dispatches to the appropriate script.
+
+`.spekificity/bin/*.sh` scripts are the per-project implementations:
+- `_lib.sh` — shared utilities: config read/write, atomic JSON writes, graph state computation (fresh/stale/absent), working-tree checks
+- `prepare.sh` — checks vault graph staleness via `compute_graph_state()`, rebuilds with graphify if stale/absent, hands off to `/spek.prepare` skill
+- `automate.sh` — runs preflight (clean tree check), generates `NNN-kebab-branch`, calls `git checkout -b`, writes `workflow-state.json`, hands off to `/spek.automate` skill
+- `post.sh` — detects context from `workflow-state.json`, surfaces `--no-lessons` / `--no-graph` flags to skill
+
+`workflow-state.json` schema (see `data-model.md` in feature spec for full definition):
+```json
+{
+  "status": "in-progress | halted | complete",
+  "current_step": "<step name>",
+  "next_step": "<step name>",
+  "completed_steps": ["preflight", "spec", "..."],
+  "preflight": { "branch_created": true, "clean_working_tree": true },
+  "postflight": { "lessons_written": false, "graph_refreshed": false, "pr_created": false, "pr_url": null }
+}
+```
+
+### 3.3 workflows (`workflows/`)
 
 workflows describe how skills compose into multi-step processes. a workflow document specifies:
 
@@ -90,13 +133,11 @@ workflows describe how skills compose into multi-step processes. a workflow docu
 - expected state at each checkpoint
 - how to recover from partial failures
 
-### setup guides (`setup-guides/`)
+### 3.4 setup guides (`setup-guides/`)
 
 setup guides provide step-by-step, ai-executable installation and configuration instructions for each third-party prerequisite. they assume only that the ai has access to a terminal and internet.
 
-###uides provide step-by-step, ai-executable installation and configuration instructions for each third-party prerequisite. they assume only that the ai has access to a terminal and internet.
-
-### 3.4 obsidian vault (`vault/` or project-defined location)
+### 3.5 obsidian vault (`vault/` or project-defined location)
 
 the vault is the persistent context store. its structure:
 

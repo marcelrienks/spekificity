@@ -127,6 +127,57 @@ see also: [workflows/map-refresh.md](../workflows/map-refresh.md)
 
 ---
 
+## spek cli — automated feature lifecycle
+
+the `spek` cli entry point drives the full feature lifecycle from a single shell command. install it once and run from any project directory.
+
+### install
+
+```bash
+# copy to PATH (one-time, global)
+cp bin/spek /usr/local/bin/spek
+chmod +x /usr/local/bin/spek
+```
+
+### workflow: setup → init → prepare → automate → post
+
+| step | command | what it does |
+|------|---------|--------------|
+| 1. setup | `spek setup` | install prerequisites (graphify, obsidian, speckit) |
+| 2. init | `spek init` | create `.spekificity/` config, link vault, scaffold skills |
+| 3. prepare | `spek prepare` | check vault graph freshness; rebuild if stale; invoke `/spek.prepare` |
+| 4. automate | `spek automate "<description>"` | run full lifecycle: branch → spec → plan → tasks → analyse → implement → postflight |
+| 5. post | `spek post` | lessons capture + vault graph refresh (run after manual feature work) |
+
+### quick reference
+
+```bash
+# full automated lifecycle
+spek automate "add user authentication with JWT"
+
+# resume an interrupted automate session
+spek automate --resume
+
+# skip PR creation
+spek automate --no-pr "spike: explore graphify modes"
+
+# post-implementation (lessons + graph)
+spek post
+spek post --no-lessons   # skip lessons capture
+spek post --no-graph     # skip graph refresh
+
+# check project status
+spek status
+```
+
+### links
+
+- [setup guide](../setup-guides/): prerequisites for each component
+- [init workflow](../workflows/init-workflow.md): detailed initialisation steps
+- [skills reference](.spekificity/skills/): skill definitions invoked by each step
+
+---
+
 ## managing components
 
 see [workflows/component-update.md](../workflows/component-update.md) for how to independently update graphify, obsidian, speckit, or spekificity skills without breaking other components.

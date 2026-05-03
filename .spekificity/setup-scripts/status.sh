@@ -135,6 +135,84 @@ print_human_status() {
     fi
     echo ""
     
+    # Vault and graph status (FR-019: vault currency)
+    print_header "Vault & Graph"
+
+    # Resolve vault path from config (default: vault/)
+    local vault_path
+    vault_path=$(read_config ".vault.path" 2>/dev/null || echo "vault/")
+    vault_path="${vault_path:-vault/}"
+    vault_path="${vault_path%/}"
+    local graph_index="${vault_path}/graph/index.md"
+
+    echo -e "${COLOR_BOLD}Vault path:${COLOR_RESET} ${vault_path}/"
+
+    if [[ -f "${graph_index}" ]]; then
+        # Get graph mtime (cross-platform)
+        local graph_ts graph_date
+        if stat --version &>/dev/null 2>&1; then
+            graph_ts=$(stat -c %Y "${graph_index}" 2>/dev/null || echo 0)
+        else
+            graph_ts=$(stat -f %m "${graph_index}" 2>/dev/null || echo 0)
+        fi
+        graph_date=$(date -r "${graph_ts}" "+%Y-%m-%d %H:%M:%S" 2>/dev/null || echo "unknown")
+
+        # Compare with git HEAD
+        local head_ts
+        head_ts=$(git log -1 --format=%ct HEAD 2>/dev/null || echo 0)
+
+        local graph_state
+        if [[ "${graph_ts}" -ge "${head_ts}" ]]; then
+            graph_state="fresh"
+        else
+            graph_state="stale"
+        fi
+
+        echo -e "${COLOR_BOLD}Graph state:${COLOR_RESET} ${graph_state} (last refreshed: ${graph_date})"
+
+        # Node count
+        local node_count
+        node_count=$(grep -c "^- " "${vault_path}/graph/index.md" 2>/dev/null || echo 0)
+        echo -e "${COLOR_BOLD}Graph nodes:${COLOR_RESET} ${node_count}"
+    else
+        echo -e "${COLOR_BOLD}Graph state:${COLOR_RESET} absent (run: spek prepare)"
+    fi
+
+    # Lessons count
+    local lessons_count=0
+    if [[ -d "${vault_path}/lessons" ]]; then
+        lessons_count=$(find "${vault_path}/lessons" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    fi
+    echo -e "${COLOR_BOLD}Lessons captured:${COLOR_RESET} ${lessons_count}"
+    echo ""
+
+    # Active workflow (FR-019: active workflow from workflow-state.json)
+    print_header "Active Workflow"
+    local wf_file=".spekificity/workflow-state.json"
+    if [[ -f "${wf_file}" ]] && command -v jq &>/dev/null; then
+        local wf_status wf_branch wf_step wf_updated
+        wf_status=$(jq -r '.status // empty' "${wf_file}" 2>/dev/null || echo "")
+        wf_branch=$(jq -r '.feature_branch // empty' "${wf_file}" 2>/dev/null || echo "")
+        wf_step=$(jq -r '.current_step // empty' "${wf_file}" 2>/dev/null || echo "")
+        wf_updated=$(jq -r '.last_updated // empty' "${wf_file}" 2>/dev/null || echo "")
+
+        if [[ -n "${wf_status}" ]]; then
+            echo -e "${COLOR_BOLD}Status:${COLOR_RESET} ${wf_status}"
+            echo -e "${COLOR_BOLD}Feature branch:${COLOR_RESET} ${wf_branch:-—}"
+            echo -e "${COLOR_BOLD}Current step:${COLOR_RESET} ${wf_step:-—}"
+            echo -e "${COLOR_BOLD}Last updated:${COLOR_RESET} ${wf_updated:-—}"
+            if [[ "${wf_status}" == "halted" ]]; then
+                echo ""
+                echo "  To resume: spek automate --resume"
+            fi
+        else
+            echo "No active workflow"
+        fi
+    else
+        echo "No active workflow"
+    fi
+    echo ""
+
     # Recent operations
     print_header "Recent Operations"
     local history_count=$(jq '.orchestration_history | length' ".spekificity/config.json" 2>/dev/null || echo 0)
@@ -145,7 +223,7 @@ print_human_status() {
         echo "No operations recorded"
     fi
     echo ""
-    
+
     return 0
 }
 

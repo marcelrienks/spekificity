@@ -13,9 +13,11 @@ invoked by the developer in the ai chat session:
 /map-codebase
 ```
 
-optional flag for full regeneration (bypasses incremental diff):
+optional flags:
 ```
-/map-codebase --full
+/map-codebase --full          ← force full regeneration (bypass incremental diff)
+/map-codebase --incremental   ← explicit incremental mode (default when graph exists)
+/map-codebase --state <state> ← hint current graph state: fresh | stale | absent
 ```
 
 ## prerequisites
@@ -30,6 +32,8 @@ optional flag for full regeneration (bypasses incremental diff):
 | input | description | required |
 |-------|-------------|----------|
 | `--full` flag | force full graph regeneration instead of incremental diff | no |
+| `--incremental` flag | explicit incremental mode — only processes changed files since last run | no |
+| `--state <state>` | pre-computed graph staleness hint: `fresh`, `stale`, or `absent` (from `compute_graph_state()`) | no |
 | `claude_api_key` env var | enables semantic extraction of markdown docs and comments (beyond ast) | no |
 
 ## steps
@@ -42,19 +46,20 @@ optional flag for full regeneration (bypasses incremental diff):
 
 2. **confirm project root**: verify `vault/` or at least one of `skills/`, `workflows/`, `specs/`, or a recognisable project file (`.specify/`, `readme.md`, `package.json`, etc.) exists in the current directory. if not, warn: "run /map-codebase from the project root."
 
-3. **run graphify**:
-   - standard (incremental):
+3. **run graphify** — prefix all graphify output with `[graphify]` tag:
+   - incremental (default when `vault/graph/index.md` exists and `--full` not passed):
      ```bash
-     graphify . --obsidian --output vault/graph/
+     graphify . --obsidian --output vault/graph/ 2>&1 | sed 's/^/[graphify] /'
      ```
-   - full regeneration (when `--full` flag is present):
+   - full regeneration (`--full` flag or graph is `absent`):
      ```bash
-     graphify . --obsidian --output vault/graph/ --full
+     graphify . --obsidian --output vault/graph/ --full 2>&1 | sed 's/^/[graphify] /'
      ```
    - with semantic doc extraction (when `claude_api_key` is set):
      ```bash
-     claude_api_key=$claude_api_key graphify . --obsidian --output vault/graph/
+     claude_api_key=$claude_api_key graphify . --obsidian --output vault/graph/ 2>&1 | sed 's/^/[graphify] /'
      ```
+   - if `--state absent` was passed, always use `--full` regardless of other flags.
 
 4. **verify outputs exist**:
    ```bash

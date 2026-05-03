@@ -25,6 +25,9 @@ Spekificity Platform — Unified orchestration for multi-tool setup and initiali
 COMMANDS:
   setup         Detect and prepare prerequisites (run first)
   init          Initialize all tools (specify, graphify, obsidian, caveman, skills)
+  prepare       Load vault context, verify graph currency, prime AI session
+  automate      Drive full speckit feature lifecycle autonomously
+  post          Run post-implementation tasks: lessons + graph refresh
   update        Update spekificity custom layer independently
   status        Check initialization status and tool integration
 
@@ -51,6 +54,18 @@ case "${1:-}" in
         shift
         exec "$SETUP_SCRIPTS_DIR/init.sh" "$@"
         ;;
+    prepare)
+        shift
+        exec "$SCRIPT_DIR/prepare.sh" "$@"
+        ;;
+    automate)
+        shift
+        exec "$SCRIPT_DIR/automate.sh" "$@"
+        ;;
+    post)
+        shift
+        exec "$SCRIPT_DIR/post.sh" "$@"
+        ;;
     update)
         shift
         exec "$SETUP_SCRIPTS_DIR/update.sh" "$@"
@@ -61,6 +76,11 @@ case "${1:-}" in
         ;;
     -h|--help|help)
         print_usage
+        exit 0
+        ;;
+    --version|version)
+        local ver_file="$PROJECT_ROOT/.spekificity/version.txt"
+        [[ -f "$ver_file" ]] && echo "spekificity $(cat "$ver_file")" || echo "spekificity (unknown version)"
         exit 0
         ;;
     "")
