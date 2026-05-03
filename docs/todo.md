@@ -133,45 +133,41 @@ Decide:
 
 ---
 
-## [ ] 8. High-level concepts to confirm before full implementation
+## [ ] 8. High-level concepts to confirm and spec out individually
 
-Four foundational areas that need to be thought through and specced before the full platform is built. Each has a corresponding spec in `specs/`.
+These are cross-cutting concerns that need deliberate thought before or alongside feature 003. Each is likely large enough to warrant its own spec.
 
-### 8a. Code and document maps (`specs/004-code-and-document-maps/`)
+### 8.1 Code and Document maps
 
-**Question**: How should the vault graph represent both code topology and documentation topology?
+- **What**: the vault graph currently targets source code. The question is whether the graph should uniformly cover both code *and* documentation (specs, docs, skills, workflows).
+- **Think about**: what does it mean to "map" a markdown document — is it file-level nodes, heading-level nodes, or link-graph topology? How does graphify handle non-code files? Should a separate mapping pass exist for docs vs. code?
+- **Why it matters**: every AI-assisted step (specify, plan, implement) benefits from knowing what documentation already exists. Without doc-level graph nodes, specs can duplicate or contradict existing docs silently.
+- **Likely outcome**: a spec for unified code + documentation mapping, including graphify configuration, vault node schema, and how `spek.map-codebase` invokes both passes.
 
-- Currently graphify is assumed to map only source code. Confirm whether it can also index markdown directories (`docs/`, `specs/`, `skills/`).
-- If not: decide whether obsidian native wikilinks are sufficient for docs, or whether a separate map-building step is needed.
-- Define what a "document map" looks like in the vault and how skills consume it.
-- Outcome: `spek.map-codebase` (or a new `spek.map-docs`) produces a combined graph covering both code and documentation, readable by `spek prepare` and speckit enrichment wrappers.
+### 8.2 Persistent memories and lessons
 
-### 8b. Persistent memory and lessons (`specs/005-persistent-memory-and-lessons/`)
+- **What**: across sessions, context is currently reloaded from scratch (vault graph + decisions + lessons). There is no durable, incrementally-updated memory layer that summarises *what was built* vs. *what was decided* vs. *what was learned*.
+- **Think about**: what is the right granularity — per-feature lessons, per-session decisions, per-pattern entries? How does this interact with the copilot `/memories/repo/` scope? Should spekificity maintain its own `vault/memory/` structure separate from the agent memory scopes?
+- **Relationship to todo items 4 and 5 above**: this is the generalisation of those two items into a coherent memory architecture.
+- **Why it matters**: without a deliberate memory model, future sessions either re-read everything (slow, expensive) or miss context (error-prone). The model should define what is written, when, by whom, and how it is loaded.
+- **Likely outcome**: a spec for the spekificity memory model — covering vault/lessons, vault/context, copilot repo memory, and the load/write lifecycle for each.
 
-**Question**: What is the persistence model for context across AI sessions?
+### 8.3 Leveraging speckit as it is intended
 
-- Graphify nodes are a point-in-time snapshot — they do not accumulate knowledge across sessions.
-- Vault lessons are written but not loaded systematically on session start.
-- Decide: is `cel.docs.read` needed as a persistent context cache layer, or can vault lessons + decisions fill this role?
-- Define the lesson schema so entries are self-contained enough to avoid re-reading full specs in future sessions.
-- Outcome: `spek prepare` loads a known set of memory artefacts; `spek post` writes a structured lesson that replaces the need to re-read the spec.
+- **What**: spekificity wraps and extends speckit, but the integration points (enriched wrappers, automate sequence, remediation loop) were inferred rather than confirmed against speckit's own design intent.
+- **Think about**: what is speckit's canonical flow? Where does it expect human intervention vs. automation? What does speckit assume about the agent running it — a human-in-the-loop or a fully autonomous agent? Are the enriched wrappers (`speckit-enrich.*`) the right pattern, or should spekificity extend speckit differently (e.g. pre/post hooks, configuration, custom templates)?
+- **Relationship to todo item 1 above**: this is the generalisation of that item — not just the post-remediation question but the entire integration contract.
+- **Why it matters**: if spekificity fights against speckit's design, the workflow will be fragile. If it aligns, speckit upgrades are non-breaking.
+- **Likely outcome**: a spec for the spekificity ↔ speckit integration contract — defining where spekificity adds value (context loading, graph awareness, lessons) vs. where speckit owns the flow, and how enriched wrappers should be structured.
 
-### 8c. Leveraging speckit as it is intended (`specs/006-speckit-workflow-integration/`)
+### 8.4 Prep and post custom skills
 
-**Question**: What is the canonical speckit lifecycle and how does spekificity wrap it correctly?
+- **What**: `spek prepare` and `spek post` are currently underspecified. They exist as placeholders more than deliberate, well-scoped skills.
+- **Think about**: what is the exact ordered sequence of steps for each? What inputs does each step require? What outputs does each step produce? Which steps are mandatory vs. optional? How do prepare and post interact with caveman mode, graphify, obsidian vault, cel.docs.read, cel.docs.simplify, and the lessons-learnt skill?
+- **Relationship to todo items 2, 5, and 6 above**: those items each add a specific capability to prepare/post. This item is the architectural concern — the skill structure, invocation contract, and failure handling.
+- **Why it matters**: prepare and post are the bookends of every feature session. If they are unclear or incomplete, every feature starts and ends with context loss or duplicated manual effort.
+- **Likely outcome**: a spec for `spek.prepare` and a spec for `spek.post` — each defining the full step sequence, skill dependencies, inputs/outputs, and success criteria.
 
-- The full flow (specify → plan → tasks → analyze → remediate → implement) is partially understood but the re-entry semantics after remediation are unclear.
-- Decide: does `spek automate` re-run `speckit.specify` after remediation, or are spec edits done in place?
-- Confirm whether `speckit.implement` expects a prior clean `speckit.analyze` pass.
-- Understand `speckit.clarify` and `speckit.checklist` — are they part of the canonical flow or optional utilities?
-- Outcome: a confirmed step sequence that `spek automate` implements, with no ambiguity about re-entry or hand-off points.
+---
 
-### 8d. Prepare and post custom skills (`specs/007-prepare-and-post-skills/`)
-
-**Question**: What exactly should `spek prepare` and `spek post` do, step by step?
-
-- Both commands are currently underspecified. The skill definitions need concrete, ordered step lists with configuration points.
-- `spek prepare` must: activate caveman (or prompt), verify/refresh graph, load vault context (decisions + patterns + recent lessons), surface summary.
-- `spek post` must: write a rich structured lesson, run incremental graph refresh, run `cel.docs.simplify` on modified docs, update vault decisions/patterns if new ones emerged.
-- Decide: should caveman be auto-activated by `spek prepare`, or left to the developer?
-- Outcome: fully specified skill definitions for both commands that can be directly implemented.
+*Each sub-item above (8.1–8.4) should be reviewed, confirmed, and converted into a dedicated spec before or alongside 003 implementation. They are architectural decisions, not implementation details.*
