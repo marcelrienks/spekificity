@@ -34,19 +34,65 @@ Spekificity is **built for AI agents**. Every artefact is a skill or workflow th
 
 ---
 
-## Quickstart
+## Getting Started (MVP v1.0.0)
 
-See [docs/init.md](docs/init.md) for the full initialization guide.
+The spekificity platform is now ready for use! Use the unified `spek` command for setup and initialization.
 
-Short version:
-1. Install SpecKit and Graphify (global)
-2. Run `specify init .` in your project
-3. Copy `skills/`, `workflows/`, `setup-guides/` to your project
-4. Copy skill files to `.github/agents/` (Copilot) or `.claude/commands/` (Claude)
-5. Run `/map-codebase` in your AI chat session
-6. Start your feature lifecycle with `/context-load` → `/speckit-enrich-specify` → ...
+### 5-Minute Setup
 
-See [workflows/init-workflow.md](workflows/init-workflow.md) for the detailed init workflow checklist.
+```bash
+# 1. Setup environment (check prerequisites)
+.spekificity/bin/spek setup
+
+# 2. Initialize platform (orchestrate all tools)
+.spekificity/bin/spek init
+
+# 3. Verify installation
+.spekificity/bin/spek status
+
+# 4. Load context (in AI chat)
+/context-load
+
+# 5. Start feature work
+/speckit-enrich-specify
+```
+
+**See**: [.spekificity/guides/quickstart.md](.spekificity/guides/quickstart.md) for full 5-minute guide with expected output.
+
+### For New Team Members
+
+```bash
+# Clone project
+git clone <repo>
+cd <project>
+
+# One-time setup
+.spekificity/bin/spek setup && .spekificity/bin/spek init
+
+# Ready for feature work (~10 minutes total)
+/context-load
+```
+
+### Available Commands
+
+**Platform Management**:
+| Command | Purpose |
+|---------|---------|
+| `spek setup` | Verify prerequisites and prepare environment |
+| `spek init` | Initialize all tools (speckit, graphify, obsidian, caveman) |
+| `spek status` | Show initialization status and tool versions |
+| `spek update` | Update spekificity custom layer (Phase 6) |
+
+**AI Skills** (in your chat):
+| Command | Purpose |
+|---------|---------|
+| `/spek.context-load` | Load codebase graph and vault context |
+| `/spek.map-codebase` | Update codebase analysis graph |
+| `/spek.lessons-learnt` | Capture learning after feature completion |
+| `/speckit.specify` | Create feature specification |
+| `/speckit.plan` | Create implementation plan |
+| `/speckit.tasks` | Generate actionable tasks |
+| `/speckit.implement` | Execute implementation tasks |
 
 ---
 
@@ -54,10 +100,19 @@ See [workflows/init-workflow.md](workflows/init-workflow.md) for the detailed in
 
 **Start here**: [README.md](README.md) (you are here)
 
-**Next**: Choose your path:
+### Getting Help
+- **Quick setup**: [.spekificity/guides/quickstart.md](.spekificity/guides/quickstart.md) — 5 minutes
+- **Troubleshooting**: [.spekificity/guides/troubleshooting.md](.spekificity/guides/troubleshooting.md) — Common errors & solutions
+- **Manual setup**: [.spekificity/guides/manual-setup.md](.spekificity/guides/manual-setup.md) — Step-by-step for restricted environments
+- **Integration**: [.spekificity/guides/integration-guide.md](.spekificity/guides/integration-guide.md) — Team workflows & CI/CD
+
+### Learn More
+- **Architecture**: [.spekificity/guides/architecture.md](.spekificity/guides/architecture.md) — Component design & extension points
+- **Orchestration**: [.spekificity/guides/orchestration-model.md](.spekificity/guides/orchestration-model.md) — How tools are coordinated
+- **Migration**: [.spekificity/guides/migration.md](.spekificity/guides/migration.md) — Adopting spekificity in existing projects
+- **Skill Development**: [.spekificity/guides/skill-development.md](.spekificity/guides/skill-development.md) — Create custom skills
+- **Feature Lifecycle**: [workflows/feature-lifecycle.md](workflows/feature-lifecycle.md) — Full workflow overview
 - **Understand the project**: Read [docs/prd.md](docs/prd.md) (problems, goals, user journeys)
-- **Set up your first project**: Follow [docs/init.md](docs/init.md)
-- **Learn the architecture**: See [docs/architecture.md](docs/architecture.md)
 - **Run into issues**: Check [docs/faq.md](docs/faq.md)
 
 **Daily usage**: [workflows/feature-lifecycle.md](workflows/feature-lifecycle.md) — complete enriched SpecKit workflow
