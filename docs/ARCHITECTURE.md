@@ -1,9 +1,5 @@
 # spekificity — architecture document
 
-**version**: 1.0.0  
-**status**: draft  
-**date**: 2026-04-29
-
 ---
 
 ## 1. overview

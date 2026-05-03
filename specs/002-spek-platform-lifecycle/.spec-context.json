@@ -1,0 +1,21 @@
+{
+  "workflow": "speckit",
+  "specName": "002-spek-platform-lifecycle",
+  "branch": "002-spek-platform-lifecycle",
+  "selectedAt": "2026-05-03T12:33:38.798Z",
+  "currentStep": "specify",
+  "status": "completed",
+  "stepHistory": {},
+  "transitions": [
+    {
+      "step": "specify",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-05-03T12:57:38.299Z"
+    }
+  ]
+}

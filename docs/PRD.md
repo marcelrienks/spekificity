@@ -1,8 +1,5 @@
 # spekificity — product requirements document (prd)
 
-**version**: 1.0.0  
-**status**: draft  
-**date**: 2026-04-29  
 **owner**: project initiator
 
 ---
@@ -49,7 +46,7 @@ ai agents produce verbose responses by default. in long sessions this accumulate
 | g6 | allow each component to be updated independently |
 | g7 | support github copilot and claude code as first-class ai agents |
 
-### non-goals (v1)
+### non-goals
 
 - building any of graphify, obsidian, or speckit functionality from scratch
 - providing a gui or web interface

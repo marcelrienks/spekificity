@@ -95,14 +95,14 @@ spekificity solves all three by wiring graphify → obsidian as a persistent, gr
 
 ---
 
-## supported ai agents (initial version)
+## supported ai agents
 
 - github copilot
 - claude code
 
 ---
 
-## out of scope (v1)
+## out of scope
 
 - any gui or web interface
 - multi-user / shared vault synchronisation

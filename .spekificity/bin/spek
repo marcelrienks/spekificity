@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# spek — Main spekificity platform command dispatcher
+# Primary entry point for: spek setup, spek init, spek update, spek status
+
+set -euo pipefail
+
+# Get script directory and project root
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+SETUP_SCRIPTS_DIR="$SCRIPT_DIR/setup-scripts"
+
+# Ensure we're in a git repository or project directory
+if [[ ! -d ".spekificity" ]] && [[ ! -d ".git" ]]; then
+    echo "Error: Not in a spekificity-enabled project. Run 'spek init' in a project root." >&2
+    exit 1
+fi
+
+print_usage() {
+    cat << EOF
+Usage: spek <command> [options]
+
+Spekificity Platform — Unified orchestration for multi-tool setup and initialization
+
+COMMANDS:
+  setup         Detect and prepare prerequisites (run first)
+  init          Initialize all tools (specify, graphify, obsidian, caveman, skills)
+  update        Update spekificity custom layer independently
+  status        Check initialization status and tool integration
+
+OPTIONS:
+  -h, --help    Show this help message
+  --verbose     Show detailed output (works with all commands)
+
+EXAMPLES:
+  spek setup              # Detect prerequisites
+  spek init               # Initialize all tools
+  spek status             # Check status
+  spek setup --verbose    # Verbose prerequisite check
+
+For more information, see: .spekificity/guides/
+EOF
+}
+
+case "${1:-}" in
+    setup)
+        shift
+        exec "$SETUP_SCRIPTS_DIR/setup.sh" "$@"
+        ;;
+    init)
+        shift
+        exec "$SETUP_SCRIPTS_DIR/init.sh" "$@"
+        ;;
+    update)
+        shift
+        exec "$SETUP_SCRIPTS_DIR/update.sh" "$@"
+        ;;
+    status)
+        shift
+        exec "$SETUP_SCRIPTS_DIR/status.sh" "$@"
+        ;;
+    -h|--help|help)
+        print_usage
+        exit 0
+        ;;
+    "")
+        print_usage
+        exit 0
+        ;;
+    *)
+        echo "Error: Unknown command: $1" >&2
+        print_usage
+        exit 1
+        ;;
+esac

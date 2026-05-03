@@ -1,6 +1,7 @@
 ---
-last_deep_read: 2026-04-30t12:00:00z
+last_deep_read: 2026-05-03t00:00:00z
 version: 2.0
+scan_status: full
 ---
 
 # spekificity technical brief
@@ -235,3 +236,26 @@ result: feature complete + knowledge persisted for next session
 ---
 
 **status**: production-ready. zero breaking changes expected for dependent projects. modular: each component can be updated independently.
+
+---
+
+## document inventory (scanned 2026-05-03)
+
+| file | category |
+|------|----------|
+| README.md | root |
+| docs/prd.md | documentation |
+| docs/architecture.md | documentation |
+| docs/glossary.md | documentation |
+| docs/init.md | documentation |
+| docs/faq.md | documentation |
+| docs/validation.md | documentation |
+| workflows/init-workflow.md | workflow |
+| workflows/feature-lifecycle.md | workflow |
+| workflows/map-refresh.md | workflow |
+| workflows/component-update.md | workflow |
+| setup-guides/graphify-setup.md | setup |
+| setup-guides/obsidian-setup.md | setup |
+| setup-guides/speckit-setup.md | setup |
+
+**scanned**: 14 files. no changes from 2026-04-30. context cache valid.
