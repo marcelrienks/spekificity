@@ -1,7 +1,7 @@
 <!-- speckit start -->
 for additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/001-spekificity-platform/plan.md
+at specs/003-spek-full-workflow-cli/plan.md
 <!-- speckit end -->
 
 <!-- specificity start -->

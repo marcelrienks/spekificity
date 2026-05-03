@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+# bin/spek — spekificity platform CLI entry point (installable)
+# Install: chmod +x bin/spek && cp bin/spek /usr/local/bin/spek
+# Usage: spek <command> [options]
+#
+# Commands: setup, init, prepare, automate, post, status, update
+
+set -euo pipefail
+
+# ── locate project root ────────────────────────────────────────────────────────
+# Walk up the directory tree to find the project root containing .spekificity/
+find_project_root() {
+    local dir="${PWD}"
+    while [[ "${dir}" != "/" ]]; do
+        if [[ -d "${dir}/.spekificity" ]]; then
+            echo "${dir}"
+            return 0
+        fi
+        dir="$(dirname "${dir}")"
+    done
+    echo ""
+}
+
+PROJECT_ROOT="$(find_project_root)"
+
+# ── usage ──────────────────────────────────────────────────────────────────────
+print_usage() {
+    cat << 'EOF'
+spekificity platform CLI
+
+USAGE
+  spek <command> [options]
+
+COMMANDS
+  setup       Detect and install prerequisites (run first on a new machine)
+  init        Initialise all tools, install skills, create vault directories
+  prepare     Load vault context, verify graph currency, prime AI session
+  automate    Drive full speckit feature lifecycle autonomously
+  post        Run post-implementation tasks: lessons + graph refresh
+  status      Report platform state, tool versions, vault currency
+  update      Update spekificity scripts and skills to latest version
+
+GLOBAL OPTIONS
+  -h, --help       Show this help
+  --version        Print spekificity version
+  --verbose        Verbose output (supported by setup, init, status)
+
+EXAMPLES
+  spek setup --dry-run
+  spek init
+  spek prepare
+  spek automate "add user authentication"
+  spek automate --resume
+  spek post
+  spek status
+
+See specs/003-spek-full-workflow-cli/quickstart.md for the full workflow guide.
+EOF
+}
+
+# ── require project root for most commands ─────────────────────────────────────
+require_project_root() {
+    if [[ -z "${PROJECT_ROOT}" ]]; then
+        echo "[spek] ✗ not a spekificity project (no .spekificity/ found in current or parent directories)" >&2
+        echo "[spek]   run 'spek init' in your project root to initialise" >&2
+        exit 1
+    fi
+}
+
+# ── version ────────────────────────────────────────────────────────────────────
+print_version() {
+    local ver_file="${PROJECT_ROOT}/.spekificity/version.txt"
+    if [[ -f "${ver_file}" ]]; then
+        echo "spekificity $(cat "${ver_file}")"
+    else
+        echo "spekificity (version unknown)"
+    fi
+}
+
+# ── dispatch ───────────────────────────────────────────────────────────────────
+CMD="${1:-}"
+shift || true
+
+case "${CMD}" in
+    setup)
+        # setup can run without an existing .spekificity/ in some cases
+        if [[ -n "${PROJECT_ROOT}" ]]; then
+            exec "${PROJECT_ROOT}/.spekificity/setup-scripts/setup.sh" "$@"
+        elif [[ -d ".spekificity/setup-scripts" ]]; then
+            exec ".spekificity/setup-scripts/setup.sh" "$@"
+        else
+            echo "[spek] ✗ cannot find setup.sh — run from a spekificity project directory" >&2
+            exit 1
+        fi
+        ;;
+    init)
+        if [[ -n "${PROJECT_ROOT}" ]]; then
+            exec "${PROJECT_ROOT}/.spekificity/setup-scripts/init.sh" "$@"
+        elif [[ -d ".spekificity/setup-scripts" ]]; then
+            exec ".spekificity/setup-scripts/init.sh" "$@"
+        else
+            echo "[spek] ✗ cannot find init.sh" >&2
+            exit 1
+        fi
+        ;;
+    prepare)
+        require_project_root
+        exec "${PROJECT_ROOT}/.spekificity/bin/prepare.sh" "$@"
+        ;;
+    automate)
+        require_project_root
+        exec "${PROJECT_ROOT}/.spekificity/bin/automate.sh" "$@"
+        ;;
+    post)
+        require_project_root
+        exec "${PROJECT_ROOT}/.spekificity/bin/post.sh" "$@"
+        ;;
+    status)
+        if [[ -n "${PROJECT_ROOT}" ]]; then
+            exec "${PROJECT_ROOT}/.spekificity/setup-scripts/status.sh" "$@"
+        elif [[ -d ".spekificity/setup-scripts" ]]; then
+            exec ".spekificity/setup-scripts/status.sh" "$@"
+        else
+            echo "[spek] ✗ not initialised — run 'spek init' first" >&2
+            exit 1
+        fi
+        ;;
+    update)
+        require_project_root
+        exec "${PROJECT_ROOT}/.spekificity/setup-scripts/update.sh" "$@"
+        ;;
+    -h|--help|help)
+        print_usage
+        exit 0
+        ;;
+    --version|version)
+        print_version
+        exit 0
+        ;;
+    "")
+        print_usage
+        exit 0
+        ;;
+    *)
+        echo "[spek] ✗ unknown command: ${CMD}" >&2
+        echo "Run 'spek --help' for available commands." >&2
+        exit 1
+        ;;
+esac

@@ -16,32 +16,54 @@ invoked by the developer in the ai chat session:
 ## prerequisites
 
 - a speckit feature implementation is complete or at a meaningful checkpoint
-- `vault/lessons/` directory exists (created by init workflow or `/map-codebase`)
+- `vault/lessons/` directory exists (created by init workflow or `/map-codebase`); if absent, create it with `mkdir -p vault/lessons/`
 - current feature branch name is accessible via git
+- `.spekificity/config.json` exists if running in a `spek init`-enabled project (for vault path resolution)
 
 ## inputs
 
 | input | description | required |
 |-------|-------------|----------|
-| feature branch | auto-detected from `git branch --show-current` | yes (auto) |
+| feature branch | auto-detected from `git branch --show-current` or `workflow-state.json`.feature_branch | yes (auto) |
+| feature dir | `workflow-state.json`.feature_dir (if available) — used to read spec/plan for AI inference | no |
 | date | auto-detected (today's date, iso 8601) | yes (auto) |
 | ai model name | name of ai agent and model (e.g., "github copilot / claude sonnet 4.6") | yes (auto-detected or ask) |
+| developer reflection | answers to the 4 reflection questions (passed from `/spek.post` if invoked via automate) | no — AI infers if absent |
 
 ## steps
 
-1. **detect current git branch**:
+1. **resolve vault path**: read `vault.path` from `.spekificity/config.json`. if absent or unset, default to `vault/`. all writes below use this resolved path as `${VAULT_PATH}`.
+
+2. **detect current git branch**:
    ```bash
    git branch --show-current
    ```
-   extract the feature slug (e.g., `001-spekificity-platform` from `001-spekificity-platform`).
+   if `.spekificity/workflow-state.json` exists, prefer `feature_branch` from there. extract the feature slug (e.g., `001-spekificity-platform` from `001-spekificity-platform`).
 
-2. **ai reflection** — ask the ai to answer these four questions based on what happened during the feature:
-   - *what worked well?* (approaches, tools, patterns that saved time or produced quality output)
-   - *what was harder than expected?* (blockers, surprises, things that required rework)
-   - *what decisions were made?* (architectural, design, or process choices made during this feature)
-   - *what patterns were identified?* (reusable approaches worth applying in future features)
+3. **developer reflection prompt** — if reflection answers were not passed (e.g., manual invocation), prompt the developer using `[spek] ❓` format:
+   ```
+   [spek] ❓ lessons reflection (feature: <feature_branch>)
 
-3. **write lessons entry** to `vault/lessons/<yyyy-mm-dd>-<feature-slug>.md` using this schema:
+   Please answer briefly:
+   > 1. What decisions were made? (architectural, design, or process)
+   > 2. What patterns emerged that could be reused?
+   > 3. What was harder than expected?
+   > 4. What worked particularly well?
+
+   (press Enter to let the AI infer from the feature spec, plan, and tasks)
+   ```
+   if developer presses Enter without answering, infer answers from `<feature_dir>/spec.md`, `<feature_dir>/plan.md`, and `<feature_dir>/tasks.md`.
+
+4. **ai reflection** — using developer answers or AI-inferred answers, synthesise responses to the four questions:
+   - *what worked well?*
+   - *what was harder than expected?*
+   - *what decisions were made?*
+   - *what patterns were identified?*
+
+5. **write lessons entry** to `${VAULT_PATH}/lessons/<yyyy-mm-dd>-<feature-slug>.md` using this schema:
+
+   **append-on-collision**: if `<yyyy-mm-dd>-<feature-slug>.md` already exists, append `-v2` to the filename (e.g., `2026-04-29-my-feature-v2.md`). increment suffix (`-v3`, `-v4`, etc.) until a free filename is found — never overwrite.
+
 
    ```markdown
    ---
@@ -74,17 +96,21 @@ invoked by the developer in the ai chat session:
    | 1.0 | initial | created by /lessons-learnt |
    ```
 
-4. **append to `vault/context/patterns.md`**: for each new pattern identified, add a bullet:
+6. **append to `${VAULT_PATH}/context/patterns.md`**: for each new pattern identified, add a bullet:
    ```
    - yyyy-mm-dd [feature-slug]: <pattern summary>
    ```
 
-5. **append to `vault/context/decisions.md`**: for each decision made, add a bullet:
+7. **append to `${VAULT_PATH}/context/decisions.md`**: for each decision made, add a bullet:
    ```
    - yyyy-mm-dd [feature-slug]: <decision summary>
    ```
 
-6. **report** to developer: "lessons written to `vault/lessons/<filename>.md`. patterns and decisions updated."
+8. **report** to developer:
+   ```
+   [spek] ✓ lessons written to ${VAULT_PATH}/lessons/<filename>.md
+   [spek] ✓ patterns and decisions updated
+   ```
 
 ## outputs
 
@@ -96,9 +122,10 @@ invoked by the developer in the ai chat session:
 
 ## error handling
 
-- **`vault/lessons/` missing**: create the directory (`mkdir -p vault/lessons`) and proceed.
+- **`vault/lessons/` missing**: create the directory (`mkdir -p ${VAULT_PATH}/lessons`) and proceed.
 - **git command fails** (not a git repo or detached head): ask the developer to provide the feature slug manually. do not halt.
-- **duplicate entry** (same date + slug already exists): append `-v2` to the filename (e.g., `2026-04-29-my-feature-v2.md`) rather than overwriting.
+- **duplicate entry** (same date + slug already exists): append `-v2` (then `-v3`, `-v4`, ...) to the filename — never overwrite.
+- **developer reflection empty**: AI infers from spec, plan, and tasks. log `[spek] ℹ inferring reflection from feature artifacts`.
 
 ## notes
 

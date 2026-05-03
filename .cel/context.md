@@ -1,6 +1,6 @@
 ---
-last_deep_read: 2026-05-03t00:00:00z
-version: 2.0
+last_deep_read: 2026-05-03t15:04:00z
+version: 2.1
 scan_status: full
 ---
 
@@ -166,24 +166,16 @@ result: feature complete + knowledge persisted for next session
 
 ---
 
-## documentation map
+## documentation map (consolidated & reorganized)
 
-| document | location | purpose |
-|----------|----------|---------|
-| **prd (product requirements)** | `docs/prd.md` | goals, non-goals, user journeys, functional/non-functional requirements, personas |
-| **architecture** | `docs/architecture.md` | component roles, data flows, directory structure, vault design |
-| **glossary** | `docs/glossary.md` | term definitions (caveman, decorator, graphify, obsidian, speckit, etc.) |
-| **init guide** | `docs/init.md` | high-level narrative, design principles, tool roles |
-| **feature spec** | `specs/001-specificity-platform/spec.md` | detailed user stories, requirements, success criteria, assumptions |
-| **quickstart** | `specs/001-specificity-platform/quickstart.md` | step-by-step first-time setup |
-| **skills** | `skills/<skill>/skill.md` | triggerable ai tasks (agent-agnostic format) |
-| **workflows** | `workflows/*.md` | multi-step sequences (init, feature-lifecycle, map-refresh, component-update) |
-| **setup guides** | `setup-guides/*.md` | per-tool installation (graphify, obsidian, speckit) |
-| **vault: decisions** | `vault/context/decisions.md` | architectural decisions log |
-| **vault: patterns** | `vault/context/patterns.md` | identified patterns & recurring solutions |
-| **vault: graph** | `vault/graph/index.md` | graphify-generated dependency graph (runtime) |
-| **vault: lessons** | `vault/lessons/*.md` | feature lessons entries (runtime, one per feature) |
-| **agent routing** | `agents.md` | claude code slash-command index |
+| document | location | purpose | status |
+|----------|----------|---------|--------|
+| **readme** | `docs/readme.md` | quick start, core problems, value proposition, target users | ✓ consolidated |
+| **guide** | `docs/guide.md` | feature lifecycle workflows, enriched speckit operations, token efficiency | ✓ consolidated |
+| **architecture** | `docs/architecture.md` | design principles, component roles, data flows, directory structure, vault design | ✓ consolidated |
+| **glossary** | `docs/glossary.md` | term definitions (caveman, decorator, graphify, obsidian, speckit, etc.) | unchanged |
+| **faq** | `docs/faq.md` | troubleshooting, setup issues, vault operations | unchanged |
+| **validation** | `docs/validation.md` | success criteria measurement methodology | unchanged |
 
 ---
 
@@ -239,23 +231,30 @@ result: feature complete + knowledge persisted for next session
 
 ---
 
-## document inventory (scanned 2026-05-03)
+## document inventory & hash validation (scanned 2026-05-03 15:04)
 
-| file | category |
-|------|----------|
-| README.md | root |
-| docs/prd.md | documentation |
-| docs/architecture.md | documentation |
-| docs/glossary.md | documentation |
-| docs/init.md | documentation |
-| docs/faq.md | documentation |
-| docs/validation.md | documentation |
-| workflows/init-workflow.md | workflow |
-| workflows/feature-lifecycle.md | workflow |
-| workflows/map-refresh.md | workflow |
-| workflows/component-update.md | workflow |
-| setup-guides/graphify-setup.md | setup |
-| setup-guides/obsidian-setup.md | setup |
-| setup-guides/speckit-setup.md | setup |
+**primary docs/ (active):**
 
-**scanned**: 14 files. no changes from 2026-04-30. context cache valid.
+| file | lines | hash | status |
+|------|-------|------|--------|
+| docs/readme.md | 116 | e4a2eed40f1b1dc6a196cdaed91d7f5c | ✓ new (consolidated) |
+| docs/guide.md | 146 | ff07fcbe4d2f03b4a083fbb2fd54a310 | ✓ new (consolidated) |
+| docs/architecture.md | 218 | 9da1179f6ac0557e3930437658110ef5 | ✓ updated |
+| docs/glossary.md | 53 | 55a2a95a9527193d4343fd512805b5e1 | ✓ unchanged |
+| docs/faq.md | 308 | 420471d15759fca6d3612c4605e1964f | ✓ unchanged |
+| docs/validation.md | 96 | 98b7f62546bb5cef1a08478df6fc7eaa | ✓ unchanged |
+
+**removed files:**
+- docs/INIT.md (consolidated into readme.md + architecture.md)
+- docs/PRD.md (consolidated into readme.md + guide.md + architecture.md)
+
+**naming standardization:**
+- ARCHITECTURE.md → architecture.md (case)
+- GLOSSARY.md → glossary.md (case)
+
+**cross-reference updates:**
+- README.md (root) → updated links to docs/readme.md, docs/guide.md
+- .cel/context.md → this file (updated doc map)
+- all workflows/specs maintained (no changes)
+
+**scanned**: 14 active files. 2 consolidated. 2 renamed. context refreshed.
