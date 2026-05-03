@@ -1,28 +1,31 @@
-# spekificity — architecture document
+# architecture
+
+spekificity has no runtime components. its "architecture" is the structure of its files and the contracts between them.
 
 ---
 
-## 1. overview
+## design principles
 
-spekificity has no runtime components. its "architecture" is the structure of its files and the contracts between them. this document describes:
-
-- the directory layout of a spekificity-enabled project
-- the role of each component and directory
-- how data flows between tools
-- how components are isolated for independent updates
+- **decorator pattern**: spekificity skills wrap, not replace, standard speckit commands. vanilla speckit remains untouched and upgradable.
+- **modular independence**: graphify, obsidian, speckit, and the spekificity custom layer can each be updated independently.
+- **global speckit, local customisation**: speckit/specify is installed globally so upstream updates apply immediately. spekificity installs its custom skills locally per-project.
+- **ai-executable setup**: wherever cli automation is impractical, setup is documented as step-by-step guides that an ai agent can follow.
+- **token efficiency by default**: caveman mode and graph-based context loading are first-class citizens, not afterthoughts.
 
 ---
 
-## 2. repository structure
+## repository structure
 
 ```
 spekificity/                        ← this project
 │
 ├── docs/                           ← project documentation
-│   ├── init.md                     ← project overview and initialisation narrative
-│   ├── prd.md                      ← product requirements document
+│   ├── readme.md                   ← quick start and overview
 │   ├── architecture.md             ← this file
-│   └── glossary.md                 ← terminology reference
+│   ├── guide.md                    ← feature lifecycle workflows
+│   ├── glossary.md                 ← terminology reference
+│   ├── faq.md                      ← troubleshooting and qa
+│   └── validation.md               ← success criteria validation
 │
 ├── skills/                         ← spekificity custom ai skills
 │   ├── map-codebase/
@@ -64,9 +67,9 @@ spekificity/                        ← this project
     └── agents/                     ← speckit agent definition files
 ```
 
----
+---component roles
 
-## 3. component roles
+###omponent roles
 
 ### 3.1 skills (`skills/`)
 
@@ -78,9 +81,7 @@ skills are the primary deliverable of spekificity. each skill is a markdown file
 - **steps**: ordered, unambiguous instructions the ai follows
 - **outputs**: what the skill produces and where it is stored
 
-skills must not contain assumptions about the ai agent's prior session state. they must be self-contained.
-
-### 3.2 workflows (`workflows/`)
+skilworkflows (`workflows/`)
 
 workflows describe how skills compose into multi-step processes. a workflow document specifies:
 
@@ -89,9 +90,11 @@ workflows describe how skills compose into multi-step processes. a workflow docu
 - expected state at each checkpoint
 - how to recover from partial failures
 
-### 3.3 setup guides (`setup-guides/`)
+### setup guides (`setup-guides/`)
 
 setup guides provide step-by-step, ai-executable installation and configuration instructions for each third-party prerequisite. they assume only that the ai has access to a terminal and internet.
+
+###uides provide step-by-step, ai-executable installation and configuration instructions for each third-party prerequisite. they assume only that the ai has access to a terminal and internet.
 
 ### 3.4 obsidian vault (`vault/` or project-defined location)
 
@@ -113,7 +116,7 @@ the vault uses plain markdown and is compatible with obsidian's format. ai agent
 
 ---
 
-## 4. data flow
+## data flow
 
 ```
 ┌────────────────────┐
@@ -156,7 +159,7 @@ the vault uses plain markdown and is compatible with obsidian's format. ai agent
 
 ---
 
-## 5. component isolation and update strategy
+## component isolation and update strategy
 
 spekificity's modular independence principle requires that each component can be updated without affecting the others. this is achieved through:
 
@@ -176,7 +179,7 @@ spekificity's modular independence principle requires that each component can be
 
 ---
 
-## 6. ai agent integration
+## ai agent integration
 
 ### github copilot
 
@@ -194,7 +197,7 @@ all skills follow the same markdown structure regardless of ai agent. the `.agen
 
 ---
 
-## 7. vault commit strategy
+## vault commit strategy
 
 **recommended**: commit the vault to git with the project.
 
@@ -205,7 +208,7 @@ a `.gitignore` template covering this exception is included in the init workflow
 
 ---
 
-## 8. open architecture decisions
+## open architecture decisions
 
 | decision | options | status |
 |----------|---------|--------|

@@ -112,12 +112,13 @@ cd <project>
 - **Migration**: [.spekificity/guides/migration.md](.spekificity/guides/migration.md) — Adopting spekificity in existing projects
 - **Skill Development**: [.spekificity/guides/skill-development.md](.spekificity/guides/skill-development.md) — Create custom skills
 - **Feature Lifecycle**: [workflows/feature-lifecycle.md](workflows/feature-lifecycle.md) — Full workflow overview
-- **Understand the project**: Read [docs/prd.md](docs/prd.md) (problems, goals, user journeys)
+- **Understand the project**: Read [docs/readme.md](docs/readme.md) (quick start, problems, goals)
+- **Detailed workflows**: [docs/guide.md](docs/guide.md) — feature lifecycle and operations
 - **Run into issues**: Check [docs/faq.md](docs/faq.md)
 
 **Daily usage**: [workflows/feature-lifecycle.md](workflows/feature-lifecycle.md) — complete enriched SpecKit workflow
 
-**Reference**: [docs/glossary.md](docs/glossary.md) — terminology, [docs/init.md](docs/init.md) — initialization narrative
+**Reference**: [docs/glossary.md](docs/glossary.md) — terminology, [docs/architecture.md](docs/architecture.md) — component design
 
 ---
 
@@ -149,10 +150,12 @@ spekificity/
 │       ├── decisions.md
 │       └── patterns.md
 └── docs/                          ← Project documentation
-    ├── init.md
-    ├── prd.md
+    ├── readme.md
     ├── architecture.md
-    └── glossary.md
+    ├── guide.md
+    ├── glossary.md
+    ├── faq.md
+    └── validation.md
 ```
 
 ---
