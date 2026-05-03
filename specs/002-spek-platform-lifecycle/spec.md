@@ -2,7 +2,7 @@
 
 **feature branch**: `002-spek-platform-lifecycle`  
 **created**: 2026-05-03  
-**status**: draft  
+**status**: complete  
 
 ## overview
 
