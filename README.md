@@ -2,7 +2,7 @@
 
 > ⚠️ **Status**: Under active development. APIs and documentation subject to change.
 
-**An agentic focused toolset** that connects [Graphify](https://github.com/graphify/graphifyy), [Obsidian](https://obsidian.md), [SpecKit/Specify](https://github.com/github/spec-kit), and the [Caveman skill](https://github.com/marcelrienks/.agents/skills/caveman) to solve persistent AI context loss, excessive token consumption, and shallow feature planning. Delivered as markdown skills, workflows, and setup guides that AI agents execute to run enriched SpecKit feature lifecycles with persistent context.
+**An agentic focused toolset** that connects various tools like [Graphify](https://github.com/graphify/graphifyy), [Obsidian](https://obsidian.md), [SpecKit/Specify](https://github.com/github/spec-kit), and the [Caveman skill](https://github.com/marcelrienks/.agents/skills/caveman) together to create a persistent AI context, reduce excessive token consumption, and improve shallow feature planning. Delivered as markdown skills, workflows, and setup guides that AI agents execute to run enriched SpecKit feature lifecycles with persistent context.
 
 Spekificity is **built for AI agents**. Every artefact is a skill or workflow that an AI agent reads and executes—enabling code generation, artifact creation, and automation through agentic orchestration.
 
@@ -36,7 +36,7 @@ Spekificity is **built for AI agents**. Every artefact is a skill or workflow th
 
 ## Quickstart
 
-See [specs/001-spekificity-platform/quickstart.md](specs/001-spekificity-platform/quickstart.md) for the full step-by-step guide.
+See [docs/init.md](docs/init.md) for the full initialization guide.
 
 Short version:
 1. Install SpecKit and Graphify (global)
@@ -46,7 +46,7 @@ Short version:
 5. Run `/map-codebase` in your AI chat session
 6. Start your feature lifecycle with `/context-load` → `/speckit-enrich-specify` → ...
 
-See [workflows/init-workflow.md](workflows/init-workflow.md) for the full init checklist.
+See [workflows/init-workflow.md](workflows/init-workflow.md) for the detailed init workflow checklist.
 
 ---
 
@@ -56,9 +56,9 @@ See [workflows/init-workflow.md](workflows/init-workflow.md) for the full init c
 
 **Next**: Choose your path:
 - **Understand the project**: Read [docs/prd.md](docs/prd.md) (problems, goals, user journeys)
-- **Set up your first project**: Follow [specs/001-specificity-platform/quickstart.md](specs/001-specificity-platform/quickstart.md)
+- **Set up your first project**: Follow [docs/init.md](docs/init.md)
 - **Learn the architecture**: See [docs/architecture.md](docs/architecture.md)
-- **Run into issues**: Check [docs/troubleshooting.md](docs/troubleshooting.md)
+- **Run into issues**: Check [docs/faq.md](docs/faq.md)
 
 **Daily usage**: [workflows/feature-lifecycle.md](workflows/feature-lifecycle.md) — complete enriched SpecKit workflow
 

@@ -1,7 +1,5 @@
 # spekificity — glossary
 
-**version**: 1.0.0 | **last updated**: 2026-04-29
-
 ---
 
 ## terms

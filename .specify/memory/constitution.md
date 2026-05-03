@@ -3,7 +3,7 @@
 ## core principles
 
 ### i. skills and workflows — not application code
-specificity delivers markdown-based skills, workflow guides, and ai agent instructions. it contains no executable application code. every contribution must be expressible as a skill file, a workflow document, or a setup guide. if something requires code, it belongs in a third-party tool, not in this project.
+specificity delivers markdown-based skills, workflow guides, setup guides, and ai agent instructions. it contains no complex application code (no custom business logic, data processing pipelines, or stateful services). shell scripts are acceptable for orchestrating and automating setup/init/update workflows when paired with clear markdown documentation for ai-executable instructions. every contribution must be expressible as a skill file, a workflow document, a setup guide, or orchestration automation script. if something requires complex business logic or stateful code, it belongs in a third-party tool, not in this project.
 
 ### ii. decorator pattern — never replace, always extend
 all specificity skills must wrap and extend standard speckit commands without modifying or forking the underlying speckit installation. speckit remains the authoritative source of its own behaviour. specificity adds a layer on top. breaking this principle makes upstream speckit updates impossible to absorb.

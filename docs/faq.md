@@ -1,7 +1,5 @@
 # troubleshooting & faq
 
-**version**: 1.0 | **last updated**: 2026-04-30
-
 ---
 
 ## setup phase
