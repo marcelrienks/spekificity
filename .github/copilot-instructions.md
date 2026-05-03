@@ -13,18 +13,67 @@ at the start of every session, run:
 ```
 this loads the obsidian vault graph, architectural decisions, patterns, and recent lessons into working memory. it is the mandatory first step before any feature work.
 
-## spekificity skill index
+## spekificity unified skill index
 
-| command | agent file | description |
+### spekificity custom skills (namespace: `spek.*`)
+
+| command | namespace | description |
 |---------|-----------|-------------|
-| `/context-load` | `.github/agents/context-load.agent.md` | load vault context (graph, decisions, patterns, lessons) |
-| `/map-codebase` | `.github/agents/map-codebase.agent.md` | run graphify to build/refresh the obsidian vault graph |
-| `/lessons-learnt` | `.github/agents/lessons-learnt.agent.md` | write structured lessons to the vault at feature end |
-| `/speckit-enrich-specify` | `.github/agents/speckit-enrich-specify.agent.md` | graph-aware decorator for `/speckit.specify` |
-| `/speckit-enrich-plan` | `.github/agents/speckit-enrich-plan.agent.md` | graph-aware decorator for `/speckit.plan` |
-| `/speckit-enrich-implement` | `.github/agents/speckit-enrich-implement.agent.md` | graph-aware decorator for `/speckit.implement` with auto lessons + map |
+| `/spek.context-load` | spekificity | load vault context (graph, decisions, patterns, lessons) |
+| `/spek.map-codebase` | spekificity | run graphify to build/refresh the obsidian vault graph |
+| `/spek.lessons-learnt` | spekificity | write structured lessons to the vault at feature end |
+
+### speckit skills (namespace: `speckit.*`)
+
+| command | namespace | description |
+|---------|-----------|-------------|
+| `/speckit.specify` | speckit | create feature specification from natural language |
+| `/speckit.plan` | speckit | create implementation plan with design and tasks |
+| `/speckit.tasks` | speckit | generate actionable, dependency-ordered tasks |
+| `/speckit.implement` | speckit | execute implementation plan, run all tasks |
+
+### spekificity-enhanced workflows (namespace: `speckit-enrich.*`)
+
+| command | description |
+|---------|-------------|
+| `/speckit-enrich-specify` | graph-aware decorator for `/speckit.specify` with codebase context |
+| `/speckit-enrich-plan` | graph-aware decorator for `/speckit.plan` with architectural decisions |
+| `/speckit-enrich-implement` | graph-aware decorator for `/speckit.implement` with auto lessons + map update |
+
+### optional skills
+
+| command | namespace | description |
+|---------|-----------|-------------|
+| `/caveman lite` | system | token-compressed response mode (optional, if available) |
+
+## namespace reference
+
+- **`spek.*`** — spekificity custom platform skills (`.spekificity/skills/`)
+- **`speckit.*`** — speckit/specify framework skills (`.github/agents/`)
+- **`speckit-enrich.*`** — enhanced speckit wrappers (graph-aware orchestration)
+- **`/caveman`** — system-level token compression (optional, if installed)
+
+see `.spekificity/skill-index.md` for full registry with status and versions.
 
 ## full feature lifecycle
 
 see [workflows/feature-lifecycle.md](../workflows/feature-lifecycle.md) for the complete enriched speckit workflow using all skills above.
+
+## spekificity platform setup
+
+first-time setup:
+
+```bash
+# prerequisite check
+.spekificity/bin/spek setup
+
+# initialize all tools (speckit, graphify, obsidian, caveman)
+.spekificity/bin/spek init
+
+# verify status
+.spekificity/bin/spek status
+```
+
+see `.spekificity/guides/quickstart.md` for 5-minute setup guide.
+see `.spekificity/guides/manual-setup.md` for step-by-step instructions.
 <!-- specificity end -->
