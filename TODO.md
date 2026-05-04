@@ -25,8 +25,8 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 **Required expansions**:
 
-- **prepare**: explicitly invoke caveman mode at start of session to reduce token consumption throughout the workflow; confirm graphify graph is fresh (not just present); load obsidian vault decisions and lessons into context before any spec or plan work begins.
-- **post**: invoke caveman to compress session output before writing; run graphify in incremental mode *after* lessons are written (so new lesson files are included in the graph); update obsidian vault with any new decisions made during the feature session.
+- **prepare**: explicitly invoke caveman mode at start of session to reduce token consumption throughout the workflow; confirm graphify graph is fresh (not just present); load obsidian vault decisions and patterns explicitly (not just the graph); verify all skill dependencies are present before proceeding.
+- **post**: invoke caveman to compress session output before writing; run graphify in incremental mode *after* lessons are written (so new lesson files are included in the graph); update obsidian vault decisions if any new decisions were made during the session.
 - Ensure both skills explicitly document their caveman activation step.
 - Consider whether `spek prepare` should activate caveman automatically or prompt the developer.
 
@@ -129,7 +129,7 @@ Decide:
 - Verb-noun order for action skills: `spek.map-codebase`, `spek.lessons-learnt` — or noun-verb? Decide and apply consistently.
 - Where to record the canonical list: update `.spekificity/skill-index.md` and `copilot-instructions.md` once naming is settled.
 
-**Why it matters**: inconsistent naming across `spek.*`, `speckit.*`, and `speckit-enrich.*` creates confusion about what is spekificity-owned vs. speckit-owned vs. glue code. Settling conventions now prevents naming debt from compounding as more skills are added.
+**Why it matters**: inconsistent naming across `spek.*`, `speckit.*`, and `speckit-enrich.*` creates confusion about what is spekificity-owned vs. speckit-owned vs. glue code. Settling conventions now prevents drift across 003 and future features.
 
 ---
 
@@ -140,14 +140,14 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 ### 8.1 Code and Document maps
 
 - **What**: the vault graph currently targets source code. The question is whether the graph should uniformly cover both code *and* documentation (specs, docs, skills, workflows).
-- **Think about**: what does it mean to "map" a markdown document — is it file-level nodes, heading-level nodes, or link-graph topology? How does graphify handle non-code files? Should a separate mapping pass be used for docs vs. code?
-- **Why it matters**: every AI-assisted step (specify, plan, implement) benefits from knowing what documentation already exists. Without doc-level graph nodes, specs can duplicate or contradict existing docs without the agent noticing.
+- **Think about**: what does it mean to "map" a markdown document — is it file-level nodes, heading-level nodes, or link-graph topology? How does graphify handle non-code files? Should a separate mapping pass handle docs, or can graphify be configured to cover both in one run?
+- **Why it matters**: every AI-assisted step (specify, plan, implement) benefits from knowing what documentation already exists. Without doc-level graph nodes, specs can duplicate or contradict existing docs silently.
 - **Likely outcome**: a spec for unified code + documentation mapping, including graphify configuration, vault node schema, and how `spek.map-codebase` invokes both passes.
 
 ### 8.2 Persistent memories and lessons
 
-- **What**: across sessions, context is currently reloaded from scratch (vault graph + decisions + lessons). There is no durable, incrementally-updated memory layer that summarises *what was built* and *why decisions were made*.
-- **Think about**: what is the right granularity — per-feature lessons, per-session decisions, per-pattern entries? How does this interact with the copilot `/memories/repo/` scope? Should spekificity own a memory format, or delegate entirely to copilot memories?
+- **What**: across sessions, context is currently reloaded from scratch (vault graph + decisions + lessons). There is no durable, incrementally-updated memory layer that summarises *what was built* and *why decisions were made* in a form that can be loaded cheaply.
+- **Think about**: what is the right granularity — per-feature lessons, per-session decisions, per-pattern entries? How does this interact with the copilot `/memories/repo/` scope? Should spekificity maintain its own memory index separate from the vault?
 - **Relationship to todo items 4 and 5 above**: this is the generalisation of those two items into a coherent memory architecture.
 - **Why it matters**: without a deliberate memory model, future sessions either re-read everything (slow, expensive) or miss context (error-prone). The model should define what is written, when, by whom, and how it is loaded.
 - **Likely outcome**: a spec for the spekificity memory model — covering vault/lessons, vault/context, copilot repo memory, and the load/write lifecycle for each.
@@ -163,8 +163,8 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 ### 8.4 Prep and post custom skills
 
 - **What**: `spek prepare` and `spek post` are currently underspecified. They exist as placeholders more than deliberate, well-scoped skills.
-- **Think about**: what is the exact ordered sequence of steps for each? What inputs does each step require? What outputs does each step produce? Which steps are mandatory vs. optional? How do prepare and post interact with the vault, caveman, graphify, and copilot memories?
-- **Relationship to todo items 2, 5, and 6 above**: those items each add a specific capability to prepare/post. This item is the architectural concern — the skill structure, invocation contract, and sequencing logic.
+- **Think about**: what is the exact ordered sequence of steps for each? What inputs does each step require? What outputs does each step produce? Which steps are mandatory vs. optional? How do prepare and post interact with each other across a session boundary?
+- **Relationship to todo items 2, 5, and 6 above**: those items each add a specific capability to prepare/post. This item is the architectural concern — the skill structure, invocation contract, and success criteria.
 - **Why it matters**: prepare and post are the bookends of every feature session. If they are unclear or incomplete, every feature starts and ends with context loss or duplicated manual effort.
 - **Likely outcome**: a spec for `spek.prepare` and a spec for `spek.post` — each defining the full step sequence, skill dependencies, inputs/outputs, and success criteria.
 
@@ -186,3 +186,18 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 - Note any tooling, file formats, or conventions that could be reused or adapted — particularly anything relevant to the `spek.prepare` / `spek.post` memory steps.
 
 **Why it matters**: This repository was identified as a real-world example of Claude-based memory setup and may contain proven patterns that spekificity's memory architecture (item 8.2) can build on rather than reinvent.
+
+---
+
+## [ ] 10. Review spec-driven development framework comparison as a reference for speckit positioning
+
+**Article**: https://medium.com/@wasowski.jarek/comparing-15-spec-driven-development-frameworks-sdd-c052df529274
+
+**Question**: How does speckit compare against the broader SDD landscape, and are there patterns or frameworks worth adopting or avoiding?
+
+- Read the comparison of 15 spec-driven development frameworks to understand where speckit sits in the SDD ecosystem.
+- Identify any frameworks with stronger remediation loops, persistent context, or automation pipelines that could inform spekificity's design.
+- Note any frameworks whose spec → plan → implement flow differs significantly from speckit's — particularly around human-in-the-loop checkpoints (relevant to todo item 1 and 8.3).
+- Extract any terminology, conventions, or structural patterns that could sharpen spekificity's own skill and workflow definitions.
+
+**Why it matters**: spekificity extends speckit, but speckit itself exists within a broader SDD space. Understanding how other frameworks handle the same problems (context persistence, remediation, automation) avoids reinventing solved problems and surfaces better integration patterns.
