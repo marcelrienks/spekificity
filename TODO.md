@@ -25,8 +25,8 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 **Required expansions**:
 
-- **prepare**: explicitly invoke caveman mode at start of session to reduce token consumption throughout the workflow; confirm graphify graph is fresh (not just present); load obsidian vault decisions and patterns explicitly (not just the graph); verify all skill dependencies are present before proceeding.
-- **post**: invoke caveman to compress session output before writing; run graphify in incremental mode *after* lessons are written (so new lesson files are included in the graph); update obsidian vault decisions if any new decisions were made during the session.
+- **prepare**: explicitly invoke caveman mode at start of session to reduce token consumption throughout the workflow; confirm graphify graph is fresh (not just present); load obsidian vault decisions and patterns, not just the graph index.
+- **post**: invoke caveman to compress session output before writing; run graphify in incremental mode *after* lessons are written (so new lesson files are included in the graph); update obsidian vault context and decisions entries.
 - Ensure both skills explicitly document their caveman activation step.
 - Consider whether `spek prepare` should activate caveman automatically or prompt the developer.
 
@@ -129,7 +129,7 @@ Decide:
 - Verb-noun order for action skills: `spek.map-codebase`, `spek.lessons-learnt` — or noun-verb? Decide and apply consistently.
 - Where to record the canonical list: update `.spekificity/skill-index.md` and `copilot-instructions.md` once naming is settled.
 
-**Why it matters**: inconsistent naming across `spek.*`, `speckit.*`, and `speckit-enrich.*` creates confusion about what is spekificity-owned vs. speckit-owned vs. glue code. Settling conventions now prevents drift across 003 and future features.
+**Why it matters**: inconsistent naming across `spek.*`, `speckit.*`, and `speckit-enrich.*` creates confusion about what is spekificity-owned vs. speckit-owned vs. glue code. Settling conventions now prevents the naming debt from compounding as more skills are added in 003.
 
 ---
 
@@ -140,16 +140,16 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 ### 8.1 Code and Document maps
 
 - **What**: the vault graph currently targets source code. The question is whether the graph should uniformly cover both code *and* documentation (specs, docs, skills, workflows).
-- **Think about**: what does it mean to "map" a markdown document — is it file-level nodes, heading-level nodes, or link-graph topology? How does graphify handle non-code files? Should a separate mapping pass handle docs, or can graphify be configured to cover both in one run?
+- **Think about**: what does it mean to "map" a markdown document — is it file-level nodes, heading-level nodes, or link-graph topology? How does graphify handle non-code files? Should a separate mapping pass exist for docs?
 - **Why it matters**: every AI-assisted step (specify, plan, implement) benefits from knowing what documentation already exists. Without doc-level graph nodes, specs can duplicate or contradict existing docs silently.
 - **Likely outcome**: a spec for unified code + documentation mapping, including graphify configuration, vault node schema, and how `spek.map-codebase` invokes both passes.
 
 ### 8.2 Persistent memories and lessons
 
-- **What**: across sessions, context is currently reloaded from scratch (vault graph + decisions + lessons). There is no durable, incrementally-updated memory layer that summarises *what was built* and *why decisions were made* in a form that can be loaded cheaply.
+- **What**: across sessions, context is currently reloaded from scratch (vault graph + decisions + lessons). There is no durable, incrementally-updated memory layer that summarises *what was built* and *why*.
 - **Think about**: what is the right granularity — per-feature lessons, per-session decisions, per-pattern entries? How does this interact with the copilot `/memories/repo/` scope? Should spekificity maintain its own memory index separate from the vault?
 - **Relationship to todo items 4 and 5 above**: this is the generalisation of those two items into a coherent memory architecture.
-- **Why it matters**: without a deliberate memory model, future sessions either re-read everything (slow, expensive) or miss context (error-prone). The model should define what is written, when, by whom, and how it is loaded.
+- **Why it matters**: without a deliberate memory model, future sessions either re-read everything (slow, expensive) or miss context (error-prone). The model should define what is written, when, by which skill, and how it is read back.
 - **Likely outcome**: a spec for the spekificity memory model — covering vault/lessons, vault/context, copilot repo memory, and the load/write lifecycle for each.
 
 ### 8.3 Leveraging speckit as it is intended
@@ -163,8 +163,8 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 ### 8.4 Prep and post custom skills
 
 - **What**: `spek prepare` and `spek post` are currently underspecified. They exist as placeholders more than deliberate, well-scoped skills.
-- **Think about**: what is the exact ordered sequence of steps for each? What inputs does each step require? What outputs does each step produce? Which steps are mandatory vs. optional? How do prepare and post interact with each other across a session boundary?
-- **Relationship to todo items 2, 5, and 6 above**: those items each add a specific capability to prepare/post. This item is the architectural concern — the skill structure, invocation contract, and success criteria.
+- **Think about**: what is the exact ordered sequence of steps for each? What inputs does each step require? What outputs does each step produce? Which steps are mandatory vs. optional? How do prepare and post interact with the automate flow?
+- **Relationship to todo items 2, 5, and 6 above**: those items each add a specific capability to prepare/post. This item is the architectural concern — the skill structure, invocation contract, and failure handling.
 - **Why it matters**: prepare and post are the bookends of every feature session. If they are unclear or incomplete, every feature starts and ends with context loss or duplicated manual effort.
 - **Likely outcome**: a spec for `spek.prepare` and a spec for `spek.post` — each defining the full step sequence, skill dependencies, inputs/outputs, and success criteria.
 
@@ -200,4 +200,24 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 - Note any frameworks whose spec → plan → implement flow differs significantly from speckit's — particularly around human-in-the-loop checkpoints (relevant to todo item 1 and 8.3).
 - Extract any terminology, conventions, or structural patterns that could sharpen spekificity's own skill and workflow definitions.
 
-**Why it matters**: spekificity extends speckit, but speckit itself exists within a broader SDD space. Understanding how other frameworks handle the same problems (context persistence, remediation, automation) avoids reinventing solved problems and surfaces better integration patterns.
+**Why it matters**: spekificity extends speckit, but speckit itself exists within a broader SDD space. Understanding how other frameworks handle the same problems (context persistence, remediation, automation) prevents spekificity from solving already-solved problems poorly.
+
+---
+
+## [ ] 11. Investigate Obsidian's official AI skills and their integration potential
+
+**Article**: https://kurtis-redux.medium.com/obsidians-official-skills-are-here-it-s-time-to-let-ai-plug-into-your-local-vault-6c149aae84f6
+
+**Question**: What official skills has Obsidian released for AI integration, and how can spekificity leverage them to improve vault interaction?
+
+- Read the article to understand what Obsidian's official AI skills provide — what operations they expose, what their invocation model looks like, and what access they grant to the local vault.
+- Compare Obsidian's official skills against the current spekificity approach to vault interaction (reading decisions, lessons, and graph nodes via file reads and graphify output).
+- Identify whether any official Obsidian skills could replace or augment the following spekificity operations:
+  - Loading vault context in `spek.context-load`
+  - Writing lessons to `vault/lessons/` in `spek.lessons-learnt`
+  - Reading architectural decisions and patterns in `spek prepare`
+  - Querying the vault graph in `spek.map-codebase`
+- Determine whether official Obsidian skills expose a richer query interface (e.g. graph traversal, backlink resolution, dataview-style queries) that would give AI steps more precise vault context than raw file reads.
+- Note any authentication, permission, or local-vs-remote constraints that affect whether the skills are usable in a CLI + Copilot agent workflow.
+
+**Why it matters**: Obsidian is a core tool in the spekificity platform. If official AI skills now provide structured, sanctioned access to the vault, spekificity should use them rather than relying on ad-hoc file reads. This could significantly improve context quality for `spek prepare`, `spek post`, and the `spek.context-load` skill, and may resolve or inform items 2, 4, and 8.2 above.
