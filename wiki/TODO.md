@@ -4,7 +4,31 @@ Personal action items to investigate and incorporate before implementing feature
 
 ---
 
-## [ ] 1. Understand the proper full speckit workflow
+## [ ] A.1 Review all documents in wiki/raw and compile community/vision.md
+
+Review all documents in the articles under the raw wiki documentation directory, and compile each of these aspects of the articles into a consolidated `community/vision.md` file within wiki directory, where there is consensus, consistency, agreement across all articles with regards to:
+
+- Intentions
+- Philosophy
+- Methodology
+- Usecases
+- Architectures
+
+---
+
+## [ ] A.2 Review all documents in wiki/raw and compile community/confusion.md
+
+Review all documents in the articles under the raw wiki documentation directory, and compile a consolidated `community/confusion.md` file within wiki directory, where there is any contradictions, inconsistency, disagreement across all articles.
+
+---
+
+## [ ] A.3 List all tools and document community/toolsets.md
+
+List all tools used across the articles, and which ones are meant to be used in conjunction into a `community/toolsets.md`. Include the suggested workflows of how these tools are combined.
+
+---
+
+## [ ] B.1. Understand the proper full speckit workflow
 
 **Question**: What is the intended end-to-end speckit flow, including post-remediation?
 
@@ -19,7 +43,7 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 ---
 
-## [ ] 2. Expand `spek prepare` and `spek post` — leverage caveman, graphify, and obsidian fully
+## [ ] B.2. Expand `spek prepare` and `spek post` — leverage caveman, graphify, and obsidian fully
 
 **Current state**: Minimum tasks defined (prepare: context load + graph check; post: lessons-learnt + map refresh).
 
@@ -32,7 +56,7 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 ---
 
-## [ ] 3. Ensure graphify maps documentation as well as code
+## [ ] B.3. Ensure graphify maps documentation as well as code
 
 **Current state**: graphify is used only to map source code files into the vault graph.
 
@@ -45,7 +69,7 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 ---
 
-## [ ] 4. Understand graphify + speckit persistent context — or expand `cel.docs.read`
+## [ ] B.4. Understand graphify + speckit persistent context — or expand `cel.docs.read`
 
 **Question**: Does the normal graphify + speckit workflow provide a persistent context mechanism across sessions, or does context need to be reloaded each time?
 
@@ -56,7 +80,7 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 ---
 
-## [ ] 5. Ensure `spek post` creates structured lessons learnt from spec + implementation steps
+## [ ] B.5. Ensure `spek post` creates structured lessons learnt from spec + implementation steps
 
 **Current state**: `/spek.lessons-learnt` is invoked, but it is not clear whether the lesson entry captures enough detail to replace reading the spec in future sessions.
 
@@ -72,7 +96,7 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 ---
 
-## [ ] 6. Incorporate `cel.docs.simplify` into `spek post`
+## [ ] B.6. Incorporate `cel.docs.simplify` into `spek post`
 
 **Current state**: `spek post` invokes lessons-learnt and map refresh only.
 
@@ -89,7 +113,7 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 ---
 
-## [ ] 7. Define naming conventions for custom skills and workflows
+## [ ] B.7. Define naming conventions for custom skills and workflows
 
 **Question**: What should custom skills and workflows be called, and should speckit's own skill names be prefixed too?
 
@@ -133,18 +157,18 @@ Decide:
 
 ---
 
-## [ ] 8. High-level concepts to confirm and spec out individually
+## [ ] B.8. High-level concepts to confirm and spec out individually
 
 These are cross-cutting concerns that need deliberate thought before or alongside feature 003. Each is likely large enough to warrant its own spec.
 
-### 8.1 Code and Document maps
+### B.8.1 Code and Document maps
 
 - **What**: the vault graph currently targets source code. The question is whether the graph should uniformly cover both code *and* documentation (specs, docs, skills, workflows).
 - **Think about**: what does it mean to "map" a markdown document — is it file-level nodes, heading-level nodes, or link-graph topology? How does graphify handle non-code files? Should a separate mapping pass exist for docs vs. code?
 - **Why it matters**: every AI-assisted step (specify, plan, implement) benefits from knowing what documentation already exists. Without doc-level graph nodes, specs can duplicate or contradict existing docs silently.
 - **Likely outcome**: a spec for unified code + documentation mapping, including graphify configuration, vault node schema, and how `spek.map-codebase` invokes both passes.
 
-### 8.2 Persistent memories and lessons
+### B.8.2 Persistent memories and lessons
 
 - **What**: across sessions, context is currently reloaded from scratch (vault graph + decisions + lessons). There is no durable, incrementally-updated memory layer that summarises *what was built* vs. *what was decided* vs. *what was learned*.
 - **Think about**: what is the right granularity — per-feature lessons, per-session decisions, per-pattern entries? How does this interact with the copilot `/memories/repo/` scope? Should spekificity maintain its own `vault/memory/` structure separate from the agent memory scopes?
@@ -152,7 +176,7 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 - **Why it matters**: without a deliberate memory model, future sessions either re-read everything (slow, expensive) or miss context (error-prone). The model should define what is written, when, by whom, and how it is loaded.
 - **Likely outcome**: a spec for the spekificity memory model — covering vault/lessons, vault/context, copilot repo memory, and the load/write lifecycle for each.
 
-### 8.3 Leveraging speckit as it is intended
+### B.8.3 Leveraging speckit as it is intended
 
 - **What**: spekificity wraps and extends speckit, but the integration points (enriched wrappers, automate sequence, remediation loop) were inferred rather than confirmed against speckit's own design intent.
 - **Think about**: what is speckit's canonical flow? Where does it expect human intervention vs. automation? What does speckit assume about the agent running it — a human-in-the-loop or a fully autonomous agent? Are the enriched wrappers (`speckit-enrich.*`) the right pattern, or should spekificity extend speckit differently (e.g. pre/post hooks, configuration, custom templates)?
@@ -160,7 +184,7 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 - **Why it matters**: if spekificity fights against speckit's design, the workflow will be fragile. If it aligns, speckit upgrades are non-breaking.
 - **Likely outcome**: a spec for the spekificity ↔ speckit integration contract — defining where spekificity adds value (context loading, graph awareness, lessons) vs. where speckit owns the flow, and how enriched wrappers should be structured.
 
-### 8.4 Prep and post custom skills
+### B.8.4 Prep and post custom skills
 
 - **What**: `spek prepare` and `spek post` are currently underspecified. They exist as placeholders more than deliberate, well-scoped skills.
 - **Think about**: what is the exact ordered sequence of steps for each? What inputs does each step require? What outputs does each step produce? Which steps are mandatory vs. optional? How do prepare and post interact with caveman mode, graphify, obsidian vault, cel.docs.read, cel.docs.simplify, and the lessons-learnt skill?
@@ -170,4 +194,4 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 
 ---
 
-*Each sub-item above (8.1–8.4) should be reviewed, confirmed, and converted into a dedicated spec before or alongside 003 implementation. They are architectural decisions, not implementation details.*
+*Each sub-item above (B.8.1–B.8.4) should be reviewed, confirmed, and converted into a dedicated spec before or alongside 003 implementation. They are architectural decisions, not implementation details.*

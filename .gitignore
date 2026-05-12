@@ -10,10 +10,7 @@ Thumbs.db
 .idea/
 
 # ── Obsidian app workspace state (regenerates on open) ───────
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
-.obsidian/cache
-.obsidian/plugins/*/data.json
+.obsidian/
 
 # vault/graph/ is regeneratable — gitignore on large repos.
 # Remove the next two lines to commit your graph (recommended for small projects).
