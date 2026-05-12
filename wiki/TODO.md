@@ -4,9 +4,9 @@ Personal action items to investigate and incorporate before implementing feature
 
 ---
 
-## [ ] A.1 Review all documents in wiki/raw and compile community/vision.md
+## [x] A.1 Review all documents in 'wiki/raw/llm wiki' and compile vision.md
 
-Review all documents in the articles under the raw wiki documentation directory, and compile each of these aspects of the articles into a consolidated `community/vision.md` file within wiki directory, where there is consensus, consistency, agreement across all articles with regards to:
+Review all documents in the articles under the raw wiki documentation directory, and compile each of these aspects of the articles into a consolidated `wiki/llm-wiki/vision.md` file within wiki directory, where there is consensus, consistency, agreement across all articles with regards to:
 
 - Intentions
 - Philosophy
@@ -16,15 +16,15 @@ Review all documents in the articles under the raw wiki documentation directory,
 
 ---
 
-## [ ] A.2 Review all documents in wiki/raw and compile community/confusion.md
+## [x] A.2 Review all documents in wiki/raw and compile community/confusion.md
 
-Review all documents in the articles under the raw wiki documentation directory, and compile a consolidated `community/confusion.md` file within wiki directory, where there is any contradictions, inconsistency, disagreement across all articles.
+Review all documents in the articles under the raw wiki documentation directory, and compile a consolidated `wiki/llm-wiki/confusion.md` file within wiki directory, where there is any contradictions, inconsistency, disagreement across all articles.
 
 ---
 
-## [ ] A.3 List all tools and document community/toolsets.md
+## [x] A.3 List all tools and document community/toolsets.md
 
-List all tools used across the articles, and which ones are meant to be used in conjunction into a `community/toolsets.md`. Include the suggested workflows of how these tools are combined.
+List all tools used across the articles, and which ones are meant to be used in conjunction into a `wiki/llm-wiki/toolsets.md`. Include the suggested workflows of how these tools are combined.
 
 ---
 
@@ -195,3 +195,30 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 ---
 
 *Each sub-item above (B.8.1–B.8.4) should be reviewed, confirmed, and converted into a dedicated spec before or alongside 003 implementation. They are architectural decisions, not implementation details.*
+
+---
+
+## [ ] B.9. Investigate `lucasrosati/claude-code-memory-setup` as a reference for memory and context patterns
+
+**Repository**: https://github.com/lucasrosati/claude-code-memory-setup
+
+**Question**: What memory and context management patterns does this repository implement, and what can spekificity adopt or take inspiration from?
+
+- Review how `claude-code-memory-setup` structures persistent memory across sessions.
+- Identify any patterns for storing, loading, and refreshing context that complement or improve upon the current spekificity vault + lessons approach.
+- Compare its memory lifecycle (write triggers, read triggers, invalidation) against spekificity's planned model (see item B.8.2 above).
+- Note any tooling, file formats, or conventions that could be reused or adapted — particularly anything relevant to the `spek.prepare` / `spek.post` memory steps.
+
+**Why it matters**: This repository was identified as a real-world example of Claude-based memory setup and may contain proven patterns that spekificity's memory architecture (item B.8.2) can build on rather than reinvent.
+
+---
+
+## [ ] B.10. Review spec-driven development framework comparison as a reference for speckit positioning
+
+**Article**: https://medium.com/@wasowski.jarek/comparing-15-spec-driven-development-frameworks-sdd-c052df529274
+
+**Question**: How does speckit compare against the broader SDD landscape, and are there patterns or frameworks worth adopting or avoiding?
+
+- Read the comparison of 15 spec-driven development frameworks to understand where speckit sits in the SDD ecosystem.
+- Identify any frameworks with stronger remediation loops, persistent context, or automation pipelines that could inform spekificity's design.
+- Note any frameworks whose spec → plan → implement flow differs significantly from speckit's — particularly around human-in-the-loop checkpoints (relevant to todo item B.1 and B.8.3).
