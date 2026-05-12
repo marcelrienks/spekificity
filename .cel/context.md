@@ -191,6 +191,32 @@ result: feature complete + knowledge persisted for next session
 
 ---
 
+## wiki organization (cel.wiki.init) - 2026-05-12
+
+**status**: ✓ completed. 46 md files organized into structured wiki/ at project root.
+
+**structure created**:
+```
+wiki/
+├── docs/         (5 files, 35KB)    - guide, architecture, faq, glossary, validation
+├── setup/        (3 files, 10KB)    - graphify-setup, obsidian-setup, speckit-setup
+├── skills/       (4 files, 45KB)    - context-load/skill, lessons-learnt/skill, map-codebase/skill, speckit-enrich/*
+├── specs/        (29 files, 262KB)  - specs/001,002,003 (spec.md, plan.md, tasks.md, contracts, acceptance-tests)
+├── vault/        (2 files, 12KB)    - decisions.md, patterns.md
+├── workflows/    (4 files, 28KB)    - component-update, feature-lifecycle, init-workflow, map-refresh
+├── TODO.md       (13KB)             - project todo list
+└── raw/          (empty)            - reserved for static assets (PDFs, transcripts, exports)
+```
+
+**files moved**: 46 md files from scattered doc locations → wiki/ flat then sorted into subdirs  
+**original dirs removed**: docs/, setup-guides/, workflows/ (now empty, cleaned)  
+**readme.md preserved**: yes, remains at project root  
+**static assets**: 0 moved (none found)  
+
+**next**: run `/cel.wiki.read` to refresh with content analysis, then `/cel.wiki.simplify` to audit redundancies.
+
+---
+
 ## known dependencies
 
 - python 3.11+, `uv` package manager
