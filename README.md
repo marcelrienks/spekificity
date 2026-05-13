@@ -28,33 +28,33 @@ Spekificity is **built for AI agents**. Every artefact is a skill or workflow th
 | `uv` | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | global |
 | git | OS package manager | global |
 | SpecKit/Specify | `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` | global |
-| Graphify | `uv tool install graphifyy` | global |
-| GitHub Copilot or Claude Code | AI provider setup | editor |
+| CodeGraph | MCP server — see [wiki/decision.md](wiki/decision.md) for setup | per-project |
+| AI agent | GitHub Copilot, Claude Code, or equivalent | editor |
 | Obsidian (optional) | [obsidian.md](https://obsidian.md) | desktop, visualization only |
 
 ---
 
 ## Full Feature Lifecycle
 
-For the complete enriched SpecKit workflow step-by-step, see [docs/guide.md](docs/guide.md).
+For the complete enriched SpecKit workflow step-by-step, see [wiki/intention.md](wiki/intention.md).
 
 ---
 
 ## Design Principles
 
 - **Decorator pattern**: Spekificity skills wrap, not replace, standard SpecKit commands
-- **Modular independence**: Each component (Graphify, Obsidian, SpecKit, Spekificity layer) can be updated independently
+- **Modular independence**: Each component (CodeGraph, Obsidian, SpecKit, Spekificity layer) can be updated independently
 - **Global SpecKit, local customisation**: SpecKit installs globally; Spekificity skills install locally per-project
 
 ---
 
 ## Documentation
 
-- [docs/architecture.md](docs/architecture.md) — Directory structure, component roles, data flow, update strategy
-- [docs/guide.md](docs/guide.md) — Full feature lifecycle workflow, enriched SpecKit lifecycle
-- [docs/glossary.md](docs/glossary.md) — Terminology reference
-- [docs/faq.md](docs/faq.md) — Troubleshooting and common questions
-- [docs/validation.md](docs/validation.md) — Success criteria validation methodology
+- [wiki/architecture.md](wiki/architecture.md) — Directory structure, component roles, data flow, update strategy
+- [wiki/intention.md](wiki/intention.md) — Project vision, philosophy, complete workflow overview
+- [wiki/decision.md](wiki/decision.md) — Architectural decisions (CodeGraph vs Graphify, dual-system toolset)
+- [wiki/setup/obsidian-setup.md](wiki/setup/obsidian-setup.md) — Obsidian vault installation and configuration
+- [wiki/setup/speckit-setup.md](wiki/setup/speckit-setup.md) — SpecKit global install and project init
 
 ---
 
@@ -82,7 +82,7 @@ For the complete enriched SpecKit workflow step-by-step, see [docs/guide.md](doc
 | Command | Description |
 |---------|-------------|
 | `/context-load` | Load vault context (graph, decisions, patterns, lessons) into AI session |
-| `/map-codebase` | Run Graphify to build or refresh the Obsidian vault graph |
+| `/map-codebase` | Build or refresh the code analysis graph (CodeGraph) and update vault context |
 | `/lessons-learnt` | Write structured lessons to the vault at the end of a feature |
 | `/speckit-enrich-specify` | Graph-aware decorator for `/speckit.specify` |
 | `/speckit-enrich-plan` | Graph-aware decorator for `/speckit.plan` |
@@ -236,7 +236,7 @@ Each component can be updated without touching the others:
 | SpecKit/Specify | `uv tool upgrade specify-cli` | Only if SpecKit command interface changes |
 | Graphify | `uv tool upgrade graphifyy` | Only if CLI args change (update `skills/map-codebase/SKILL.md`) |
 | Obsidian | Download new app version | None — vault format is stable markdown |
-| Spekificity custom layer | `git pull` + re-copy skills | Re-copy to `.github/agents/` and `.claude/commands/` |
+| Spekificity custom layer | `git pull` + re-copy skills | Re-copy to `.agents/skills/` |
 
 See [workflows/component-update.md](workflows/component-update.md) for full update procedures.
 

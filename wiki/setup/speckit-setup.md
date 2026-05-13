@@ -35,13 +35,14 @@ speckit (installed via the `specify-cli` package) is the spec-driven development
    ```
 
    when prompted:
-   - **ai assistant**: select `copilot` (github copilot) or `claude` (claude code)
+   - **ai assistant**: select your agent type (e.g. `copilot` for github copilot, `claude` for claude code)
    - **script type**: select `sh`
 
    this creates:
    - `.specify/` — speckit configuration, templates, scripts, extensions
-   - `.github/agents/` — agent skill files (copilot)
-   - `.github/copilot-instructions.md` — copilot context pointer
+   - agent-specific config files (varies by agent selection)
+
+   **note**: spekificity uses `.agents/skills/` as the canonical skill location, independent of what speckit creates. copy or reference skills from `.agents/skills/` rather than from agent-specific dirs.
 
 ## verification
 

@@ -55,7 +55,7 @@ spekificity init
 5. Initialize code mapping/analysis
 6. Confirm setup complete + tool integrations verified
 
-**Output:** `.spekificity/` config, `.claude/` skill routing, obsidian vault ready
+**Output:** `.spekificity/` config, `.agents/skills/` skill routing, obsidian vault ready
 
 **Time:** ~10 minutes (first time); ~2 minutes (re-init on new project)
 
@@ -84,16 +84,16 @@ spekificity init
 
 **Agent Workflow:**
 1. `/context-load` → Load vault (code map + recent lessons) into session
-2. `/enrich-specify` → Spec-first clarification
+2. `/speckit-enrich-specify` → Spec-first clarification
    - Injects context: related code modules, prior decisions, lessons from similar features
    - Generates: `specs/<feature>/spec.md`
-3. `/enrich-plan` → Architecture planning
+3. `/speckit-enrich-plan` → Architecture planning
    - Injects context: component impact map, affected test files, integration points
    - Generates: `specs/<feature>/plan.md`
-4. `/generate-tasks` → Actionable task breakdown
+4. `/speckit.tasks` → Actionable task breakdown
    - Tool-agnostic task generation
    - Generates: `specs/<feature>/tasks.md` (dependency-ordered)
-5. `/enrich-implement` → Execution with context
+5. `/speckit-enrich-implement` → Execution with context
    - Agent executes all tasks with code map + spec + plan in scope
    - Auto-syncs code changes to code analysis tool
    - Auto-captures execution trace
@@ -152,11 +152,12 @@ spekificity init
 - **Independent:** Can be omitted; optional enhancement layer
 - **Current Recommendation:** Terse notation systems that preserve code + technical substance
 
-### AI Agents (Claude Code, GitHub Copilot)
+### AI Agent
 - **Role:** Executive (spec-ing, planning, implementing, learning)
-- **Integration:** Reads spekificity skills; uses speckit commands; queries graph via MCP tools
+- **Integration:** Reads spekificity skills from `.agents/skills/`; uses speckit commands; queries graph via MCP tools
 - **Contribution:** Intelligence (reasoning, writing code, extracting lessons)
 - **Expectation:** Agent is co-developer, not code generator; collaboration required
+- **Supported:** Any capable AI agent (e.g. GitHub Copilot, Claude Code)
 
 ---
 
@@ -182,7 +183,7 @@ Spekificity doesn't build installers; it evaluates and chains existing ones + ad
 - Risk: Misses dependencies; repeats past mistakes; context is fragmented
 
 **With Spekificity:**
-- `/enrich-specify` automatically injects related components + lessons
+- `/speckit-enrich-specify` automatically injects related components + lessons
 - Code map + vault are pre-indexed (fresh on session start)
 - Agent reads one document; gets full context
 
@@ -195,7 +196,7 @@ Spekificity doesn't build code analysis; it uses the chosen tool's index + prese
 - Process: grep, manual reading, hope nothing was missed
 
 **With Spekificity:**
-- `/enrich-implement` uses code analysis tool's impact detection
+- `/speckit-enrich-implement` uses code analysis tool's impact detection
 - Impact is instant: "Changing `auth.jwt()` affects 47 call sites, including these tests"
 - Agent checks impact before implementing
 
@@ -227,4 +228,4 @@ Project vault is the source of truth. Every output (spec, plan, lessons) goes in
 - These are not afterthoughts; they drive architecture decisions.
 
 ### 7. AI Agent as Copilot
-Spekificity assumes Claude Code or Copilot as the executant. Workflows are designed so agents read spekificity specs + speckit templates, then reason about implementation. Humans review and approve major decisions. Collaboration, not automation.
+Spekificity assumes an AI agent as the executant. Workflows are designed so agents read spekificity skills + speckit templates, then reason about implementation. Humans review and approve major decisions. Collaboration, not automation.

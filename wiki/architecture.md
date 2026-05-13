@@ -15,7 +15,7 @@ spekificity has no runtime components. its "architecture" is the structure of it
 ---
 ## Component Roles
 
-### 1 skills (`skills/`)
+### 1. skills (`skills/`)
 
 skills are the primary deliverable of spekificity. each skill is a markdown file that an ai agent reads and executes. a skill file must contain:
 
@@ -25,7 +25,7 @@ skills are the primary deliverable of spekificity. each skill is a markdown file
 - **steps**: ordered, unambiguous instructions the ai follows
 - **outputs**: what the skill produces and where it is stored
 
-### 3.2 cli scripts (`.spekificity/bin/` and `bin/`)
+### 2. cli scripts (`.spekificity/bin/` and `bin/`)
 
 `bin/spek` is the globally-installable entry point. copy it to `/usr/local/bin/spek`. it finds the nearest `.spekificity/` directory by walking up the tree and dispatches to the appropriate script.
 
@@ -47,7 +47,7 @@ skills are the primary deliverable of spekificity. each skill is a markdown file
 }
 ```
 
-### 3.3 workflows (`workflows/`)
+### 3. workflows (`workflows/`)
 
 workflows describe how skills compose into multi-step processes. a workflow document specifies:
 
@@ -56,11 +56,11 @@ workflows describe how skills compose into multi-step processes. a workflow docu
 - expected state at each checkpoint
 - how to recover from partial failures
 
-### 3.4 setup guides (`setup-guides/`)
+### 4. setup guides (`setup-guides/`)
 
 setup guides provide step-by-step, ai-executable installation and configuration instructions for each third-party prerequisite. they assume only that the ai has access to a terminal and internet.
 
-### 3.5 obsidian vault (`vault/` or project-defined location)
+### 5. obsidian vault (`vault/` or project-defined location)
 
 the vault is the persistent context store for project documentation, essentially becoming an 'LLM wiki'. its structure is TDB.
 
@@ -81,8 +81,8 @@ spekificity's modular independence principle requires that each component can be
 
 ### update procedures
 
-- **speckit update**: `npm update -g specify` — no spekificity changes required unless speckit's command interface changes
-- **graphify update**: update locally or globally; update only `skills/map-codebase/skill.md` if cli args change
+- **speckit update**: `uv tool install --reinstall specify-cli --from git+https://github.com/github/spec-kit.git` — no spekificity changes required unless speckit's command interface changes
+- **code analysis tool update** (CodeGraph): update MCP server config if cli args change; update only `skills/map-codebase/skill.md` if invocation changes
 - **obsidian update**: no action required (vault is plain markdown)
 - **spekificity update**: `git pull` in the spekificity repo; copy updated skills to target project
 
@@ -90,19 +90,13 @@ spekificity's modular independence principle requires that each component can be
 
 ## ai agent integration
 
-### github copilot
+skills are placed in `.agents/skills/` — the canonical, agent-agnostic location. any ai agent (github copilot, claude code, or similar) reads skills from this directory.
 
-- skills are placed in `.github/agents/` or referenced from `.github/copilot-instructions.md`
-- the `copilot-instructions.md` file points to the active plan and constitution at session start
-
-### claude code
-
-- skills are placed in `.agents/` directory
+- `.agents/skills/` — canonical skill files; all agents read from here
 - `agents.md` at the project root lists available skills and workflow entry points
+- agent-specific config files (e.g. `.github/copilot-instructions.md`) reference `.agents/skills/` rather than duplicating content
 
-### shared convention
-
-all skills follow the same markdown structure regardless of ai agent. the `.agents/` directory is the canonical location; agent-specific directories are symlinks or copies.
+**cross-platform note**: `.agents/` uses only forward slashes and lowercase names; compatible with windows, macos, and linux.
 
 ---
 
@@ -111,7 +105,7 @@ all skills follow the same markdown structure regardless of ai agent. the `.agen
 **recommended**: commit the vault to git with the project.
 
 - **rationale**: vault entries (lessons learnt, decisions, patterns) are project artefacts with long-term value. version-controlling them preserves history and enables team sharing.
-- **exception**: the `vault/graph/` directory may be gitignored on very large projects where graph size impacts repo performance. in this case, the graph is regenerated on each developer machine.
+- **exception**: the codegraph sqlite database file (`.codegraph/graph.db` or equivalent) should be gitignored and regenerated per machine via `/map-codebase`. the vault itself (lessons + context) is always small and should always be committed.
 
 a `.gitignore` template covering this exception is included in the init workflow.
 
@@ -121,7 +115,7 @@ a `.gitignore` template covering this exception is included in the init workflow
 
 | decision | options | status |
 |----------|---------|--------|
-| codegraph install mode | local npm package vs global install | open — depends on graphify's packaging |
+| codegraph install mode | local npm package vs global install | open — depends on codegraph's packaging |
 | obsidian headless write | cli tool vs direct markdown writes | open — affects skills/map-codebase implementation |
 | vault location | `vault/` in project root vs `.spekificity/vault/` | open — to be decided in planning phase |
 | caveman integration point | always-on vs opt-in per session | open — user preference, configurable |

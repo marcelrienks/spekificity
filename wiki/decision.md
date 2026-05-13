@@ -125,7 +125,7 @@ Spekificity Workflow (via agent)
 - Refactor with confidence (impact analysis automated)
 - Onboard faster (specs + code structure visible)
 
-**For Claude Code Agents:**
+**For AI agents:**
 - Fewer token calls (vs. manual exploration)
 - Faster exploration (pre-indexed analysis)
 - Impact radius instant (no missed breaking changes)
@@ -160,7 +160,7 @@ Spekificity Workflow (via agent)
 ### When to Use This
 
 - **Production codebases >100 files**
-- **Teams using Claude Code for implementation**
+- **Teams using AI agents for implementation**
 - **Refactoring/debugging workflows (frequent changes)**
 - **Onboarding new developers**
 - **Projects that need both intent + structure understanding**

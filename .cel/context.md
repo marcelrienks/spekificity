@@ -1,15 +1,15 @@
 ---
-last_deep_read: 2026-05-13t18:30:00z
-version: 2.2
+last_deep_read: 2026-05-13t00:00:00z
+version: 2.3
 scan_status: full
-changes_detected: 4 files (1 new, 3 modified)
+changes_detected: wiki restructured — 17 files removed, 3 changed, 1 new (intention.md)
 ---
 
 # spekificity technical brief
 
 ## executive summary
 
-**spekificity** is an agentic focused toolset designed for ai agents (github copilot, claude code) that connects graphify (codebase mapping), obsidian (persistent vault), speckit/specify (spec-first cli), and caveman (token compression). solves persistent ai context loss, excessive token consumption, and shallow feature planning. delivered as executable markdown skills, workflows, and setup guides that agents read and run to automate enriched speckit feature lifecycles with persistent context.
+**spekificity** = orchestration layer. consolidates best-in-class tools into coherent AI agent workflow. does NOT reimplement tools — wires them together. connects: spec-driven framework (SpecKit), code analysis tool (CodeGraph recommended), knowledge vault (Obsidian), token compression (Caveman). solves persistent context loss, token bloat, shallow feature planning. delivered as markdown skills + workflows that AI agents read and execute.
 
 ---
 
@@ -41,67 +41,83 @@ changes_detected: 4 files (1 new, 3 modified)
 
 ## architecture & tech stack
 
-**core components** (markdown-interconnected):
-- **graphify** (global): analyzes source + docs → dependency/relationship graph
-- **obsidian vault** (local): plain markdown storage (filesystem + optional obsidian app); holds graph index + lessons + decisions/patterns
-- **speckit/specify** (global): spec-first cli; vanilla commands unchanged; spekificity wraps via decorator pattern
-- **caveman skill** (global or local): response compression for token efficiency
-- **ai agents**: github copilot + claude code (native skill/agent support)
+**core components**:
+- **speckit/specify** (global install): spec-first CLI; spekificity wraps via decorator pattern
+- **code analysis tool** (recommended: CodeGraph): AST-indexed graph, MCP tools, auto-sync via file watcher. 92% fewer agent token calls vs file scanning. NOT Graphify (graphify deprecated for agent use — outputs markdown files requiring token-expensive reads)
+- **knowledge vault** (Obsidian format): plain markdown, git-backed, optional app. stores specs, decisions, lessons, raw materials. accessed once per session via `/context-load`
+- **caveman skill**: response compression. invoked at workflow steps for token efficiency
+- **AI agents**: GitHub Copilot + Claude Code (first-class)
 
-**delivery model**: all skills, workflows, docs are **markdown files**. no binaries. ai agents read and execute directly.
+**philosophy: consolidation not reinvention**:
+- does NOT reimplement spec frameworks, code mappers, knowledge systems, compression, or AI infra
+- DOES: identify best tools, orchestrate install, wire into workflow, automate handoffs, inject context, capture lessons, maintain project memory
+
+**delivery**: all skills/workflows = `.md` files only. no binaries. AI agents read + execute directly.
+
+**CLI layer** (`.spekificity/bin/`):
+- `bin/spek` — globally-installable entry point; dispatches to per-project scripts
+- `_lib.sh` — shared utilities (config, atomic JSON writes, graph state: fresh/stale/absent)
+- `prepare.sh` — checks graph staleness, rebuilds if needed, hands off to `/spek.prepare` skill
+- `automate.sh` — preflight (clean tree), creates feature branch, writes `workflow-state.json`, hands off to `/spek.automate`
+- `post.sh` — reads `workflow-state.json`, surfaces `--no-lessons`/`--no-graph` flags to skill
+
+**workflow-state.json schema**:
+```json
+{
+  "status": "in-progress | halted | complete",
+  "current_step": "<step>",
+  "next_step": "<step>",
+  "completed_steps": ["preflight", "spec", "..."],
+  "preflight": { "branch_created": true, "clean_working_tree": true },
+  "postflight": { "lessons_written": false, "graph_refreshed": false, "pr_created": false, "pr_url": null }
+}
+```
+
+**dual-system design** (key architectural decision):
+| system | purpose | content | rhythm |
+|--------|---------|---------|--------|
+| knowledge vault | persistent knowledge | specs, decisions, lessons, raw | once per feature cycle |
+| code analysis tool | code intelligence | symbols, calls, routes, deps | every file save (auto-sync) |
 
 **directory structure** (project-scoped):
 ```
 spekificity/
-├── docs/                      ← project documentation (prd, architecture, glossary, init, validation)
-├── skills/                    ← ai-executable skill files
-│   ├── context-load/          ← load vault at session start
-│   ├── map-codebase/          ← run graphify → obsidian
-│   ├── lessons-learnt/        ← capture end-of-feature lessons
-│   └── speckit-enrich/        ← decorator wrappers for /specify, /plan, /implement
-├── workflows/                 ← multi-step sequences (init, feature-lifecycle, map-refresh, component-update)
-├── setup-guides/              ← ai-executable install guides (graphify, obsidian, speckit)
-├── specs/                     ← generated speckit features (spec.md, plan.md, tasks.md)
-├── vault/                     ← obsidian vault (graph/, lessons/, context/decisions + patterns)
-├── .specify/                  ← speckit config (constitution, templates, extensions)
-└── .github/agents/ or .claude/commands/ ← agent-specific skill routing
+├── wiki/                ← project wiki (architecture, decisions, intention, todo, setup, llm-wiki)
+├── .spekificity/        ← bin scripts, config, guides
+├── .specify/            ← speckit config (constitution, templates, extensions)
+└── .github/agents/      ← agent skill routing
 ```
 
 ---
 
-## enriched feature lifecycle (token-optimized)
+## enriched feature lifecycle (3 stages)
 
+**stage 0 — init** (`spekificity init` or `spek automate`):
+- auto-detect tools, install missing, deploy skills locally
+- init knowledge vault structure + code analysis
+- creates `workflow-state.json` + feature branch
+
+**stage 1 — ingest**:
+- dev drops raw files to `vault/raw/`
+- code analysis tool indexes source → vault graph
+- knowledge system processes raw docs via LLM
+- trigger: manual `/map-codebase` or auto on `/context-load`
+
+**stage 2 — spec/implement loop**:
 ```
-step 1: /context-load
-  → loads vault/graph/index.md + recent lessons
-  → ai primed with component map, past decisions, patterns
-  ✓ first time: ~2s; subsequent: cached
-
-step 2: /speckit-enrich-specify
-  → decorator wraps /speckit.specify
-  → injects graph context (related components)
-  → output: specs/<feature>/spec.md with cross-refs
-
-step 3: /speckit-enrich-plan
-  → decorator wraps /speckit.plan
-  → injects impacted graph nodes
-  → output: specs/<feature>/plan.md with component impacts
-
-step 4: /speckit.tasks
-  → standard speckit (no enrichment needed)
-  → input: spec.md + plan.md
-  → output: specs/<feature>/tasks.md (dependency-ordered)
-
-step 5: /speckit-enrich-implement
-  → decorator wraps /speckit.implement
-  → executes all tasks with graph context
-  → auto-writes lessons entry → vault/lessons/<date>-<feature>.md
-  → auto-runs graphify → updates vault/graph (incremental)
-
-result: feature complete + knowledge persisted for next session
+/context-load → load vault (code map + recent lessons)
+/enrich-specify → inject context (related symbols, prior decisions) → spec.md
+/enrich-plan → inject impact analysis → plan.md
+/generate-tasks → dependency-ordered tasks.md
+/enrich-implement → execute with code map + spec + plan in scope
 ```
 
-**decorator pattern**: spekificity skills **wrap** vanilla speckit; original cli unchanged, independently upgradable.
+**stage 3 — refine**:
+- `/lessons-learnt` → structured entry to `vault/lessons/<date>-<feature>.md`
+- graph auto-updates (incremental)
+- next feature starts with richer context
+
+**decorator pattern**: all enrich-* skills wrap vanilla speckit. speckit untouched, independently upgradable.
 
 ---
 
@@ -134,24 +150,31 @@ result: feature complete + knowledge persisted for next session
 
 ---
 
-## core outcomes
+## pending todos (wiki/todo.md)
 
-- **operational**: all tools are installed and connected; ai agents can execute skills
-- **enriched**: all speckit lifecycle steps are decorated with graph context
-- **persistent**: lessons learnt and decisions are captured and surfaced in future sessions
-- **multi-platform**: operational on macos + linux
-- **modular**: each component is independently updatable
+**completed**: A.1 (vision.md), A.2 (confusion.md), A.3 (toolsets.md)
+
+**open**:
+- **B.1** — clarify full speckit canonical flow (specify → plan → tasks → analyze → remediate → implement → ???). critical for `spek automate` sequencing.
+- **B.2** — expand `spek prepare` (explicit caveman activation, confirm codegraph fresh, load vault decisions+patterns+lessons) and `spek post` (caveman compress, incremental codegraph after lessons written, update vault decisions/patterns).
+- **B.3** — `spek post` lessons-learnt must be self-contained: feature digest (from spec.md), key implementation steps (from tasks.md), decisions made, patterns reused. goal: future sessions skip reading spec.md/tasks.md entirely.
+- **B.4** — add `cel.docs.simplify` step to `spek post` after lessons + graph refresh. prefer scoped to modified files in current branch.
+- **B.7** — commit to `spek.` namespace for all spekificity platform skills. decide flat vs nested (`spek.*` vs `spek.workflow.*`).
 
 ---
 
-## key workflows at a glance
+## key decisions (wiki/decision.md)
 
-| workflow | purpose | entry point |
-|----------|---------|-------------|
-| init-workflow.md | tool detection → installation → skill deployment | `spekificity init` or ai-guided |
-| feature-lifecycle.md | full speckit cycle (specify→plan→tasks→implement) + lessons | `/context-load` then `/speckit-enrich-*` |
-| map-refresh.md | build or refresh graphify graph; store in obsidian | `/map-codebase` |
-| component-update.md | update graphify/obsidian/speckit/caveman independently | per-tool update command |
+**Decision 1: CodeGraph over Graphify** (accepted):
+- Graphify: outputs markdown vault files → agent must read files → 100s tokens per query
+- CodeGraph: SQLite graph + MCP tools → instant queries → 92% fewer tokens, 77% faster
+- Agent queries code frequently (every cycle); vault queries once per session → separate rhythms justify separate tools
+- Trade-off: no human-browsable vault of code structure (accepted — vault is for knowledge, not code)
+
+**Decision 2: Dual-system toolset** (accepted):
+- Knowledge Vault (Obsidian) = intent, decisions, lessons. slow rhythm.
+- Code Analysis Tool (CodeGraph) = symbols, calls, routes. fast rhythm (file watcher).
+- Together: 30-40% faster dev on refactoring/debugging vs. vault alone.
 
 ---
 
@@ -167,28 +190,33 @@ result: feature complete + knowledge persisted for next session
 
 ---
 
-## documentation map (consolidated & reorganized)
+## documentation map (current wiki/ — 9 files)
 
-| document | location | purpose | status |
-|----------|----------|---------|--------|
-| **readme** | `docs/readme.md` | quick start, core problems, value proposition, target users | ✓ consolidated |
-| **guide** | `docs/guide.md` | feature lifecycle workflows, enriched speckit operations, token efficiency | ✓ consolidated |
-| **architecture** | `docs/architecture.md` | design principles, component roles, data flows, directory structure, vault design | ✓ consolidated |
-| **glossary** | `docs/glossary.md` | term definitions (caveman, decorator, graphify, obsidian, speckit, etc.) | unchanged |
-| **faq** | `docs/faq.md` | troubleshooting, setup issues, vault operations | unchanged |
-| **validation** | `docs/validation.md` | success criteria measurement methodology | unchanged |
+| document | location | purpose |
+|----------|----------|---------|
+| intention.md | `wiki/intention.md` | project vision, philosophy (consolidation not reinvention), 3-stage workflow, tool roles |
+| architecture.md | `wiki/architecture.md` | design principles, component roles, CLI scripts, workflow-state.json, component isolation |
+| decision.md | `wiki/decision.md` | CodeGraph vs Graphify, dual-system architecture, tool recommendations |
+| todo.md | `wiki/todo.md` | open action items (B.1-B.4, B.7) + completed (A.1-A.3) |
+| obsidian-setup.md | `wiki/setup/obsidian-setup.md` | vault install, optional app, vault structure, gitignore |
+| speckit-setup.md | `wiki/setup/speckit-setup.md` | speckit global install, `specify init`, verification |
+| vision.md | `wiki/llm-wiki/vision.md` | Karpathy LLM wiki approach, consensus on methodology/architecture |
+| toolsets.md | `wiki/llm-wiki/toolsets.md` | tools used in LLM wiki pattern + suggested workflows |
+| confusion.md | `wiki/llm-wiki/confusion.md` | contradictions + Karpathy validation section (all 15 consensus points confirmed) |
+
+**removed from wiki** (vs v2.2): wiki/faq.md, wiki/guide.md, wiki/glossary.md, wiki/validation.md, wiki/setup/graphify-setup.md, wiki/skills/ (4 files), wiki/workflows/ (4 files), wiki/vault/ (3 files)
 
 ---
 
 ## non-goals (v1)
 
-- building graphify, obsidian, or speckit functionality from scratch
+- reimplementing spec frameworks, code mappers, knowledge systems, compression, or AI infra
 - gui or web interface
-- support for ai agents beyond copilot + claude code
+- support for AI agents beyond Copilot + Claude Code
 - cloud sync or multi-user vault sharing
 - automatic merge conflict resolution with speckit upstream updates
 
-**v1 scope**: all speckit steps enriched when map available; independent component updates (no cross-breaking changes); macos + linux support; fully local operation (no cloud/server required)
+**v1 scope**: all speckit steps enriched when map available; independent component updates; macOS + Linux support; fully local operation
 
 ---
 
@@ -218,158 +246,51 @@ wiki/
 
 ---
 
+
 ## known dependencies
 
 - python 3.11+, `uv` package manager
-- speckit installed globally: `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git`
-- graphify installed globally: `uv tool install graphifyy`
-- github copilot or claude code for ai agent
-- obsidian (desktop app optional; vault is plain markdown)
-- git + basic terminal knowledge
+- speckit: `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` (global)
+- graphify: `uv tool install graphifyy` (legacy; CodeGraph preferred for agents)
+- CodeGraph: MCP server + sqlite graph (recommended code analysis tool)
+- GitHub Copilot or Claude Code for AI agent
+- Obsidian (optional desktop app; vault is plain markdown)
+- git + terminal
 
 ---
 
 ## entry points for agent interaction
 
-**at session start:**
 ```
-/context-load
-```
-
-**for daily feature work:**
-```
-/speckit-enrich-specify → /speckit-enrich-plan → /speckit.tasks → /speckit-enrich-implement
-```
-
-**for codebase refresh:**
-```
-/map-codebase
-```
-
-**for token efficiency:**
-```
-/caveman lite     (specs/plans)
-/caveman          (implementation)
+/context-load          # session start — always
+/map-codebase          # codebase refresh
+/enrich-specify        # spec with context
+/enrich-plan           # plan with impact analysis
+/generate-tasks        # dependency-ordered tasks
+/enrich-implement      # execute with graph context
+/lessons-learnt        # capture outcomes to vault
+/caveman               # token compression (any step)
 ```
 
 ---
 
-**status**: production-ready. zero breaking changes expected for dependent projects. modular: each component can be updated independently.
+**status**: active development. wiki restructured (26→9 files). CodeGraph replacing Graphify. open todos: B.1-B.4, B.7.
 
 ---
 
-## document inventory & hash validation (scanned 2026-05-03 15:04)
+## hash inventory (scanned 2026-05-13)
 
-**primary docs/ (active):**
+| file | hash | status |
+|------|------|--------|
+| wiki/architecture.md | da61bc2678b761c6e985aaefa4708058 | ✓ updated |
+| wiki/decision.md | dcb38b9b3a5e2df86881f73d8e08c81d | ✓ updated |
+| wiki/intention.md | 9977c3f8927dc917c078269187ce8531 | ✓ new |
+| wiki/todo.md | 853a5d675bdea886fae5b0b15085ebb0 | ✓ updated |
+| wiki/llm-wiki/confusion.md | ded155c7327b32edd39e1da7906fc668 | ✓ unchanged |
+| wiki/llm-wiki/toolsets.md | 4aa4ebf923d69321ea17f7c25ac2bdbd | ✓ unchanged |
+| wiki/llm-wiki/vision.md | 36f122aed50b27d7c4df06322d26cad7 | ✓ unchanged |
+| wiki/setup/obsidian-setup.md | fc2b491e40de7d3d49596e91516004a5 | ✓ unchanged |
+| wiki/setup/speckit-setup.md | eeff81ad3e62be5137d71e325409ec9d | ✓ unchanged |
+| README.md | d0b744105bc7ad198f47426652eba58d | ✓ scanned |
 
-| file | lines | hash | status |
-|------|-------|------|--------|
-| docs/readme.md | 116 | e4a2eed40f1b1dc6a196cdaed91d7f5c | ✓ new (consolidated) |
-| docs/guide.md | 146 | ff07fcbe4d2f03b4a083fbb2fd54a310 | ✓ new (consolidated) |
-| docs/architecture.md | 218 | 9da1179f6ac0557e3930437658110ef5 | ✓ updated |
-| docs/glossary.md | 53 | 55a2a95a9527193d4343fd512805b5e1 | ✓ unchanged |
-| docs/faq.md | 308 | 420471d15759fca6d3612c4605e1964f | ✓ unchanged |
-| docs/validation.md | 96 | 98b7f62546bb5cef1a08478df6fc7eaa | ✓ unchanged |
-
-**removed files:**
-- docs/INIT.md (consolidated into readme.md + architecture.md)
-- docs/PRD.md (consolidated into readme.md + guide.md + architecture.md)
-
-**naming standardization:**
-- ARCHITECTURE.md → architecture.md (case)
-- GLOSSARY.md → glossary.md (case)
-
-**cross-reference updates:**
-- README.md (root) → updated links to docs/readme.md, docs/guide.md
-- .cel/context.md → this file (updated doc map)
-- all workflows/specs maintained (no changes)
-
-**scanned**: 14 active files. 2 consolidated. 2 renamed. context refreshed.
-
----
-
-## NEW: toolset architecture decision (2026-05-13)
-
-**decision**: Recommend Obsidian + CodeGraph as integrated toolset for spekificity users.
-
-**rationale**:
-- **Obsidian** = knowledge management (specs, plans, decisions, lessons, vault)
-- **CodeGraph** = code structure intelligence (symbols, dependencies, impact analysis)
-- Together: 30-40% faster dev on refactoring/debugging vs. Obsidian alone
-- Token efficiency: 92% fewer calls, 77% faster for Claude Code exploration
-
-**value unlocked** (for typical projects):
-- Understand codebase intent (Obsidian) + structure (CodeGraph) simultaneously
-- Impact analysis automated (what breaks when changing symbol X?)
-- Onboarding faster (docs + code structure visible immediately)
-
-**implementation**: Obsidian vault + CodeGraph MCP server. See wiki/decision.md for full rationale.
-
-**status**: Accepted. Recommend in spekificity quickstart guide for users.
-
----
-
-## NEW: LLM Wiki source analysis (2026-05-12 → 2026-05-13)
-
-**scope**: Analyzed new "Karpathy Approach" source + consolidated existing LLM Wiki articles (6 sources total).
-
-**origin**: Karpathy's pattern = ingest raw → compile with LLM → query → file back. Validates consensus across all articles.
-
-**key principle** (now documented): "You rarely touch wiki directly. LLM's domain. Feed sources + ask questions. LLM organizes, cross-links, maintains."
-
-**changes made**:
-1. `wiki/llm-wiki/vision.md` — Added "Origin" section linking to Karpathy's workflow
-2. `wiki/llm-wiki/toolsets.md` — Reinforced human/LLM division in intro
-3. `wiki/llm-wiki/confusion.md` — Added "Validation" section confirming Karpathy Approach validates all 15 consensus points
-
-**status**: LLM Wiki documentation now fully integrated with Karpathy source. No contradictions; consensus confirmed.
-
----
-
-## updated document inventory & hashes (2026-05-13 18:30)
-
-**docs/ core (6 files, 24KB):**
-| file | lines | hash | status |
-|------|-------|------|--------|
-| wiki/architecture.md | 218 | fb62c8939ea5e38d54086dc12c756c70 | ✓ unchanged |
-| wiki/faq.md | 308 | 420471d15759fca6d3612c4605e1964f | ✓ unchanged |
-| wiki/glossary.md | 53 | 55a2a95a9527193d4343fd512805b5e1 | ✓ unchanged |
-| wiki/guide.md | 146 | f6b95402dad9f68586a8cfeb6ae0530d | ✓ unchanged |
-| wiki/validation.md | 96 | 98b7f62546bb5cef1a08478df6fc7eaa | ✓ unchanged |
-
-**setup/ (3 files, 10KB):**
-| wiki/setup/graphify-setup.md | 45 | 0b58760d2c579984d8d974b2b9c053cd | ✓ unchanged |
-| wiki/setup/obsidian-setup.md | 42 | fc2b491e40de7d3d49596e91516004a5 | ✓ unchanged |
-| wiki/setup/speckit-setup.md | 38 | eeff81ad3e62be5137d71e325409ec9d | ✓ unchanged |
-
-**skills/ (4 files, 45KB):**
-| wiki/skills/plan-enrich.md | 89 | d5e42a1e67419a66e7ae41f003cd6687 | ✓ unchanged |
-| wiki/skills/skill.md | 74 | ccb84605995af31e88eca98225e6b6ab | ✓ unchanged |
-| wiki/skills/specify-enrich.md | 61 | d6c99894aa002ae415180cb3b58322e0 | ✓ unchanged |
-| wiki/skills/implement-enrich.md | 84 | 32ad033dc41135c93cfbc030b29a4c10 | ✓ unchanged |
-
-**workflows/ (4 files, 28KB):**
-| wiki/workflows/component-update.md | 62 | d1f0836012e24968a3d2aded874332f9 | ✓ unchanged |
-| wiki/workflows/feature-lifecycle.md | 118 | ce5555cbbc66d410962dcbfb16c07a20 | ✓ unchanged |
-| wiki/workflows/init-workflow.md | 97 | d27872393412f19bfa97be76b5720383 | ✓ unchanged |
-| wiki/workflows/map-refresh.md | 58 | 03db650b20a5ea48a37136ab8bd7dbfd | ✓ unchanged |
-
-**vault/ (3 files, 14KB):**
-| wiki/vault/decisions.md | 72 | 6d6f5310b67bbfe30e4beb0ac5574547 | ✓ unchanged |
-| wiki/vault/patterns.md | 51 | 063755fd1cb656be9c4137ffdd086318 | ✓ unchanged |
-| wiki/vault/index.md | 48 | ac33248442c98f7f953dfd0999d26797 | ✓ unchanged |
-
-**llm-wiki/ (3 files, MODIFIED):**
-| wiki/llm-wiki/vision.md | 291 | 36f122aed50b27d7c4df06322d26cad7 | ✓ UPDATED (origin section added) |
-| wiki/llm-wiki/toolsets.md | 397 | 4aa4ebf923d69321ea17f7c25ac2bdbd | ✓ UPDATED (intro reinforced) |
-| wiki/llm-wiki/confusion.md | 365 | ded155c7327b32edd39e1da7906fc668 | ✓ UPDATED (validation section added) |
-
-**root-level docs:**
-| wiki/TODO.md | 42 | 2f70b7741625289a5d2563133eb4aac1 | ✓ unchanged |
-| **wiki/decision.md** | **47** | **34b151723e0213725a7d8a713f030be7** | **✓ NEW** |
-
-**total files scanned**: 26 markdown files (wiki/ exclusive of wiki/raw/)  
-**files unchanged**: 23  
-**files updated**: 3 (llm-wiki/)  
-**files new**: 1 (decision.md)  
-**summary**: ~2% content change; decision + knowledge reinforcement.
+**total files**: 9 wiki files + README. **wiki reduced**: 26 → 9 files.

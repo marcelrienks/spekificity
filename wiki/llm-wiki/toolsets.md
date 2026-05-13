@@ -44,7 +44,7 @@ LLM Wiki isn't a single tool; it's an orchestration of specialized tools working
   - Daily notes: for personal journaling
   - Plugin ecosystem: Dataview, Marp, Web Clipper, Local REST API
 - Cost: Free for personal use
-- Workflow: Open Obsidian alongside Claude Code; watch agent edits in real-time; browse graph to discover connections
+- Workflow: Open Obsidian alongside your AI agent; watch agent edits in real-time; browse graph to discover connections
 
 **Obsidian Web Clipper**
 - Purpose: Browser extension to convert web articles to markdown
