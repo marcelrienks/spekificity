@@ -1,5 +1,9 @@
 # LLM Wiki Vision
 
+## Origin
+
+**LLM Wiki** originated from Andrej Karpathy's post on building personal knowledge bases. The core insight: you ingest raw sources into a `raw/` directory, compile them with an LLM into a structured wiki, query the wiki for synthesis, and file answers back so the wiki grows perpetually. The critical shift is philosophical — **you rarely touch the wiki directly. It's the LLM's domain. Your job is to feed it sources and ask questions. The LLM organizes, cross-links, and maintains everything.**
+
 ## Overview
 
 LLM Wiki is a pattern for building persistent, compounding knowledge bases where an AI agent reads source materials, extracts key concepts, and maintains a structured markdown wiki that grows richer with each new source added. It solves the fundamental problem that traditional knowledge management — both RAG systems and human-maintained wikis — has never solved: **knowledge should compound, not evaporate**.

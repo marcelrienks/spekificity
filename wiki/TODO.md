@@ -49,38 +49,14 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 **Required expansions**:
 
-- **prepare**: explicitly invoke caveman mode at start of session to reduce token consumption throughout the workflow; confirm graphify graph is fresh (not just present); load obsidian vault decisions + patterns + recent lessons before any speckit step.
-- **post**: invoke caveman to compress session output before writing; run graphify in incremental mode *after* lessons are written (so new lesson files are included in the graph); update obsidian vault context (decisions.md / patterns.md) with anything new surfaced during the feature.
+- **prepare**: explicitly invoke caveman mode at start of session to reduce token consumption throughout the workflow; confirm codegraph graph is fresh (not just present); load obsidian vault decisions + patterns + recent lessons before any speckit step.
+- **post**: invoke caveman to compress session output before writing; run codegraph in incremental mode *after* lessons are written (so new lesson files are included in the graph); update obsidian vault context (decisions.md / patterns.md) with anything new surfaced during the feature.
 - Ensure both skills explicitly document their caveman activation step.
 - Consider whether `spek prepare` should activate caveman automatically or prompt the developer.
 
 ---
 
-## [ ] B.3. Ensure graphify maps documentation as well as code
-
-**Current state**: graphify is used only to map source code files into the vault graph.
-
-**Required investigation**:
-
-- Does graphify support indexing markdown/docs directories (e.g. `docs/`, `specs/`, `skills/`)?
-- If yes: update `spek.map-codebase` skill to include docs and specs directories in the graph build, not just source code.
-- If no / limited: explore whether a separate graphify run with a different target path achieves this, or whether obsidian's own linking is sufficient for docs.
-- Goal: the obsidian vault graph should reflect both code *and* documentation topology so that `spek automate` spec/plan steps can reference existing docs as well as code components.
-
----
-
-## [ ] B.4. Understand graphify + speckit persistent context — or expand `cel.docs.read`
-
-**Question**: Does the normal graphify + speckit workflow provide a persistent context mechanism across sessions, or does context need to be reloaded each time?
-
-- Investigate whether graphify's output (vault graph nodes) is sufficient as a persistent context layer, or whether it only provides a point-in-time snapshot.
-- If graphify does not provide persistent/incremental context across sessions: evaluate whether `cel.docs.read` (which analyses docs and persists a context map to avoid redundant re-reading) should be incorporated into `spek prepare` to fill this gap.
-- If `cel.docs.read` is useful here: define where its context map is stored, how it interacts with the vault, and when it should be refreshed vs. reused.
-- Outcome: decide whether `spek prepare` should call `cel.docs.read` as part of its skill sequence.
-
----
-
-## [ ] B.5. Ensure `spek post` creates structured lessons learnt from spec + implementation steps
+## [ ] B.3. Ensure `spek post` creates structured lessons learnt from spec + implementation steps
 
 **Current state**: `/spek.lessons-learnt` is invoked, but it is not clear whether the lesson entry captures enough detail to replace reading the spec in future sessions.
 
@@ -96,7 +72,7 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 
 ---
 
-## [ ] B.6. Incorporate `cel.docs.simplify` into `spek post`
+## [ ] B.4. Incorporate `cel.docs.simplify` into `spek post`
 
 **Current state**: `spek post` invokes lessons-learnt and map refresh only.
 
@@ -106,10 +82,6 @@ After running `/speckit.analyze` and applying remediations manually, there appea
 - This ensures that docs do not accumulate redundancy over time as features are added.
 - Clarify: does `cel.docs.simplify` operate on the full `docs/` directory, or can it be scoped to files modified in the current feature branch? Prefer scoped operation if possible to avoid unintended rewrites.
 - Document the invocation pattern in the `spek.post` skill.
-
----
-
-*Items above should be resolved before implementing `specs/003-spek-full-workflow-cli/tasks.md`.*
 
 ---
 
@@ -222,3 +194,21 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 - Read the comparison of 15 spec-driven development frameworks to understand where speckit sits in the SDD ecosystem.
 - Identify any frameworks with stronger remediation loops, persistent context, or automation pipelines that could inform spekificity's design.
 - Note any frameworks whose spec → plan → implement flow differs significantly from speckit's — particularly around human-in-the-loop checkpoints (relevant to todo item B.1 and B.8.3).
+
+---
+
+## [ ] B.11. Implement codegraph setup and integration
+
+**Question**: How should codegraph be configured, initialized, and integrated into the spekificity platform?
+
+**Required setup**:
+
+- **Installation & Configuration**: Define the installation process for graphify/codegraph tooling. Document where the tool should be installed (`.spekificity/bin/`, system PATH, or as a dependency), required configuration files, and any environment variables needed.
+- **Vault Integration**: Establish how codegraph output feeds into the `vault/graph/` structure. Define the node schema for both code and documentation nodes (see B.8.1), and how the index is generated and stored.
+- **Invocation in Skills**: Clarify how `spek.map-codebase` invokes codegraph — should it be a direct CLI call, a wrapper script, or an agent-based orchestration? Define the input/output contracts.
+- **Incremental vs. Full Refresh**: Determine the refresh strategy — when should codegraph perform a full map (initial setup, after major refactoring) vs. incremental updates (after each feature, as part of `spek.post`)?
+- **Performance and Scoping**: Document any performance considerations and whether the graph should cover the entire codebase or be scoped to active features/directories.
+
+**Why it matters**: codegraph is referenced throughout the platform (context loading, B.8.1 doc mapping, B.2 prepare/post steps) but its setup is not yet documented. Without explicit setup instructions, `spek.map-codebase` and the vault loading steps remain partially specified.
+
+**Likely outcome**: A step-by-step codegraph setup guide, configuration templates, and updated `spek.map-codebase` skill with clear invocation patterns and output expectations. Should be integrated into `.spekificity/guides/` and referenced in the `spek.prepare` flow.

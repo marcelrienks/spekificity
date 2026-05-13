@@ -1,7 +1,8 @@
 ---
-last_deep_read: 2026-05-03t15:04:00z
-version: 2.1
+last_deep_read: 2026-05-13t18:30:00z
+version: 2.2
 scan_status: full
+changes_detected: 4 files (1 new, 3 modified)
 ---
 
 # spekificity technical brief
@@ -284,3 +285,91 @@ wiki/
 - all workflows/specs maintained (no changes)
 
 **scanned**: 14 active files. 2 consolidated. 2 renamed. context refreshed.
+
+---
+
+## NEW: toolset architecture decision (2026-05-13)
+
+**decision**: Recommend Obsidian + CodeGraph as integrated toolset for spekificity users.
+
+**rationale**:
+- **Obsidian** = knowledge management (specs, plans, decisions, lessons, vault)
+- **CodeGraph** = code structure intelligence (symbols, dependencies, impact analysis)
+- Together: 30-40% faster dev on refactoring/debugging vs. Obsidian alone
+- Token efficiency: 92% fewer calls, 77% faster for Claude Code exploration
+
+**value unlocked** (for typical projects):
+- Understand codebase intent (Obsidian) + structure (CodeGraph) simultaneously
+- Impact analysis automated (what breaks when changing symbol X?)
+- Onboarding faster (docs + code structure visible immediately)
+
+**implementation**: Obsidian vault + CodeGraph MCP server. See wiki/decision.md for full rationale.
+
+**status**: Accepted. Recommend in spekificity quickstart guide for users.
+
+---
+
+## NEW: LLM Wiki source analysis (2026-05-12 → 2026-05-13)
+
+**scope**: Analyzed new "Karpathy Approach" source + consolidated existing LLM Wiki articles (6 sources total).
+
+**origin**: Karpathy's pattern = ingest raw → compile with LLM → query → file back. Validates consensus across all articles.
+
+**key principle** (now documented): "You rarely touch wiki directly. LLM's domain. Feed sources + ask questions. LLM organizes, cross-links, maintains."
+
+**changes made**:
+1. `wiki/llm-wiki/vision.md` — Added "Origin" section linking to Karpathy's workflow
+2. `wiki/llm-wiki/toolsets.md` — Reinforced human/LLM division in intro
+3. `wiki/llm-wiki/confusion.md` — Added "Validation" section confirming Karpathy Approach validates all 15 consensus points
+
+**status**: LLM Wiki documentation now fully integrated with Karpathy source. No contradictions; consensus confirmed.
+
+---
+
+## updated document inventory & hashes (2026-05-13 18:30)
+
+**docs/ core (6 files, 24KB):**
+| file | lines | hash | status |
+|------|-------|------|--------|
+| wiki/architecture.md | 218 | fb62c8939ea5e38d54086dc12c756c70 | ✓ unchanged |
+| wiki/faq.md | 308 | 420471d15759fca6d3612c4605e1964f | ✓ unchanged |
+| wiki/glossary.md | 53 | 55a2a95a9527193d4343fd512805b5e1 | ✓ unchanged |
+| wiki/guide.md | 146 | f6b95402dad9f68586a8cfeb6ae0530d | ✓ unchanged |
+| wiki/validation.md | 96 | 98b7f62546bb5cef1a08478df6fc7eaa | ✓ unchanged |
+
+**setup/ (3 files, 10KB):**
+| wiki/setup/graphify-setup.md | 45 | 0b58760d2c579984d8d974b2b9c053cd | ✓ unchanged |
+| wiki/setup/obsidian-setup.md | 42 | fc2b491e40de7d3d49596e91516004a5 | ✓ unchanged |
+| wiki/setup/speckit-setup.md | 38 | eeff81ad3e62be5137d71e325409ec9d | ✓ unchanged |
+
+**skills/ (4 files, 45KB):**
+| wiki/skills/plan-enrich.md | 89 | d5e42a1e67419a66e7ae41f003cd6687 | ✓ unchanged |
+| wiki/skills/skill.md | 74 | ccb84605995af31e88eca98225e6b6ab | ✓ unchanged |
+| wiki/skills/specify-enrich.md | 61 | d6c99894aa002ae415180cb3b58322e0 | ✓ unchanged |
+| wiki/skills/implement-enrich.md | 84 | 32ad033dc41135c93cfbc030b29a4c10 | ✓ unchanged |
+
+**workflows/ (4 files, 28KB):**
+| wiki/workflows/component-update.md | 62 | d1f0836012e24968a3d2aded874332f9 | ✓ unchanged |
+| wiki/workflows/feature-lifecycle.md | 118 | ce5555cbbc66d410962dcbfb16c07a20 | ✓ unchanged |
+| wiki/workflows/init-workflow.md | 97 | d27872393412f19bfa97be76b5720383 | ✓ unchanged |
+| wiki/workflows/map-refresh.md | 58 | 03db650b20a5ea48a37136ab8bd7dbfd | ✓ unchanged |
+
+**vault/ (3 files, 14KB):**
+| wiki/vault/decisions.md | 72 | 6d6f5310b67bbfe30e4beb0ac5574547 | ✓ unchanged |
+| wiki/vault/patterns.md | 51 | 063755fd1cb656be9c4137ffdd086318 | ✓ unchanged |
+| wiki/vault/index.md | 48 | ac33248442c98f7f953dfd0999d26797 | ✓ unchanged |
+
+**llm-wiki/ (3 files, MODIFIED):**
+| wiki/llm-wiki/vision.md | 291 | 36f122aed50b27d7c4df06322d26cad7 | ✓ UPDATED (origin section added) |
+| wiki/llm-wiki/toolsets.md | 397 | 4aa4ebf923d69321ea17f7c25ac2bdbd | ✓ UPDATED (intro reinforced) |
+| wiki/llm-wiki/confusion.md | 365 | ded155c7327b32edd39e1da7906fc668 | ✓ UPDATED (validation section added) |
+
+**root-level docs:**
+| wiki/TODO.md | 42 | 2f70b7741625289a5d2563133eb4aac1 | ✓ unchanged |
+| **wiki/decision.md** | **47** | **34b151723e0213725a7d8a713f030be7** | **✓ NEW** |
+
+**total files scanned**: 26 markdown files (wiki/ exclusive of wiki/raw/)  
+**files unchanged**: 23  
+**files updated**: 3 (llm-wiki/)  
+**files new**: 1 (decision.md)  
+**summary**: ~2% content change; decision + knowledge reinforcement.

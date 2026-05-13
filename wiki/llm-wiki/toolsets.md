@@ -2,7 +2,7 @@
 
 ## Overview
 
-LLM Wiki isn't a single tool; it's an orchestration of specialized tools working together. This document catalogs all tools mentioned across the articles, groups them by function, and describes the workflows where they're combined.
+LLM Wiki isn't a single tool; it's an orchestration of specialized tools working together. The key principle: **humans curate sources and direct strategy; LLMs maintain the wiki and do the bookkeeping**. This division of labor is what makes the system scale. This document catalogs all tools mentioned across the articles, groups them by function, and describes the workflows where they're combined.
 
 ---
 

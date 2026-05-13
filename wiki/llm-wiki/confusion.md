@@ -312,6 +312,12 @@ While all six articles agree on the core **pattern** (persistent wiki maintained
 
 ---
 
+## Validation: "Karpathy Approach" Source
+
+The newly added source **"Karpathy Approach"** validates core consensus directly. It documents Karpathy's original workflow and reaffirms the critical principle: **"You rarely touch the wiki directly. It's the LLM's domain. Your job is to feed it sources and ask questions. The LLM organizes, cross-links, and maintains everything."** This eliminates ambiguity about division of labor (human curates + LLM maintains) and confirms the human/LLM model across all documented implementations.
+
+---
+
 ## Summary of Unresolved Tensions
 
 | Tension | Position A | Position B | Position C | Impact |
