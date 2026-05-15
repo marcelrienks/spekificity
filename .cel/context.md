@@ -1,8 +1,8 @@
 ---
-last_deep_read: 2026-05-13t00:00:00z
-version: 2.3
+last_deep_read: 2026-05-15t00:00:00z
+version: 2.4
 scan_status: full
-changes_detected: wiki restructured — 17 files removed, 3 changed, 1 new (intention.md)
+changes_detected: wiki and README updated — 7 files changed, 3 unchanged
 ---
 
 # spekificity technical brief
@@ -150,7 +150,7 @@ spekificity/
 
 ---
 
-## pending todos (wiki/todo.md)
+## pending todos (wiki/TODO.md)
 
 **completed**: A.1 (vision.md), A.2 (confusion.md), A.3 (toolsets.md)
 
@@ -160,6 +160,7 @@ spekificity/
 - **B.3** — `spek post` lessons-learnt must be self-contained: feature digest (from spec.md), key implementation steps (from tasks.md), decisions made, patterns reused. goal: future sessions skip reading spec.md/tasks.md entirely.
 - **B.4** — add `cel.docs.simplify` step to `spek post` after lessons + graph refresh. prefer scoped to modified files in current branch.
 - **B.7** — commit to `spek.` namespace for all spekificity platform skills. decide flat vs nested (`spek.*` vs `spek.workflow.*`).
+- **B.8** — high-level concepts: code + document maps (B.8.1), persistent memories + lessons (B.8.2).
 
 ---
 
@@ -190,21 +191,19 @@ spekificity/
 
 ---
 
-## documentation map (current wiki/ — 9 files)
+## documentation map (current wiki/ — 10 files)
 
 | document | location | purpose |
 |----------|----------|---------|
 | intention.md | `wiki/intention.md` | project vision, philosophy (consolidation not reinvention), 3-stage workflow, tool roles |
 | architecture.md | `wiki/architecture.md` | design principles, component roles, CLI scripts, workflow-state.json, component isolation |
 | decision.md | `wiki/decision.md` | CodeGraph vs Graphify, dual-system architecture, tool recommendations |
-| todo.md | `wiki/todo.md` | open action items (B.1-B.4, B.7) + completed (A.1-A.3) |
+| todo.md | `wiki/todo.md` | open action items (B.1-B.8.2) + completed (A.1-A.3) |
 | obsidian-setup.md | `wiki/setup/obsidian-setup.md` | vault install, optional app, vault structure, gitignore |
 | speckit-setup.md | `wiki/setup/speckit-setup.md` | speckit global install, `specify init`, verification |
 | vision.md | `wiki/llm-wiki/vision.md` | Karpathy LLM wiki approach, consensus on methodology/architecture |
 | toolsets.md | `wiki/llm-wiki/toolsets.md` | tools used in LLM wiki pattern + suggested workflows |
-| confusion.md | `wiki/llm-wiki/confusion.md` | contradictions + Karpathy validation section (all 15 consensus points confirmed) |
-
-**removed from wiki** (vs v2.2): wiki/faq.md, wiki/guide.md, wiki/glossary.md, wiki/validation.md, wiki/setup/graphify-setup.md, wiki/skills/ (4 files), wiki/workflows/ (4 files), wiki/vault/ (3 files)
+| confusion.md | `wiki/llm-wiki/confusion.md` | contradictions + Karpathy validation section |
 
 ---
 
@@ -274,23 +273,23 @@ wiki/
 
 ---
 
-**status**: active development. wiki restructured (26→9 files). CodeGraph replacing Graphify. open todos: B.1-B.4, B.7.
+**status**: active development. CodeGraph transition underway. wiki updated. open todos: B.1-B.8.2.
 
 ---
 
-## hash inventory (scanned 2026-05-13)
+## hash inventory (scanned 2026-05-15)
 
 | file | hash | status |
 |------|------|--------|
-| wiki/architecture.md | da61bc2678b761c6e985aaefa4708058 | ✓ updated |
-| wiki/decision.md | dcb38b9b3a5e2df86881f73d8e08c81d | ✓ updated |
-| wiki/intention.md | 9977c3f8927dc917c078269187ce8531 | ✓ new |
-| wiki/todo.md | 853a5d675bdea886fae5b0b15085ebb0 | ✓ updated |
+| README.md | 9a20be75018186970bac69da8bc1425e | ✓ updated |
+| wiki/architecture.md | 5a2332bd773f8b9fa3815e41f9b5a9b2 | ✓ updated |
+| wiki/decision.md | 7c214da1db5367cbb20f52d6df2956a1 | ✓ updated |
+| wiki/intention.md | 936fb0f3e1708abb511f60ebf3f0d5c0 | ✓ updated |
+| wiki/todo.md | 853a5d675bdea886fae5b0b15085ebb0 | ✓ unchanged |
 | wiki/llm-wiki/confusion.md | ded155c7327b32edd39e1da7906fc668 | ✓ unchanged |
-| wiki/llm-wiki/toolsets.md | 4aa4ebf923d69321ea17f7c25ac2bdbd | ✓ unchanged |
+| wiki/llm-wiki/toolsets.md | 991b9863feba59c27e2938f40ba9f5e7 | ✓ updated |
 | wiki/llm-wiki/vision.md | 36f122aed50b27d7c4df06322d26cad7 | ✓ unchanged |
-| wiki/setup/obsidian-setup.md | fc2b491e40de7d3d49596e91516004a5 | ✓ unchanged |
-| wiki/setup/speckit-setup.md | eeff81ad3e62be5137d71e325409ec9d | ✓ unchanged |
-| README.md | d0b744105bc7ad198f47426652eba58d | ✓ scanned |
+| wiki/setup/obsidian-setup.md | 3b0b4f62584b234d6ab542ff94d7065a | ✓ updated |
+| wiki/setup/speckit-setup.md | 8b35437502229326f1d78c80d09b24a9 | ✓ updated |
 
-**total files**: 9 wiki files + README. **wiki reduced**: 26 → 9 files.
+**total files**: 10 files scanned (9 wiki + README). **net change**: 7 files modified, 3 unchanged.

@@ -50,9 +50,15 @@ For the complete enriched SpecKit workflow step-by-step, see [wiki/intention.md]
 
 ## Documentation
 
-- [wiki/architecture.md](wiki/architecture.md) — Directory structure, component roles, data flow, update strategy
+**Knowledge Base (LLM Wiki):**
+- [wiki/llm-wiki.md](wiki/llm-wiki.md) — Persistent knowledge management pattern, implementation schema, operations, and tool ecosystem
+
+**Spekificity Architecture & Workflow:**
 - [wiki/intention.md](wiki/intention.md) — Project vision, philosophy, complete workflow overview
+- [wiki/architecture.md](wiki/architecture.md) — Directory structure, component roles, data flow, update strategy
 - [wiki/decision.md](wiki/decision.md) — Architectural decisions (CodeGraph vs Graphify, dual-system toolset)
+
+**Setup Guides:**
 - [wiki/setup/obsidian-setup.md](wiki/setup/obsidian-setup.md) — Obsidian vault installation and configuration
 - [wiki/setup/speckit-setup.md](wiki/setup/speckit-setup.md) — SpecKit global install and project init
 

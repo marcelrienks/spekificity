@@ -4,27 +4,27 @@ Personal action items to investigate and incorporate before implementing feature
 
 ---
 
-## [x] A.1 Review all documents in 'wiki/raw/llm wiki' and compile vision.md
+## [x] A.1 Review all documents in 'wiki/raw/llm wiki' and compile vision
 
-Review all documents in the articles under the raw wiki documentation directory, and compile each of these aspects of the articles into a consolidated `wiki/llm-wiki/vision.md` file within wiki directory, where there is consensus, consistency, agreement across all articles with regards to:
+Review all documents in the articles under the raw wiki documentation directory, and compile consensus on intentions, philosophy, methodology, use cases, and architectures.
 
-- Intentions
-- Philosophy
-- Methodology
-- Usecases
-- Architectures
+**Completed:** Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Vision & Philosophy section
 
 ---
 
-## [x] A.2 Review all documents in wiki/raw and compile community/confusion.md
+## [x] A.2 Review all documents in wiki/raw and compile confusion
 
-Review all documents in the articles under the raw wiki documentation directory, and compile a consolidated `wiki/llm-wiki/confusion.md` file within wiki directory, where there is any contradictions, inconsistency, disagreement across all articles.
+Review all documents in the articles under the raw wiki documentation directory, and compile contradictions, inconsistencies, and disagreements.
+
+**Completed:** Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Confusion Resolution section
 
 ---
 
-## [x] A.3 List all tools and document community/toolsets.md
+## [x] A.3 List all tools and document toolsets
 
-List all tools used across the articles, and which ones are meant to be used in conjunction into a `wiki/llm-wiki/toolsets.md`. Include the suggested workflows of how these tools are combined.
+List all tools used across the articles, and which ones are meant to be used in conjunction. Include suggested workflows.
+
+**Completed:** Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Tool Ecosystem section
 
 ---
 
