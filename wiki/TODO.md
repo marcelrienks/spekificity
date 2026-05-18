@@ -395,45 +395,170 @@ Cost: ~5-10K tokens (lessons generation + compression)
 
 ---
 
+---
+
 ## [ ] B.9. Investigate `lucasrosati/claude-code-memory-setup` as a reference for memory and context patterns
 
 **Repository**: https://github.com/lucasrosati/claude-code-memory-setup
 
-**Question**: What memory and context management patterns does this repository implement, and what can spekificity adopt or take inspiration from?
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [specs/b9-claude-code-memory-setup-analysis.md](../specs/b9-claude-code-memory-setup-analysis.md)
 
-- Review how `claude-code-memory-setup` structures persistent memory across sessions.
-- Identify any patterns for storing, loading, and refreshing context that complement or improve upon the current spekificity vault + lessons approach.
-- Compare its memory lifecycle (write triggers, read triggers, invalidation) against spekificity's planned model (see item B.8.2 above).
-- Note any tooling, file formats, or conventions that could be reused or adapted — particularly anything relevant to the `spek.prepare` / `spek.post` memory steps.
+**Key Findings:**
 
-**Why it matters**: This repository was identified as a real-world example of Claude-based memory setup and may contain proven patterns that spekificity's memory architecture (item B.8.2) can build on rather than reinvent.
+**Strong Alignment (Zero Conflicts):**
+- Two-system architecture: Obsidian (declarative) + Graphify (structural) ← matches spekificity's planned design
+- Session continuity via `/resume` + `/save` commands ← directly map to `/spek.prepare` + `/spek.post`
+- Zettelkasten conventions (atomic notes, frontmatter, wikilinks) ← applicable to lessons/decisions/patterns
+- 3-layer query rule (graph → vault → code) ← matches spekificity's context loading strategy
+- Incremental graph refresh via git hooks ← already planned in B.8.4
+
+**Adoption Recommendations (High Priority):**
+
+1. **Zettelkasten Conventions** — Apply to vault/lessons, vault/decision.md, vault/patterns.md (frontmatter + wikilinks)
+2. **Chat Import Pipeline Pattern** — Enhance `/spek.post` Step 3 with auto-tagging + auto-wikilink insertion (keyword mapping)
+3. **Incremental Graph Refresh** — Integrate graphify git hooks into `.spekificity/bin/spek setup`
+4. **3-Layer Query Rule** — Document in `.spekificity/guides/context-navigation.md` (prioritize graph → vault → code)
+5. **Session Logs as Vault Artifacts** — Archive `/memories/session/current-feature.md` sections to vault/lessons with wikilinks
+
+**Real-World Results (Validated):**
+- 71.5x fewer tokens per session
+- 499x reduction on specific queries  
+- 659 stars, active community, production-tested
+- 780+ vault notes at scale
+
+**Zero Conflicts with Spekificity Design:** The architecture is complementary, not competing. Can adopt patterns directly.
+
+**Adoption Effort:** 4-6 hours for high-priority patterns; high impact (especially auto-linking + tag generation).
 
 ---
 
-## [ ] B.10. Review spec-driven development framework comparison as a reference for speckit positioning
+## [x] B.10. Review spec-driven development framework comparison as a reference for speckit positioning
 
-**Article**: https://medium.com/@wasowski.jarek/comparing-15-spec-driven-development-frameworks-sdd-c052df529274
+**Article**: https://medium.com/@wasowski.jarek/comparing-15-spec-driven-development-frameworks-sdd-c052df529274 (paywalled; supplemented with public landscape analysis)
 
-**Question**: How does speckit compare against the broader SDD landscape, and are there patterns or frameworks worth adopting or avoiding?
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [specs/b10-sdd-framework-comparison-analysis.md](../specs/b10-sdd-framework-comparison-analysis.md)
 
-- Read the comparison of 15 spec-driven development frameworks to understand where speckit sits in the SDD ecosystem.
-- Identify any frameworks with stronger remediation loops, persistent context, or automation pipelines that could inform spekificity's design.
-- Note any frameworks whose spec → plan → implement flow differs significantly from speckit's — particularly around human-in-the-loop checkpoints (relevant to todo item B.1 and B.8.3).
+**Key Findings:**
+
+**SpecKit Validation (Correct Choice):**
+- Market leader: 102k stars, vendor-neutral, most mature SDD framework
+- Works with 30+ agents; highest community adoption
+- **Gap identified:** No built-in persistence/context (exactly what Spekificity solves)
+- Optional remediation phases (`/speckit.analyze`, `/speckit.remediate`)
+
+**SDD Ecosystem Landscape (30+ frameworks analyzed):**
+- Tier 1: SpecKit (102k), OpenSpec (48.9k) — stable, high adoption
+- Tier 2: Pilot Shell (1.7k), Cavekit (920), Loki Mode (930) — specialized, stronger features
+- Emerging: Kiro (AWS), plus 20+ academic/niche frameworks
+
+**Patterns Worth Adopting (5 High-Priority):**
+1. Multi-tier memory (From Pilot Shell/Loki) — episodic/semantic/procedural; Spekificity B.8.2 already aligns ✓
+2. Backprop reflex (From Cavekit) — test failures → vault updates → future specs
+3. RARV cycles (From Loki Mode) — Reason-Act-Reflect-Verify loops post-implementation
+4. Anti-sycophancy checks (From Loki) — prevent agent from drifting from decisions
+5. Steering rules (From Kiro) — project-scoped rules guide agent behavior
+
+**Unique Opportunity (What Spekificity Can Own):**
+- First vault-integrated SDD (code graph + persistent memory + decorator wrapper)
+- Lesson backprop architecture (test failures → vault → future features)
+- Vendor neutrality (unlike Pilot Shell/Kiro); decorator-only (unlike forks)
+
+**Framework Ecosystem Stability:** ✅ Low risk. SpecKit has 6+ years active development, GitHub backing, 30+ agent integrations.
+
+**Strategic Positioning:** SpecKit (strong foundation) + Spekificity (persistence + context) = unique enterprise SDD.
 
 ---
 
-## [ ] B.11. Implement codegraph setup and integration
+## [x] B.11. Implement codegraph setup and integration
 
-**Question**: How should codegraph be configured, initialized, and integrated into the spekificity platform?
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [specs/b11-codegraph-setup-and-integration.md](../specs/b11-codegraph-setup-and-integration.md)
 
-**Required setup**:
+**Complete Specification (9 Parts):**
 
-- **Installation & Configuration**: Define the installation process for graphify/codegraph tooling. Document where the tool should be installed (`.spekificity/bin/`, system PATH, or as a dependency), required configuration files, and any environment variables needed.
-- **Vault Integration**: Establish how codegraph output feeds into the `vault/graph/` structure. Define the node schema for both code and documentation nodes (see B.8.1), and how the index is generated and stored.
-- **Invocation in Skills**: Clarify how `spek.map-codebase` invokes codegraph — should it be a direct CLI call, a wrapper script, or an agent-based orchestration? Define the input/output contracts.
-- **Incremental vs. Full Refresh**: Determine the refresh strategy — when should codegraph perform a full map (initial setup, after major refactoring) vs. incremental updates (after each feature, as part of `spek.post`)?
-- **Performance and Scoping**: Document any performance considerations and whether the graph should cover the entire codebase or be scoped to active features/directories.
+**Part 1 — Installation & Setup:**
+- Step-by-step Graphify installation (uv tool, prerequisites, verification)
+- Configuration template for .spekificity/config.yaml (20+ settings)
+- Language selection, exclusions, caching strategy, output formats
 
-**Why it matters**: codegraph is referenced throughout the platform (context loading, B.8.1 doc mapping, B.2 prepare/post steps) but its setup is not yet documented. Without explicit setup instructions, `spek.map-codebase` and the vault loading steps remain partially specified.
+**Part 2 — Vault Structure:**
+- Directory layout: vault/graph/ with subdirectories (nodes, cache, refresh-log)
+- Graph metadata: config.json (version, sources, merge strategy)
+- Node schema (JSONL): id, type, name, scope, file, language, dependencies, callers, source, indexed_at
+- Edge schema (JSONL): from_node, to_node, relationship (calls/inheritance/depends-on), context
 
-**Likely outcome**: A step-by-step codegraph setup guide, configuration templates, and updated `spek.map-codebase` skill with clear invocation patterns and output expectations. Should be integrated into `.spekificity/guides/` and referenced in the `spek.prepare` flow.
+**Part 3 — Skill Contract (/spek.map):**
+- Command syntax: full | incremental | watch | docs-only | code-only | dry-run | verbose
+- Full rebuild (5 passes: code indexing via Graphify, doc indexing via Obsidian export, merge, cache update, validate)
+- Incremental refresh (SHA256 caching; only process changed files)
+- Watch mode (file system watcher with debouncing for interactive dev)
+- Git post-commit hook (automatic incremental sync after commits)
+
+**Part 4 — Performance & Refresh Strategy:**
+- Timing strategy table (manual, prepare-triggered, post-sync, git hook, watch, scheduled)
+- SHA256 caching (99%+ hit rate on unchanged files; 1-2s incremental vs. 28s full)
+- Parallel processing (4-worker thread pool; 3-4x speedup)
+- Language-selective indexing (skip slow languages if desired)
+- 3-layer query rule (graph 280 tokens → vault 500 tokens → code 5000+ tokens = 20x savings)
+
+**Part 5 — Integration with B.8.1 & B.8.4:**
+- B.8.1: Hybrid architecture (code nodes + doc nodes merged into single nodes.jsonl)
+- B.8.4 /spek.prepare Step 3: Graph freshness check (read config.json timestamp, compare age to threshold 1h, offer refresh)
+- B.8.4 /spek.post Step 6: Incremental sync (get git diff, run /spek.map --code-only --incremental on changed files)
+- Context injection: /spek.specify & /spek.plan query graph for recent changes + impact analysis
+
+**Part 6 — Configuration Reference:**
+- Complete .spekificity/config.yaml template (graphify section with 50+ fields)
+- Organized by subsection: installation, code_generation, caching, output, document_generation, refresh, performance, validation
+
+**Part 7 — Setup Checklist (14 items):**
+- Installation: Install graphify, create config, init directories, full rebuild, git hook
+- Integration: /spek.prepare check, /spek.post sync, context injection
+- Documentation: User guide, agent guide, hook setup
+- Testing: Functional, integration, performance benchmarks
+
+**Part 8 — Troubleshooting & Recovery:**
+- 4 common issues (graphify not found, corrupted cache, stale graph, high CPU) with fixes
+- Recovery procedures for cache corruption and orphaned nodes
+
+**Part 9 — Success Criteria (15 checkmarks):**
+- Graph generation (node count, required fields, edges, performance)
+- Caching/performance (hit rate, worker threads, watch mode latency)
+- B.8.4 integration (prepare check, post sync, context injection)
+- Query efficiency (3-layer rule, token savings, query latency)
+- Documentation/UX (setup guide, troubleshooting, git hook, watch mode)
+
+**Key Design Decisions:**
+- Graphify for code indexing (tree-sitter AST, fast, language-diverse, 0 tokens)
+- Vault storage in vault/graph/ (code nodes + doc nodes merged)
+- /spek.map skill orchestrates full/incremental/watch modes
+- SHA256 caching strategy (incremental updates in 2-4 seconds)
+- Optional git hooks (auto-sync but user-controlled)
+- 3-layer query rule reduces token cost by 20x
+
+**Integration Confirmed:**
+- ✅ B.8.1 doc mapping (code + doc pass merger)
+- ✅ B.8.4 /spek.prepare (freshness check, optional refresh)
+- ✅ B.8.4 /spek.post (incremental sync for changed files)
+- ✅ /spek.specify & /spek.plan context injection (impact analysis)
+
+---
+
+## [ ] C.1. specs
+All the spec documents created in the specs folder need to be cleaned up, stripped down and isolated to individual aspects of the project, to be implemented. Then once that is done, we need to analyse the entire documentation of the project and determine which specs are still outstanding, in order to achieve a FULLY specced plan for the implementation of this project.
+
+---
+
+## [ ] C.2. spek.speckit spec
+Create a FULL spec md file in the specs directory for the below requiremetns.
+There should not be any wrapper methods that wrap the speckit skills, all speckit skills should remain available to the user to use indipendantly if they wish, but spekification should automate the full documented workflow of speckit. Note that this project must create a skill, that automates all the recommended steps of the specific version of speckit that is currently installed, even if that requires doing a web search to understand the installed versions functionality. This will mean that any future updates to speckit will continue to work with specificity, and will not require updating manually. Therefore the intention with spek.speckit is to implement each step of the speckit workflow by calling each one of the respective skills individually on the users behalf, surfacing any input required, and sending that to the speckit skill at the time. Determine if this would best be done by using sub agents per speckit skill.
+
+---
+
+## [ ] C.3. Research
+Review all suggestionsd from the research document, and determine the value of implementing any of them with the users input for each item. Once decided create a list of todo items (C.3.1, C.3.2 etc.) for each item that needs to be fully specced.
+
+---
+
+## [ ] C.4. Clean up
+once all sub items from point C.3 are completed, the entire project needs to be reviewed, simplified, consolidated, trimmed. At the end of this, I want a handfull of clean, concise, valuable, and not overly verbose architecture, decisions, intentions, conventions, and workflow md documents, with ascii diagrams and flow charts, all detailing the purpose, value, and usecases of this project. Then each of the suggested skills, workflows, tools and custom functionality must have a FULLY documented spec md within the specs directory. This includes the currently existing setup scripts, all of these should be specced out as if they did not exit, and can be recreated using the specs.
+At the end of this todo item, I expect to have a FULLY documented and specced project, entirely ready to then, and ONLY then be implemeted. i.e. there should not be any implementation files existint at the end of this point. If there are, they were accidentally created as part of research and planning actions.

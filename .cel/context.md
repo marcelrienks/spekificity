@@ -1,8 +1,8 @@
 ---
-last_deep_read: 2026-05-18t14:00:00z
-version: 3.7
+last_deep_read: 2026-05-18t15:00:00z
+version: 4.0
 scan_status: full
-changes_detected: B.8.4 resolved (prepare and post specs created); all B.1-B.8.4 complete; B.9-B.11 pending
+changes_detected: B.11 resolved (codegraph setup spec created); all B.1-B.11 architectural specs complete; ready for implementation phase
 ---
 
 # spekificity technical brief
@@ -168,23 +168,17 @@ spekificity/
 
 - **B.8.2** — [Persistent memories and lessons spec](specs/b8-2-persistent-memories-and-lessons.md). Three-layer architecture: vault (Obsidian authoritative), repo memory (compressed project context), session memory (ephemeral). Per-feature lessons (self-contained), per-decision entries, per-pattern entries, per-session context. Load lifecycle at `/spek.context` (3-5K tokens). Write lifecycle at `/spek.post` (5-10K tokens). ✓
 - **B.8.3** — [SpecKit integration contract spec](specs/b8-3-speckit-integration-contract.md). Decorator wrapper pattern: SpecKit owns core generation, Spekificity adds context before + validation after. 9 integration points (context→prepare→specify→plan→tasks→implement→post). Clear responsibility division, no tight coupling, explicit error handling. `/speckit.tasks` invoked directly (no wrapper needed). Configuration: `.specify/` (SpecKit), `.spekificity/` (Spekificity), `vault/graph/` (graph). ✓
-- **B.8.4** — [Prepare and post skills spec](specs/b8-4-prepare-and-post-skills.md). Two detailed specs: `/spek.prepare` (7-step entry point: git verify, feature name, graph check, context load, state init, ready), `/spek.post` (10-step exit point: collect artifacts, compress, generate lessons, vault updates, graph sync, repo memory, docs simplify, archive, report). Exact ordered sequences, success criteria, error handling, configuration options, test checklist. ✓
+- **B.9** — [claude-code-memory-setup analysis](specs/b9-claude-code-memory-setup-analysis.md). Investigation of production-tested memory architecture (659 stars). Strong alignment with spekificity B.8.1-B.8.4: Obsidian + Graphify, `/resume`+`/save` → `/spek.prepare`+`/spek.post`, Zettelkasten conventions, 3-layer query rule. Five high-priority adoptions identified (auto-tagging, wikilinks, git hooks, 3-layer docs, session archival). Zero conflicts. 71.5x token savings validated. ✓
+- **B.10** — [SDD framework comparison analysis](specs/b10-sdd-framework-comparison-analysis.md). Landscape review of 30+ SDD frameworks (SpecKit 102k⭐, OpenSpec 48.9k⭐, Pilot Shell 1.7k⭐, Cavekit, Loki, Kiro, plus 20+ others). SpecKit validated as correct choice: highest adoption + vendor-neutral. Gap identified: no persistence (Spekificity solves). Five adoption patterns identified (multi-tier memory, backprop, RARV cycles, anti-sycophancy, steering rules). Unique opportunity: first vault-integrated SDD. Wasowski Medium article paywalled; supplemented with public ecosystem research. ✓
+- **B.11** — [Codegraph setup and integration spec](specs/b11-codegraph-setup-and-integration.md). Complete Graphify setup guide (installation, configuration, vault structure, skill contract, refresh strategy, performance). Nine comprehensive parts: installation steps, vault directory schema (nodes/edges JSONL), /spek.map lifecycle (full/incremental/watch/git-hook modes), performance optimization (SHA256 caching, parallel processing, 3-layer queries = 20x token savings), B.8.1 & B.8.4 integration contracts, config template, setup checklist (14 items), troubleshooting, success criteria (15 checkmarks). Ready for implementation. ✓
 
-**complete (B.1-B.8.4)**:
-- B.1: SpecKit workflow clarified
-- B.2: Prepare and post skills (high-level)
-- B.3: Lessons learnt format
-- B.4: Docs simplify integration
-- B.7: Naming conventions
-- B.8.1: Code and document maps
-- B.8.2: Persistent memories and lessons
-- B.8.3: Integration contract
-- B.8.4: Prepare and post detailed specs
+**✅ ARCHITECTURAL SPECIFICATION PHASE COMPLETE (B.1-B.11)**
 
-**open (B.9-B.11)**:
-- B.9: Full implementation of skills (agents, code)
-- B.10: Setup scripts and CLI scaffolding
-- B.11: End-to-end testing and documentation
+All foundational specifications now finalized. Ready to proceed to implementation phase:
+- **Phase 1 (B.12):** Create agent skills (/spek.context, /spek.prepare, /spek.map, /spek.post, /spek.specify-enrich, /spek.plan-enrich, /spek.implement-enrich)
+- **Phase 2 (B.13):** CLI orchestration (spekificity entry point, command dispatch, error handling)
+- **Phase 3 (B.14):** End-to-end integration testing
+- **Phase 4 (B.15):** Documentation & user guides
 
 ---
 
