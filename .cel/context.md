@@ -1,8 +1,8 @@
 ---
-last_deep_read: 2026-05-18t13:15:00z
-version: 3.4
+last_deep_read: 2026-05-18t14:00:00z
+version: 3.7
 scan_status: full
-changes_detected: B.8.1 corrected to use Obsidian graph export (not custom parser); spec updated; todo.md + memory updated
+changes_detected: B.8.4 resolved (prepare and post specs created); all B.1-B.8.4 complete; B.9-B.11 pending
 ---
 
 # spekificity technical brief
@@ -166,12 +166,25 @@ spekificity/
 - **B.4** — [cel.docs.simplify integration completed](wiki/skills/spek-post.md) (Step 6 of spek.post workflow). Feature-branch scoped invocation (preferred for safety); consolidates only what grew during feature. ✓
 - **B.7** — [Naming conventions resolved](wiki/naming-conventions.md). Keep `spek.*` prefix always; simplify command portions to one-word where possible. Spekificity core: `/spek.prepare`, `/spek.post`, `/spek.context`, `/spek.map`, `/spek.lessons`, `/spek.automate`. SpecKit vanilla: unchanged `speckit.*`. Enriched: `/spek.specify`, `/spek.plan`, `/spek.implement`. Namespace ownership visible in prefix; commands shortened from compound names. ✓
 
-**open (B.8.2-B.11)**:
-- **B.8.1** — [Code and document maps spec](specs/b8-1-code-and-document-maps.md). Hybrid node granularity (code=symbol-level, content-docs=heading-level, config=file-level). Obsidian vault as single source of truth for docs. Separate passes: graphify for code, Obsidian export (dataview/cache/CLI) for docs. Configuration-driven via vault/graph/config.json. Integrated with /spek.map. ✓
-- **B.8.2** — Persistent memories and lessons model (NEXT).
-- **B.8.3** — SpecKit integration contract
-- **B.8.4** — Prepare and post skill specs
-- **B.9-B.11** — Future investigations and implementation
+- **B.8.2** — [Persistent memories and lessons spec](specs/b8-2-persistent-memories-and-lessons.md). Three-layer architecture: vault (Obsidian authoritative), repo memory (compressed project context), session memory (ephemeral). Per-feature lessons (self-contained), per-decision entries, per-pattern entries, per-session context. Load lifecycle at `/spek.context` (3-5K tokens). Write lifecycle at `/spek.post` (5-10K tokens). ✓
+- **B.8.3** — [SpecKit integration contract spec](specs/b8-3-speckit-integration-contract.md). Decorator wrapper pattern: SpecKit owns core generation, Spekificity adds context before + validation after. 9 integration points (context→prepare→specify→plan→tasks→implement→post). Clear responsibility division, no tight coupling, explicit error handling. `/speckit.tasks` invoked directly (no wrapper needed). Configuration: `.specify/` (SpecKit), `.spekificity/` (Spekificity), `vault/graph/` (graph). ✓
+- **B.8.4** — [Prepare and post skills spec](specs/b8-4-prepare-and-post-skills.md). Two detailed specs: `/spek.prepare` (7-step entry point: git verify, feature name, graph check, context load, state init, ready), `/spek.post` (10-step exit point: collect artifacts, compress, generate lessons, vault updates, graph sync, repo memory, docs simplify, archive, report). Exact ordered sequences, success criteria, error handling, configuration options, test checklist. ✓
+
+**complete (B.1-B.8.4)**:
+- B.1: SpecKit workflow clarified
+- B.2: Prepare and post skills (high-level)
+- B.3: Lessons learnt format
+- B.4: Docs simplify integration
+- B.7: Naming conventions
+- B.8.1: Code and document maps
+- B.8.2: Persistent memories and lessons
+- B.8.3: Integration contract
+- B.8.4: Prepare and post detailed specs
+
+**open (B.9-B.11)**:
+- B.9: Full implementation of skills (agents, code)
+- B.10: Setup scripts and CLI scaffolding
+- B.11: End-to-end testing and documentation
 
 ---
 

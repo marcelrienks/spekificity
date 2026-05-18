@@ -234,7 +234,138 @@ These are cross-cutting concerns that need deliberate thought before or alongsid
 
 **Key Benefit:** Obsidian remains human-browsable while graph nodes enable agent queries. Single source of truth: documents live in Obsidian.
 
-### [ ] B.8.2 Persistent memories and lessons (NEXT)
+### [x] B.8.2 Persistent memories and lessons
+
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [specs/b8-2-persistent-memories-and-lessons.md](../specs/b8-2-persistent-memories-and-lessons.md)
+
+**Memory Architecture (Three Layers):**
+
+**Layer 1 - Vault (Obsidian) — Persistent, Authoritative:**
+- `vault/decision.md` — All decisions (active, deprecated, superceded); ranked by recency + importance
+- `vault/intention.md` — Project vision, tenets, constraints
+- `vault/patterns.md` — Reusable patterns library (tagged by domain)
+- `vault/lessons/<date>-<feature>-*.md` — One self-contained lesson file per completed feature
+
+**Layer 2 - Repo Memory (Copilot) — Persistent, Project-Scoped:**
+- `/memories/repo/architectural-decisions.md` — Compressed summary: recent active decisions only
+- `/memories/repo/patterns-index.md` — Index of recent patterns (top N used)
+- `/memories/repo/codebase-map.md` — High-level code structure snapshot
+
+**Layer 3 - Session Memory (Copilot) — Ephemeral:**
+- `/memories/session/context-loaded.md` — What was loaded at session start (by `/spek.context`)
+- `/memories/session/current-feature.md` — Current feature state + progress (updated across sessions during feature work)
+
+**Lifecycle:**
+
+**Load (Session Start via `/spek.context`):**
+1. Read vault (decisions, patterns, recent lessons)
+2. Read repo memory (compressed summaries)
+3. Query code graph (vault/graph/nodes.jsonl)
+4. Summarize + compress (caveman format)
+5. Write to /memories/session/context-loaded.md
+Cost: ~3-5K tokens (with compression)
+
+**Write (Feature End via `/spek.post`):**
+1. Collect artifacts (spec, plan, tasks, trace)
+2. Generate lessons (vault/lessons/<date>-<feature>-*.md)
+3. Update vault (append decisions, add patterns)
+4. Sync to repo memory (compress recent decisions, update patterns index)
+5. Refresh code graph (/spek.map)
+6. Archive session memory
+Cost: ~5-10K tokens (lessons generation + compression)
+
+**Granularity & Retention:**
+- Per-feature lessons: One file per feature, kept indefinitely (archive if inactive)
+- Per-decision entries: One entry per decision, kept indefinitely (mark deprecated, don't delete)
+- Per-pattern entries: One entry per pattern, kept indefinitely (index recent N in repo memory)
+- Per-session context: Ephemeral, deleted at session end (or archived for reference)
+- Per-feature state: Spans multiple sessions during feature work, archived after completion
+
+**Query Patterns:**
+- Recent decisions: grep repo memory for active status
+- Patterns for [topic]: grep vault/patterns.md for tags
+- Lessons from similar feature: grep vault/lessons/*.md for domain
+- Current feature status: read /memories/session/current-feature.md
+
+---
+
+### [x] B.8.3 SpecKit integration contract
+
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [specs/b8-3-speckit-integration-contract.md](../specs/b8-3-speckit-integration-contract.md)
+
+**Integration Pattern: Decorator Wrapper**
+
+| Component | Responsibility | Pattern | Input | Output |
+|-----------|-----------------|---------|-------|--------|
+| **SpecKit** | Core workflow | Global framework | Natural language | Code + artifacts |
+| **Spekificity** | Context + enrichment | Decorator wrapper | Decisions, patterns, code graph | Context-aware specs, plans, code |
+| **/spek.specify** | Enrich spec generation | Wrapper | Feature description + context | spec.md (with context) |
+| **/spek.plan** | Enrich plan generation | Wrapper | spec.md + context + code graph | plan.md (architecture-aware) |
+| **/speckit.tasks** | Task generation | Direct (no wrapper) | spec.md + plan.md | tasks.md (ordered, IDs, dependencies) |
+| **/spek.implement** | Enrich implementation | Wrapper | tasks.md + context | Code changes + artifacts |
+| **/spek.context** | Load context | Spekificity-only | Session state | /memories/session/context-loaded.md |
+| **/spek.prepare** | Prepare workspace | Spekificity-only | Git state, graph | Verified working state |
+| **/spek.post** | Extract lessons | Spekificity-only | All artifacts | vault/lessons/, vault updates |
+
+**Data Flow:**
+```
+/spek.context → /spek.prepare → /spek.specify → /spek.plan → /speckit.tasks → /spek.implement → /spek.post
+     ↓                ↓               ↓              ↓             ↓               ↓               ↓
+  Load all       Git + graph      Inject ctx    Inject ctx    Generate    Execute +      Lessons +
+  context       validation        + call        + code graph   tasks       collect        vault
+                                  speckit                                  artifacts      updates
+```
+
+**Key Design Decisions:**
+- Decorator pattern (pre/core/post) for clarity and no tight coupling
+- SpecKit owns core generation; Spekificity adds context before + validation after
+- `/speckit.tasks` invoked directly (no enrichment needed; context already in plan)
+- Error handling: Validate inputs, fallback gracefully, proceed with partial results
+- Configuration: `.specify/` for SpecKit, `.spekificity/` for Spekificity, `vault/graph/` for graph
+
+**Success Criteria:**
+- Clear responsibility division (one owner per concern)
+- No tight coupling (works with any SpecKit version)
+- Explicit data flow (all intermediate artifacts documented)
+- Error handling at each layer (validation, retry, fallback)
+
+---
+
+### [x] B.8.4 Prepare and post skills
+
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [specs/b8-4-prepare-and-post-skills.md](../specs/b8-4-prepare-and-post-skills.md)
+
+**Prepare Phase (`/spek.prepare`):**
+
+7-step entry point workflow:
+1. Verify git state (clean, valid branch)
+2. Load feature name (from param/branch/prompt)
+3. Check code graph freshness (1hr threshold, optional refresh)
+4. Refresh graph if stale (run `/spek.map`)
+5. Load context via `/spek.context`
+6. Create feature state tracker (`/memories/session/current-feature.md`)
+7. Report ready status
+
+**Post Phase (`/spek.post`):**
+
+10-step exit point workflow:
+1. Collect artifacts (spec, plan, tasks, trace, code)
+2. Activate caveman compression mode
+3. Generate lessons document (`vault/lessons/<date>-<feature>-*.md`, 8 sections, compressed)
+4. Update vault — decisions (append to `vault/decision.md`)
+5. Update vault — patterns (append/update `vault/patterns.md`)
+6. Incremental code graph sync (re-index changed files)
+7. Sync repo memory (compress recent decisions, patterns, codebase map)
+8. Feature docs simplification (optional, feature-scoped)
+9. Archive session memory (`/memories/session/*`)
+10. Report completion status
+
+**Prepare Success Criteria:** Git clean, feature name valid, graph fresh, context loaded, state tracker created, user ready  
+**Post Success Criteria:** Artifacts collected, lessons compressed, vault updated, graph synced, memory archived, user informed
+
+---
+
+## Closed Action Items (B.1-B.8.4)
 
 - **What**: across sessions, context is currently reloaded from scratch (vault graph + decisions + lessons). There is no durable, incrementally-updated memory layer that summarises *what was built* vs. *what was decided* vs. *what was learned*.
 - **Think about**: what is the right granularity — per-feature lessons, per-session decisions, per-pattern entries? How does this interact with the copilot `/memories/repo/` scope? Should spekificity maintain its own `vault/memory/` structure separate from the agent memory scopes?
