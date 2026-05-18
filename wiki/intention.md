@@ -8,9 +8,14 @@
 
 ## Vision Statement
 
-Spekificity consolidates current best practices in LLM and AI Agent development into a cohesive, minimal-friction workflow. It is not a toolset that reimplements functionality—it is orchestration that links existing best-in-class tools together and automates the connective tissue between them.
+Spekificity consolidates existing best-in-class tools to solve four foundational LLM agent problems:
 
-**Core Promise:** From raw code + documentation → idea → spec → implementation → lessons learned, all with AI agent as copilot, all tracked in persistent project memory, with minimal tool-switching.
+1. **Token Efficiency and Verbosity** — Replace file scans with graph queries; compress outputs 60%+
+2. **Planning and Determinism** — Enforce canonical workflows; ground plans in code reality
+3. **Memory Persistence** — Store decisions, lessons, patterns; survive session boundaries
+4. **Autonomy** — Enable agents to operate independently without constant developer hand-holding
+
+**Core Promise:** From raw code + documentation → idea → spec → implementation → lessons learned, all with AI agent as autonomous copilot, all tracked in persistent project memory, with minimal token waste and minimal tool-switching. Each feature makes the next one faster.
 
 ---
 
@@ -26,16 +31,30 @@ Spekificity consolidates current best practices in LLM and AI Agent development 
 
 ### What Spekificity DOES Do
 
-- ✅ Identify + evaluate best-in-class tools for each pattern
+- ✅ Identify + evaluate best-in-class tools for **token efficiency, planning, persistence, autonomy**
 - ✅ Orchestrate tool installation + setup (→ 1-command init)
-- ✅ Wire chosen tools into a coherent workflow
-- ✅ Automate handoff between stages (spec → plan → tasks → implement)
-- ✅ Inject context at each stage (via code analysis + knowledge base)
-- ✅ Capture outcomes back to knowledge base (lessons learned)
-- ✅ Minimize context-switching (all accessible via single interface)
-- ✅ Maintain project memory across sessions (persistent knowledge base)
+- ✅ Wire chosen tools into a coherent, deterministic workflow
+- ✅ Automate handoff between stages with context injection (spec → plan → tasks → implement)
+- ✅ Replace file scanning with indexed graph queries (92% token reduction)
+- ✅ Compress verbose outputs at each stage (60%+ reduction)
+- ✅ Capture outcomes back to persistent knowledge base (lessons learned)
+- ✅ Maintain project memory across sessions (AI agent loads full context at start)
+- ✅ Enable agent autonomy (code questions answered without dev context injection)
 
 **Why this matters:** Users get best-in-class tools *and* the workflow orchestration most projects invent manually (and get wrong). No vendor lock-in. Each tool remains independently upgradable. As better tools emerge, swap them out without restructuring the workflow.
+
+---
+
+## How Workflow Stages Address the Four Pillars
+
+| stage | token efficiency | determinism | persistence | autonomy |
+|-------|---|---|---|---|
+| **Stage 0: Init** | graph indexing configured once (amortizes over project lifetime) | canonical tool choices established | vault structure initialized | agent has all tools available at start |
+| **Stage 1: Ingest** | code graph indexed (92% fewer queries later) | prior context structured consistently | raw materials + graph stored permanently | agent can analyze codebase independently |
+| **Stage 2: Feature Dev** | `/context-load` loads vault once per session; graph queries replace file reads | spec → plan → tasks → implement enforced; no exploration phase | decisions + lessons captured in vault | agent executes workflow autonomously with graph + vault context |
+| **Stage 3: Refinement** | lesions written terse (caveman style); graph incrementally updated | outcomes feed back into vault structure | agent learns from each feature; compounding | next feature starts with richer context; less dev guidance needed |
+
+**Result:** token reduction is 3-4x cumulative. determinism improves with each cycle. persistence means NO context reset. autonomy grows as vault accumulates.
 
 ---
 

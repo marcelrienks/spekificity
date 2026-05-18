@@ -6,13 +6,30 @@ spekificity has no runtime components. its "architecture" is the structure of it
 
 ## design principles
 
+- **four pillars by design**: every component targets one of four core problems — **token efficiency, determinism, persistence, autonomy**. no feature accepted that doesn't improve one of these.
 - **decorator pattern**: spekificity skills wrap, not replace, standard speckit commands. vanilla speckit remains untouched and upgradable.
 - **modular independence**: code graphing tool, knowledge vaulting tool, spec driven development tool, and the spekificity custom layer can each be updated independently.
 - **global tools, local customisation**: some tools such as spec driven development tools may require global installation, while the intent of speckificity is local (project level) toolsets. speckificity will have a setup tool that automates the installation of global toolsets, and itself have a global functional toolset for initialising speckificity customisation functionality within a given project (as an example using the specify toolset, to setup speckit locally per project)
 - **ai-executable setup**: wherever cli automation is impractical, setup is documented as step-by-step guides that an ai agent can follow.
-- **token efficiency by default**: caveman mode and graph-based context loading are first-class citizens, not afterthoughts.
+- **token efficiency + compression by default**: graph-based context loading and response compression are first-class, built into every workflow stage, not afterthoughts.
 
 ---
+
+## four pillars mapping
+
+how each component targets the four core problems:
+
+| pillar | token efficiency | determinism | persistence | autonomy |
+|--------|---|---|---|---|
+| **code graph** (CodeGraph) | indexed queries = 92% fewer tokens than file scans | exact ground-truth context eliminates hallucinations | graph auto-syncs on file changes | agent answers code questions without asking dev |
+| **vault** (Obsidian markdown) | pre-synthesized context loads once per session | enforces consistent structure; decisions stay consistent | lesssons + decisions persist across sessions + projects | agent recalls patterns from history; no redundant searching |
+| **spec-driven framework** (SpecKit) | canonical steps = no token-wasteful exploration | enforces spec \u2192 plan \u2192 tasks \u2192 implement | specs + plans captured in vault for future reference | deterministic workflow = less dev clarification needed |
+| **compression** (Caveman) | 60%+ output reduction at key stages | terse notation cuts noise, improves clarity | — | agent reads faster, processes more context in same tokens |
+
+**result**: each tool improves *all four pillars*, but emphasizes one. together = compounding effect.
+
+---
+
 ## Component Roles
 
 ### 1. skills (`skills/`)

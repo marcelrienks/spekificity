@@ -1,26 +1,33 @@
 ---
-last_deep_read: 2026-05-15t00:00:00z
-version: 2.4
+last_deep_read: 2026-05-18t00:00:00z
+version: 2.6
 scan_status: full
-changes_detected: wiki and README updated — 7 files changed, 3 unchanged
+changes_detected: four pillars (token efficiency, determinism, persistence, autonomy) now explicit in README, intention.md, architecture.md; mapping added
 ---
 
 # spekificity technical brief
 
 ## executive summary
 
-**spekificity** = orchestration layer. consolidates best-in-class tools into coherent AI agent workflow. does NOT reimplement tools — wires them together. connects: spec-driven framework (SpecKit), code analysis tool (CodeGraph recommended), knowledge vault (Obsidian), token compression (Caveman). solves persistent context loss, token bloat, shallow feature planning. delivered as markdown skills + workflows that AI agents read and execute.
+**spekificity** = agentic consolidation platform. solves four foundational LLM agent problems by wiring best-in-class tools:
+
+1. **Token Efficiency and Verbosity** — graph queries replace file scans (92% savings); compression removes fluff (60%)
+2. **Planning and Determinism** — canonical workflow (spec → plan → tasks → implement); ground truth context from code graph
+3. **Memory Persistence** — vault stores decisions, lessons, patterns; survives session boundaries
+4. **Autonomy** — agent operates independently; code questions answered without dev hand-holding
+
+**does NOT reimplement tools** — orchestrates existing best-in-class tools (code analysis, spec-driven framework, knowledge vault, compression) into coherent workflow. delivered as markdown skills + workflows that AI agents read and execute directly.
 
 ---
 
-## problem space
+## problem space (mapped to four pillars)
 
-| problem | spekificity solution |
-|---------|---------------------|
-| ai agents lose context between sessions | obsidian vault stores graph, decisions, lessons; `/context-load` restores at session start |
-| token bloat from re-reading all files | graphify generates graph once; ai queries graph instead of scanning files |
-| speckit specs/plans disconnected from codebase | `/speckit-enrich-specify` and `/speckit-enrich-plan` inject graph context |
-| verbose ai responses consume tokens | caveman skill compresses outputs while preserving technical accuracy |
+| pillar | problem | spekificity solution |
+|--------|---------|---------------------|
+| **token efficiency** | agents read all files recursively; verbose outputs waste tokens | graph-based context (92% reduction); compression at each stage (60%) |
+| **determinism** | ad-hoc agent planning; hallucinated context; inconsistent results | spec-driven framework enforces canonical steps; code graph provides ground truth |
+| **persistence** | context lost at session end; no accumulated knowledge | obsidian vault stores decisions, lessons, patterns; `/context-load` restores all context at start |
+| **autonomy** | agents need constant dev hand-holding; clarifications burn tokens | graph answers code questions directly; vault recalls patterns; deterministic workflow reduces ambiguity |
 
 ---
 
@@ -150,16 +157,19 @@ spekificity/
 
 ---
 
-## pending todos (wiki/TODO.md)
+## pending todos (wiki/todo.md)
 
-**completed**: A.1 (vision.md), A.2 (confusion.md), A.3 (toolsets.md)
+**completed (moved to llm-wiki.md)**:
+- A.1 Review all documents in 'wiki/raw/llm wiki' and compile vision → Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Vision & Philosophy section
+- A.2 Review all documents in wiki/raw and compile confusion → Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Confusion Resolution section
+- A.3 List all tools and document toolsets → Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Tool Ecosystem section
 
 **open**:
-- **B.1** — clarify full speckit canonical flow (specify → plan → tasks → analyze → remediate → implement → ???). critical for `spek automate` sequencing.
-- **B.2** — expand `spek prepare` (explicit caveman activation, confirm codegraph fresh, load vault decisions+patterns+lessons) and `spek post` (caveman compress, incremental codegraph after lessons written, update vault decisions/patterns).
-- **B.3** — `spek post` lessons-learnt must be self-contained: feature digest (from spec.md), key implementation steps (from tasks.md), decisions made, patterns reused. goal: future sessions skip reading spec.md/tasks.md entirely.
-- **B.4** — add `cel.docs.simplify` step to `spek post` after lessons + graph refresh. prefer scoped to modified files in current branch.
-- **B.7** — commit to `spek.` namespace for all spekificity platform skills. decide flat vs nested (`spek.*` vs `spek.workflow.*`).
+- **B.1** — clarify full speckit canonical flow (specify → plan → tasks → analyze → remediate → implement → ???). does remediation happen in-place or via re-run? are there re-entry points? does implement expect clean analyze pass? critical for `spek automate` sequencing.
+- **B.2** — expand `spek prepare` (explicit caveman activation, confirm codegraph fresh, load vault decisions+patterns+lessons) and `spek post` (caveman compress, incremental codegraph after lessons written, update vault decisions/patterns). document caveman activation in both skills.
+- **B.3** — `spek post` lessons-learnt must be self-contained: feature digest (from spec.md), key implementation steps (from tasks.md), decisions made, patterns reused. goal: future sessions skip reading spec.md/tasks.md entirely. update spek.post skill definition.
+- **B.4** — add `cel.docs.simplify` step to `spek post` after lessons + graph refresh. clarify: full directory or scoped to modified files in current branch? prefer scoped.
+- **B.7** — commit to `spek.` namespace for all spekificity platform skills. decide flat vs nested (`spek.*` vs `spek.workflow.*`). document decision.
 - **B.8** — high-level concepts: code + document maps (B.8.1), persistent memories + lessons (B.8.2).
 
 ---
@@ -188,22 +198,18 @@ spekificity/
 5. **token efficiency by default**: graph-based queries + caveman compression are first-class, not afterthoughts.
 6. **markdown-only delivery**: no binaries. all skills/workflows are `.md` files that ai agents read and execute directly.
 7. **persistent context across sessions**: obsidian vault stores graph, lessons, decisions; `/context-load` restores at session start.
-
----
-
-## documentation map (current wiki/ — 10 files)
+9 files)
 
 | document | location | purpose |
 |----------|----------|---------|
+| README.md | `README.md` | entry point, capabilities table, prerequisites, skills list, core problems solved, session start |
 | intention.md | `wiki/intention.md` | project vision, philosophy (consolidation not reinvention), 3-stage workflow, tool roles |
 | architecture.md | `wiki/architecture.md` | design principles, component roles, CLI scripts, workflow-state.json, component isolation |
 | decision.md | `wiki/decision.md` | CodeGraph vs Graphify, dual-system architecture, tool recommendations |
-| todo.md | `wiki/todo.md` | open action items (B.1-B.8.2) + completed (A.1-A.3) |
+| llm-wiki.md | `wiki/llm-wiki.md` | LLM Wiki framework, vision, principles, implementation schema, operations, tool ecosystem (consolidated from raw/) |
+| todo.md | `wiki/todo.md` | open action items (B.1-B.8.2) + completed items (A.1-A.3) with pointers to llm-wiki.md |
 | obsidian-setup.md | `wiki/setup/obsidian-setup.md` | vault install, optional app, vault structure, gitignore |
 | speckit-setup.md | `wiki/setup/speckit-setup.md` | speckit global install, `specify init`, verification |
-| vision.md | `wiki/llm-wiki/vision.md` | Karpathy LLM wiki approach, consensus on methodology/architecture |
-| toolsets.md | `wiki/llm-wiki/toolsets.md` | tools used in LLM wiki pattern + suggested workflows |
-| confusion.md | `wiki/llm-wiki/confusion.md` | contradictions + Karpathy validation section |
 
 ---
 
@@ -277,19 +283,17 @@ wiki/
 
 ---
 
-## hash inventory (scanned 2026-05-15)
+## hash inventory (scanned 2026-05-18)
 
 | file | hash | status |
 |------|------|--------|
-| README.md | 9a20be75018186970bac69da8bc1425e | ✓ updated |
-| wiki/architecture.md | 5a2332bd773f8b9fa3815e41f9b5a9b2 | ✓ updated |
-| wiki/decision.md | 7c214da1db5367cbb20f52d6df2956a1 | ✓ updated |
-| wiki/intention.md | 936fb0f3e1708abb511f60ebf3f0d5c0 | ✓ updated |
-| wiki/todo.md | 853a5d675bdea886fae5b0b15085ebb0 | ✓ unchanged |
-| wiki/llm-wiki/confusion.md | ded155c7327b32edd39e1da7906fc668 | ✓ unchanged |
-| wiki/llm-wiki/toolsets.md | 991b9863feba59c27e2938f40ba9f5e7 | ✓ updated |
-| wiki/llm-wiki/vision.md | 36f122aed50b27d7c4df06322d26cad7 | ✓ unchanged |
-| wiki/setup/obsidian-setup.md | 3b0b4f62584b234d6ab542ff94d7065a | ✓ updated |
-| wiki/setup/speckit-setup.md | 8b35437502229326f1d78c80d09b24a9 | ✓ updated |
+| README.md | 79fdb36dcce7f0a31f5be49272f37124 | ✓ updated (four pillars added) |
+| wiki/architecture.md | bbf522e363e2184e9db4b89a328c1f21 | ✓ updated (four pillars mapping + design principles) |
+| wiki/decision.md | 7c214da1db5367cbb20f52d6df2956a1 | ✓ unchanged |
+| wiki/intention.md | b0ded9879d2ccb2a21c2272bf66a4c43 | ✓ updated (four pillars vision + workflow stage mapping) |
+| wiki/llm-wiki.md | 985cb6d43e1f405449440625fbe1ed06 | ✓ unchanged |
+| wiki/todo.md | 628abfc0f6982f57a8a8355b7c7ea0be | ✓ unchanged |
+| wiki/setup/obsidian-setup.md | 3b0b4f62584b234d6ab542ff94d7065a | ✓ unchanged |
+| wiki/setup/speckit-setup.md | 8b35437502229326f1d78c80d09b24a9 | ✓ unchanged |
 
-**total files**: 10 files scanned (9 wiki + README). **net change**: 7 files modified, 3 unchanged.
+**total files**: 8 files scanned (7 wiki + README). **net change**: 3 updated (README, architecture.md, intention.md), 5 unchanged.

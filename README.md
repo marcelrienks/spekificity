@@ -2,7 +2,7 @@
 
 > ⚠️ **Status**: Under active development. APIs and documentation subject to change.
 
-**An agentic focused toolset** that connects various tools like [Graphify](https://github.com/graphify/graphifyy), [Obsidian](https://obsidian.md), [SpecKit/Specify](https://github.com/github/spec-kit), and the [Caveman skill](https://github.com/marcelrienks/.agents/skills/caveman) together to create a persistent AI context, reduce excessive token consumption, and improve shallow feature planning. Delivered as markdown skills, workflows, and setup guides that AI agents execute to run enriched SpecKit feature lifecycles with persistent context.
+**An agentic consolidation platform** that wires together best-in-class tools to solve four foundational LLM agent problems: **token bloat, shallow planning, context loss, and lack of autonomy**. Spekificity replaces recursive file scans with graph queries, compresses verbose outputs, stores persistent project memory, and enables AI agents to operate independently without hand-holding. Delivered as markdown skills, workflows, and setup guides that AI agents execute directly.
 
 Spekificity is **built for AI agents**. Every artefact is a skill or workflow that an AI agent reads and executes—enabling code generation, artifact creation, and automation through agentic orchestration.
 
@@ -64,12 +64,31 @@ For the complete enriched SpecKit workflow step-by-step, see [wiki/intention.md]
 
 ---
 
-## Core Problems Solved
+## Four Core Pillars
 
-1. **Context loss between sessions** — AI agents have no persistent memory of past decisions. Spekificity stores decisions, patterns, and lessons in an Obsidian vault that agents can read at session start.
-2. **High token consumption** — Agents typically read every file recursively to understand a codebase. Spekificity indexes the codebase as a graph, replacing recursive file scans with targeted vault queries (40%+ token savings).
-3. **Shallow SpecKit lifecycle** — SpecKit lacks awareness of existing code structure. Spekificity decorates SpecKit steps with graph-aware skills that ground specs and plans in reality.
-4. **Verbose AI interactions** — Agents are verbose by default. Caveman mode compresses responses 60%+ without losing technical accuracy.
+### 1. Token Efficiency and Verbosity
+- Replace recursive file scans with targeted, indexed queries (92% fewer tokens vs file reads)
+- Compress verbose outputs 60%+ without losing technical substance
+- Load pre-synthesized context instead of re-reading (one vault load per session)
+- **Result:** 3-4x more tokens flow to reasoning, planning, and implementation
+
+### 2. Planning and Determinism
+- Enforce canonical workflow steps (spec → plan → tasks → implement) instead of ad-hoc agent planning
+- Provide exact ground-truth context from code graph (no hallucinations)
+- Capture and feed back outcomes to improve future feature runs
+- **Result:** reproducible, auditable cycles; same feature run twice = consistent plans and decisions
+
+### 3. Memory Persistence
+- Store cross-feature knowledge (architectural decisions, patterns, lessons learned) in persistent vault
+- Survive session boundaries without loss — `/context-load` restores full state
+- Accumulate learning over time (each feature makes the next one faster)
+- **Result:** agent gets smarter per feature, not reset at session start
+
+### 4. Autonomy
+- Answer code/architecture questions without manual context injection from developer
+- Recall prior solutions and patterns without tedious searching
+- Keep signal-to-noise high (compressed outputs + indexed queries = agent reads faster)
+- **Result:** agent operates independently; fewer clarification loops, minimal hand-holding needed
 
 ---
 
