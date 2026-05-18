@@ -163,4 +163,183 @@ Spekificity Workflow (via agent)
 - **Teams using AI agents for implementation**
 - **Refactoring/debugging workflows (frequent changes)**
 - **Onboarding new developers**
+
+---
+
+## Decision 3: Toolset Alternatives for the Four Pillars
+
+### Overview
+
+Spekificity's four pillars (token efficiency, determinism, persistence, autonomy) can be addressed by different toolsets. This decision evaluates community tools, rates them by popularity and cohesive fit with Spekificity's architecture, and documents the recommended baseline.
+
+---
+
+### Pillar 1: Token Efficiency & Verbosity
+
+**Problem:** Agents waste tokens on file scans and verbose outputs; context window fills with noise.
+
+| Tool | Type | Popularity | Fit | Token Savings | Notes |
+|------|------|-----------|-----|---------------|-------|
+| **Caveman (recommended)** | Compression | Medium | 9/10 | 60%+ | Simple notation; preserves code; tested with Claude Code |
+| Squeez | Compression | Low | 7/10 | 70%+ | Rust-based; multi-CLI support; self-teaching protocol; zero deps |
+| contextzip | Compression | Low | 6/10 | 60-90% | CLI-focused; stdout compression; session history coming |
+| clipforge-PAKT | Compression | Low | 5/10 | 50%+ | Lossless for JSON/YAML; library + CLI + MCP + browser extension |
+| claw-compactor | Compression | Low | 4/10 | 70%+ | 14-stage pipeline; AST-aware; reversible; complex setup |
+
+**Recommendation:** `Caveman` (already integrated). Sufficient for most use cases; if higher compression needed, test `squeez` (better multi-tool support) or `contextzip` (stdout focus).
+
+---
+
+### Pillar 2: Planning & Determinism
+
+**Problem:** Ad-hoc agent planning leads to inconsistent specs, hallucinated context, and redundant work.
+
+| Tool | Type | Popularity | Fit | Determinism | Notes |
+|------|------|-----------|-----|-------------|-------|
+| **SpecKit/Specify (recommended)** | Spec Framework | **High** | 10/10 | YAML-first; enforces spec→plan→tasks | GitHub's official tool; most active community; battle-tested |
+| SDD Pilot | Spec Framework | Medium | 8/10 | Spec-driven phases + quality gates | VSCode + Windsurf support; strong quality gates; enforces phases |
+| FSPEC | Spec Framework | Low | 7/10 | Multi-agent factory; DDD/BDD support | TDD/DDD/BDD focus; example mapping; guardrails; newer |
+| spec-driven-steroids | Spec Framework | Low | 6/10 | Simple toolkit; native AI tool integration | Focus on CLI discipline; minimal overhead; less documented |
+| Paul (Plan-Apply-Unify Loop) | Framework | Low | 7/10 | Plan-Apply-Unify; quality-over-speed | Claude Code native; roundtable-style; newer |
+| spec2ship | Spec Framework | Low | 6/10 | Multi-agent; roundtable collaboration | Claude Code focus; social/collaborative; emerging |
+
+**Recommendation:** `SpecKit/Specify` (already integrated). Highest ecosystem maturity; most features; largest community. Alternatives (SDD Pilot, FSPEC) target specific niches (quality gates, DDD) but require more setup.
+
+---
+
+### Pillar 3: Memory Persistence
+
+**Problem:** Context lost at session end; agents can't build knowledge across features; decisions repeat.
+
+| Tool | Type | Popularity | Fit | Persistence | Notes |
+|------|------|-----------|-----|-------------|-------|
+| **Obsidian (recommended)** | Vault | **Very High** | 10/10 | Markdown; git-backed; desktop + vault | Largest PKM community; markdown standard; optional UI; proven |
+| Basic Memory | Vault | Low | 9/10 | MCP-based; cross-conversation memory | Privacy-first; Obsidian-compatible; emerging; active development |
+| SilverBullet | Vault | Medium | 8/10 | Markdown + Lua scripting; self-hosted | Open-source; scriptable; more feature-rich; active community |
+| Trilium | Vault | Medium | 7/10 | Notes + knowledge graph; multi-platform | Desktop app; rich UI; not git-backed; harder to version |
+| ByteRover (byterover-cli) | Memory Layer | Low | 6/10 | Portable memory for agents; MCP | Emerging; agent-specific; good for session-scoped memory; not file-based |
+| Draft | Chrome Extension | Low | 5/10 | Capture AI chats into KB; cloud | Browser-only; cloud-dependent; not ideal for offline/local |
+| TidGi-Desktop | Vault | Low | 7/10 | TiddlyWiki + git-backup + REST API | Git-backed; web-clipper; Anki connect; less common; Qt-based |
+
+**Recommendation:** `Obsidian` (already integrated). Unmatched ecosystem for PKM; markdown portable; git versioning standard. Alternatives (Basic Memory, SilverBullet) offer better agent integration (MCP) or richer features (scripting); trade off simplicity and community. ByteRover better for session-scoped memory but lacks file persistence.
+
+---
+
+### Pillar 4: Autonomy & Code Understanding
+
+**Problem:** Agents can't answer code questions without scanning files; no architectural understanding; clarifications burn tokens.
+
+| Tool | Type | Popularity | Fit | Autonomy | Notes |
+|------|------|-----------|-----|----------|-------|
+| **CodeGraph (recommended)** | Code Analysis | Medium | 10/10 | MCP tools; instant; 155 languages; framework-aware | Purpose-built for agents; 99% fewer tokens; 77% faster; SQLite graph |
+| codebase-memory-mcp | Code Analysis | Low | 9/10 | MCP server; persistent knowledge graph; zero deps | 155 languages; sub-ms queries; high-performance; Cypher support |
+| Joern | Code Analysis | Medium | 7/10 | Code property graph; multi-language; dataflow | Academic-grade; C/C++/Java focus; more complex; strong dataflow |
+| Pylance | Code Analysis | **High** | 6/10 | Python-specific; language server; fast | Python community standard; not agent-optimized; limited to Python |
+| Graphify | Code Analysis | Low | 5/10 | Markdown vault output; human-browsable | Legacy; outputs readable docs; inefficient for agent queries |
+| codeflow | Visualization | Low | 4/10 | Browser-based; D3.js visualization; GitHub-linked | Great for humans; not agent-efficient; one-off analysis |
+
+**Recommendation:** `CodeGraph` (already recommended in Decision 1). Purpose-built for agent workflows. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) — comparable fit, both MCP-native. Joern for teams with heavy C/C++/Java codebases requiring dataflow analysis.
+
+---
+
+### Recommended Baseline Toolset for Spekificity
+
+**Status:** These are the four pillars' recommended tools, already integrated into core Spekificity design.
+
+| Pillar | Tool | Version | Install | Fit | Status |
+|--------|------|---------|---------|-----|--------|
+| Token Efficiency | Caveman | latest | skill-based | 9/10 | ✅ Integrated |
+| Determinism | SpecKit/Specify | latest | `uv tool install` | 10/10 | ✅ Integrated |
+| Persistence | Obsidian | 1.6+ | Desktop app optional | 10/10 | ✅ Integrated |
+| Autonomy | CodeGraph | latest | MCP server | 10/10 | ⚠️ Recommended (pending integration) |
+
+**Installation for New Projects:**
+
+```bash
+spekificity init
+# → auto-detects installed tools
+# → prompts for missing tools with recommendations
+# → deploys skills locally
+```
+
+---
+
+### Alternative Toolsets (Use Cases)
+
+#### **Use Case 1: Minimum Setup (No Optional Dependencies)**
+- **Token Efficiency:** Caveman (skill-based; no install)
+- **Determinism:** SpecKit/Specify (global install)
+- **Persistence:** Markdown vault (plain files; no dependencies)
+- **Autonomy:** Manual grep (no tool; skip for small projects)
+
+**Best for:** <100-file projects; teams without CI/CD infrastructure
+
+---
+
+#### **Use Case 2: Maximum Token Savings (Production Codebases)**
+- **Token Efficiency:** Squeez (Rust CLI; 70% savings) + Caveman
+- **Determinism:** SDD Pilot (strict quality gates)
+- **Persistence:** Obsidian + SilverBullet (markdown + scripting)
+- **Autonomy:** codebase-memory-mcp (emerging; better than CodeGraph for high-performance scenarios)
+
+**Best for:** Teams running frequent agent cycles; large codebases >500 files
+
+---
+
+#### **Use Case 3: Ecosystem-Focused (GitHub, Enterprise)**
+- **Token Efficiency:** Caveman (GitHub Copilot native)
+- **Determinism:** SpecKit/Specify (GitHub official; enterprise ready)
+- **Persistence:** Obsidian + git (enterprise-friendly)
+- **Autonomy:** CodeGraph (standard; good GitHub integration)
+
+**Best for:** Enterprise; GitHub-first teams; standardization priority
+
+---
+
+### Trade-off Matrix
+
+| Criterion | Caveman | Squeez | contextzip | clipforge | claw-compactor |
+|-----------|---------|---------|-----------|-----------|--------|
+| Token Savings | 60% | 70% | 60-90% | 50% | 70% |
+| Ease of Use | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
+| Community | Medium | Small | Small | Small | Small |
+| Setup Time | <5 min | 10 min | 10 min | 15 min | 30 min |
+| Multi-Tool Support | ❌ | ✅ | ✅ | ✅ | ❌ |
+| **Recommendation** | **Yes** | Consider | Consider | Optional | Advanced |
+
+---
+
+### Evaluation Methodology
+
+Each tool rated on:
+
+1. **Popularity** — GitHub stars, community size, adoption in production (high/medium/low)
+2. **Fit** — How well it integrates with Spekificity's decorator pattern and four-pillar model (1-10)
+3. **Technical Metric** — Pillar-specific measure (token savings %, determinism level, etc.)
+4. **Maintenance** — Active development, responsiveness to issues, documentation quality
+
+---
+
+### When to Consider Alternatives
+
+| Scenario | Recommendation |
+|----------|-----------------|
+| **Extreme token constraints** | Replace Caveman with Squeez; evaluate claw-compactor |
+| **Dataflow analysis needed** | Add Joern alongside CodeGraph |
+| **Team already uses SilverBullet** | Replace Obsidian (compatible via markdown export) |
+| **Python-only codebase** | Pylance sufficient for autonomy; skip CodeGraph |
+| **100+ files, deep history** | Replace Graphify/CodeGraph with codebase-memory-mcp |
+| **Offline-first requirement** | Ensure all tools work locally; Obsidian + CodeGraph do; verify others |
+
+---
+
+### Conclusion
+
+**Spekificity's recommended toolset balances popularity, maturity, and cost-effectiveness:**
+- `Caveman` — sufficient compression; mature; no setup friction
+- `SpecKit/Specify` — industry standard; battle-tested; largest community
+- `Obsidian` — de facto PKM standard; markdown portable; proven at scale
+- `CodeGraph` — purpose-built for agents; recommended for teams doing frequent cycles
+
+**Alternatives exist for each pillar; use matrix above to evaluate against your constraints.**
 - **Projects that need both intent + structure understanding**
