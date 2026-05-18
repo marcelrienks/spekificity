@@ -1,8 +1,8 @@
 ---
-last_deep_read: 2026-05-18t00:00:00z
-version: 2.6
+last_deep_read: 2026-05-18t13:15:00z
+version: 3.4
 scan_status: full
-changes_detected: four pillars (token efficiency, determinism, persistence, autonomy) now explicit in README, intention.md, architecture.md; mapping added
+changes_detected: B.8.1 corrected to use Obsidian graph export (not custom parser); spec updated; todo.md + memory updated
 ---
 
 # spekificity technical brief
@@ -159,18 +159,19 @@ spekificity/
 
 ## pending todos (wiki/todo.md)
 
-**completed (moved to llm-wiki.md)**:
-- A.1 Review all documents in 'wiki/raw/llm wiki' and compile vision → Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Vision & Philosophy section
-- A.2 Review all documents in wiki/raw and compile confusion → Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Confusion Resolution section
-- A.3 List all tools and document toolsets → Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Tool Ecosystem section
+**completed (B.1-B.7 resolved)**:
+- **B.1** — [Canonical SpecKit workflow clarified](wiki/speckit-workflow.md). Remediation is in-place (direct editing); no automatic re-entry. Analyze is optional/non-blocking. Integration with `spek automate` sequenced. ✓
+- **B.2** — [Skill definitions created](wiki/skills/spek-prepare.md) and [spek-post.md](wiki/skills/spek-post.md). Caveman activation explicit in both. Vault context loading, code graph refresh, incremental sync, and docs consolidation all defined. ✓
+- **B.3** — [Self-contained lessons format defined](wiki/skills/spek-lessons-learnt.md). Lessons capture feature summary + implementation + decisions + patterns. Future sessions skip re-reading spec/plan. Caveman compression, vault updates, and validation checklist all specified. ✓
+- **B.4** — [cel.docs.simplify integration completed](wiki/skills/spek-post.md) (Step 6 of spek.post workflow). Feature-branch scoped invocation (preferred for safety); consolidates only what grew during feature. ✓
+- **B.7** — [Naming conventions resolved](wiki/naming-conventions.md). Keep `spek.*` prefix always; simplify command portions to one-word where possible. Spekificity core: `/spek.prepare`, `/spek.post`, `/spek.context`, `/spek.map`, `/spek.lessons`, `/spek.automate`. SpecKit vanilla: unchanged `speckit.*`. Enriched: `/spek.specify`, `/spek.plan`, `/spek.implement`. Namespace ownership visible in prefix; commands shortened from compound names. ✓
 
-**open**:
-- **B.1** — clarify full speckit canonical flow (specify → plan → tasks → analyze → remediate → implement → ???). does remediation happen in-place or via re-run? are there re-entry points? does implement expect clean analyze pass? critical for `spek automate` sequencing.
-- **B.2** — expand `spek prepare` (explicit caveman activation, confirm codegraph fresh, load vault decisions+patterns+lessons) and `spek post` (caveman compress, incremental codegraph after lessons written, update vault decisions/patterns). document caveman activation in both skills.
-- **B.3** — `spek post` lessons-learnt must be self-contained: feature digest (from spec.md), key implementation steps (from tasks.md), decisions made, patterns reused. goal: future sessions skip reading spec.md/tasks.md entirely. update spek.post skill definition.
-- **B.4** — add `cel.docs.simplify` step to `spek post` after lessons + graph refresh. clarify: full directory or scoped to modified files in current branch? prefer scoped.
-- **B.7** — commit to `spek.` namespace for all spekificity platform skills. decide flat vs nested (`spek.*` vs `spek.workflow.*`). document decision.
-- **B.8** — high-level concepts: code + document maps (B.8.1), persistent memories + lessons (B.8.2).
+**open (B.8.2-B.11)**:
+- **B.8.1** — [Code and document maps spec](specs/b8-1-code-and-document-maps.md). Hybrid node granularity (code=symbol-level, content-docs=heading-level, config=file-level). Obsidian vault as single source of truth for docs. Separate passes: graphify for code, Obsidian export (dataview/cache/CLI) for docs. Configuration-driven via vault/graph/config.json. Integrated with /spek.map. ✓
+- **B.8.2** — Persistent memories and lessons model (NEXT).
+- **B.8.3** — SpecKit integration contract
+- **B.8.4** — Prepare and post skill specs
+- **B.9-B.11** — Future investigations and implementation
 
 ---
 
@@ -271,15 +272,18 @@ wiki/
 /map-codebase          # codebase refresh
 /enrich-specify        # spec with context
 /enrich-plan           # plan with impact analysis
-/generate-tasks        # dependency-ordered tasks
-/enrich-implement      # execute with graph context
-/lessons-learnt        # capture outcomes to vault
-/caveman               # token compression (any step)
-```
+/spek.prepare          # feature start (git, caveman, vault, graph)
+/speckit-enrich-specify # spec with context
+/speckit-enrich-plan   # plan with impact analysis
+/speckit.tasks         # dependency-ordered tasks
+/speckit.analyze       # optional cross-artifact consistency
+/speckit-enrich-implement # execute with graph context
+/spek.post             # feature end (lessons, vault update, graph, docs)
+/lessons-learnt        # manual lesson capture
 
 ---
-
-**status**: active development. CodeGraph transition underway. wiki updated. open todos: B.1-B.8.2.
+B.1 (SpecKit workflow) resolved. B.2 (prepare/post skills) resolved. B.3 (lessons format) resolved. B.4 (docs.simplify integration) resolved. CodeGraph transition underway. wiki updated. open todos: B.7-B.8
+**status**: active development. B.1-B.7 complete (corrected B.7 intent: keep spek.* prefix, simplify command portions). CodeGraph transition underway. wiki updated. open todos: B.8 (high-level concepts documentation).
 
 ---
 
@@ -289,11 +293,18 @@ wiki/
 |------|------|--------|
 | README.md | 79fdb36dcce7f0a31f5be49272f37124 | ✓ updated (four pillars added) |
 | wiki/architecture.md | bbf522e363e2184e9db4b89a328c1f21 | ✓ updated (four pillars mapping + design principles) |
-| wiki/decision.md | 7c214da1db5367cbb20f52d6df2956a1 | ✓ unchanged |
+| wiki/decision.md | 6629751a38fc52b3144db10c873f2f46 | ✓ updated (CodeGraph vs Graphify comparison + dual-system rationale detailed) |
 | wiki/intention.md | b0ded9879d2ccb2a21c2272bf66a4c43 | ✓ updated (four pillars vision + workflow stage mapping) |
 | wiki/llm-wiki.md | 985cb6d43e1f405449440625fbe1ed06 | ✓ unchanged |
 | wiki/todo.md | 628abfc0f6982f57a8a8355b7c7ea0be | ✓ unchanged |
 | wiki/setup/obsidian-setup.md | 3b0b4f62584b234d6ab542ff94d7065a | ✓ unchanged |
 | wiki/setup/speckit-setup.md | 8b35437502229326f1d78c80d09b24a9 | ✓ unchanged |
 
-**total files**: 8 files scanned (7 wiki + README). **net change**: 3 updated (README, architecture.md, intention.md), 5 unchanged.
+**total files**: 8 files scanned (7 wiki + README). **net change**: 4 updated (README, architecture.md, intention.md, decision.md), 4 unchanged.
+
+## updates since last scan
+
+**decision.md expansion** (2026-05-18):
+- Decision 1 now fully detailed: CodeGraph (9/10 agent efficiency) vs Graphify (7/10). Agent impact quantified: 90+ min feature cycle (Graphify) vs 45 min (CodeGraph). Critical rationale: CodeGraph instant tool calls (92% fewer tokens) vs Graphify markdown reads (100s+ tokens per query).
+- Decision 2 now fully detailed: Dual-system architecture (Knowledge Vault + Code Analysis Tool) justified by different access rhythms (vault: once per session; code: every file save). Result: 30-40% faster refactoring/debugging.
+- Both decisions include comprehensive trade-offs tables.

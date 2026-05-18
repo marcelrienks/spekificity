@@ -166,11 +166,11 @@ Spekificity Workflow (via agent)
 
 ---
 
-## Decision 3: Toolset Alternatives for the Four Pillars
+## Decision 3: Toolset Recommendations for the Four Pillars
 
 ### Overview
 
-Spekificity's four pillars (token efficiency, determinism, persistence, autonomy) can be addressed by different toolsets. This decision evaluates community tools, rates them by popularity and cohesive fit with Spekificity's architecture, and documents the recommended baseline.
+Spekificity's four pillars (token efficiency, determinism, persistence, autonomy) can be addressed by different community tools. This decision evaluates options, rates them by popularity and cohesive fit with Spekificity's architecture, and documents the recommended baseline for each pillar.
 
 ---
 
@@ -186,7 +186,7 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | clipforge-PAKT | Compression | Low | 5/10 | 50%+ | Lossless for JSON/YAML; library + CLI + MCP + browser extension |
 | claw-compactor | Compression | Low | 4/10 | 70%+ | 14-stage pipeline; AST-aware; reversible; complex setup |
 
-**Recommendation:** `Caveman` (already integrated). Sufficient for most use cases; if higher compression needed, test `squeez` (better multi-tool support) or `contextzip` (stdout focus).
+**Recommendation:** Use `Caveman` for token compression. Sufficient for most use cases; if higher compression needed, evaluate `squeez` (70% savings, multi-tool support) or `contextzip` (60-90% savings, stdout focus).
 
 ---
 
@@ -203,7 +203,7 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | Paul (Plan-Apply-Unify Loop) | Framework | Low | 7/10 | Plan-Apply-Unify; quality-over-speed | Claude Code native; roundtable-style; newer |
 | spec2ship | Spec Framework | Low | 6/10 | Multi-agent; roundtable collaboration | Claude Code focus; social/collaborative; emerging |
 
-**Recommendation:** `SpecKit/Specify` (already integrated). Highest ecosystem maturity; most features; largest community. Alternatives (SDD Pilot, FSPEC) target specific niches (quality gates, DDD) but require more setup.
+**Recommendation:** Use `SpecKit/Specify` for planning & determinism. Highest ecosystem maturity, most features, largest community. Alternatives (SDD Pilot, FSPEC) target specific niches (quality gates, DDD) but require more specialized setup.
 
 ---
 
@@ -221,7 +221,7 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | Draft | Chrome Extension | Low | 5/10 | Capture AI chats into KB; cloud | Browser-only; cloud-dependent; not ideal for offline/local |
 | TidGi-Desktop | Vault | Low | 7/10 | TiddlyWiki + git-backup + REST API | Git-backed; web-clipper; Anki connect; less common; Qt-based |
 
-**Recommendation:** `Obsidian` (already integrated). Unmatched ecosystem for PKM; markdown portable; git versioning standard. Alternatives (Basic Memory, SilverBullet) offer better agent integration (MCP) or richer features (scripting); trade off simplicity and community. ByteRover better for session-scoped memory but lacks file persistence.
+**Recommendation:** Use `Obsidian` for memory persistence. Unmatched ecosystem for PKM; markdown portable; git versioning standard. Alternatives (Basic Memory, SilverBullet) offer better agent integration (MCP) or richer features (scripting); evaluate based on project needs.
 
 ---
 
@@ -238,20 +238,20 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | Graphify | Code Analysis | Low | 5/10 | Markdown vault output; human-browsable | Legacy; outputs readable docs; inefficient for agent queries |
 | codeflow | Visualization | Low | 4/10 | Browser-based; D3.js visualization; GitHub-linked | Great for humans; not agent-efficient; one-off analysis |
 
-**Recommendation:** `CodeGraph` (already recommended in Decision 1). Purpose-built for agent workflows. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) — comparable fit, both MCP-native. Joern for teams with heavy C/C++/Java codebases requiring dataflow analysis.
+**Recommendation:** Use `CodeGraph` for autonomy & code understanding. Purpose-built for agent workflows with instant queries and impact analysis. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) for high-performance scenarios.
 
 ---
 
 ### Recommended Baseline Toolset for Spekificity
 
-**Status:** These are the four pillars' recommended tools, already integrated into core Spekificity design.
+**Decision:** For each pillar, recommend the tool that best combines popularity, maturity, and cohesive fit with Spekificity's architecture.
 
-| Pillar | Tool | Version | Install | Fit | Status |
-|--------|------|---------|---------|-----|--------|
-| Token Efficiency | Caveman | latest | skill-based | 9/10 | ✅ Integrated |
-| Determinism | SpecKit/Specify | latest | `uv tool install` | 10/10 | ✅ Integrated |
-| Persistence | Obsidian | 1.6+ | Desktop app optional | 10/10 | ✅ Integrated |
-| Autonomy | CodeGraph | latest | MCP server | 10/10 | ⚠️ Recommended (pending integration) |
+| Pillar | Tool | Fit | Rationale |
+|--------|------|-----|-----------|
+| Token Efficiency | Caveman | 9/10 | Simple notation; preserves code; tested across tools |
+| Determinism | SpecKit/Specify | 10/10 | YAML-first; GitHub official; battle-tested |
+| Persistence | Obsidian | 10/10 | Largest PKM community; markdown portable; git-backed |
+| Autonomy | CodeGraph | 10/10 | Purpose-built for agents; 99% fewer tokens; instant queries |
 
 **Installation for New Projects:**
 
