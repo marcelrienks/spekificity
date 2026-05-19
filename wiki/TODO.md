@@ -608,11 +608,102 @@ Full specification for `/spek.automate` — autonomous orchestration of SpecKit 
 
 ---
 
-## [ ] C.3. Research
-Review all suggestionsd from the research document, and determine the value of implementing any of them with the users input for each item. Once decided create a list of todo items (C.3.1, C.3.2 etc.) for each item that needs to be fully specced.
+## [ ] C.3. Research Review & Item Creation
+
+**Status:** Ready to action
+
+Review all suggestions from [wiki/research.md](research.md) and create actionable spec items (C.3.1-C.3.14) for phased implementation.
+
+**Process:**
+1. Review research.md "Phased Implementation Plan" section (now fully documented)
+2. Answer the 5 team infrastructure questions (in research.md COULD Adopt section)
+3. Create spec items below (C.3.1-C.3.14) based on decisions
+4. Mark each as Adopt / Skip / Defer
+
+### Phase 1: SHOULD Adopt (B.12 - Core Workflow)
+
+- [ ] **C.3.1.** Spec: Zettelkasten conventions for vault notes
+- [ ] **C.3.2.** Spec: Auto-tagging + auto-wikilink insertion for lessons
+- [ ] **C.3.3.** Spec: 3-Layer query rule documentation & enforcement
+- [ ] **C.3.4.** Spec: Graphify git hooks integration
+- [ ] **C.3.5.** Spec: Session logs as explicit vault artifacts
+
+### Phase 2: COULD Adopt (B.13-B.14 - Post-Launch)
+
+**Decision Gate:** Answer infrastructure questions first (see research.md)
+
+Conditional adoption based on team capabilities:
+
+- [ ] **C.3.6.** Spec: Backprop reflex (test failures → vault updates)
+- [ ] **C.3.7.** Spec: RARV reflection cycles (continuous alignment)
+- [ ] **C.3.8.** Spec: Anti-sycophancy validation rules
+- [ ] **C.3.9.** Spec: Blind code review
+- [ ] **C.3.10.** Spec: Token budget allocation tracking
+
+### Phase 3: RECOMMENDED (Post-Launch - Q3 2026+)
+
+- [ ] **C.3.11.** Spec: Cross-feature lesson discovery
+- [ ] **C.3.12.** Spec: Cross-project vault (organizational scale)
+- [ ] **C.3.13.** Spec: Watch mode for dev workflow
+- [ ] **C.3.14.** Spec: Steering files / project rules
+
+**Status after creation:** All items will be tracked in this section, marked Adopt/Skip/Defer as decisions are made.
 
 ---
 
-## [ ] C.4. Clean up
+## [ ] C.4. Cleanup & Final Documentation
 once all sub items from point C.3 are completed, the entire project needs to be reviewed, simplified, consolidated, trimmed. At the end of this, I want a handfull of clean, concise, valuable, and not overly verbose architecture, decisions, intentions, conventions, and workflow md documents, with ascii diagrams and flow charts, all detailing the purpose, value, and usecases of this project. Then each of the suggested skills, workflows, tools and custom functionality must have a FULLY documented spec md within the specs directory. This includes the currently existing setup scripts, all of these should be specced out as if they did not exit, and can be recreated using the specs.
 At the end of this todo item, I expect to have a FULLY documented and specced project, entirely ready to then, and ONLY then be implemeted. i.e. there should not be any implementation files existint at the end of this point. If there are, they were accidentally created as part of research and planning actions.
+
+---
+
+## [ ] D. Implement Phased Plan (Execution Phase)
+
+**Status:** Pending after C.3 + C.4 completion
+
+Execute the phased implementation roadmap documented in [wiki/research.md](research.md#phased-implementation-plan-action-items).
+
+### D.1. Phase 1 Implementation (B.12 - SHOULD Adoptions)
+
+Implement the 5 core adoptions (S1-S5) during agent skill development:
+
+- [ ] Create spec C.3.1: Zettelkasten conventions
+- [ ] Create spec C.3.2: Auto-tagging + auto-wikilink
+- [ ] Create spec C.3.3: 3-Layer query rule
+- [ ] Create spec C.3.4: Graphify git hooks
+- [ ] Create spec C.3.5: Session logs as vault artifacts
+- [ ] Integrate S1-S5 into `/spek.prepare`, `/spek.post`, `/spek.context` skills
+- [ ] Test all integrations
+- [ ] Validate acceptance criteria (frontmatter, wikilinks, hooks, session archival)
+
+**Timeline:** Alongside B.12 skill development (12-15 hours total)
+
+### D.2. Phase 2 Implementation (B.13-B.14 - COULD Adoptions)
+
+Implement conditional medium-priority features based on team infrastructure:
+
+- [ ] Answer 5 infrastructure questions (from research.md)
+- [ ] Create specs C.3.6-C.3.10 (conditional based on answers)
+- [ ] Prioritize C1-C5 items into B.13-B.14 sprints
+- [ ] Implement selected items with full testing
+- [ ] Validate integration with Phase 1
+
+**Timeline:** After B.13 integration testing succeeds (15-20 hours total, conditional)
+
+### D.3. Phase 3 Implementation (Post-Launch - RECOMMENDED)
+
+Plan RECOMMENDED enhancements (R1-R4) based on real-world usage:
+
+- [ ] Collect user feedback from B.12-B.14 implementations
+- [ ] Create specs C.3.11-C.3.14 based on priority + feedback
+- [ ] Prioritize R1-R4 items into post-launch roadmap
+- [ ] Begin implementation in Q3 2026+
+
+**Timeline:** Q3 2026+ (20+ hours, iterative based on feedback)
+
+---
+
+**Reference:** Full implementation details in [wiki/research.md](research.md) Sections:
+- Decision Matrix (line ~600)
+- Recommendation Summary (line ~650)
+- Implementation Roadmap (line ~670)

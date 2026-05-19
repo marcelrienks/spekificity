@@ -697,11 +697,156 @@ These are patterns from other frameworks that Spekificity **deliberately does no
 
 ---
 
+## Phased Implementation Plan (Action Items)
+
+### Phase 1: SHOULD Adopt (B.12 - Core Workflow Implementation)
+
+**Status:** Ready for implementation in separate session
+
+Create specs and implement the following 5 high-value adoptions during B.12 agent skill development:
+
+| ID | Item | Effort | Priority | Spec Item |
+|----|------|--------|----------|-----------|
+| S1 | Zettelkasten conventions for vault notes | 3-4h | **MUST** | C.3.1 |
+| S2 | Auto-tagging + auto-wikilink insertion | 4-6h | **MUST** | C.3.2 |
+| S3 | 3-Layer query rule documentation | 2-3h | **MUST** | C.3.3 |
+| S4 | Graphify git hooks integration | 1h | **MUST** | C.3.4 |
+| S5 | Session logs as vault artifacts | 2-3h | **MUST** | C.3.5 |
+
+**Total Effort:** 12-15 hours (distributed across B.12 skill implementation)
+
+**Integration Points:**
+- S1, S2: Integrate into `/spek.post` Step 3 (Lesson Generation)
+- S3: Integrate into `/spek.context` + `copilot-instructions.md`
+- S4: Integrate into `.spekificity/bin/spek setup`
+- S5: Integrate into `/spek.post` Step 9 (Archive Session Memory)
+
+**Acceptance Criteria:**
+- ✅ Vault lessons have frontmatter (title, tags, created, updated, status, type)
+- ✅ Vault lessons auto-generate wikilinks to related decisions/patterns
+- ✅ copilot-instructions.md documents 3-layer query rule
+- ✅ Setup script installs graphify git hooks
+- ✅ Session logs archived to vault with structured YAML frontmatter
+
+---
+
+### Phase 2: COULD Adopt (B.13-B.14 - Post-Launch Enhancements)
+
+**Status:** Defer to after B.12 integration testing succeeds
+
+Evaluate and implement these 5 medium-priority features based on team infrastructure:
+
+| ID | Item | Effort | Depends On | Spec Item |
+|----|------|--------|-----------|-----------|
+| C1 | Backprop reflex (test failures → vault) | 3-4h | Tests | C.3.6 |
+| C2 | RARV reflection cycles | 4-5h | Tests | C.3.7 |
+| C3 | Anti-sycophancy validation rules | 3-4h | Vault | C.3.8 |
+| C4 | Blind code review | 4-5h | Review tool | C.3.9 |
+| C5 | Token budget allocation tracking | 2-3h | None | C.3.10 |
+
+**Pre-Implementation Decision Gate:**
+Before creating specs for C1-C5, answer these questions (from research.md "Questions for Team" section):
+
+1. **Automated testing:** Do you have CI/CD with test automation?
+   - YES → Proceed with C1, C2, C4 specs
+   - NO → Skip C1, C2, C4; proceed with C3, C5 only
+
+2. **Code review process:** Do you have GitHub Actions or similar for code review?
+   - YES → Proceed with C4 spec
+   - NO → Skip C4 spec
+
+3. **Team scale:** Are you solo, team, or enterprise?
+   - Solo → Focus on C3, C5 (personal discipline rules)
+   - Team/Enterprise → Include C1, C2, C4 (team collaboration)
+
+4. **Token constraints:** Is token efficiency critical?
+   - YES → Prioritize C5 spec
+   - NO → Lower priority on C5
+
+5. **Learning culture:** Is capturing lessons important?
+   - YES → Prioritize C1, C2 specs
+   - NO → Lower priority
+
+**Conditional Specs to Create:**
+- If Tests + Team → Create C.3.6, C.3.7, C.3.9
+- If Solo → Create C.3.8, C.3.10
+- Always available → C.3.8, C.3.10
+
+---
+
+### Phase 3: RECOMMENDED (Post-Launch - Future Enhancement)
+
+**Status:** Plan for Q3 2026+ based on real-world usage
+
+Revisit after B.14 is stable and user feedback collected:
+
+| ID | Item | Effort | Depends On | Spec Item |
+|----|------|--------|-----------|-----------|
+| R1 | Cross-feature lesson discovery | TBD | S1, S2 | C.3.11 |
+| R2 | Cross-project vault (organizational scale) | TBD | S1, S2 | C.3.12 |
+| R3 | Watch mode for dev workflow | TBD | B.11 | C.3.13 |
+| R4 | Steering files / project rules | TBD | Tests | C.3.14 |
+
+**Timeline:** Revisit after B.14 integration tests pass. Collect user feedback first.
+
+---
+
+### Phase 4: DO NOT Adopt (Intentional Exclusions)
+
+**Status:** Confirmed out of scope
+
+These patterns are explicitly NOT adopted due to design conflicts:
+
+| ID | Item | Reason |
+|----|------|--------|
+| X1 | Heavy Python dependency | Shell-agnostic design |
+| X2 | Rigid mandatory phase gates | All phases optional (SpecKit precedent) |
+| X3 | Single-source-of-truth specs | Preserve separation (spec/plan/tasks) + human editing |
+| X4 | Vendor lock-in | Decorator pattern keeps framework-agnostic |
+| X5 | Cloud-hosted mandate | Self-hosted + git-backed for control |
+
+**Decision:** No specs needed. Document exclusions in architecture.md rationale.
+
+---
+
+## Implementation Checklist
+
+### Before B.12 Implementation Starts:
+
+- [ ] User answers the 5 team infrastructure questions (Section: COULD Adopt)
+- [ ] Team reviews Decision Matrix and marks Adopt/Skip/Defer for each item
+- [ ] Create GitHub issues for Phase 1 (S1-S5) → integrate into B.12 sprint
+- [ ] Archive this document as reference
+
+### During B.12 Implementation:
+
+- [ ] Integrate S1-S5 adoptions into agent skill specs
+- [ ] Update `/spek.post`, `/spek.context`, setup scripts accordingly
+- [ ] Test Zettelkasten frontmatter generation
+- [ ] Test auto-wikilink insertion
+- [ ] Test 3-layer query rule enforcement
+- [ ] Verify git hooks installed during setup
+
+### After B.13 Integration Testing:
+
+- [ ] Review team answers to infrastructure questions
+- [ ] Create specs for conditional C.3.x items
+- [ ] Prioritize C1-C5 into B.13-B.14 sprints
+- [ ] Implement based on priority + dependencies
+
+### Post-Launch (Q3 2026+):
+
+- [ ] Collect real-world usage patterns
+- [ ] Create specs for R1-R4 based on user feedback
+- [ ] Prioritize RECOMMENDED items
+- [ ] Plan Phase 3 implementation
+
+---
+
 ## Next Steps
 
-1. **Review this document** with team
-2. **Mark decisions** in the Decision Matrix
-3. **Create implementation issues** for each adoption
-4. **Integrate SHOULD adoptions** into B.12 skill development
-5. **Revisit COULD adoptions** after B.13 integration testing
-6. **Archive as team reference** for future phases
+1. **Answer the 5 team infrastructure questions** (in COULD Adopt section)
+2. **Create todo items C.3.1-C.3.10** based on decisions
+3. **Mark items** (Adopt / Skip / Defer) in todo.md
+4. **Begin B.12 implementation** with Phase 1 (S1-S5 specs)
+5. **Archive this document** as implementation reference
