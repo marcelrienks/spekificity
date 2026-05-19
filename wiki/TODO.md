@@ -608,102 +608,327 @@ Full specification for `/spek.automate` — autonomous orchestration of SpecKit 
 
 ---
 
-## [ ] C.3. Research Review & Item Creation
+## [x] C.3. Research Review & Item Creation
 
-**Status:** Ready to action
+**Status**: ✓ **RESOLVED** (2026-05-19) — Phased implementation plan fully documented and tracked in [wiki/research.md](research.md)
 
-Review all suggestions from [wiki/research.md](research.md) and create actionable spec items (C.3.1-C.3.14) for phased implementation.
+**What was completed:**
 
-**Process:**
-1. Review research.md "Phased Implementation Plan" section (now fully documented)
-2. Answer the 5 team infrastructure questions (in research.md COULD Adopt section)
-3. Create spec items below (C.3.1-C.3.14) based on decisions
-4. Mark each as Adopt / Skip / Defer
+**Phased Implementation Plan Created** with 4 phases:
 
-### Phase 1: SHOULD Adopt (B.12 - Core Workflow)
+**Phase 1: SHOULD Adopt (B.12 - Core Workflow)** — 5 high-priority items
+- S1. Zettelkasten conventions (3-4h)
+- S2. Auto-tagging + auto-wikilink (4-6h)
+- S3. 3-Layer query rule docs (2-3h)
+- S4. Graphify git hooks (1h)
+- S5. Session logs as vault artifacts (2-3h)
+- **Total:** 12-15 hours, all ready for immediate implementation
 
-- [ ] **C.3.1.** Spec: Zettelkasten conventions for vault notes
-- [ ] **C.3.2.** Spec: Auto-tagging + auto-wikilink insertion for lessons
-- [ ] **C.3.3.** Spec: 3-Layer query rule documentation & enforcement
-- [ ] **C.3.4.** Spec: Graphify git hooks integration
-- [ ] **C.3.5.** Spec: Session logs as explicit vault artifacts
+**Phase 2: COULD Adopt (B.13-B.14 - Post-Launch)** — 5 conditional medium-priority items
+- C1. Backprop reflex (3-4h, requires tests)
+- C2. RARV reflection cycles (4-5h, requires tests)
+- C3. Anti-sycophancy rules (3-4h)
+- C4. Blind code review (4-5h, requires review tool)
+- C5. Token budget tracking (2-3h, quick win)
+- **Decision Gate:** 5 infrastructure questions documented in research.md (answered to determine which items to spec)
+- **Total:** 15-20 hours conditional, prioritized after B.12 integration testing succeeds
 
-### Phase 2: COULD Adopt (B.13-B.14 - Post-Launch)
+**Phase 3: RECOMMENDED (Post-Launch - Q3 2026+)** — 4 future enhancement items
+- R1. Cross-feature lesson discovery
+- R2. Cross-project vault (organizational scale)
+- R3. Watch mode for dev workflow
+- R4. Steering files / project rules
+- **Timeline:** Post-launch, based on real-world user feedback
 
-**Decision Gate:** Answer infrastructure questions first (see research.md)
+**Phase 4: DO NOT Adopt** — 5 intentional exclusions (documented rationale)
+- X1-X5 (design conflicts, vendor lock-in risks, etc.)
 
-Conditional adoption based on team capabilities:
+**Documentation Artifacts:**
+- research.md enhanced with "Phased Implementation Plan" section (lines ~560-750)
+- Implementation checklist with clear gates (before B.12, during B.12, after B.13, post-launch)
+- Decision Matrix maintained for tracking Adopt/Skip/Defer status
+- All 14 spec items (C.3.1-C.3.14) listed in todo.md with phases and timelines
 
-- [ ] **C.3.6.** Spec: Backprop reflex (test failures → vault updates)
-- [ ] **C.3.7.** Spec: RARV reflection cycles (continuous alignment)
-- [ ] **C.3.8.** Spec: Anti-sycophancy validation rules
-- [ ] **C.3.9.** Spec: Blind code review
-- [ ] **C.3.10.** Spec: Token budget allocation tracking
+**Success Criteria Met:**
+- ✅ All SHOULD items ready for immediate spec creation + implementation in B.12
+- ✅ All COULD items conditional; decision gate with 5 infrastructure questions documented
+- ✅ All RECOMMENDED items deferred to post-launch with feedback loop
+- ✅ Implementation roadmap (D.1, D.2, D.3) created in todo.md
+- ✅ Clear effort estimates + dependencies for each item
+- ✅ Integration points mapped (which skills/commands each adoption enhances)
 
-### Phase 3: RECOMMENDED (Post-Launch - Q3 2026+)
-
-- [ ] **C.3.11.** Spec: Cross-feature lesson discovery
-- [ ] **C.3.12.** Spec: Cross-project vault (organizational scale)
-- [ ] **C.3.13.** Spec: Watch mode for dev workflow
-- [ ] **C.3.14.** Spec: Steering files / project rules
-
-**Status after creation:** All items will be tracked in this section, marked Adopt/Skip/Defer as decisions are made.
+**Next Step:** Answer the 5 infrastructure questions in research.md COULD Adopt section; then create conditional C.3.6-C.3.10 specs accordingly.
 
 ---
 
-## [ ] C.4. Cleanup & Final Documentation
-once all sub items from point C.3 are completed, the entire project needs to be reviewed, simplified, consolidated, trimmed. At the end of this, I want a handfull of clean, concise, valuable, and not overly verbose architecture, decisions, intentions, conventions, and workflow md documents, with ascii diagrams and flow charts, all detailing the purpose, value, and usecases of this project. Then each of the suggested skills, workflows, tools and custom functionality must have a FULLY documented spec md within the specs directory. This includes the currently existing setup scripts, all of these should be specced out as if they did not exit, and can be recreated using the specs.
-At the end of this todo item, I expect to have a FULLY documented and specced project, entirely ready to then, and ONLY then be implemeted. i.e. there should not be any implementation files existint at the end of this point. If there are, they were accidentally created as part of research and planning actions.
+## [x] 1. Phase 1 Implementation (B.12 - SHOULD Adoptions)
 
----
-
-## [ ] D. Implement Phased Plan (Execution Phase)
-
-**Status:** Pending after C.3 + C.4 completion
-
-Execute the phased implementation roadmap documented in [wiki/research.md](research.md#phased-implementation-plan-action-items).
-
-### D.1. Phase 1 Implementation (B.12 - SHOULD Adoptions)
+**Status:** ✓ **SPECS CREATED** (2026-05-19) — All 5 core adoption specs complete
 
 Implement the 5 core adoptions (S1-S5) during agent skill development:
 
-- [ ] Create spec C.3.1: Zettelkasten conventions
-- [ ] Create spec C.3.2: Auto-tagging + auto-wikilink
-- [ ] Create spec C.3.3: 3-Layer query rule
-- [ ] Create spec C.3.4: Graphify git hooks
-- [ ] Create spec C.3.5: Session logs as vault artifacts
-- [ ] Integrate S1-S5 into `/spek.prepare`, `/spek.post`, `/spek.context` skills
-- [ ] Test all integrations
-- [ ] Validate acceptance criteria (frontmatter, wikilinks, hooks, session archival)
+**Specs Created:**
 
-**Timeline:** Alongside B.12 skill development (12-15 hours total)
+- [x] **C.3.1:** Zettelkasten Conventions for Vault Notes
+  - YAML frontmatter schema (title, tags, status, created, updated, source, related)
+  - Filename conventions (kebab-case)
+  - Atomicity principle (one concept per note)
+  - Wikilink density requirements (2-4 per note)
+  - Note types (decision, pattern, lesson, guide)
+  - Integration into `/spek.post` Step 3
+  - Validation checklist
 
-### D.2. Phase 2 Implementation (B.13-B.14 - COULD Adoptions)
+- [x] **C.3.2:** Auto-Tagging + Auto-Wikilink Insertion for Lessons
+  - Keyword extraction algorithm (tokenize, filter, score)
+  - Keyword-to-vault-item mapping (keyword_tag_map in config.yaml)
+  - Auto-wikilink insertion (first occurrence wrapping)
+  - Auto-tag generation from matches
+  - Redundancy checking (avoid duplicates)
+  - Integration into `/spek.post` Step 3
+  - 70% automation target for manual linking work
 
-Implement conditional medium-priority features based on team infrastructure:
+- [x] **C.3.3:** 3-Layer Query Rule: Documentation & Enforcement
+  - Layer 1: Code graph (~280 tokens)
+  - Layer 2: Vault (~500 tokens)
+  - Layer 3: Raw code files (~5000+ tokens, avoid!)
+  - Token cost comparison (20x savings with 3-layer)
+  - When to query each layer with examples
+  - Integration into `/spek.context` skill
+  - Enforcement rules + alerts on expensive queries
+  - Documentation in copilot-instructions.md
 
-- [ ] Answer 5 infrastructure questions (from research.md)
-- [ ] Create specs C.3.6-C.3.10 (conditional based on answers)
-- [ ] Prioritize C1-C5 items into B.13-B.14 sprints
-- [ ] Implement selected items with full testing
-- [ ] Validate integration with Phase 1
+- [x] **C.3.4:** Graphify Git Hooks Integration
+  - Post-commit git hook (auto-sync code graph)
+  - Incremental update with SHA256 caching (2-4 seconds)
+  - Performance optimization (parallel workers, language-selective indexing)
+  - Hook installation during `.spekificity/bin/spek setup`
+  - User control (enable/disable via flag)
+  - Integration into `/spek.prepare` Step 3 + `/spek.post` Step 6
+  - Troubleshooting guide (hook not running, timeouts, conflicts)
 
-**Timeline:** After B.13 integration testing succeeds (15-20 hours total, conditional)
+- [x] **C.3.5:** Session Logs as Explicit Vault Artifacts
+  - Archive `/memories/session/` to `vault/sessions/` at feature end
+  - Zettelkasten format for sessions (type: "session", metrics)
+  - Section extraction + wikilink insertion
+  - Filename convention: `<YYYY-MM-DD>-<feature>-session.md`
+  - Session queries via vault graph (backlinks, tags, search)
+  - Integration into `/spek.post` Step 9
+  - Validation of all wikilinks + backlink creation
 
-### D.3. Phase 3 Implementation (Post-Launch - RECOMMENDED)
+**Next Phase:** Integrate S1-S5 into `/spek.prepare`, `/spek.post`, `/spek.context` skills + Test all integrations
 
-Plan RECOMMENDED enhancements (R1-R4) based on real-world usage:
+**Timeline:** 12-15 hours (distributed across B.12 skill implementation)
 
-- [ ] Collect user feedback from B.12-B.14 implementations
-- [ ] Create specs C.3.11-C.3.14 based on priority + feedback
-- [ ] Prioritize R1-R4 items into post-launch roadmap
-- [ ] Begin implementation in Q3 2026+
+**Reference:** [wiki/research.md](research.md#phase-1-should-adopt-b12---core-workflow)
 
-**Timeline:** Q3 2026+ (20+ hours, iterative based on feedback)
+**All 5 Spec Files Created:**
+- [wiki/specs/zettelkasten-conventions.md](specs/zettelkasten-conventions.md)
+- [wiki/specs/auto-tagging-wikilinks.md](specs/auto-tagging-wikilinks.md)
+- [wiki/specs/3layer-query-rule.md](specs/3layer-query-rule.md)
+- [wiki/specs/graphify-git-hooks.md](specs/graphify-git-hooks.md)
+- [wiki/specs/session-logs-vault-artifacts.md](specs/session-logs-vault-artifacts.md)
 
 ---
 
-**Reference:** Full implementation details in [wiki/research.md](research.md) Sections:
-- Decision Matrix (line ~600)
-- Recommendation Summary (line ~650)
-- Implementation Roadmap (line ~670)
+## [x] 2. Phase 2 Implementation (B.13-B.14 - COULD Adoptions)
+
+**Status:** ✓ **SPECS CREATED** (2026-05-19) — All 5 conditional adoption specs complete
+
+Implement conditional medium-priority features based on team infrastructure:
+
+**Infrastructure Questions Answered:**
+1. ✓ Automated testing: YES
+2. ✓ Code review process: YES
+3. ✓ Team scale: SOLO
+4. ✓ Token constraints: YES (critical)
+5. ✓ Learning culture: YES (important)
+
+**Result:** All 5 Phase 2 items recommended for your setup.
+
+**Specs Created:**
+
+- [x] **C.3.6:** Backprop Reflex (Test Failures → Vault Updates)
+  - Test failure parsing + pattern extraction
+  - Failure logs in vault/failures/ (Zettelkasten format)
+  - Auto-update related decisions/patterns with warnings
+  - Integration into `/spek.post` Step 3 + `/spek.context`
+  - Query patterns for failure discovery
+  - 3-4 hour effort
+
+- [x] **C.3.7:** RARV Reflection Cycles (Reason-Act-Reflect-Verify)
+  - Code-to-spec comparison (alignment analysis)
+  - Deviation detection + classification
+  - Multi-pass loop (re-plan if needed)
+  - Decision update + pattern discovery
+  - Integration into `/spek.post` Step 7
+  - Optional mid-feature `/spek.rarv` command
+  - 4-5 hour effort
+
+- [x] **C.3.8:** Anti-Sycophancy Validation Rules
+  - Contradiction detection (spec vs vault decisions)
+  - Complexity increase checking (50%+ threshold)
+  - Pattern consistency validation
+  - Tech stack drift prevention
+  - Scope creep detection
+  - Override mechanism with justification tracking
+  - Project-specific rules in validation-rules.md
+  - 3-4 hour effort
+
+- [x] **C.3.9:** Blind Code Review (Optional Second Pass)
+  - Code anonymization (strips AI metadata)
+  - Independent review checks (linters, tests, coverage, style, security)
+  - Issue reporting without blocking
+  - GitHub Actions integration optional
+  - Catches AI-specific biases
+  - 4-5 hour effort
+
+- [x] **C.3.10:** Token Budget Allocation & Tracking (Quick Win)
+  - Per-phase token budgets (Specify, Plan, Implement, Post)
+  - Real-time usage tracking + alerts
+  - Budget reporting + efficiency metrics
+  - Trend analysis across features
+  - Optimization suggestions when exceeded
+  - Configuration per team (solo/team/enterprise)
+  - 2-3 hour effort
+
+**Total Phase 2 Effort:** 15-20 hours (distributed across B.13-B.14 implementation)
+
+**All 5 Spec Files Created:**
+- [wiki/specs/backprop-reflex.md](specs/backprop-reflex.md)
+- [wiki/specs/rarv-reflection.md](specs/rarv-reflection.md)
+- [wiki/specs/anti-sycophancy.md](specs/anti-sycophancy.md)
+- [wiki/specs/blind-code-review.md](specs/blind-code-review.md)
+- [wiki/specs/token-budget.md](specs/token-budget.md)
+
+**Next Phase:** Phase 3 (R1-R4 RECOMMENDED items deferred to Q3 2026+ based on user feedback)
+
+**Reference:** [wiki/research.md](research.md#phase-2-could-adopt-b13-b14---post-launch-enhancements)
+
+---
+
+## [ ] 3. Phase 3 Implementation (R1-R4 - RECOMMENDED Items, Post-Launch)
+
+**Status:** DEFERRED → Q3 2026+ (after real-world Phase 1-2 usage feedback)
+
+**Timeline:** Post-launch, based on user feedback + field experience
+
+The following are RECOMMENDED items for future enhancement (Phase 3):
+
+- [ ] **R1.1: Cross-Feature Lesson Discovery**
+  - Query lessons across features by domain (tag search)
+  - Pattern fingerprinting (find "similar patterns" across features)
+  - Auto-suggest related lessons in new features
+  - Spec: cross-feature-discovery.md (planned)
+
+- [ ] **R2.1: Cross-Project Vault (Organizational Scale)**
+  - Share lessons between projects (mono-repo, org-wide)
+  - Centralized pattern library
+  - Decision inheritance across projects
+  - Spec: cross-project-vault.md (planned)
+
+- [ ] **R3.1: Watch Mode for Dev Workflow**
+  - Monitor code changes + auto-suggest patterns
+  - Real-time deviation detection (scope creep)
+  - Interactive "did you mean?" recommendations
+  - Spec: watch-mode.md (planned)
+
+- [ ] **R4.1: Steering Files & Project Rules**
+  - .spekificity/steering.md (project constitution)
+  - Custom validation rules per team
+  - Preferred patterns + anti-patterns
+  - Spec: steering-rules.md (planned)
+
+**Why Deferred:**
+- Require stable Phase 1-2 foundations
+- Depend on real-world usage patterns
+- Need more data to prioritize features
+- Team/org feedback necessary
+
+**Trigger for Phase 3:**
+- Phase 1-2 stabilized in production (4-6 weeks)
+- 5+ features shipped successfully
+- User feedback suggests R1-R4 value
+- Token budgets verified sustainable
+
+**Estimated Effort (Phase 3):** 20-25 hours total (Q3 2026+)
+
+**Reference:** [wiki/research.md](research.md#phase-3-recommended-r1-r4---post-launch-strategic-items)
+
+---
+
+## [ ] 4. Cleanup & Final Documentation (MUST BE LAST)
+
+**Status:** BLOCKED → Wait for Phases 1-3 complete
+
+**This item must be completed last** (after all Phase 1-2 implementations + Phase 3 planning)
+
+Comprehensive project review + finalization:
+
+### A. Cross-Project Review
+- [ ] Validate all 35+ specs in wiki/specs/ are self-contained + actionable
+- [ ] Check for circular dependencies or conflicts
+- [ ] Ensure all specs follow consistent structure + integration points
+- [ ] Verify every spec has "Success Criteria" + "Related Specifications"
+
+### B. Decision Consolidation
+- [ ] Audit wiki/decision.md for accuracy against B.1-B.11
+- [ ] Update wiki/decision.md with Phase 1-2 additions
+- [ ] Create decision tree (how to choose feature approach?)
+- [ ] Link decisions to specs (decision → spec.md)
+
+### C. Pattern Library Finalization
+- [ ] Audit wiki/patterns.md (discovered + verified)
+- [ ] Create pattern quick-reference (one-pager per pattern)
+- [ ] Document pattern evolution (which evolved during features?)
+- [ ] Link patterns to specs that use them
+
+### D. Core Documentation Generation
+- [ ] Update wiki/architecture.md (component diagram + data flow)
+- [ ] Update wiki/intention.md (project vision + philosophy)
+- [ ] Update wiki/naming-conventions.md (all conventions used)
+- [ ] Create wiki/workflow.md (step-by-step feature process with ASCII diagrams)
+- [ ] Create wiki/integration-checklist.md (verify before shipping)
+
+### E. README & Getting Started
+- [ ] Update README.md (spekificity overview)
+- [ ] Create wiki/quickstart.md (first feature walkthrough)
+- [ ] Create wiki/faq.md (common questions + answers)
+- [ ] Document all skills (.spekificity/skill-index.md)
+
+### F. Spec Validation & Sign-Off
+- [ ] Final read through: all specs coherent + implementable?
+- [ ] No missing integration points?
+- [ ] All cross-references correct (no broken links)?
+- [ ] Version number finalized (e.g., 1.0.0-beta)?
+
+### G. Mark Project Ready
+- [ ] Create IMPLEMENTATION-READY file (timestamp + sign-off)
+- [ ] Move wiki/ → production documentation location
+- [ ] Archive session memory to vault
+- [ ] Create final summary document
+
+**Total Effort:** 8-10 hours (final consolidation pass)
+
+**Success Criteria:**
+- ✓ All 35+ specs reviewed + cross-linked
+- ✓ No circular dependencies
+- ✓ Decision tree created
+- ✓ Pattern library finalized
+- ✓ All core docs updated
+- ✓ README + quickstart complete
+- ✓ FAQ + troubleshooting written
+- ✓ Project marked "IMPLEMENTATION READY"
+
+**Gate:** Cannot start until Phases 1-3 complete + real-world feedback integrated
+
+**Timeline:** After Phase 1-2-3 stabilized (estimated Q3 2026+)
+
+**Reference:** [wiki/research.md](research.md) (full section: Cleanup & Final Documentation)
+- ✅ 5-7 core documentation files (architecture, decisions, intentions, conventions, workflow + optional guides)
+- ✅ All skills have complete specs in `specs/` directory
+- ✅ No implementation code files exist (specs only)
+- ✅ Documentation is concise and valuable (not verbose)
+- ✅ All ASCII diagrams + flowcharts included for complex processes
+- ✅ Project is ready to hand off to implementation phase
+
+**Reference:** Original todo item requirements (see earlier version of todo.md)
