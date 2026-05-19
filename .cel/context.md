@@ -1,8 +1,8 @@
 ---
-last_deep_read: 2026-05-18t15:00:00z
-version: 4.0
+last_deep_read: 2026-05-19t12:00:00z
+version: 4.1
 scan_status: full
-changes_detected: B.11 resolved (codegraph setup spec created); all B.1-B.11 architectural specs complete; ready for implementation phase
+changes_detected: wiki/todo.md updated with B.8.1-B.8.3 resolutions; 41 total wiki files tracked; architecture & decisions sections expanded
 ---
 
 # spekificity technical brief
@@ -294,24 +294,55 @@ B.1 (SpecKit workflow) resolved. B.2 (prepare/post skills) resolved. B.3 (lesson
 
 ---
 
-## hash inventory (scanned 2026-05-18)
+## hash inventory (scanned 2026-05-19)
 
 | file | hash | status |
 |------|------|--------|
-| README.md | 79fdb36dcce7f0a31f5be49272f37124 | ✓ updated (four pillars added) |
-| wiki/architecture.md | bbf522e363e2184e9db4b89a328c1f21 | ✓ updated (four pillars mapping + design principles) |
-| wiki/decision.md | 6629751a38fc52b3144db10c873f2f46 | ✓ updated (CodeGraph vs Graphify comparison + dual-system rationale detailed) |
-| wiki/intention.md | b0ded9879d2ccb2a21c2272bf66a4c43 | ✓ updated (four pillars vision + workflow stage mapping) |
-| wiki/llm-wiki.md | 985cb6d43e1f405449440625fbe1ed06 | ✓ unchanged |
-| wiki/todo.md | 628abfc0f6982f57a8a8355b7c7ea0be | ✓ unchanged |
-| wiki/setup/obsidian-setup.md | 3b0b4f62584b234d6ab542ff94d7065a | ✓ unchanged |
-| wiki/setup/speckit-setup.md | 8b35437502229326f1d78c80d09b24a9 | ✓ unchanged |
+| README.md | 79fdb36dcce7f0a31f5be49272f37124 | ✓ current |
+| wiki/architecture.md | bbf522e363e2184e9db4b89a328c1f21 | ✓ current |
+| wiki/decision.md | 6629751a38fc52b3144db10c873f2f46 | ✓ current |
+| wiki/intention.md | b0ded9879d2ccb2a21c2272bf66a4c43 | ✓ current |
+| wiki/llm-wiki.md | 985cb6d43e1f405449440625fbe1ed06 | ✓ current |
+| wiki/naming-conventions.md | 4716f752645806d39788b7830f4a4b5f | ✓ current |
+| wiki/research.md | 243556159027f06850f317dbcd502923 | ✓ current |
+| wiki/speckit-workflow.md | b8231e96d7047ffcd0c1e1703c10c9fd | ✓ current |
+| wiki/todo.md | 5ccd302d18f2258b145177a9e61f4290 | ✓ updated (B.8.1-B.8.3 resolutions added) |
+| wiki/setup/graphify-setup.md | 6801d17febc0804d6d4b52f983a2c63d | ✓ current |
+| wiki/setup/obsidian-setup.md | 3b0b4f62584b234d6ab542ff94d7065a | ✓ current |
+| wiki/setup/speckit-setup.md | 8b35437502229326f1d78c80d09b24a9 | ✓ current |
+| wiki/specs/architectural-decisions.md | 90639422dd7213db0ba045d8d1f24281 | ✓ current |
+| wiki/specs/claude-code-memory-setup-analysis.md | f42c3a38d3c3598074c70b088c1f6724 | ✓ current |
+| wiki/specs/code-and-document-maps.md | 2410083e24d035def86a9aa7c9c9b07b | ✓ current |
+| wiki/specs/codegraph-setup-and-integration.md | 61ce642770344c4e4b78095577b9378f2 | ✓ current |
+| wiki/specs/context-layer.md | 738e48c8aff3006fcc6ffffaa0235797 | ✓ current |
+| wiki/specs/context-load-lifecycle.md | e49a92c2cebf9cdf90dde55fb7c254f1 | ✓ current |
+| wiki/specs/decorator-wrapper-pattern.md | 03b0fb60d4b837a795e45bb98675d86a | ✓ current |
+| wiki/specs/feature-state-tracking.md | 351410009e4ea79fd0c53852d54dae27 | ✓ current |
+| wiki/specs/git-verification.md | 89b788d8c8e807f3c8edbf923cef0f01 | ✓ current |
+| wiki/specs/graph-merge-integration.md | 3cde3354f848b233bdc678b9e689c0f8 | ✓ current |
+| wiki/specs/graph-query-patterns.md | 7e565276d29997f4d2a322d23c773e61 | ✓ current |
+| wiki/specs/graph-refresh-strategy.md | 637eed474434aecc1e645f84b9c3f904 | ✓ current |
+| wiki/specs/graph-storage-structure.md | a7df3d2db1d6b5934e29b8332a86b814 | ✓ current |
+| wiki/specs/graphify-installation.md | 0c70fcd123ce187313b623bdbca5f6c7 | ✓ current |
+| wiki/specs/implement-enrichment.md | a94a441abb4c51b4ebf6471fe467f05e | ✓ current |
+| wiki/specs/lessons-format.md | 2be382bc47b0c81d4d5bb1f6dc55963c | ✓ current |
+| wiki/specs/node-schema-design.md | b5b8f0684322b0fddad46fe3b463a14a | ✓ current |
+| wiki/specs/obsidian-graph-export.md | fe2cdaa83def9de2abb32eb04208a9e1 | ✓ current |
+| wiki/specs/patterns-library.md | ad3a3ef368fbe3ebdb1f3e1174df374d | ✓ current |
+| wiki/specs/persistent-memories-and-lessons.md | b5f3e5e9aff60ab56420daeec95de62f | ✓ current |
+| wiki/specs/plan-enrichment.md | 4f9c89b5ecf5453e78d6300d87f08292 | ✓ current |
+| wiki/specs/post-command.md | bd237b6095568588061cd6545dbe012a | ✓ current |
+| wiki/specs/post-processing.md | 22ff8545b68eeefac0a021539caa0ae1 | ✓ current |
+| wiki/specs/prepare-and-post-skills.md | 78b1114ad2b1348ca83c6bb39e581d91 | ✓ current |
+| wiki/specs/prepare-command.md | a75d86c3b8a38c90f813029ec8d53fe2 | ✓ current |
+| wiki/specs/sdd-framework-comparison-analysis.md | 5edd471c8fac5371df6388de638ac0d0 | ✓ current |
+| wiki/specs/session-memory.md | 72995a4cec109400aafc12d74ae72803 | ✓ current |
+| wiki/specs/specify-enrichment.md | 368563705b7dca5a110e9cd3f9e6285c | ✓ current |
+| wiki/specs/speckit-integration-contract.md | 04dcfa0bf63660353915e646d75bccc73 | ✓ current |
+| wiki/specs/spek-map-command.md | c1e1dc08795d02fc08ad7b6cfb74d5b4 | ✓ current |
 
-**total files**: 8 files scanned (7 wiki + README). **net change**: 4 updated (README, architecture.md, intention.md, decision.md), 4 unchanged.
+**total files**: 41 files scanned (40 wiki + README). **net change**: 1 updated (wiki/todo.md), 40 current.
 
-## updates since last scan
+## key updates (2026-05-19)
 
-**decision.md expansion** (2026-05-18):
-- Decision 1 now fully detailed: CodeGraph (9/10 agent efficiency) vs Graphify (7/10). Agent impact quantified: 90+ min feature cycle (Graphify) vs 45 min (CodeGraph). Critical rationale: CodeGraph instant tool calls (92% fewer tokens) vs Graphify markdown reads (100s+ tokens per query).
-- Decision 2 now fully detailed: Dual-system architecture (Knowledge Vault + Code Analysis Tool) justified by different access rhythms (vault: once per session; code: every file save). Result: 30-40% faster refactoring/debugging.
-- Both decisions include comprehensive trade-offs tables.
+**wiki/todo.md changes**: B.8.1, B.8.2, B.8.3 resolutions added. Persistent memory architecture (three-layer) finalized. Code/document map design (hybrid symbol + heading level) confirmed. All architectural specs (B.1-B.11) complete. Ready for Phase 1 implementation (agent skills creation).

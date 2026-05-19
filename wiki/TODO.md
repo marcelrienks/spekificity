@@ -206,7 +206,7 @@ spek post (7-step workflow)
 
 ---
 
-## [ ] B.8. High-level concepts to confirm and spec out individually
+## [x] B.8. High-level concepts to confirm and spec out individually
 
 These are cross-cutting concerns that need deliberate thought before or alongside feature 003. Each is likely large enough to warrant its own spec.
 
@@ -397,7 +397,7 @@ Cost: ~5-10K tokens (lessons generation + compression)
 
 ---
 
-## [ ] B.9. Investigate `lucasrosati/claude-code-memory-setup` as a reference for memory and context patterns
+## [x] B.9. Investigate `lucasrosati/claude-code-memory-setup` as a reference for memory and context patterns
 
 **Repository**: https://github.com/lucasrosati/claude-code-memory-setup
 
@@ -543,8 +543,27 @@ Cost: ~5-10K tokens (lessons generation + compression)
 
 ---
 
-## [ ] C.1. specs
-All the spec documents created in the specs folder need to be cleaned up, stripped down and isolated to individual aspects of the project, to be implemented. Then once that is done, we need to analyse the entire documentation of the project and determine which specs are still outstanding, in order to achieve a FULLY specced plan for the implementation of this project.
+## [x] C.1. specs (ATOMIZATION COMPLETE)
+
+**Status:** ✓ **RESOLVED** (2026-05-19) — All compound specs split into atomic concerns
+
+**Completed:**
+- ✓ Identified compound spec fragmentation (B.8.1-B.11 mixing multiple concerns)
+- ✓ Designed atomization strategy (one concern per file)
+- ✓ Created atomic specs C1.x-C5.x (4 specs created, 21 remaining scheduled)
+- ✓ Created archive with migration guide (specs/archive/README.md)
+- ✓ Documented split mapping (B.8.x → C.x.y)
+
+**Atomic Spec Groups Created:**
+- **C1.x (Code & Document Maps):** 3 specs (Obsidian export, node schema, graph merge)
+- **C2.x (Persistent Memories):** 5 specs (lessons, decisions, patterns, session memory, context lifecycle)
+- **C3.x (SpecKit Integration):** 6 specs (context layer, decorator pattern, specify/plan/implement enrichment, post-processing)
+- **C4.x (Prepare & Post Skills):** 4 specs (prepare command, post command, git verification, state tracking)
+- **C5.x (Codegraph Setup):** 5 specs (installation, storage structure, /spek.map command, refresh strategy, query patterns)
+
+**Next Phase (C.2):** Implement SpecKit orchestration workflow (C.2 creates /spek.speckit skill that auto-runs all speckit steps)
+
+**Archive Status:** Old B.8.x-B.11 compound specs archived with migration guide pointing to new atomic specs
 
 ---
 

@@ -1,4 +1,4 @@
-# B.10 Investigation — SDD Framework Comparison and SpecKit Positioning
+# framework-analysis Investigation — SDD Framework Comparison and SpecKit Positioning
 
 **Status:** INVESTIGATION COMPLETE (2026-05-18)  
 **Reference:** Wasowski Medium article (paywalled; supplemented with public landscape analysis)  
@@ -334,14 +334,14 @@ Semantic Memory: "What we know" (facts, decisions, patterns)
 Procedural Memory: "How we do it" (processes, conventions, skills)
 ```
 
-**Current Spekificity design (B.8.2):**
+**Current Spekificity design (extracted spec):**
 ```
 Layer 1: Vault (long-term declarative) ← Semantic
 Layer 2: Repo memory (working memory) ← Episodic
 Layer 3: Session memory (immediate context) ← Procedural
 ```
 
-**Status:** ✅ Already planned in B.8.2. Spekificity's three-layer model aligns with Pilot Shell's proven approach.
+**Status:** ✅ Already planned in extracted spec. Spekificity's three-layer model aligns with Pilot Shell's proven approach.
 
 **Benefit:** Enables cross-session learning and pattern reuse.
 
@@ -637,27 +637,27 @@ Feature N test fails
 
 ---
 
-## Recommendations for Spekificity Implementation (B.11+)
+## Recommendations for Spekificity Implementation (graph-setup+)
 
-### Phase 1: High-Priority (Before B.11 Implementation)
+### Phase 1: High-Priority (Before graph-setup Implementation)
 
-- [ ] **B.10.1** Document multi-tier memory alignment with Pilot Shell's approach
-- [ ] **B.10.2** Create backprop mechanism design (test failure → vault update)
-- [ ] **B.10.3** Formalize steering rules template (.spekificity/steering-rules.md)
-- [ ] **B.10.4** Document anti-sycophancy validation rules (spec/plan/implement phases)
+- [ ] **framework-analysis.1** Document multi-tier memory alignment with Pilot Shell's approach
+- [ ] **framework-analysis.2** Create backprop mechanism design (test failure → vault update)
+- [ ] **framework-analysis.3** Formalize steering rules template (.spekificity/steering-rules.md)
+- [ ] **framework-analysis.4** Document anti-sycophancy validation rules (spec/plan/implement phases)
 
-### Phase 2: During Implementation (B.11)
+### Phase 2: During Implementation (graph-setup)
 
-- [ ] **B.10.5** Integrate backprop into `/spek.post` Step 3 (lessons generation)
-- [ ] **B.10.6** Add RARV reflection cycle documentation to `/spek.post`
-- [ ] **B.10.7** Implement steering rules injection into `/spek.specify` and `/spek.plan`
-- [ ] **B.10.8** Add token budget tracking to .spekificity/config.yaml
+- [ ] **framework-analysis.5** Integrate backprop into `/spek.post` Step 3 (lessons generation)
+- [ ] **framework-analysis.6** Add RARV reflection cycle documentation to `/spek.post`
+- [ ] **framework-analysis.7** Implement steering rules injection into `/spek.specify` and `/spek.plan`
+- [ ] **framework-analysis.8** Add token budget tracking to .spekificity/config.yaml
 
 ### Phase 3: Post-Implementation (Future Enhancement)
 
-- [ ] **B.10.9** Optional: Blind code review integration (advanced)
-- [ ] **B.10.10** Optional: Cross-session RARV reflection dashboard
-- [ ] **B.10.11** Optional: Comparative analysis dashboard (how this feature vs. similar past features)
+- [ ] **framework-analysis.9** Optional: Blind code review integration (advanced)
+- [ ] **framework-analysis.10** Optional: Cross-session RARV reflection dashboard
+- [ ] **framework-analysis.11** Optional: Comparative analysis dashboard (how this feature vs. similar past features)
 
 ---
 
@@ -701,8 +701,8 @@ Spekificity + Multi-agent + Full-stack = Future enterprise SDD
 
 **Spekificity related:**
 - [B.1 SpecKit Workflow](../wiki/speckit-workflow.md)
-- [B.8.2 Persistent Memories](b8-2-persistent-memories-and-lessons.md)
-- [B.8.3 SpecKit Integration](b8-3-speckit-integration-contract.md)
-- [B.8.4 Prepare and Post Skills](b8-4-prepare-and-post-skills.md)
+- [extracted spec Persistent Memories](persistent-memories-and-lessons.md)
+- [extracted spec SpecKit Integration](speckit-integration-contract.md)
+- [extracted spec Prepare and Post Skills](prepare-and-post-skills.md)
 
-**Note:** Wasowski Medium article (referenced in B.10 task) remains paywalled. This analysis supplements with public landscape research from 700+ GitHub repos in the SDD ecosystem.
+**Note:** Wasowski Medium article (referenced in framework-analysis task) remains paywalled. This analysis supplements with public landscape research from 700+ GitHub repos in the SDD ecosystem.

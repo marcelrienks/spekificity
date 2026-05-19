@@ -1,4 +1,4 @@
-# Spec: Persistent Memories and Lessons (B.8.2)
+# Spec: Persistent Memories and Lessons (extracted spec)
 
 ## Overview
 
@@ -441,7 +441,7 @@ Description: [pattern details]
 **Spekificity usage:**
 - `/memories/session/context-loaded.md` — What was loaded at session start
 - `/memories/session/current-feature.md` — Current feature progress
-- `/memories/session/b8-2-resolution.md` — Spec resolution notes (like this one)
+- `/memories/session/resolution.md` — Spec resolution notes (like this one)
 
 ### Repo Memory (`/memories/repo/`)
 
@@ -542,7 +542,7 @@ cat /memories/session/current-feature.md | grep -A5 "Current Status"
 ## References
 
 - **B.3:** Lessons learnt format (vault/lessons/ template)
-- **B.8.1:** Code and document maps (vault/graph/, Obsidian export)
+- **extracted spec:** Code and document maps (vault/graph/, Obsidian export)
 - **B.2/B.4:** `/spek.prepare` and `/spek.post` skills (write triggers)
 - **Copilot docs:** /memories/ scope definitions and retention policies
 - **Caveman:** Compression format for context summaries

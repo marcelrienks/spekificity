@@ -1,4 +1,4 @@
-# B.9 Investigation — claude-code-memory-setup Reference Analysis
+# memory-setup Investigation — claude-code-memory-setup Reference Analysis
 
 **Status:** INVESTIGATION COMPLETE (2026-05-18)  
 **Repository:** https://github.com/lucasrosati/claude-code-memory-setup  
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-The **claude-code-memory-setup** repository by Lucas Rosati demonstrates a proven, production-tested two-system memory architecture: **Obsidian (declarative) + Graphify (structural)**. The design aligns closely with spekificity's planned memory model (B.8.2) while introducing several patterns worth adopting:
+The **claude-code-memory-setup** repository by Lucas Rosati demonstrates a proven, production-tested two-system memory architecture: **Obsidian (declarative) + Graphify (structural)**. The design aligns closely with spekificity's planned memory model (extracted spec) while introducing several patterns worth adopting:
 
 1. **Session continuity commands** (`/resume`, `/save`) — Direct implementations of spekificity's `/spek.prepare` and `/spek.post`
 2. **Zettelkasten conventions** — Atomic notes, dense linking, standardized frontmatter → applicable to spekificity lessons/decisions/patterns
@@ -50,11 +50,11 @@ The **claude-code-memory-setup** repository by Lucas Rosati demonstrates a prove
 ```
 ~/vault/                          # SINGLE vault for all user projects
 ├── CLAUDE.md                     # Global instructions (like spekificity's README)
-├── permanent/                    # Consolidated, atomic notes (like B.8.2 vault/)
+├── permanent/                    # Consolidated, atomic notes (like extracted spec vault/)
 ├── inbox/                        # Raw capture (fleeting ideas)
 ├── fleeting/                     # Quick notes (ephemeral)
 ├── templates/                    # Note templates
-├── logs/                         # Session logs (like B.8.4 session memory)
+├── logs/                         # Session logs (like extracted spec session memory)
 ├── references/                   # Reference material
 ├── my-project/                   # Project MOC (Map of Contents)
 │   ├── architecture/             # Decisions, conventions
@@ -123,7 +123,7 @@ Persistent memory across sessions.
 4. Commit + push if in repo
 ```
 
-**Spekificity analogue:** This mirrors spekificity's `.spekificity/guides/` and `copilot-instructions.md`. The `/resume` and `/save` commands are direct implementations of B.8.4's `/spek.prepare` and `/spek.post`.
+**Spekificity analogue:** This mirrors spekificity's `.spekificity/guides/` and `copilot-instructions.md`. The `/resume` and `/save` commands are direct implementations of extracted spec's `/spek.prepare` and `/spek.post`.
 
 ---
 
@@ -179,7 +179,7 @@ For each exported .md file:
 
 ### Spekificity Adaptation
 
-**How B.8.4 `/spek.post` can adopt this pattern:**
+**How extracted spec `/spek.post` can adopt this pattern:**
 
 Step 3 (Generate Lessons Document) already involves extracting structured data from artifacts. The chat import pipeline's **auto-tagging + wikilink insertion** could enhance lessons generation:
 
@@ -260,7 +260,7 @@ Priority 3: Only read raw code files when editing
 
 ### Spekificity Alignment
 
-**Strong alignment with B.8.1 (Code and Document Maps):**
+**Strong alignment with extracted spec (Code and Document Maps):**
 
 Spekificity's planned design:
 ```
@@ -278,7 +278,7 @@ Custom merge: Combine in Obsidian graph view
 
 **Difference:** Spekificity merges into a unified JSONL file for agent queries; claude-code-memory-setup uses Obsidian's native graph view for human browsing + manual agent queries. Spekificity's approach is more agent-native.
 
-**Adoption:** Spekificity can use graphify's `--update` flag and git hooks directly (already planned in B.8.4 `/spek.post` Step 6). The watch mode is useful for incremental dev workflow.
+**Adoption:** Spekificity can use graphify's `--update` flag and git hooks directly (already planned in extracted spec `/spek.post` Step 6). The watch mode is useful for incremental dev workflow.
 
 ---
 
@@ -313,7 +313,7 @@ When you receive this command:
 
 ### Spekificity Mapping
 
-These map directly to B.8.4:
+These map directly to extracted spec:
 
 | claude-code-memory-setup | Spekificity | Purpose |
 |--------------------------|-------------|---------|
@@ -321,8 +321,8 @@ These map directly to B.8.4:
 | `/save` | `/spek.post` | Capture progress, extract lessons, update vault |
 
 **Spekificity enhancements over `/resume` and `/save`:**
-- B.8.4 `/spek.prepare` adds 7 explicit steps (git verify, feature name, graph check, context load, state init, report)
-- B.8.4 `/spek.post` adds 10 explicit steps (artifacts, compression, lessons, vault update, graph sync, memory, docs, archive, report)
+- extracted spec `/spek.prepare` adds 7 explicit steps (git verify, feature name, graph check, context load, state init, report)
+- extracted spec `/spek.post` adds 10 explicit steps (artifacts, compression, lessons, vault update, graph sync, memory, docs, archive, report)
 - Spekificity adds caveman compression, incremental graph sync, feature state tracking
 - Spekificity integrates with SpecKit workflow (decorator wrapper pattern)
 
@@ -392,7 +392,7 @@ Repository recommends:
 
 **Benefit:** Enables natural navigation through vault via graph view; makes lessons discoverable by future `/spek.context` loads.
 
-**Action:** Update B.8.4 `/spek.post` Step 3 (Generate Lessons) to include automatic wikilink insertion.
+**Action:** Update extracted spec `/spek.post` Step 3 (Generate Lessons) to include automatic wikilink insertion.
 
 ---
 
@@ -425,7 +425,7 @@ Repository recommends:
 - Optional: `graphify . --watch` → auto-rebuild on file save
 
 **Spekificity implementation:**
-- Already planned in B.8.4 `/spek.post` Step 6 (Incremental Code Graph Sync)
+- Already planned in extracted spec `/spek.post` Step 6 (Incremental Code Graph Sync)
 - Add optional git hook installation in `.spekificity/bin/spek setup`
 - Document in `.spekificity/guides/quickstart.md`
 
@@ -450,7 +450,7 @@ Repository recommends:
 
 **Benefit:** Execution logs become part of searchable vault; provides audit trail.
 
-**Action:** Enhance B.8.4 `/spek.post` Step 9 (Archive Session Memory) to extract structured sections from current-feature.md and link to vault.
+**Action:** Enhance extracted spec `/spek.post` Step 9 (Archive Session Memory) to extract structured sections from current-feature.md and link to vault.
 
 ---
 
@@ -490,7 +490,7 @@ Layer 3: Read raw code (only when needed after layers 1-2)
 - Cross-project decision history
 - Unified lessons library
 
-**Timeline:** Post B.9-B.11 (not for initial implementation).
+**Timeline:** Post memory-setup-graph-setup (not for initial implementation).
 
 ---
 
@@ -514,7 +514,7 @@ Layer 3: Read raw code (only when needed after layers 1-2)
 
 1. **Manual `/resume` and `/save` commands**
    - Claude-code-memory-setup relies on user-initiated commands
-   - Spekificity uses explicit workflow steps (B.8.4 `/spek.prepare` and `/spek.post`)
+   - Spekificity uses explicit workflow steps (extracted spec `/spek.prepare` and `/spek.post`)
    - Reason: Spekificity integrates with SpecKit lifecycle; commands are orchestrated, not manual
 
 2. **Global single vault**
@@ -542,7 +542,7 @@ Layer 3: Read raw code (only when needed after layers 1-2)
 **Effort:** 4-6 hours of work; high impact.
 
 **Files to update:**
-- `specs/b8-4-prepare-and-post-skills.md` (add auto-linking to Step 3)
+- `specs/prepare-and-post-skills.md` (add auto-linking to Step 3)
 - `.spekificity/config.yaml` (add KEYWORD_TAG_MAP, graph hook settings)
 - `.spekificity/guides/context-navigation.md` (document 3-layer query rule)
 - `.spekificity/bin/spek setup` (add graphify hook installation)
@@ -557,7 +557,7 @@ Layer 3: Read raw code (only when needed after layers 1-2)
 3. Build `/spek.context` skill with 3-layer query order
 4. Test with end-to-end workflow
 
-**Timeline:** Part of B.9-B.11 implementation phase.
+**Timeline:** Part of memory-setup-graph-setup implementation phase.
 
 ### Phase 3 (Future): Global Vault (Optional)
 
@@ -568,7 +568,7 @@ Layer 3: Read raw code (only when needed after layers 1-2)
 - Implement cross-project pattern discovery
 - Add workspace linking to decisions/patterns
 
-**Timeline:** Post B.9-B.11.
+**Timeline:** Post memory-setup-graph-setup.
 
 ---
 
@@ -588,7 +588,7 @@ Layer 3: Read raw code (only when needed after layers 1-2)
 
 ### Design Conflicts (None Found)
 
-Spekificity's planned architecture (B.8.1-B.8.4) has **zero conflicts** with claude-code-memory-setup's patterns. The two systems are complementary:
+Spekificity's planned architecture (extracted spec-extracted spec) has **zero conflicts** with claude-code-memory-setup's patterns. The two systems are complementary:
 
 - **claude-code-memory-setup:** Freestanding, works with any Claude workflow
 - **Spekificity:** Integrated with SpecKit, adds persistent memory + context orchestration
@@ -601,22 +601,22 @@ Both can coexist and reinforce each other.
 
 ### High-Priority Adoptions (Do These First)
 
-- [ ] **B.9.1:** Add Zettelkasten frontmatter conventions to spec/vault (decision, patterns, lessons)
-- [ ] **B.9.2:** Create KEYWORD_TAG_MAP in `.spekificity/config.yaml` (domain, tech stack, methodology tags)
-- [ ] **B.9.3:** Enhance `/spek.post` Step 3 with auto-tagging + auto-wikilink-insertion logic
-- [ ] **B.9.4:** Document 3-layer query rule in `.spekificity/guides/context-navigation.md`
-- [ ] **B.9.5:** Integrate graphify git hooks into `.spekificity/bin/spek setup`
+- [ ] **memory-setup.1:** Add Zettelkasten frontmatter conventions to spec/vault (decision, patterns, lessons)
+- [ ] **memory-setup.2:** Create KEYWORD_TAG_MAP in `.spekificity/config.yaml` (domain, tech stack, methodology tags)
+- [ ] **memory-setup.3:** Enhance `/spek.post` Step 3 with auto-tagging + auto-wikilink-insertion logic
+- [ ] **memory-setup.4:** Document 3-layer query rule in `.spekificity/guides/context-navigation.md`
+- [ ] **memory-setup.5:** Integrate graphify git hooks into `.spekificity/bin/spek setup`
 
 ### Medium-Priority Adoptions (Next Phase)
 
-- [ ] **B.9.6:** Add watch mode option to `/spek.map` (for interactive dev workflow)
-- [ ] **B.9.7:** Extend archival to extract structured session log sections and link to vault
-- [ ] **B.9.8:** Test with real multi-feature workflow; measure token savings
+- [ ] **memory-setup.6:** Add watch mode option to `/spek.map` (for interactive dev workflow)
+- [ ] **memory-setup.7:** Extend archival to extract structured session log sections and link to vault
+- [ ] **memory-setup.8:** Test with real multi-feature workflow; measure token savings
 
-### Future Adoptions (Post B.9-B.11)
+### Future Adoptions (Post memory-setup-graph-setup)
 
-- [ ] **B.9.9:** Evaluate global cross-project vault (user feedback-driven)
-- [ ] **B.9.10:** Cross-project pattern discovery dashboard (if global vault adopted)
+- [ ] **memory-setup.9:** Evaluate global cross-project vault (user feedback-driven)
+- [ ] **memory-setup.10:** Cross-project pattern discovery dashboard (if global vault adopted)
 
 ---
 
@@ -633,10 +633,10 @@ Both can coexist and reinforce each other.
 - `scripts/` — Python processor, bash automation scripts
 
 **Spekificity Related Specs:**
-- [B.8.1 Code and Document Maps](../specs/b8-1-code-and-document-maps.md)
-- [B.8.2 Persistent Memories and Lessons](../specs/b8-2-persistent-memories-and-lessons.md)
-- [B.8.3 SpecKit Integration Contract](../specs/b8-3-speckit-integration-contract.md)
-- [B.8.4 Prepare and Post Skills](../specs/b8-4-prepare-and-post-skills.md)
+- [extracted spec Code and Document Maps](../specs/code-and-document-maps.md)
+- [extracted spec Persistent Memories and Lessons](../specs/persistent-memories-and-lessons.md)
+- [extracted spec SpecKit Integration Contract](../specs/speckit-integration-contract.md)
+- [extracted spec Prepare and Post Skills](../specs/prepare-and-post-skills.md)
 
 **Key Metrics:**
 - 71.5x fewer tokens per session (tested, real-world)

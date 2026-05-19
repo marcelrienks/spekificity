@@ -1,15 +1,15 @@
-# B.11 — Codegraph Setup and Integration Specification
+# graph-setup — Codegraph Setup and Integration Specification
 
 **Status:** SPECIFICATION (2026-05-18)  
 **Feature:** spekificity feature 003 — Full Workflow CLI  
-**Related Specs:** [B.8.1 Code and Document Maps](b8-1-code-and-document-maps.md), [B.8.4 Prepare and Post Skills](b8-4-prepare-and-post-skills.md)  
+**Related Specs:** [extracted spec Code and Document Maps](code-and-document-maps.md), [extracted spec Prepare and Post Skills](prepare-and-post-skills.md)  
 **Scope:** Graphify installation, vault integration, skill invocation contracts, refresh strategies, performance optimization  
 
 ---
 
 ## Executive Summary
 
-**B.11 specifies the complete codegraph (Graphify) setup and integration layer for Spekificity.**
+**graph-setup specifies the complete codegraph (Graphify) setup and integration layer for Spekificity.**
 
 Graphify transforms the codebase into a persistent, queryable knowledge graph using tree-sitter AST (Abstract Syntax Tree). This graph becomes a critical input to `/spek.specify` and `/spek.plan` phases, enabling:
 
@@ -25,7 +25,7 @@ Graphify transforms the codebase into a persistent, queryable knowledge graph us
 4. Incremental refresh strategy (git hooks + SHA256 caching)
 5. Performance scoping and token efficiency
 6. Configuration templates (.spekificity/config.yaml)
-7. Integration contracts with B.8.1 and B.8.4
+7. Integration contracts with extracted spec and extracted spec
 
 ---
 
@@ -451,7 +451,7 @@ graphify hook install
 
 #### Contract 1: `/spek.prepare` → `/spek.map` (Graph Freshness Check)
 
-**B.8.4 `/spek.prepare` Step 3 — Check Graph Freshness:**
+**extracted spec `/spek.prepare` Step 3 — Check Graph Freshness:**
 
 ```
 In /spek.prepare:
@@ -474,7 +474,7 @@ In /spek.prepare:
 
 #### Contract 2: `/spek.specify` & `/spek.plan` → `/spek.map` (Context Injection)
 
-**B.8.3 & B.8.4 Enriched Specify/Plan:**
+**extracted spec & extracted spec Enriched Specify/Plan:**
 
 ```
 In /spek.specify or /spek.plan:
@@ -502,7 +502,7 @@ In /spek.specify or /spek.plan:
 
 #### Contract 3: `/spek.post` → `/spek.map` (Incremental Graph Sync)
 
-**B.8.4 `/spek.post` Step 6 — Incremental Graph Sync:**
+**extracted spec `/spek.post` Step 6 — Incremental Graph Sync:**
 
 ```
 In /spek.post after implementation:
@@ -679,11 +679,11 @@ Layer 3: Read raw code files (only if needed)
 
 ---
 
-## Part 5: Integration with B.8.1 and B.8.4
+## Part 5: Integration with extracted spec and extracted spec
 
-### Integration Point 1: B.8.1 (Code and Document Maps)
+### Integration Point 1: extracted spec (Code and Document Maps)
 
-**B.8.1 specifies the hybrid node architecture:**
+**extracted spec specifies the hybrid node architecture:**
 
 ```
 Pass 1: Graphify indexes code
@@ -696,7 +696,7 @@ Pass 3: Merge
   → vault/graph/nodes.jsonl (unified queryable graph)
 ```
 
-**B.11 implementation:** `/spek.map` orchestrates all three passes.
+**graph-setup implementation:** `/spek.map` orchestrates all three passes.
 
 **Success criteria:**
 - ✅ Code nodes merged with doc nodes
@@ -706,9 +706,9 @@ Pass 3: Merge
 
 ---
 
-### Integration Point 2: B.8.4 (Prepare and Post Skills)
+### Integration Point 2: extracted spec (Prepare and Post Skills)
 
-**B.8.4 `/spek.prepare` Step 3:**
+**extracted spec `/spek.prepare` Step 3:**
 ```
 Check Graph Freshness:
   ├── Read vault/graph/config.json → timestamp
@@ -717,7 +717,7 @@ Check Graph Freshness:
   └── If yes: Call /spek.map
 ```
 
-**B.8.4 `/spek.post` Step 6:**
+**extracted spec `/spek.post` Step 6:**
 ```
 Incremental Graph Sync:
   ├── Get git diff (changed files)
@@ -725,7 +725,7 @@ Incremental Graph Sync:
   └── Update nodes.jsonl for changed symbols
 ```
 
-**B.11 responsibility:** Ensure `/spek.map` handles both triggered contexts.
+**graph-setup responsibility:** Ensure `/spek.map` handles both triggered contexts.
 
 **Success criteria:**
 - ✅ `/spek.prepare` can detect stale graph
@@ -740,7 +740,7 @@ Incremental Graph Sync:
 
 ```yaml
 ################################################################################
-# Spekificity Configuration — B.11 Codegraph Setup
+# Spekificity Configuration — graph-setup Codegraph Setup
 ################################################################################
 
 # Global settings (used by all skills)
@@ -885,50 +885,50 @@ graphify:
 
 ### Installation & Setup (One-Time)
 
-- [ ] **B.11.1** Install Graphify via uv tool
+- [ ] **graph-setup.1** Install Graphify via uv tool
   - Run: `uv tool install graphifyy`
   - Verify: `graphify --version`
   - Expected: graphifyy x.x.x
 
-- [ ] **B.11.2** Create .spekificity/config.yaml with graphify section
+- [ ] **graph-setup.2** Create .spekificity/config.yaml with graphify section
   - Copy template from Part 6
   - Adjust languages, exclude patterns for your project
   - Validate YAML syntax
 
-- [ ] **B.11.3** Initialize vault/graph/ directory structure
+- [ ] **graph-setup.3** Initialize vault/graph/ directory structure
   - Create: `mkdir -p vault/graph/{nodes,cache}`
   - Create: `vault/graph/config.json` (use template from Part 2)
   - Create: `vault/graph/refresh-log.md` (empty)
 
-- [ ] **B.11.4** Perform initial full graph rebuild
+- [ ] **graph-setup.4** Perform initial full graph rebuild
   - Run: `/spek.map --full`
   - Check: `vault/graph/nodes.jsonl` exists + has nodes
   - Check: `vault/graph/graph.html` can be opened in browser
   - Check: `vault/graph/GRAPH_REPORT.md` readable
 
-- [ ] **B.11.5** Install git post-commit hook (optional)
+- [ ] **graph-setup.5** Install git post-commit hook (optional)
   - Run: `graphify hook install`
   - Verify: `.git/hooks/post-commit` exists
   - Test: Make small commit, check graph updates
 
 ---
 
-### Integration with B.8.4 Skills
+### Integration with extracted spec Skills
 
-- [ ] **B.11.6** Integrate `/spek.prepare` graph freshness check
-  - In B.8.4 `/spek.prepare` Step 3 implementation:
+- [ ] **graph-setup.6** Integrate `/spek.prepare` graph freshness check
+  - In extracted spec `/spek.prepare` Step 3 implementation:
     - Read `vault/graph/config.json` → `generated_at`
     - Calculate age in hours
     - If age > `graph_refresh_threshold_hours` (default 1): offer refresh
     - Call `/spek.map --incremental` if user accepts
 
-- [ ] **B.11.7** Integrate `/spek.post` graph sync
-  - In B.8.4 `/spek.post` Step 6 implementation:
+- [ ] **graph-setup.7** Integrate `/spek.post` graph sync
+  - In extracted spec `/spek.post` Step 6 implementation:
     - Run `git diff --name-only HEAD~1` to get changed files
     - If changed files > 0: call `/spek.map --code-only --incremental`
     - Log: "Graph synced for X changed files"
 
-- [ ] **B.11.8** Integrate graph context injection (B.8.3 enriched skills)
+- [ ] **graph-setup.8** Integrate graph context injection (extracted spec enriched skills)
   - In `/spek.specify` enrichment:
     - Query `vault/graph/nodes.jsonl` for related modules
     - Query graph for recent changes
@@ -941,17 +941,17 @@ graphify:
 
 ### Documentation & Guides
 
-- [ ] **B.11.9** Create `.spekificity/guides/graphify-setup.md` (user-facing guide)
+- [ ] **graph-setup.9** Create `.spekificity/guides/graphify-setup.md` (user-facing guide)
   - Installation steps (simplified version of Part 1)
   - First-run instructions
   - Troubleshooting
 
-- [ ] **B.11.10** Create `.spekificity/guides/graph-queries.md` (agent guide)
+- [ ] **graph-setup.10** Create `.spekificity/guides/graph-queries.md` (agent guide)
   - Example queries using jq
   - How to find modules, functions, callers
   - Common query patterns
 
-- [ ] **B.11.11** Document git hook setup in `.spekificity/guides/setup.md`
+- [ ] **graph-setup.11** Document git hook setup in `.spekificity/guides/setup.md`
   - Instructions for enabling post-commit hooks
   - How to disable/remove hooks if needed
 
@@ -959,18 +959,18 @@ graphify:
 
 ### Testing & Validation
 
-- [ ] **B.11.12** Functional tests for /spek.map
+- [ ] **graph-setup.12** Functional tests for /spek.map
   - Test full rebuild: nodes.jsonl generated ✓
   - Test incremental: SHA256 cache works ✓
   - Test watch mode: File change triggers update ✓
   - Test merge: Code + doc nodes combined ✓
 
-- [ ] **B.11.13** Integration tests with B.8.4 skills
+- [ ] **graph-setup.13** Integration tests with extracted spec skills
   - `/spek.prepare` detects stale graph ✓
   - `/spek.post` syncs changed files ✓
   - Graph context injected into specs ✓
 
-- [ ] **B.11.14** Performance benchmarks
+- [ ] **graph-setup.14** Performance benchmarks
   - Full rebuild time < 30s ✓
   - Incremental < 5s ✓
   - Watch mode latency < 2s ✓
@@ -1053,7 +1053,7 @@ graphify:
 - ✅ Parallel processing active (4+ workers)
 - ✅ Watch mode latency < 2 seconds
 
-### Integration with B.8.4 Skills
+### Integration with extracted spec Skills
 - ✅ `/spek.prepare` detects stale graph
 - ✅ `/spek.post` syncs changed files efficiently
 - ✅ Graph context injected into specs/plans
@@ -1074,9 +1074,9 @@ graphify:
 ## References
 
 **Related specs:**
-- [B.8.1 Code and Document Maps](b8-1-code-and-document-maps.md)
-- [B.8.4 Prepare and Post Skills](b8-4-prepare-and-post-skills.md)
-- [B.9 claude-code-memory-setup Analysis](b9-claude-code-memory-setup-analysis.md) (graphify patterns)
+- [extracted spec Code and Document Maps](code-and-document-maps.md)
+- [extracted spec Prepare and Post Skills](prepare-and-post-skills.md)
+- [memory-setup claude-code-memory-setup Analysis](claude-code-memory-setup-analysis.md) (graphify patterns)
 
 **External tools:**
 - Graphify: https://github.com/graphifyy/graphifyy

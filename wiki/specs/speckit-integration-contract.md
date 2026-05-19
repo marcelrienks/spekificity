@@ -1,8 +1,8 @@
-# B.8.3 — SpecKit Integration Contract
+# extracted spec — SpecKit Integration Contract
 
 **Status:** SPECIFICATION (2026-05-18)  
 **Feature:** spekificity feature 003 — Full Workflow CLI  
-**Related:** [B.1 SpecKit Workflow](../wiki/speckit-workflow.md), [B.8.2 Memory Architecture](b8-2-persistent-memories-and-lessons.md)
+**Related:** [SpecKit Workflow](../wiki/speckit-workflow.md), [Memory Architecture](persistent-memories-and-lessons.md)
 
 ---
 
@@ -648,21 +648,21 @@ vault/
 ## References
 
 **Related specs:**
-- [B.1 SpecKit Workflow](../wiki/speckit-workflow.md)
-- [B.8.1 Code and Document Maps](b8-1-code-and-document-maps.md)
-- [B.8.2 Persistent Memories and Lessons](b8-2-persistent-memories-and-lessons.md)
+- [SpecKit Workflow](../wiki/speckit-workflow.md)
+- [extracted spec Code and Document Maps](code-and-document-maps.md)
+- [extracted spec Persistent Memories and Lessons](persistent-memories-and-lessons.md)
 
 **SpecKit canonical documentation:**
 - [SpecKit GitHub](https://github.com/github/spec-kit)
 - [Canonical workflow](../wiki/speckit-workflow.md#canonical-workflow)
 
 **Spekificity skill definitions:**
-- [/spek.context skill](../wiki/skills/spek-context.md) (to be created in B.8.4)
+- [/spek.context skill](../wiki/skills/spek-context.md) (to be created in extracted spec)
 - [/spek.prepare skill](../wiki/skills/spek-prepare.md) (defined in B.2)
 - [/spek.post skill](../wiki/skills/spek-post.md) (defined in B.2)
 
 **Architectural decisions:**
 - Decorator pattern over hook system (this spec)
-- Two-tool system: Obsidian (knowledge) + CodeGraph (code analysis) (B.8.1)
-- Three-layer memory: Vault + Repo + Session (B.8.2)
+- Two-tool system: Obsidian (knowledge) + CodeGraph (code analysis) (extracted spec)
+- Three-layer memory: Vault + Repo + Session (extracted spec)
 

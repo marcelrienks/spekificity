@@ -1,4 +1,4 @@
-# Spec: Code and Document Maps (B.8.1)
+# Spec: Code and Document Maps (extracted spec)
 
 ## Overview
 
