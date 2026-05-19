@@ -1,273 +1,186 @@
 # Spekificity
 
-> ⚠️ **Status**: Under active development. APIs and documentation subject to change.
+> Status: active development. Repository currently contains documentation, architectural decisions, and implementation specs for the Spekificity platform. CLI and skill implementation are planned; this repo is not yet a packaged runtime.
 
-**An agentic consolidation platform** that wires together best-in-class tools to solve four foundational LLM agent problems: **token bloat, shallow planning, context loss, and lack of autonomy**. Spekificity replaces recursive file scans with graph queries, compresses verbose outputs, stores persistent project memory, and enables AI agents to operate independently without hand-holding. Delivered as markdown skills, workflows, and setup guides that AI agents execute directly.
+Spekificity is an agentic consolidation platform aimed at four recurring LLM agent failures:
 
-Spekificity is **built for AI agents**. Every artefact is a skill or workflow that an AI agent reads and executes—enabling code generation, artifact creation, and automation through agentic orchestration.
+- token bloat
+- shallow planning
+- context loss
+- low autonomy
 
----
+Core idea: combine spec-driven workflow, indexed code context, persistent project memory, and aggressive output compression so an AI agent can move from feature request to implementation with less rescanning, less drift, and less manual steering.
 
-## What it does
+## What This Repository Is
 
-| Capability | How |
-|------------|-----|
-| Codebase mapping | Runs Graphify to build an Obsidian vault graph of all source files and docs |
-| Graph-first context loading | Loads vault index at session start — AI answers cross-cutting questions without re-scanning all files |
-| Enriched SpecKit lifecycle | Decorates `/speckit.specify`, `/speckit.plan`, `/speckit.implement` with graph-aware context |
-| Persistent lessons learnt | Writes structured lessons to the vault after every feature; surfaced in future sessions |
-| Token efficiency | Caveman mode integration at every workflow step |
+This repository is the design and specification surface for Spekificity.
 
----
+It currently contains:
 
-## Prerequisites
+- project intention and architecture documents
+- workflow definitions for enriched SpecKit usage
+- atomic specifications for context loading, orchestration, memory, graph integration, and post-processing
+- setup notes for supporting tools
+- roadmap and design decisions
 
-| Tool | Install | Mode |
-|------|---------|------|
-| Python 3.11+ | [python.org](https://python.org) | system |
-| `uv` | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | global |
-| git | OS package manager | global |
-| SpecKit/Specify | `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` | global |
-| CodeGraph | MCP server — see [wiki/decision.md](wiki/decision.md) for setup | per-project |
-| AI agent | GitHub Copilot, Claude Code, or equivalent | editor |
-| Obsidian (optional) | [obsidian.md](https://obsidian.md) | desktop, visualization only |
+It does not currently contain a complete shipped `spek` CLI, installed skill bundle, or runnable platform distribution in this tree.
 
----
+## Platform Model
 
-## Full Feature Lifecycle
+Spekificity is built around four pillars:
 
-For the complete enriched SpecKit workflow step-by-step, see [wiki/intention.md](wiki/intention.md).
+| Pillar | Goal | Mechanism |
+|---|---|---|
+| Token efficiency | Spend tokens on reasoning, not file rediscovery | indexed graph queries, scoped context loading, Caveman compression |
+| Determinism | Keep feature work on a repeatable track | SpecKit workflow: specify -> plan -> tasks -> implement |
+| Persistence | Preserve architectural context across sessions | vault-style markdown knowledge store for decisions, patterns, lessons |
+| Autonomy | Reduce developer hand-holding | reusable project memory + graph-grounded context injection |
 
----
+## Target Tool Stack
 
-## Design Principles
+Current design direction across the wiki is:
 
-- **Decorator pattern**: Spekificity skills wrap, not replace, standard SpecKit commands
-- **Modular independence**: Each component (CodeGraph, Obsidian, SpecKit, Spekificity layer) can be updated independently
-- **Global SpecKit, local customisation**: SpecKit installs globally; Spekificity skills install locally per-project
+- SpecKit / Specify for spec-first workflow generation
+- CodeGraph as the recommended code intelligence layer for agent workflows
+- Obsidian-compatible markdown vault for durable project knowledge
+- Caveman mode for response compression and token control
 
----
+Spekificity does not try to replace those systems. It defines how they should work together.
 
-## Documentation
+## Target Workflow
 
-**Knowledge Base (LLM Wiki):**
-- [wiki/llm-wiki.md](wiki/llm-wiki.md) — Persistent knowledge management pattern, implementation schema, operations, and tool ecosystem
+The intended Spekificity workflow is:
 
-**Spekificity Architecture & Workflow:**
-- [wiki/intention.md](wiki/intention.md) — Project vision, philosophy, complete workflow overview
-- [wiki/architecture.md](wiki/architecture.md) — Directory structure, component roles, data flow, update strategy
-- [wiki/decision.md](wiki/decision.md) — Architectural decisions (CodeGraph vs Graphify, dual-system toolset)
+1. Load project context.
+2. Enrich specification generation with prior decisions and patterns.
+3. Enrich planning with code-graph and impact context.
+4. Generate ordered tasks.
+5. Implement against spec, plan, and code context.
+6. Capture lessons and refresh durable project memory.
 
-**Setup Guides:**
-- [wiki/setup/obsidian-setup.md](wiki/setup/obsidian-setup.md) — Obsidian vault installation and configuration
-- [wiki/setup/speckit-setup.md](wiki/setup/speckit-setup.md) — SpecKit global install and project init
+Canonical command surface for that workflow is:
 
----
+- `/spek.context`
+- `/spek.specify`
+- `/spek.plan`
+- `/speckit.tasks`
+- `/speckit.analyze` (optional)
+- `/spek.implement`
+- `/spek.lessons`
+- `/spek.post`
+- `/spek.map`
+- `/spek.automate`
 
-## Four Core Pillars
+Vanilla SpecKit commands remain part of the model where appropriate:
 
-### 1. Token Efficiency and Verbosity
-- Replace recursive file scans with targeted, indexed queries (92% fewer tokens vs file reads)
-- Compress verbose outputs 60%+ without losing technical substance
-- Load pre-synthesized context instead of re-reading (one vault load per session)
-- **Result:** 3-4x more tokens flow to reasoning, planning, and implementation
+- `/speckit.specify`
+- `/speckit.plan`
+- `/speckit.tasks`
+- `/speckit.implement`
 
-### 2. Planning and Determinism
-- Enforce canonical workflow steps (spec → plan → tasks → implement) instead of ad-hoc agent planning
-- Provide exact ground-truth context from code graph (no hallucinations)
-- Capture and feed back outcomes to improve future feature runs
-- **Result:** reproducible, auditable cycles; same feature run twice = consistent plans and decisions
+Use the `spek.*` surface when following the Spekificity-enriched workflow.
 
-### 3. Memory Persistence
-- Store cross-feature knowledge (architectural decisions, patterns, lessons learned) in persistent vault
-- Survive session boundaries without loss — `/context-load` restores full state
-- Accumulate learning over time (each feature makes the next one faster)
-- **Result:** agent gets smarter per feature, not reset at session start
+## Current Repository State
 
-### 4. Autonomy
-- Answer code/architecture questions without manual context injection from developer
-- Recall prior solutions and patterns without tedious searching
-- Keep signal-to-noise high (compressed outputs + indexed queries = agent reads faster)
-- **Result:** agent operates independently; fewer clarification loops, minimal hand-holding needed
+This repository is ahead on architectural definition and behind on implementation.
 
----
+Current state, based on the docs in `wiki/`:
 
-## Session Start (Required)
+- architecture and workflow intent are documented
+- naming conventions for the new command surface are defined
+- memory, graph, orchestration, and post-processing behavior are specified in atomic docs
+- implementation of agent skills, CLI orchestration, and end-to-end validation is the next major phase
 
-> **Always run `/context-load` before any feature work.** This loads the Obsidian vault graph, architectural decisions, patterns, and recent lessons into working memory.
+If you are evaluating the project today, treat this repository as the source for design contracts and planned behavior, not as a finished installable product.
 
-```
-/context-load
-```
+## Start Here
 
----
+Use these documents first:
 
-## Available Skills
+- [wiki/intention.md](wiki/intention.md) — project vision, philosophy, and lifecycle framing
+- [wiki/architecture.md](wiki/architecture.md) — system structure, component boundaries, update model
+- [wiki/decision.md](wiki/decision.md) — major tool and architecture decisions
+- [wiki/naming-conventions.md](wiki/naming-conventions.md) — current command names and directory conventions
+- [wiki/speckit-workflow.md](wiki/speckit-workflow.md) — canonical SpecKit flow and Spekificity integration points
+- [wiki/todo.md](wiki/todo.md) — roadmap and implementation status
 
-| Command | Description |
-|---------|-------------|
-| `/context-load` | Load vault context (graph, decisions, patterns, lessons) into AI session |
-| `/map-codebase` | Build or refresh the code analysis graph (CodeGraph) and update vault context |
-| `/lessons-learnt` | Write structured lessons to the vault at the end of a feature |
-| `/speckit-enrich-specify` | Graph-aware decorator for `/speckit.specify` |
-| `/speckit-enrich-plan` | Graph-aware decorator for `/speckit.plan` |
-| `/speckit-enrich-implement` | Graph-aware decorator for `/speckit.implement` — automatically runs lessons + map update |
+## Documentation Map
 
----
+### Core docs
 
-## Token Efficiency
+- [wiki/intention.md](wiki/intention.md)
+- [wiki/architecture.md](wiki/architecture.md)
+- [wiki/decision.md](wiki/decision.md)
+- [wiki/llm-wiki.md](wiki/llm-wiki.md)
+- [wiki/research.md](wiki/research.md)
+- [wiki/naming-conventions.md](wiki/naming-conventions.md)
+- [wiki/speckit-workflow.md](wiki/speckit-workflow.md)
+- [wiki/todo.md](wiki/todo.md)
 
-Activate caveman mode to reduce response verbosity and token consumption:
+### Setup notes
 
-```
-/caveman lite      ← for spec/plan work (preserves structure)
-/caveman           ← for implementation sessions (full compression)
-```
+- [wiki/setup/speckit-setup.md](wiki/setup/speckit-setup.md)
+- [wiki/setup/obsidian-setup.md](wiki/setup/obsidian-setup.md)
+- [wiki/setup/graphify-setup.md](wiki/setup/graphify-setup.md)
 
----
+### Key specifications
 
-## Getting Started (MVP v1.0.0)
+- [wiki/specs/context-load-lifecycle.md](wiki/specs/context-load-lifecycle.md)
+- [wiki/specs/session-memory.md](wiki/specs/session-memory.md)
+- [wiki/specs/persistent-memories-and-lessons.md](wiki/specs/persistent-memories-and-lessons.md)
+- [wiki/specs/decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md)
+- [wiki/specs/cli-orchestration.md](wiki/specs/cli-orchestration.md)
+- [wiki/specs/prepare-command.md](wiki/specs/prepare-command.md)
+- [wiki/specs/post-command.md](wiki/specs/post-command.md)
+- [wiki/specs/specify-enrichment.md](wiki/specs/specify-enrichment.md)
+- [wiki/specs/plan-enrichment.md](wiki/specs/plan-enrichment.md)
+- [wiki/specs/implement-enrichment.md](wiki/specs/implement-enrichment.md)
+- [wiki/specs/codegraph-setup-and-integration.md](wiki/specs/codegraph-setup-and-integration.md)
+- [wiki/specs/integration-validation-and-testing.md](wiki/specs/integration-validation-and-testing.md)
 
-The spekificity platform is now ready for use! Use the unified `spek` command for setup and initialization.
+## Repository Layout
 
-### 5-Minute Setup
+Current top-level layout:
 
-```bash
-# 1. Setup environment (check prerequisites)
-.spekificity/bin/spek setup
-
-# 2. Initialize platform (orchestrate all tools)
-.spekificity/bin/spek init
-
-# 3. Verify installation
-.spekificity/bin/spek status
-
-# 4. Load context (in AI chat)
-/context-load
-
-# 5. Start feature work
-/speckit-enrich-specify
-```
-
-**See**: [.spekificity/guides/quickstart.md](.spekificity/guides/quickstart.md) for full 5-minute guide with expected output.
-
-### For New Team Members
-
-```bash
-# Clone project
-git clone <repo>
-cd <project>
-
-# One-time setup
-.spekificity/bin/spek setup && .spekificity/bin/spek init
-
-# Ready for feature work (~10 minutes total)
-/context-load
-```
-
-### Available Commands
-
-**Platform Management**:
-| Command | Purpose |
-|---------|---------|
-| `spek setup` | Verify prerequisites and prepare environment |
-| `spek init` | Initialize all tools (speckit, graphify, obsidian, caveman) |
-| `spek status` | Show initialization status and tool versions |
-| `spek update` | Update spekificity custom layer (Phase 6) |
-
-**AI Skills** (in your chat):
-| Command | Purpose |
-|---------|---------|
-| `/spek.context-load` | Load codebase graph and vault context |
-| `/spek.map-codebase` | Update codebase analysis graph |
-| `/spek.lessons-learnt` | Capture learning after feature completion |
-| `/speckit.specify` | Create feature specification |
-| `/speckit.plan` | Create implementation plan |
-| `/speckit.tasks` | Generate actionable tasks |
-| `/speckit.implement` | Execute implementation tasks |
-
----
-
-## Documentation Guide
-
-**Start here**: [README.md](README.md) (you are here)
-
-### Getting Help
-- **Quick setup**: [.spekificity/guides/quickstart.md](.spekificity/guides/quickstart.md) — 5 minutes
-- **Troubleshooting**: [.spekificity/guides/troubleshooting.md](.spekificity/guides/troubleshooting.md) — Common errors & solutions
-- **Manual setup**: [.spekificity/guides/manual-setup.md](.spekificity/guides/manual-setup.md) — Step-by-step for restricted environments
-- **Integration**: [.spekificity/guides/integration-guide.md](.spekificity/guides/integration-guide.md) — Team workflows & CI/CD
-
-### Learn More
-- **Architecture**: [.spekificity/guides/architecture.md](.spekificity/guides/architecture.md) — Component design & extension points
-- **Orchestration**: [.spekificity/guides/orchestration-model.md](.spekificity/guides/orchestration-model.md) — How tools are coordinated
-- **Migration**: [.spekificity/guides/migration.md](.spekificity/guides/migration.md) — Adopting spekificity in existing projects
-- **Skill Development**: [.spekificity/guides/skill-development.md](.spekificity/guides/skill-development.md) — Create custom skills
-- **Feature Lifecycle**: [workflows/feature-lifecycle.md](workflows/feature-lifecycle.md) — Full workflow overview
-- **Understand the project**: Read [docs/readme.md](docs/readme.md) (quick start, problems, goals)
-- **Detailed workflows**: [docs/guide.md](docs/guide.md) — feature lifecycle and operations
-- **Run into issues**: Check [docs/faq.md](docs/faq.md)
-
-**Daily usage**: [workflows/feature-lifecycle.md](workflows/feature-lifecycle.md) — complete enriched SpecKit workflow
-
-**Reference**: [docs/glossary.md](docs/glossary.md) — terminology, [docs/architecture.md](docs/architecture.md) — component design
-
----
-
-## Project Structure
-
-```
+```text
 spekificity/
-├── skills/                        ← AI skill files (agent-agnostic)
-│   ├── map-codebase/SKILL.md
-│   ├── lessons-learnt/SKILL.md
-│   ├── context-load/SKILL.md
-│   └── speckit-enrich/
-│       ├── specify-enrich.md
-│       ├── plan-enrich.md
-│       └── implement-enrich.md
-├── workflows/                     ← Multi-step workflow guides
-│   ├── init-workflow.md
-│   ├── feature-lifecycle.md
-│   ├── map-refresh.md
-│   └── component-update.md
-├── setup-guides/                  ← Per-tool install guides
-│   ├── graphify-setup.md
-│   ├── speckit-setup.md
-│   └── obsidian-setup.md
-├── vault/                         ← Obsidian vault (runtime artefact)
-│   ├── graph/                     ← Generated by /map-codebase
-│   ├── lessons/                   ← Written by /lessons-learnt
-│   └── context/                   ← Maintained by AI across sessions
-│       ├── decisions.md
-│       └── patterns.md
-└── docs/                          ← Project documentation
-    ├── readme.md
-    ├── architecture.md
-    ├── guide.md
-    ├── glossary.md
-    ├── faq.md
-    └── validation.md
+├── README.md
+├── wiki/
+│   ├── architecture.md
+│   ├── decision.md
+│   ├── intention.md
+│   ├── llm-wiki.md
+│   ├── naming-conventions.md
+│   ├── research.md
+│   ├── speckit-workflow.md
+│   ├── todo.md
+│   ├── setup/
+│   ├── specs/
+│   └── raw/
+├── .github/
+├── .specify/
+└── .cel/
 ```
 
----
+Practical reading order:
 
-## Updating Components Independently
+1. README
+2. `wiki/intention.md`
+3. `wiki/decision.md`
+4. `wiki/naming-conventions.md`
+5. `wiki/speckit-workflow.md`
+6. relevant files in `wiki/specs/`
 
-Each component can be updated without touching the others:
+## Working Assumptions
 
-| Component | Update command | Spekificity changes needed? |
-|-----------|---------------|----------------------------|
-| SpecKit/Specify | `uv tool upgrade specify-cli` | Only if SpecKit command interface changes |
-| Graphify | `uv tool upgrade graphifyy` | Only if CLI args change (update `skills/map-codebase/SKILL.md`) |
-| Obsidian | Download new app version | None — vault format is stable markdown |
-| Spekificity custom layer | `git pull` + re-copy skills | Re-copy to `.agents/skills/` |
+The docs in this repository consistently assume:
 
-See [workflows/component-update.md](workflows/component-update.md) for full update procedures.
-
----
+- the enriched command surface uses `spek.*`
+- Spekificity wraps SpecKit rather than forking it
+- durable knowledge lives in markdown, not opaque runtime state
+- code intelligence should come from indexed graph tooling rather than repeated file scans
+- post-feature lessons are part of the system, not optional afterthoughts
 
 ## Constitution
 
-This project is governed by [.specify/memory/constitution.md](.specify/memory/constitution.md).  
-Core principles: Skills-not-code · Decorator pattern · Modular independence · Graph-first context · Token efficiency by design.
+Project principles are governed by [.specify/memory/constitution.md](.specify/memory/constitution.md).
