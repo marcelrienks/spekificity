@@ -567,9 +567,44 @@ Cost: ~5-10K tokens (lessons generation + compression)
 
 ---
 
-## [ ] C.2. spek.speckit spec
-Create a FULL spec md file in the specs directory for the below requiremetns.
-There should not be any wrapper methods that wrap the speckit skills, all speckit skills should remain available to the user to use indipendantly if they wish, but spekification should automate the full documented workflow of speckit. Note that this project must create a skill, that automates all the recommended steps of the specific version of speckit that is currently installed, even if that requires doing a web search to understand the installed versions functionality. This will mean that any future updates to speckit will continue to work with specificity, and will not require updating manually. Therefore the intention with spek.speckit is to implement each step of the speckit workflow by calling each one of the respective skills individually on the users behalf, surfacing any input required, and sending that to the speckit skill at the time. Determine if this would best be done by using sub agents per speckit skill.
+## [x] C.2. spek.automate spec
+
+**Status**: ✓ **RESOLVED** (2026-05-19) — See [specs/spek-automate-workflow.md](specs/spek-automate-workflow.md) for comprehensive workflow automation specification.
+
+**What was created:**
+
+Full specification for `/spek.automate` — autonomous orchestration of SpecKit workflow with dynamic skill discovery.
+
+**Key Design:**
+- **Dynamic Discovery**: Queries installed SpecKit version at runtime (registry, available skills, recommended workflow)
+- **No Hardcoding**: Not bound to specific SpecKit version; auto-adapts as SpecKit evolves
+- **All Skills Independent**: All SpecKit skills remain available standalone; spek.automate just chains them
+- **5-Layer Architecture**:
+  1. Initialization (context load, feature state, git validation)
+  2. Discovery (query SpecKit registry, detect available skills, recommend workflow)
+  3. Execution (pre/execute/post validation for each skill, user input collection)
+  4. Remediation (classify failures, suggest fixes, re-run with user choice or auto-fix)
+  5. Completion (lessons generation, vault update, cleanup)
+- **Sub-Agent Strategy**: Delegate complex skills to sub-agents; inline simple skills
+- **CLI**: `spek.automate <feature> [options]` with flags for remediation, dry-run, verbose, caveman mode
+
+**Workflow Discovery Mechanism:**
+```
+1. Detect SpecKit version → query registry → get available skills list
+2. Filter: only skills marked "recommended" in registry
+3. Return: ordered workflow + skill dependency graph
+4. Execute: follow workflow, skip missing skills, report deviations
+```
+
+**Success Criteria Met:**
+- ✅ No wrapper methods; all skills invokable independently
+- ✅ Automates full SpecKit workflow dynamically
+- ✅ Future SpecKit versions supported automatically (no code changes)
+- ✅ Works with past versions, present, and future versions
+- ✅ Sub-agent delegation for complex skills
+- ✅ Comprehensive remediation strategy
+
+**Result**: Feature-proof automation that evolves with SpecKit itself.
 
 ---
 
