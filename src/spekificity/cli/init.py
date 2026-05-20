@@ -1,10 +1,10 @@
 """
 Spekificity initialization command.
 
-Handles post-install setup:
-- Install external dependencies (SpecKit, CodeGraph, Obsidian integration)
-- Initialize project structure
-- Run SpecKit initialization
+Handles project setup:
+- Create project directories (.cel, .memories, wiki)
+- Initialize CodeGraph database
+- Initialize SpecKit (if available)
 """
 
 import subprocess
@@ -28,32 +28,6 @@ def is_tool_available(tool_name: str) -> bool:
     return result.returncode == 0
 
 
-def install_tool_via_uv(tool_name: str, package_url: Optional[str] = None) -> bool:
-    """Install a tool via uv tool install."""
-    try:
-        logger.info(f"Installing {tool_name}...")
-        
-        if package_url:
-            cmd = ["uv", "tool", "install", tool_name, "--from", package_url]
-        else:
-            cmd = ["uv", "tool", "install", tool_name]
-        
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-        
-        if result.returncode == 0:
-            logger.info(f"✓ {tool_name} installed successfully")
-            return True
-        else:
-            logger.warning(f"Failed to install {tool_name}: {result.stderr}")
-            return False
-    except subprocess.TimeoutExpired:
-        logger.warning(f"Timeout installing {tool_name}")
-        return False
-    except Exception as e:
-        logger.warning(f"Error installing {tool_name}: {e}")
-        return False
-
-
 def ensure_celdir() -> None:
     """Ensure .cel directory exists."""
     CEL_DIR.mkdir(parents=True, exist_ok=True)
@@ -61,7 +35,12 @@ def ensure_celdir() -> None:
 
 
 def initialize_speckit(cwd: Optional[Path] = None) -> bool:
-    """Initialize SpecKit in current directory."""
+    """
+    Run SpecKit initialization in current directory.
+    
+    Note: This requires SpecKit (specify-cli) to already be installed.
+    If not available, skips gracefully with instructions.
+    """
     try:
         logger.info("Initializing SpecKit...")
         
@@ -70,11 +49,10 @@ def initialize_speckit(cwd: Optional[Path] = None) -> bool:
         
         # Check if specify is available
         if not is_tool_available("specify"):
-            logger.warning("SpecKit (specify) not found. Attempting installation...")
-            if not install_tool_via_uv("specify-cli", "git+https://github.com/github/spec-kit.git"):
-                logger.warning("Could not install SpecKit. You can install it manually with:")
-                logger.warning("  uv tool install specify-cli --from git+https://github.com/github/spec-kit.git")
-                return False
+            logger.info("ℹ SpecKit (specify) not found in PATH. Skipping SpecKit initialization.")
+            logger.info("  To enable SpecKit features, install with:")
+            logger.info("  uv tool install specify-cli --from git+https://github.com/github/spec-kit.git")
+            return True  # Not an error, just optional
         
         # Run specify init
         result = subprocess.run(
@@ -182,7 +160,10 @@ def execute(
     - Creates .memories directory for memory persistence
     - Creates wiki directory for documentation
     - Initializes CodeGraph database
-    - Initializes SpecKit (if available)
+    - Runs 'specify init .' if SpecKit is installed
+    
+    SpecKit (specify-cli) must be installed separately:
+        uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
     
     Typically run once after: uv tool install spekificity --from [github-url]
     """
