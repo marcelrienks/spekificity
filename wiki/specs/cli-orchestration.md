@@ -9,7 +9,7 @@
 
 ## Overview
 
-The CLI is the user-facing entry point to Spekificity. It orchestrates all workflow skills (`/spek.prepare`, `/spek.specify`, `/spek.plan`, `/spek.tasks`, `/spek.implement`, `/spek.post`, `/spek.map`) and manages feature state across the entire feature lifecycle.
+The CLI is the user-facing entry point to Spekificity. `spek automate` is the primary orchestration command for pre-implementation flow, `spek implement` is the primary execution command after review, and support commands such as `spek prepare`, `spek context`, `spek map`, `spek post`, and `spek lessons` remain user-facing while also being callable internally when needed.
 
 **Scope:**
 - Entry points and command routing
@@ -71,7 +71,7 @@ spek prepare [options]
 **Output:**
 - Feature state initialized
 - Context loaded and available
-- Ready for `/spek.specify`
+- Ready for `/spek.automate`
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
 
@@ -79,12 +79,12 @@ spek prepare [options]
 
 ---
 
-### 2. `spek specify` — Create Specification
+### 2. `spek automate` — Orchestrate SpecKit Workflow
 
-**Purpose:** Generate feature specification from natural language description.
+**Purpose:** Orchestrate the pre-implementation workflow from feature description through approved task list.
 
 ```bash
-spek specify [options]
+spek automate [options]
   --feature-name <name>       # Feature name (auto-loaded from feature state if omitted)
   --description <text>        # Feature description (interactive if not provided)
   --dry-run                   # Preview spec, don't write
@@ -93,74 +93,29 @@ spek specify [options]
 **Behavior:**
 1. Validate feature state exists (must run `/spek.prepare` first)
 2. Get feature description (interactive or from `--description`)
-3. Call `/speckit.specify` with context + description
-4. Write spec to `specs/spec.md`
-5. Update feature state (`current-feature.md`)
+3. Load or refresh project context required for orchestration
+4. Call `/speckit.specify`
+5. Call `/speckit.clarify` if needed
+6. Call `/speckit.plan`
+7. Call `/speckit.analyze` and surface findings
+8. Support in-place remediation loop when findings require changes
+9. Call `/speckit.tasks`
+10. Update feature state (`current-feature.md`)
 
 **Output:**
 - `specs/spec.md` created/updated
-- Feature state updated (specify complete)
-- Ready for `/spek.plan`
-
-**Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
-
-**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [Specify Enrichment](specify-enrichment.md)
-
----
-
-### 3. `spek plan` — Create Implementation Plan
-
-**Purpose:** Generate implementation plan from specification.
-
-```bash
-spek plan [options]
-  --dry-run                   # Preview plan, don't write
-```
-
-**Behavior:**
-1. Validate feature state and spec exists
-2. Call `/speckit.plan` with spec + context
-3. Write plan to `specs/plan.md`
-4. Update feature state
-
-**Output:**
 - `specs/plan.md` created/updated
-- Feature state updated (plan complete)
-- Ready for `/spek.tasks`
-
-**Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
-
-**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [Plan Enrichment](plan-enrichment.md)
-
----
-
-### 4. `spek tasks` — Generate Task List
-
-**Purpose:** Generate actionable, dependency-ordered tasks from plan.
-
-```bash
-spek tasks [options]
-  --dry-run                   # Preview tasks, don't write
-```
-
-**Behavior:**
-1. Validate feature state, spec, and plan exist
-2. Call `/speckit.tasks` with plan + context
-3. Write tasks to `specs/tasks.md`
-4. Update feature state
-
-**Output:**
 - `specs/tasks.md` created/updated
-- Feature state updated (tasks complete)
+- Feature state updated (automation complete)
 - Ready for `/spek.implement`
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
 
-**Related:** [Speckit Integration Contract](speckit-integration-contract.md)
+**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [spek.automate Workflow](spek-automate-workflow.md)
 
 ---
 
-### 5. `spek implement` — Execute Tasks
+### 3. `spek implement` — Execute Tasks
 
 **Purpose:** Execute implementation tasks from task list.
 
@@ -190,7 +145,7 @@ spek implement [options]
 
 ---
 
-### 6. `spek post` — Archive and Persist
+### 4. `spek post` — Archive and Persist
 
 **Purpose:** Extract lessons, update vault, archive feature state.
 
@@ -224,7 +179,7 @@ spek post [options]
 
 ---
 
-### 7. `spek map` — Refresh Code Graph
+### 5. `spek map` — Refresh Code Graph
 
 **Purpose:** Generate or update code graph (code + documentation index).
 
@@ -253,7 +208,7 @@ spek map [options]
 
 ---
 
-### 8. `spek context` — Load Context
+### 6. `spek context` — Load Context
 
 **Purpose:** Load vault decisions, patterns, lessons, and code graph into session memory.
 
@@ -286,9 +241,7 @@ spek context [options]
 
 ```
 [IDLE] → /spek.prepare → [PREPARED]
-[PREPARED] → /spek.specify → [SPECIFIED]
-[SPECIFIED] → /spek.plan → [PLANNED]
-[PLANNED] → /spek.tasks → [TASKED]
+[PREPARED] → /spek.automate → [TASKED]
 [TASKED] → /spek.implement → [IMPLEMENTED]
 [IMPLEMENTED] → /spek.post → [ARCHIVED]
 [ARCHIVED] → (ready for next feature)
@@ -312,11 +265,9 @@ Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
 | Step | Command | Status | Timestamp | Output |
 |------|---------|--------|-----------|--------|
 | 1 | /spek.prepare | ✓ COMPLETE | 2026-05-19 10:00:15 | Context loaded |
-| 2 | /spek.specify | ✓ COMPLETE | 2026-05-19 10:05:22 | spec.md (234 lines) |
-| 3 | /spek.plan | ✓ COMPLETE | 2026-05-19 10:12:45 | plan.md (412 lines) |
-| 4 | /spek.tasks | ✓ COMPLETE | 2026-05-19 10:18:30 | tasks.md (8 tasks) |
-| 5 | /spek.implement | ✓ COMPLETE | 2026-05-19 15:30:22 | 24 files modified, 1200 lines added |
-| 6 | /spek.post | ⏳ PENDING | — | Ready to run |
+| 2 | /spek.automate | ✓ COMPLETE | 2026-05-19 10:18:30 | spec.md, plan.md, tasks.md |
+| 3 | /spek.implement | ✓ COMPLETE | 2026-05-19 15:30:22 | 24 files modified, 1200 lines added |
+| 4 | /spek.post | ⏳ PENDING | — | Ready to run |
 
 ## Artifacts
 

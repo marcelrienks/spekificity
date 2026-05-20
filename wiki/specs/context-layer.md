@@ -149,12 +149,12 @@ def wrapped_speckit_command(command, args, **kwargs):
 
 ### Context Injection Points
 
-**For `/spek.specify`:**
+**For `/spek.automate` specify phase:**
 - Recent decisions (to guide spec toward existing constraints)
 - Recent patterns (to suggest proven approaches)
 - Code graph (to understand what code already exists)
 
-**For `/spek.plan`:**
+**For `/spek.automate` plan phase:**
 - Recent decisions + patterns (same as specify)
 - Code graph + impact analysis (which code modules will be affected)
 - Architecture patterns (decorator, separation of concerns, etc.)
@@ -213,10 +213,10 @@ Session Start
   │     └─ Write /memories/session/context-loaded.md
   │     └─ Inject into agent memory
   │
-  ├─ /spek.specify (Use injected context)
+  ├─ /spek.automate (specify phase uses injected context)
   │  └─ Decisions + Patterns guide spec generation
   │
-  ├─ /spek.plan (Use injected + fresh context)
+  ├─ /spek.automate (plan phase uses injected + fresh context)
   │  └─ Re-inject context (might have changed)
   │  └─ Decisions + Patterns + Code graph guide plan
   │
@@ -248,8 +248,8 @@ context_layer:
   
   # Context injection points
   inject_into:
-    specify: true      # Inject for /spek.specify?
-    plan: true         # Inject for /spek.plan?
+    specify: true      # Inject for /spek.automate specify phase?
+    plan: true         # Inject for /spek.automate plan phase?
     implement: true    # Inject for /spek.implement?
   
   # Refresh strategy
@@ -304,8 +304,8 @@ context_layer:
 - [context-load-lifecycle.md](context-load-lifecycle.md) — How context is loaded
 - [session-memory.md](session-memory.md) — Where session context is stored
 - [decorator-wrapper-pattern.md](decorator-wrapper-pattern.md) — Pattern for injection
-- [specify-enrichment.md](specify-enrichment.md) — Uses context in /spek.specify
-- [plan-enrichment.md](plan-enrichment.md) — Uses context in /spek.plan
+- [specify-enrichment.md](specify-enrichment.md) — Uses context in `/spek.automate` specify phase
+- [plan-enrichment.md](plan-enrichment.md) — Uses context in `/spek.automate` plan phase
 
 **External:**
 - [extracted spec Context Layer](speckit-integration-contract.md#layer-1-context-layer-spekcontext) — Original spec

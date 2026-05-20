@@ -10,7 +10,7 @@
 
 Spekificity consolidates existing best-in-class tools to solve four foundational LLM agent problems:
 
-1. **Token Efficiency and Verbosity** — Replace file scans with graph queries; compress outputs 60%+
+1. **Token Efficiency and Verbosity** — Replace file scans with graph queries; compress outputs substantially
 2. **Planning and Determinism** — Enforce canonical workflows; ground plans in code reality
 3. **Memory Persistence** — Store decisions, lessons, patterns; survive session boundaries
 4. **Autonomy** — Enable agents to operate independently without constant developer hand-holding
@@ -35,8 +35,8 @@ Spekificity consolidates existing best-in-class tools to solve four foundational
 - ✅ Orchestrate tool installation + setup (→ 1-command init)
 - ✅ Wire chosen tools into a coherent, deterministic workflow
 - ✅ Automate handoff between stages with context injection (spec → plan → tasks → implement)
-- ✅ Replace file scanning with indexed graph queries (92% token reduction)
-- ✅ Compress verbose outputs at each stage (60%+ reduction)
+- ✅ Replace file scanning with indexed graph queries where possible
+- ✅ Compress verbose outputs at each stage
 - ✅ Capture outcomes back to persistent knowledge base (lessons learned)
 - ✅ Maintain project memory across sessions (AI agent loads full context at start)
 - ✅ Enable agent autonomy (code questions answered without dev context injection)
@@ -102,18 +102,12 @@ spekificity init
 **User:** "Implement user authentication system"
 
 **Agent Workflow:**
-1. `/context-load` → Load vault (code map + recent lessons) into session
-2. `/speckit-enrich-specify` → Spec-first clarification
+1. `/spek.automate` → Load vault + code context, then orchestrate SpecKit through specification, clarification, planning, analysis, remediation, and tasks
    - Injects context: related code modules, prior decisions, lessons from similar features
-   - Generates: `specs/<feature>/spec.md`
-3. `/speckit-enrich-plan` → Architecture planning
-   - Injects context: component impact map, affected test files, integration points
-   - Generates: `specs/<feature>/plan.md`
-4. `/speckit.tasks` → Actionable task breakdown
-   - Tool-agnostic task generation
-   - Generates: `specs/<feature>/tasks.md` (dependency-ordered)
-5. `/speckit-enrich-implement` → Execution with context
-   - Agent executes all tasks with code map + spec + plan in scope
+   - Generates: `specs/<feature>/spec.md`, `specs/<feature>/plan.md`, `specs/<feature>/tasks.md`
+2. Human reviews generated artifacts and any analyze findings
+3. `/spek.implement` → Execution with context
+   - Agent executes approved tasks with code map + spec + plan in scope
    - Auto-syncs code changes to code analysis tool
    - Auto-captures execution trace
 
@@ -202,7 +196,7 @@ Spekificity doesn't build installers; it evaluates and chains existing ones + ad
 - Risk: Misses dependencies; repeats past mistakes; context is fragmented
 
 **With Spekificity:**
-- `/speckit-enrich-specify` automatically injects related components + lessons
+- `/spek.automate` automatically injects related components + lessons during specify/plan phases
 - Code map + vault are pre-indexed (fresh on session start)
 - Agent reads one document; gets full context
 
@@ -215,7 +209,7 @@ Spekificity doesn't build code analysis; it uses the chosen tool's index + prese
 - Process: grep, manual reading, hope nothing was missed
 
 **With Spekificity:**
-- `/speckit-enrich-implement` uses code analysis tool's impact detection
+- `/spek.implement` uses code analysis tool's impact detection
 - Impact is instant: "Changing `auth.jwt()` affects 47 call sites, including these tests"
 - Agent checks impact before implementing
 

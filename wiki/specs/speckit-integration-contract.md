@@ -11,12 +11,12 @@
 This contract defines how **spekificity** enriches the canonical **SpecKit** workflow. SpecKit is responsible for spec-driven feature development (constitution → specify → plan → tasks → implement). Spekificity adds three layers:
 
 1. **Context Layer** — Load vault context before starting feature (`/spek.context`)
-2. **Lifecycle Wrapper Layer** — Enrich speckit commands with context awareness (`/spek.specify`, `/spek.plan`, `/spek.implement`)
+2. **Workflow Orchestration Layer** — Use `/spek.automate` to orchestrate specify/clarify/plan/analyze/remediate/tasks, then `/spek.implement` for execution
 3. **Post-Processing Layer** — Extract lessons and update vault after feature end (`/spek.post`)
 
 The contract clarifies:
 - **Who owns what** (speckit vs. spekificity responsibilities)
-- **Integration pattern** (decorator wrapper, not hook/middleware)
+- **Integration pattern** (workflow orchestration plus targeted execution wrapper)
 - **Data flow** (artifacts, context, outputs)
 - **Error handling** (validation, retry, fallback)
 - **Configuration** (where settings live, precedence)
@@ -88,7 +88,7 @@ implement
 
 ---
 
-### Layer 2: Lifecycle Wrapper Layer
+### Layer 2: Workflow Orchestration Layer
 
 #### 2a. Feature Preparation (`/spek.prepare`)
 
@@ -113,12 +113,13 @@ implement
 
 ---
 
-#### 2b. Enriched Specify (`/spek.specify`)
+#### 2b. Automated Specify Phase (`/spek.automate`)
 
-**Pattern:** Decorator wrapper around `/speckit.specify`
+**Pattern:** Internal phase inside `/spek.automate`, wrapping `/speckit.specify`
 
 ```
-/spek.specify
+/spek.automate
+    └── specify phase
 ├── Load current context (/memories/session/context-loaded.md)
 ├── Inject context into speckit prompt (decisions, patterns, lessons)
 ├── Run /speckit.specify
@@ -149,12 +150,13 @@ implement
 
 ---
 
-#### 2c. Enriched Plan (`/spek.plan`)
+#### 2c. Automated Plan Phase (`/spek.automate`)
 
-**Pattern:** Decorator wrapper around `/speckit.plan`
+**Pattern:** Internal phase inside `/spek.automate`, wrapping `/speckit.plan`
 
 ```
-/spek.plan
+/spek.automate
+    └── plan phase
 ├── Load current context (/memories/session/context-loaded.md)
 ├── Read spec.md (validate freshness)
 ├── Inject context into speckit prompt
@@ -189,11 +191,11 @@ implement
 
 ---
 
-#### 2d. Enriched Tasks (`/speckit.tasks` — SpecKit canonical)
+#### 2d. Tasks Phase (`/speckit.tasks` inside `/spek.automate`)
 
 **Pattern:** Direct SpecKit command (no spekificity wrapper)
 
-Spekificity does NOT wrap `/speckit.tasks` because:
+`/spek.automate` calls `/speckit.tasks` directly because:
 - Task generation is fully SpecKit's responsibility
 - No architectural enrichment needed (context is already in plan.md)
 - Direct invocation simpler and more transparent
@@ -312,7 +314,7 @@ Spekificity does NOT wrap `/speckit.tasks` because:
 
 ### Layer 4: Orchestration (`/spek.automate`)
 
-**Purpose:** Run entire feature lifecycle in sequence (optional)
+**Purpose:** Run pre-implementation workflow in sequence, then hand off to `/spek.implement`
 
 **Pattern:** Sequential invocation with error handling
 
@@ -320,13 +322,12 @@ Spekificity does NOT wrap `/speckit.tasks` because:
 /spek.automate [--feature-name="..."] [--skip-clarify] [--skip-analyze]
 ├── /spek.context (load context)
 ├── /spek.prepare (verify workspace)
-├── /spek.specify (generate spec)
+├── /speckit.specify (generate spec)
 ├── /speckit.clarify (optional, if --skip-clarify not set)
-├── /spek.plan (generate plan)
-├── /speckit.tasks (generate tasks)
+├── /speckit.plan (generate plan)
 ├── /speckit.analyze (optional, if --skip-analyze not set)
-├── /spek.implement (run all tasks)
-└── /spek.post (extract lessons, update vault)
+├── remediate in-place if needed
+└── /speckit.tasks (generate tasks)
 ```
 
 **When to use:**
@@ -341,23 +342,23 @@ Spekificity does NOT wrap `/speckit.tasks` because:
 
 ---
 
-## Integration Pattern: Decorator Wrapper
+## Integration Pattern: Orchestrator + Targeted Wrapper
 
-Spekificity uses a **decorator wrapper** pattern for `/spek.specify`, `/spek.plan`, `/spek.implement`:
+Spekificity uses an orchestration pattern for `/spek.automate` and a targeted execution wrapper for `/spek.implement`:
 
 ```
-/spek.command
+/spek.automate
 ├── Pre-execution
 │   ├── Load context
 │   ├── Validate inputs
 │   ├── Inject enrichment
-└── Core execution
-    ├── Call /speckit.command
-    └── Capture output
-├── Post-execution
-    ├── Validate output
+├── Core workflow execution
+│   ├── Call /speckit.specify / clarify / plan / analyze / tasks
+│   └── Capture artifacts + findings
+└── Post-execution
+    ├── Validate outputs
     ├── Update memory
-    └── Report status
+    └── Hand off to /spek.implement
 ```
 
 **Why decorator, not hooks?**
@@ -418,7 +419,8 @@ User invokes: /spek.prepare
 
 ### Spec Generation
 ```
-User invokes: /spek.specify [feature description]
+User invokes: /spek.automate [feature description]
+├── Enter specify phase
 ├── Reads /memories/session/context-loaded.md
 ├── Injects context into speckit prompt
 ├── Calls /speckit.specify
@@ -432,7 +434,8 @@ User invokes: /spek.specify [feature description]
 
 ### Plan Generation
 ```
-User invokes: /spek.plan
+User remains inside /spek.automate
+├── Enter plan phase
 ├── Reads /memories/session/context-loaded.md
 ├── Reads spec.md (validates recency)
 ├── Queries vault/graph/nodes.jsonl (affected code)
@@ -520,13 +523,13 @@ User invokes: /spek.post
 **If spec generation fails:**
 1. Log error
 2. Suggest `/speckit.clarify` to refine inputs
-3. Retry `/spek.specify` with clarifications
+3. Retry specify phase inside `/spek.automate` with clarifications
 
 **If plan generation fails:**
 1. Log error
 2. Check if spec is too vague → suggest clarify
 3. Check if architecture is infeasible → suggest spec revision
-4. Retry `/spek.plan` with adjustments
+4. Retry plan phase inside `/spek.automate` with adjustments
 
 **If implementation fails:**
 1. Log failed task(s)
@@ -617,7 +620,7 @@ vault/
 
 ✅ **Clear responsibility division:** Each concern is owned by exactly one actor (SpecKit or Spekificity)
 
-✅ **Decorator pattern used:** All enriched commands follow pre/core/post structure
+✅ **Workflow pattern used:** `/spek.automate` owns orchestration; `/spek.implement` owns execution
 
 ✅ **Context flows through layers:** Context injected at each step, updated in session memory
 
@@ -635,8 +638,8 @@ vault/
 
 1. ✅ `/spek.context` loads and summarizes context (caveman format, 3-5K tokens)
 2. ✅ `/spek.prepare` verifies git state and graph freshness
-3. ✅ `/spek.specify` injects context, calls speckit, validates output
-4. ✅ `/spek.plan` injects context + code graph, calls speckit, validates output
+3. ✅ `/spek.automate` specify phase injects context, calls speckit, validates output
+4. ✅ `/spek.automate` plan phase injects context + code graph, calls speckit, validates output
 5. ✅ `/speckit.tasks` generates tasks without spekificity wrapper
 6. ✅ `/spek.implement` calls speckit, collects artifacts, updates memory
 7. ✅ `/spek.post` generates lessons, updates vault, syncs to repo memory
@@ -657,9 +660,9 @@ vault/
 - [Canonical workflow](../wiki/speckit-workflow.md#canonical-workflow)
 
 **Spekificity skill definitions:**
-- [/spek.context skill](../wiki/skills/spek-context.md) (to be created in extracted spec)
-- [/spek.prepare skill](../wiki/skills/spek-prepare.md) (defined in B.2)
-- [/spek.post skill](../wiki/skills/spek-post.md) (defined in B.2)
+- [/spek.context spec](context-layer.md)
+- [/spek.prepare spec](prepare-command.md)
+- [/spek.post spec](post-command.md)
 
 **Architectural decisions:**
 - Decorator pattern over hook system (this spec)

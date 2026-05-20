@@ -20,7 +20,7 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 
 #### Comparison: Graphify vs CodeGraph
 
-**Graphify (Current Implementation)**
+**Graphify (Legacy / Transition Reference)**
 
 | Aspect | Evaluation |
 |--------|-----------|
@@ -38,11 +38,11 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 |--------|-----------|
 | Purpose | Pre-indexed code intelligence for agents |
 | Output | SQLite graph + MCP tools |
-| Agent Experience | Instant tool calls (92% fewer tokens, 77% faster) |
+| Agent Experience | Instant tool calls with order-of-magnitude token reduction and faster queries |
 | Impact Analysis | Built-in (`codegraph_impact`, `codegraph_callers`) |
 | Sync | Automatic (file watcher, debounced) |
 | Setup | Medium (init + MCP config) |
-| Framework Support | 13+ frameworks (routing detection) |
+| Framework Support | Broad framework support (including routing detection) |
 | **Fit for Agent Workflows** | **9/10** (built for this use case) |
 
 #### The Critical Difference
@@ -180,7 +180,7 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Tool | Type | Popularity | Fit | Token Savings | Notes |
 |------|------|-----------|-----|---------------|-------|
-| **Caveman (recommended)** | Compression | Medium | 9/10 | 60%+ | Simple notation; preserves code; tested with Claude Code |
+| **Caveman (recommended)** | Compression | Medium | 9/10 | substantial | Simple notation; preserves code; used in agent workflows |
 | Squeez | Compression | Low | 7/10 | 70%+ | Rust-based; multi-CLI support; self-teaching protocol; zero deps |
 | contextzip | Compression | Low | 6/10 | 60-90% | CLI-focused; stdout compression; session history coming |
 | clipforge-PAKT | Compression | Low | 5/10 | 50%+ | Lossless for JSON/YAML; library + CLI + MCP + browser extension |
@@ -196,14 +196,14 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Tool | Type | Popularity | Fit | Determinism | Notes |
 |------|------|-----------|-----|-------------|-------|
-| **SpecKit/Specify (recommended)** | Spec Framework | **High** | 10/10 | YAML-first; enforces spec→plan→tasks | GitHub's official tool; most active community; battle-tested |
+| **SpecKit/Specify (recommended)** | Spec Framework | **High** | 10/10 | YAML-first; enforces spec→plan→tasks | GitHub's official tool; active ecosystem; broad adoption |
 | SDD Pilot | Spec Framework | Medium | 8/10 | Spec-driven phases + quality gates | VSCode + Windsurf support; strong quality gates; enforces phases |
 | FSPEC | Spec Framework | Low | 7/10 | Multi-agent factory; DDD/BDD support | TDD/DDD/BDD focus; example mapping; guardrails; newer |
 | spec-driven-steroids | Spec Framework | Low | 6/10 | Simple toolkit; native AI tool integration | Focus on CLI discipline; minimal overhead; less documented |
 | Paul (Plan-Apply-Unify Loop) | Framework | Low | 7/10 | Plan-Apply-Unify; quality-over-speed | Claude Code native; roundtable-style; newer |
 | spec2ship | Spec Framework | Low | 6/10 | Multi-agent; roundtable collaboration | Claude Code focus; social/collaborative; emerging |
 
-**Recommendation:** Use `SpecKit/Specify` for planning & determinism. Highest ecosystem maturity, most features, largest community. Alternatives (SDD Pilot, FSPEC) target specific niches (quality gates, DDD) but require more specialized setup.
+**Recommendation:** Use `SpecKit/Specify` for planning & determinism. Strong ecosystem maturity, broad feature coverage, and active maintenance. Alternatives (SDD Pilot, FSPEC) target specific niches (quality gates, DDD) but require more specialized setup.
 
 ---
 
@@ -221,7 +221,7 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | Draft | Chrome Extension | Low | 5/10 | Capture AI chats into KB; cloud | Browser-only; cloud-dependent; not ideal for offline/local |
 | TidGi-Desktop | Vault | Low | 7/10 | TiddlyWiki + git-backup + REST API | Git-backed; web-clipper; Anki connect; less common; Qt-based |
 
-**Recommendation:** Use `Obsidian` for memory persistence. Unmatched ecosystem for PKM; markdown portable; git versioning standard. Alternatives (Basic Memory, SilverBullet) offer better agent integration (MCP) or richer features (scripting); evaluate based on project needs.
+**Recommendation:** Use `Obsidian` for memory persistence. Large PKM ecosystem, portable markdown, and standard git versioning make it a practical baseline. Alternatives (Basic Memory, SilverBullet) offer better agent integration (MCP) or richer features (scripting); evaluate based on project needs.
 
 ---
 
@@ -231,14 +231,14 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Tool | Type | Popularity | Fit | Autonomy | Notes |
 |------|------|-----------|-----|----------|-------|
-| **CodeGraph (recommended)** | Code Analysis | Medium | 10/10 | MCP tools; instant; 155 languages; framework-aware | Purpose-built for agents; 99% fewer tokens; 77% faster; SQLite graph |
-| codebase-memory-mcp | Code Analysis | Low | 9/10 | MCP server; persistent knowledge graph; zero deps | 155 languages; sub-ms queries; high-performance; Cypher support |
+| **CodeGraph (recommended)** | Code Analysis | Medium | 10/10 | MCP tools; fast; broad language support; framework-aware | Strong fit for agent workflows; lower token cost; faster queries; SQLite graph |
+| codebase-memory-mcp | Code Analysis | Low | 9/10 | MCP server; persistent knowledge graph; zero deps | Broad language support; fast queries; high-performance; Cypher support |
 | Joern | Code Analysis | Medium | 7/10 | Code property graph; multi-language; dataflow | Academic-grade; C/C++/Java focus; more complex; strong dataflow |
 | Pylance | Code Analysis | **High** | 6/10 | Python-specific; language server; fast | Python community standard; not agent-optimized; limited to Python |
 | Graphify | Code Analysis | Low | 5/10 | Markdown vault output; human-browsable | Legacy; outputs readable docs; inefficient for agent queries |
 | codeflow | Visualization | Low | 4/10 | Browser-based; D3.js visualization; GitHub-linked | Great for humans; not agent-efficient; one-off analysis |
 
-**Recommendation:** Use `CodeGraph` for autonomy & code understanding. Purpose-built for agent workflows with instant queries and impact analysis. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) for high-performance scenarios.
+**Recommendation:** Use `CodeGraph` for autonomy & code understanding. It fits agent workflows well through fast queries and impact analysis. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) for high-performance scenarios.
 
 ---
 
@@ -249,9 +249,9 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | Pillar | Tool | Fit | Rationale |
 |--------|------|-----|-----------|
 | Token Efficiency | Caveman | 9/10 | Simple notation; preserves code; tested across tools |
-| Determinism | SpecKit/Specify | 10/10 | YAML-first; GitHub official; battle-tested |
+| Determinism | SpecKit/Specify | 10/10 | YAML-first; GitHub official; broadly adopted |
 | Persistence | Obsidian | 10/10 | Largest PKM community; markdown portable; git-backed |
-| Autonomy | CodeGraph | 10/10 | Purpose-built for agents; 99% fewer tokens; instant queries |
+| Autonomy | CodeGraph | 10/10 | Strong fit for agent workflows; lower token cost; fast queries |
 
 **Installation for New Projects:**
 
@@ -337,9 +337,9 @@ Each tool rated on:
 
 **Spekificity's recommended toolset balances popularity, maturity, and cost-effectiveness:**
 - `Caveman` — sufficient compression; mature; no setup friction
-- `SpecKit/Specify` — industry standard; battle-tested; largest community
+- `SpecKit/Specify` — strong baseline; active ecosystem; broad community adoption
 - `Obsidian` — de facto PKM standard; markdown portable; proven at scale
-- `CodeGraph` — purpose-built for agents; recommended for teams doing frequent cycles
+- `CodeGraph` — strong fit for agent workflows; recommended for teams doing frequent cycles
 
 **Alternatives exist for each pillar; use matrix above to evaluate against your constraints.**
 - **Projects that need both intent + structure understanding**

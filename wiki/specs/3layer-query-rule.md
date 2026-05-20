@@ -3,7 +3,7 @@
 **Status:** Specification  
 **Priority:** MUST (Phase 1)  
 **Effort:** 2-3 hours  
-**Adoption Source:** B.9 (claude-code-memory-setup, 71.5x token savings validated)
+**Adoption Source:** B.9 (claude-code-memory-setup, cited as motivation for large token savings)
 
 ---
 
@@ -14,9 +14,9 @@ Document and enforce the **3-Layer Query Rule** — a token-efficient context lo
 2. Falls back to **vault** (searchable, compiled summaries)
 3. Only reads **raw code files** when layers 1-2 insufficient
 
-**Goal:** Reduce token usage by ~20x when context loading is done correctly, preventing expensive re-reads of code files.
+**Goal:** Reduce token usage materially when context loading is done correctly, preventing expensive re-reads of code files.
 
-**Validated Result:** 71.5x token savings in real-world usage (claude-code-memory-setup, 659⭐).
+**Reference Motivation:** external examples report large savings in real-world usage; exact results should be treated as directional unless validated locally.
 
 ---
 
@@ -477,6 +477,6 @@ When loading session context:
 
 ## References
 
-- **Production Source:** https://github.com/lucasrosati/claude-code-memory-setup (71.5x token savings validated, 659⭐)
+- **Production Source:** https://github.com/lucasrosati/claude-code-memory-setup (external reference for large token-savings patterns)
 - **Cost Analysis:** Based on real-world token measurements from session data
 - **Query Patterns:** Derived from successful context loading patterns in Obsidian + graphify workflows

@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION  
 **Type:** Memory Layer 2 — Patterns Library  
 **Depends On:** lessons-format.md  
-**Used By:** /spek.context (read at session start), /spek.plan (suggest patterns during planning)  
+**Used By:** /spek.context (read at session start), `/spek.automate` plan phase (suggest patterns during planning)  
 
 ---
 
@@ -188,7 +188,7 @@ Step 2: Test each layer independently
 
 **References:**
 - Features: spec-002 (SpecKit integration), spec-003 (full CLI)
-- Code: .spekificity/skills/spek-specify.md (decorator structure)
+- Related specs: speckit-integration-contract.md, specify-enrichment.md
 - Lesson: vault/lessons/2026-05-18-003-*.md#implementation
 ```
 
@@ -245,7 +245,7 @@ Step 6: Extract patterns → refine vault/patterns.md
 
 **References:**
 - Features: spec-001, spec-002, spec-003
-- Code: .spekificity/skills/spek-post.md (lesson generation)
+- Workflow spec: prepare-and-post-skills.md / post-command.md (lesson generation path)
 - Lesson template: specs/lessons-format.md
 ```
 
@@ -358,7 +358,7 @@ grep "Patterns Applied" vault/lessons/2026-05-18-003-*.md
 - Load pattern index from /memories/repo/patterns-index.md
 - Include recent patterns in context briefing
 
-**During planning (`/spek.plan`):**
+**During planning (`/spek.automate` plan phase):**
 - Query vault/patterns.md for patterns applicable to current feature
 - Suggest patterns in plan generation prompt
 
@@ -390,7 +390,7 @@ Pattern index is loaded at session start and included in context briefing for ag
 
 ### Plan Enrichment (plan-enrichment.md)
 
-Recent patterns are injected into `/spek.plan` prompts to guide architecture decisions toward proven approaches.
+Recent patterns are injected into `/spek.automate` plan prompts to guide architecture decisions toward proven approaches.
 
 ---
 
@@ -413,7 +413,7 @@ Recent patterns are injected into `/spek.plan` prompts to guide architecture dec
 - [ ] Implement pattern index sync to /memories/repo/
 - [ ] Update /spek.context to load recent patterns
 - [ ] Add pattern query patterns to wiki guide
-- [ ] Inject patterns into /spek.plan prompts
+- [ ] Inject patterns into `/spek.automate` plan prompts
 
 ---
 

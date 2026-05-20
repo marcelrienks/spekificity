@@ -78,8 +78,8 @@ post: completing (100%)
 - New feature file with initialized status
 
 **Update:** Each command completion
-- /spek.specify → specifying (25%)
-- /spek.plan → planning (50%)
+- /spek.automate specify phase → specifying (25%)
+- /spek.automate plan phase → planning (50%)
 - /spek.implement → implementing (75%)
 - /spek.post → completing (100%)
 

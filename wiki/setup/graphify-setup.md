@@ -2,6 +2,8 @@
 
 **Companion to:** [obsidian-setup.md](obsidian-setup.md), [speckit-setup.md](speckit-setup.md)
 
+**Status:** legacy / transition reference. [wiki/decision.md](../decision.md) recommends **CodeGraph** as the primary code analysis tool for Spekificity. Keep this guide for teams that explicitly choose Graphify or need a simpler interim setup until dedicated CodeGraph setup docs are written.
+
 This guide walks through installing and configuring Graphify (code graph indexing) for Spekificity.
 
 ---
@@ -17,10 +19,12 @@ This guide walks through installing and configuring Graphify (code graph indexin
 - Outputs multiple formats: JSON (queryable), HTML (interactive visualization), JSONL (agent-readable)
 - Integrates with git hooks for automatic refresh on commits
 
-**Why Spekificity uses it:**
+**Why some Spekificity setups still use it:**
 - Context injection: Recent code changes inform feature specifications
 - Impact analysis: Understand which modules are affected by changes
 - Token efficiency: 3-layer query strategy (graph → vault → code) reduces tokens by 20x
+
+**Primary recommendation:** If you are following the current baseline tool decisions, prefer CodeGraph for day-to-day agent workflows and treat Graphify as fallback or migration path.
 
 ---
 
@@ -291,7 +295,7 @@ graphify . --full  # Full rebuild
 - Incremental sync for changed files (Step 6)
 - Graph updated with new/modified symbols
 
-**In `/spek.specify` & `/spek.plan`:**
+**In `/spek.automate` specify/plan phases:**
 - Recent changes injected into specs
 - Impact analysis provided
 - Related modules identified

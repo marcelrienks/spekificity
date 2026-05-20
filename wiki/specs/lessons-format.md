@@ -133,11 +133,11 @@ Architecture decisions:
 
 Key patterns:
 - Decorator wrapper (pre/core/post layers)
-- Graph-based context queries (92% fewer tokens vs file reads)
+- Graph-based context queries (order-of-magnitude token reduction vs repeated file reads)
 - Incremental update (SHA256 caching; only changed files re-indexed)
 
 Implementation:
-1. Define decorator pattern for /spek.specify, /spek.plan, /spek.implement
+1. Define orchestration/enrichment pattern for `/spek.automate` phases and `/spek.implement`
 2. Implement /spek.context loader (vault → session memory)
 3. Implement /spek.prepare + /spek.post workflows
 4. Integrate graphify + Obsidian export into /spek.map
@@ -210,7 +210,7 @@ Tech stack:
 ## Patterns Identified or Reused
 
 **Reused Patterns:**
-- Decorator Wrapper: Applied to /spek.specify, /spek.plan, /spek.implement (context injection pattern from prior features)
+- Workflow Enrichment: Applied to `/spek.automate` phases and `/spek.implement` (context injection pattern from prior features)
 - Three-Layer Memory: Applied to vault/repo/session layers (from claude-code-memory-setup reference)
 - Incremental Updates: Applied to graph refresh via SHA256 caching (proven in feature 002)
 
@@ -268,7 +268,7 @@ Tech stack:
 ## Metrics
 
 **Execution Metrics:**
-- Token Efficiency: 71.5x reduction via decorator pattern + memory layering
+- Token Efficiency: meaningful reduction via decorator pattern + memory layering
 - Execution Time: 45 min feature cycle vs. 90 min (previous approach)
 - Code Quality: 85% test coverage, 0 critical bugs
 - Documentation: 12 specs created, 1200 LOC docs

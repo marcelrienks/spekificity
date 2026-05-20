@@ -1,8 +1,8 @@
 ---
-last_deep_read: 2026-05-19T16:15:52Z
+last_deep_read: 2026-05-20T04:57:07Z
 version: 5.0
 scan_status: full
-changes_detected: cache miss; hash inventory refreshed for README plus 56 wiki markdown files; new wiki/specs docs added; multiple context and workflow docs changed
+changes_detected: cache miss; root README changed; hash inventory refreshed for README plus 56 wiki markdown files
 tracked_files: 57
 tracked_wiki_files: 56
 ---
@@ -20,7 +20,7 @@ Spekificity is agentic consolidation platform. Goal: solve four recurring LLM ag
 | context loss | persistent vault for decisions, patterns, lessons |
 | low autonomy | reusable project memory + graph-grounded context so agent works with less developer steering |
 
-Project ships mostly as markdown skills, specs, workflows, and setup guides that AI agents can read and execute directly. Core posture across docs: built for AI-agent operation, with developer as supervisor rather than manual context injector.
+Repository is documentation-first. It defines operating model, command surface, setup, and implementation contracts for future Spekificity runtime rather than shipping finished CLI in this tree.
 
 ## architecture and tech stack
 
@@ -31,7 +31,7 @@ Project ships mostly as markdown skills, specs, workflows, and setup guides that
 - Obsidian-style vault: markdown knowledge store for decisions, patterns, lessons, research.
 - CodeGraph: preferred code intelligence backend for agent queries; SQLite/MCP style indexed graph.
 - Caveman: compression mode for token efficiency at each workflow stage.
-- CLI shell layer: `.spekificity/bin/spek` plus helper scripts for setup, prepare, automate, post.
+- CLI shell layer: planned `spek` command surface for setup, context load, workflow automation, and post-processing.
 
 ### architecture model
 
@@ -47,13 +47,6 @@ Key design principles:
 - Prefer markdown contracts and AI-executable guides over custom binaries.
 - Make token efficiency first-class, not cleanup work.
 - Keep global tool installs separate from per-project skills and config.
-
-### notable implementation surfaces
-
-- `.spekificity/bin/spek`: user-facing entry point for setup/init/status/update automation.
-- `.spekificity/bin/prepare.sh`, `automate.sh`, `post.sh`, `_lib.sh`: workflow orchestration and shared state helpers.
-- `.github/agents/` and skill markdown files: agent routing and behavior.
-- `wiki/specs/`: atomic implementation contracts for memory, orchestration, graph refresh, error recovery, lessons, naming, and workflow stages.
 
 ## key workflows
 
@@ -178,7 +171,7 @@ Excluded by policy:
 
 ## current project state
 
-Docs portray repository as active design/implementation project. Architectural specification surface is broad and mature. Next major work themes called out in docs: implement agent skills, complete CLI orchestration, validate integration end-to-end, then tighten documentation.
+Repository is active design and implementation-planning surface. Architectural specification is broad and mature. Next work themes called out in docs: implement agent skills, complete CLI orchestration, validate integration end to end, tighten documentation.
 
 ## hash inventory
 
@@ -186,7 +179,7 @@ Hashes below drive cache validation for future `/cel.wiki.read` runs.
 
 | file | md5 |
 |---|---|
-| README.md | 79fdb36dcce7f0a31f5be49272f37124 |
+| README.md | 37e6686ea5ea307b6b70495eda83b4dc |
 | wiki/architecture.md | bbf522e363e2184e9db4b89a328c1f21 |
 | wiki/decision.md | 6629751a38fc52b3144db10c873f2f46 |
 | wiki/intention.md | b0ded9879d2ccb2a21c2272bf66a4c43 |

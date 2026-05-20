@@ -53,11 +53,11 @@ token_budget:
   phases:
     specify_phase:
       budget: 2000  # Spec generation
-      tools: ["/spek.specify", "C.3.2 auto-linking"]
+      tools: ["/spek.automate (specify phase)", "C.3.2 auto-linking"]
     
     plan_phase:
       budget: 3000  # Plan generation + architecture decisions
-      tools: ["/spek.plan", "code graph queries"]
+      tools: ["/spek.automate (plan phase)", "code graph queries"]
     
     implement_phase:
       budget: 5000  # Code generation + debugging
@@ -93,9 +93,9 @@ enterprise_cost_sensitive:
 
 ### Per-Phase Tracking
 
-**During Specify Phase:**
+**During `/spek.automate` Specify Phase:**
 ```
-/spek.specify execution:
+/spek.automate specify-phase execution:
   Layer 1 query (code graph):   ~500 tokens
   Layer 2 query (vault):        ~1000 tokens
   Spec generation:              ~300 tokens
@@ -107,9 +107,9 @@ enterprise_cost_sensitive:
   Status:                        ✓ On budget
 ```
 
-**During Plan Phase:**
+**During `/spek.automate` Plan Phase:**
 ```
-/spek.plan execution:
+/spek.automate plan-phase execution:
   Context reload:               ~400 tokens
   Code graph analysis:          ~800 tokens
   Plan generation:              ~1200 tokens

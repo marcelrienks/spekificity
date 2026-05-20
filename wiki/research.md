@@ -20,7 +20,7 @@ These are **strongly recommended** based on production validation and alignment 
 
 ### S1. Zettelkasten Conventions for Vault Notes
 
-**From:** B.9 (claude-code-memory-setup, 659⭐, production-tested)
+**From:** B.9 (claude-code-memory-setup, 659⭐, active open-source project)
 
 **What it is:**
 - Mandatory YAML frontmatter on vault notes (title, tags, created, updated, status, type)
@@ -29,7 +29,7 @@ These are **strongly recommended** based on production validation and alignment 
 - Kebab-case filenames
 
 **Why adopt:**
-- ✅ Proven in production (71.5x token savings validated)
+- ✅ Informed by production examples that report large token savings
 - ✅ Enables graph navigation in Obsidian
 - ✅ Makes lessons discoverable by future `/spek.context` loads
 - ✅ Zero conflicts with current design (B.8.2 vault already uses metadata)
@@ -115,10 +115,10 @@ Layer 3: Read raw code files (only when needed) — 5000+ tokens
 ```
 
 **Why adopt:**
-- ✅ Reduces token waste by ~20x when done correctly
+- ✅ Can reduce token waste substantially when done correctly
 - ✅ Prioritizes cached/indexed data over expensive file re-reads
 - ✅ Already planned in B.8.2 memory model; just needs explicit documentation
-- ✅ Proven to save 71.5x tokens in real usage
+- ✅ Supported by external examples that report large savings in real usage
 
 **Implementation:**
 1. Create `.spekificity/guides/context-navigation.md` with:
@@ -253,7 +253,7 @@ Suggest updated pattern for next feature
 
 **Why adopt (medium priority):**
 - ✅ Reduces repeat mistakes across features
-- ✅ Proven in Cavekit (production-tested)
+- ✅ Informed by Cavekit usage in active projects
 - ✅ Elegant, minimal implementation
 - ⚠️ Depends on automated testing infrastructure (not all teams have this)
 
@@ -352,11 +352,11 @@ After implementation:
    ```markdown
    ## Validation Rules (Anti-Sycophancy)
    
-   ### Spec Generation (/spek.specify)
+   ### Specification Phase (inside `/spek.automate`)
    - Rule: If spec contradicts vault/decision.md entries, flag conflict
    - Rule: If spec complexity > 50% higher than similar past features, question
    
-   ### Plan Generation (/spek.plan)
+   ### Planning Phase (inside `/spek.automate`)
    - Rule: If plan ignores code graph insights (e.g., known bottleneck), flag
    - Rule: If plan deviates from architectural patterns, justify deviation
    
@@ -365,9 +365,9 @@ After implementation:
    - Rule: If test coverage drops >5% from project baseline, fail implementation
    ```
 
-2. Add validation checks to each skill:
-   - `/spek.specify`: Compare spec against vault decisions
-   - `/spek.plan`: Compare plan against code graph + decisions
+2. Add validation checks to workflow phases:
+   - `/spek.automate` specify phase: Compare spec against vault decisions
+   - `/spek.automate` plan phase: Compare plan against code graph + decisions
    - `/spek.implement`: Validate against test coverage + architectural constraints
 
 **Effort:** 3-4 hours
@@ -376,7 +376,7 @@ After implementation:
 
 **Affected files:**
 - `.spekificity/validation-rules.md` (new)
-- Implementation: each skill (`/spek.specify`, `/spek.plan`, `/spek.implement`)
+- Implementation: workflow phases inside `/spek.automate`, plus `/spek.implement`
 
 **Dependencies:** Vault populated with decisions/patterns, test infrastructure
 

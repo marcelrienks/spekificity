@@ -1,28 +1,29 @@
 # ATOMIC SPECIFICATION: Specify Enrichment (C3.3)
 
 **Status:** ATOMIC SPECIFICATION  
-**Type:** Integration Layer 2a — /spek.specify Wrapper  
+**Type:** Internal automation phase — specify stage inside `/spek.automate`  
 **Depends On:** cdecorator-wrapper-pattern.md, ccontext-layer.md  
-**Used By:** User workflow (after /spek.prepare)  
+**Used By:** `/spek.automate`  
 
 ---
 
 ## Overview
 
-`/spek.specify` wraps SpecKit's `/speckit.specify` command with context injection (decisions, patterns) to guide spec generation toward existing project constraints.
+This spec defines how the specify phase inside `/spek.automate` injects context into `/speckit.specify` to guide spec generation toward existing project constraints.
 
 ---
 
 ## Execution Sequence
 
 ```
-/spek.specify [feature-description]
+/spek.automate [feature-description]
+   └─ specify phase
 ├─ PRE: Load context
 │  ├─ Read /memories/session/context-loaded.md
 │  ├─ Extract decisions + patterns
 │  ├─ Construct enrichment prompt
 │  └─ Output: enriched_context (string)
-├─ CORE: Call SpecKit
+├─ CORE: Call SpecKit `/speckit.specify`
 │  ├─ Inject context into /speckit.specify prompt
 │  ├─ Run /speckit.specify [feature-description]
 │  ├─ Capture spec.md output

@@ -1,27 +1,28 @@
 # ATOMIC SPECIFICATION: Plan Enrichment (C3.4)
 
 **Status:** ATOMIC SPECIFICATION  
-**Type:** Integration Layer 2b — /spek.plan Wrapper  
+**Type:** Internal automation phase — plan stage inside `/spek.automate`  
 **Depends On:** decorator-wrapper-pattern.md, graph-merge-integration.md  
 
 ---
 
 ## Overview
 
-`/spek.plan` wraps `/speckit.plan` with context injection (decisions, patterns, code graph, impact analysis) to guide architecture decisions toward project constraints and avoid duplicating existing code.
+This spec defines how the plan phase inside `/spek.automate` injects decisions, patterns, code graph data, and impact analysis into `/speckit.plan`.
 
 ---
 
 ## Execution Sequence
 
 ```
-/spek.plan
+/spek.automate
+   └─ plan phase
 ├─ PRE: Load context + code graph
 │  ├─ Load decisions + patterns
 │  ├─ Query code graph: affected modules, existing code
 │  ├─ Analyze impact: what code will change?
 │  └─ Output: enriched_context
-├─ CORE: Call SpecKit
+├─ CORE: Call SpecKit `/speckit.plan`
 │  ├─ Inject context + code graph into /speckit.plan prompt
 │  ├─ Run /speckit.plan
 │  ├─ Capture plan.md

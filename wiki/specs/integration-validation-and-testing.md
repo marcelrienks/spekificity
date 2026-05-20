@@ -97,8 +97,7 @@ pytest tests/performance/test_token_usage.py
 ## Phase 2: Enrichment Layers
 
 **Deliverables:**
-- `/spek.specify` enrichment wrapper (graph-aware `/speckit.specify`)
-- `/spek.plan` enrichment wrapper (graph-aware `/speckit.plan`)
+- `/spek.automate` specify/plan enrichment phases (graph-aware `/speckit.specify` and `/speckit.plan`)
 - `/spek.implement` enrichment wrapper (graph-aware `/speckit.implement`)
 
 **Acceptance Criteria:**
@@ -106,7 +105,7 @@ pytest tests/performance/test_token_usage.py
 | Criterion | Validation | Success Criteria |
 |-----------|-----------|------------------|
 | Context injection | Enrichments inject context into SpecKit calls | SpecKit receives full context (decisions, patterns, code) |
-| Output quality | Generated specs/plans/tasks better than vanilla SpecKit | Measurable improvement (e.g., faster task execution) |
+| Output quality | Generated specs/plans/tasks are more context-aware than vanilla SpecKit | Improvement visible in review or downstream execution |
 | Token efficiency | Enrichment layer doesn't add excessive overhead | Context injected <10K additional tokens |
 | Seamless integration | User doesn't need to know about enrichment layers | CLI commands work transparently |
 | Fallback behavior | If context missing, enrichments work with empty context | No failures if vault inaccessible |
@@ -127,8 +126,8 @@ pytest tests/performance/test_enrichment_overhead.py
 ```
 
 **Validation (Manual Tests):**
-- [ ] Run `/spek.specify` on new feature, verify spec uses architectural patterns
-- [ ] Run `/spek.plan` on spec, verify plan accounts for existing code
+- [ ] Run `/spek.automate` on new feature, verify spec uses architectural patterns
+- [ ] Verify `/spek.automate` plan output accounts for existing code
 - [ ] Compare output with vanilla SpecKit (enriched vs. non-enriched)
 - [ ] Verify enrichment works with stale context (fallback)
 

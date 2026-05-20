@@ -25,7 +25,7 @@ Prevent AI drift by enforcing **explicit validation rules** that:
 
 **What this spec covers:**
 - Anti-sycophancy rule definitions
-- Rule enforcement in `/spek.specify`, `/spek.plan`, `/spek.implement`
+- Rule enforcement in `/spek.automate` phases and `/spek.implement`
 - Conflict detection logic
 - User override mechanism
 - Configuration (project-specific rules)
@@ -172,10 +172,10 @@ During implementation:
 
 ## Validation Points
 
-### During /spek.specify
+### During `/spek.automate` specify phase
 
 ```
-/spek.specify (with anti-sycophancy):
+/spek.automate (specify phase with anti-sycophancy):
 
 After spec generated:
   1. Run Rule 1: Check for vault contradictions
@@ -187,10 +187,10 @@ After spec generated:
   User can: Accept / Modify / Override with justification
 ```
 
-### During /spek.plan
+### During `/spek.automate` plan phase
 
 ```
-/spek.plan (with anti-sycophancy):
+/spek.automate (plan phase with anti-sycophancy):
 
 After plan generated:
   1. Run Rule 1: Check architecture vs decisions
@@ -225,7 +225,7 @@ Create per-project rules (team + solo):
 ```markdown
 # Validation Rules (Anti-Sycophancy)
 
-## Spec Generation Rules (/spek.specify)
+## Spec Generation Rules (`/spek.automate` specify phase)
 
 ### Rule: No contradictions with vault decisions
 - **Trigger:** Spec proposes something conflicting vault
@@ -247,7 +247,7 @@ Create per-project rules (team + solo):
 - **Action:** ALERT - show current stack
 - **Override:** Allowed with tech-evaluation document
 
-## Plan Generation Rules (/spek.plan)
+## Plan Generation Rules (`/spek.automate` plan phase)
 
 ### Rule: Architecture aligns with decisions
 - **Trigger:** Plan violates vault/decision-*.md
@@ -331,7 +331,7 @@ Store in `/memories/session/current-feature.md`:
 
 ## Success Criteria
 
-- ✅ Rules 1-5 implemented in `/spek.specify`, `/spek.plan`, `/spek.implement`
+- ✅ Rules 1-5 implemented in `/spek.automate` phases and `/spek.implement`
 - ✅ Contradictions detected + alerted (Rule 1)
 - ✅ Complexity increases questioned (Rule 2)
 - ✅ Pattern deviations flagged (Rule 3)

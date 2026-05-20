@@ -65,7 +65,7 @@
 
 ### Step 7: Report Status
 - Display summary: git ✓, graph ✓, context loaded, ready
-- Show next step: run `/spek.specify [description]`
+- Show next step: run `/spek.automate [description]`
 
 ---
 
@@ -76,7 +76,7 @@
 ✅ Code graph checked/refreshed  
 ✅ Context loaded  
 ✅ Feature state created  
-✅ Ready for /spek.specify  
+✅ Ready for /spek.automate  
 
 ---
 

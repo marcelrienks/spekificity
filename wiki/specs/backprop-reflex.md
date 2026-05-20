@@ -3,7 +3,7 @@
 **Status:** Specification  
 **Priority:** HIGH (Phase 2, post-launch)  
 **Effort:** 3-4 hours  
-**Adoption Source:** B.10 (Cavekit, 920⭐, production-tested)  
+**Adoption Source:** B.10 (Cavekit, 920⭐, active open-source project)  
 **Requires:** Automated test infrastructure + C.3.1-C.3.5 Phase 1 specs
 
 ---

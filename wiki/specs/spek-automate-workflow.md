@@ -10,7 +10,7 @@
 
 ## Overview
 
-`spek.automate` is a single entry point that autonomously orchestrates the **full SpecKit workflow** without requiring the user to manually invoke individual SpecKit skills.
+`spek.automate` is a single entry point that autonomously orchestrates the pre-implementation SpecKit workflow without requiring the user to manually invoke individual SpecKit skills.
 
 **Key Design Principle:** `spek.automate` does **not hardcode** which SpecKit skills to call. Instead, it:
 1. **Discovers** the currently installed SpecKit version
@@ -19,7 +19,7 @@
 4. **Adapts** automatically to future SpecKit updates (no code changes required)
 
 **Purpose:**
-- Enable hands-off feature development using SpecKit
+- Enable hands-off feature preparation using SpecKit
 - Surface user decisions at natural points (spec clarifications, plan validations)
 - Handle remediation automatically (re-run skills if issues detected)
 - Work seamlessly with any SpecKit version (past, present, future)
@@ -75,14 +75,13 @@ If validation fails:
   └─ Log remediation: Add to error log for future reference
 ```
 
-### Layer 5: Completion
+### Layer 5: Handoff
 ```
 After all skills complete successfully:
-  ├─ Generate lessons learned (via /spek.post)
-  ├─ Update vault (decisions, patterns)
-  ├─ Refresh code graph
-  ├─ Archive feature state
-  └─ Report completion + next steps
+  ├─ Persist spec.md, plan.md, tasks.md
+  ├─ Update feature state to ready-for-implement
+  ├─ Report analyze findings + unresolved remediation items
+  └─ Hand off to /spek.implement
 ```
 
 ---
@@ -360,14 +359,13 @@ Trace: Added to error log: "Manual fix applied to auth.py"
 - Multiple potential remediation paths (needs decision tree)
 - Skill has unpredictable failure modes (needs debugging)
 
-**Example: /implement skill might use sub-agent**
+**Example: /implement stays outside `spek.automate`**
 ```
-spek.automate calls: cavecrew-builder sub-agent to handle /implement
-  ├─ Sub-agent runs /implement
-  ├─ Sub-agent validates output (syntax check, imports resolved, tests pass)
-  ├─ Sub-agent proposes remediation if issues detected
-  ├─ Sub-agent returns compressed result to main agent
-  └─ Main agent continues orchestration
+After spek.automate completes:
+  ├─ User reviews artifacts and analyze output
+  ├─ User invokes /spek.implement separately
+  ├─ Implementation path can use sub-agent if needed
+  └─ Post-feature flow happens only after implementation
 ```
 
 **When NOT to use sub-agents:**
@@ -678,7 +676,7 @@ All errors are handled per [error-handling-and-recovery.md](error-handling-and-r
 
 ## Final Notes
 
-`spek.automate` is the **primary user-facing entry point** for Spekificity. By dynamically discovering and orchestrating SpecKit skills, it:
+`spek.automate` is the **primary workflow entry point** for Spekificity. By dynamically discovering and orchestrating SpecKit skills through task generation, it:
 
 - **Simplifies user experience** — One command instead of many
 - **Handles complexity invisibly** — User sees prompts, not internals

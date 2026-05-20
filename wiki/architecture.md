@@ -1,6 +1,6 @@
 # architecture
 
-spekificity has no runtime components. its "architecture" is the structure of its files and the contracts between them.
+spekificity has no deployed application runtime or backend service. its architecture is the structure of its files, cli entry points, skill contracts, and how those pieces compose.
 
 ---
 
@@ -21,10 +21,10 @@ how each component targets the four core problems:
 
 | pillar | token efficiency | determinism | persistence | autonomy |
 |--------|---|---|---|---|
-| **code graph** (CodeGraph) | indexed queries = 92% fewer tokens than file scans | exact ground-truth context eliminates hallucinations | graph auto-syncs on file changes | agent answers code questions without asking dev |
+| **code graph** (CodeGraph preferred; Graphify transition option) | indexed queries cut token usage by an order of magnitude versus repeated file scans | exact ground-truth context eliminates hallucinations | graph auto-syncs on file changes | agent answers code questions without asking dev |
 | **vault** (Obsidian markdown) | pre-synthesized context loads once per session | enforces consistent structure; decisions stay consistent | lesssons + decisions persist across sessions + projects | agent recalls patterns from history; no redundant searching |
 | **spec-driven framework** (SpecKit) | canonical steps = no token-wasteful exploration | enforces spec \u2192 plan \u2192 tasks \u2192 implement | specs + plans captured in vault for future reference | deterministic workflow = less dev clarification needed |
-| **compression** (Caveman) | 60%+ output reduction at key stages | terse notation cuts noise, improves clarity | — | agent reads faster, processes more context in same tokens |
+| **compression** (Caveman) | substantial output reduction at key stages | terse notation cuts noise, improves clarity | — | agent reads faster, processes more context in same tokens |
 
 **result**: each tool improves *all four pillars*, but emphasizes one. together = compounding effect.
 
@@ -48,7 +48,7 @@ skills are the primary deliverable of spekificity. each skill is a markdown file
 
 `.spekificity/bin/*.sh` scripts are the per-project implementations:
 - `_lib.sh` — shared utilities: config read/write, atomic JSON writes, graph state computation (fresh/stale/absent), working-tree checks
-- `prepare.sh` — checks vault graph staleness via `compute_graph_state()`, rebuilds with graphify if stale/absent, hands off to `/spek.prepare` skill
+- `prepare.sh` — checks vault graph staleness via `compute_graph_state()`, rebuilds with configured code analysis tool if stale/absent, hands off to `/spek.prepare` skill
 - `automate.sh` — runs preflight (clean tree check), generates `NNN-kebab-branch`, calls `git checkout -b`, writes `workflow-state.json`, hands off to `/spek.automate` skill
 - `post.sh` — detects context from `workflow-state.json`, surfaces `--no-lessons` / `--no-graph` flags to skill
 
@@ -79,7 +79,7 @@ setup guides provide step-by-step, ai-executable installation and configuration 
 
 ### 5. obsidian vault (`vault/` or project-defined location)
 
-the vault is the persistent context store for project documentation, essentially becoming an 'LLM wiki'. its structure is TDB.
+the vault is the persistent context store for project documentation, essentially becoming an 'LLM wiki'. its baseline structure is `vault/lessons/`, `vault/context/`, and related decision/pattern stores described in the setup and memory specs.
 
 The vault uses plain markdown and is compatible with obsidian's format. ai agents can read it directly without requiring the obsidian application to be running.
 
@@ -92,14 +92,14 @@ spekificity's modular independence principle requires that each component can be
 | component | isolation mechanism |
 |-----------|-------------------|
 | **speckit** | installed globally; spekificity skills invoke it by command name only (no internal api assumptions) |
-| **codegraph** | invoked via cli in the `map-codebase` skill; only the skill file needs updating if the cli changes |
+| **code analysis tool** | invoked via cli in the `map-codebase` skill; only the skill file needs updating if the cli changes |
 | **obsidian** | vault uses plain markdown; no dependency on obsidian internal format |
 | **spekificity custom layer** | local per-project; updated by pulling latest from this repo |
 
 ### update procedures
 
 - **speckit update**: `uv tool install --reinstall specify-cli --from git+https://github.com/github/spec-kit.git` — no spekificity changes required unless speckit's command interface changes
-- **code analysis tool update** (CodeGraph): update MCP server config if cli args change; update only `skills/map-codebase/skill.md` if invocation changes
+- **code analysis tool update**: update MCP server config or cli invocation if args change; update only `skills/map-codebase/skill.md` if invocation changes
 - **obsidian update**: no action required (vault is plain markdown)
 - **spekificity update**: `git pull` in the spekificity repo; copy updated skills to target project
 
@@ -122,7 +122,7 @@ skills are placed in `.agents/skills/` — the canonical, agent-agnostic locatio
 **recommended**: commit the vault to git with the project.
 
 - **rationale**: vault entries (lessons learnt, decisions, patterns) are project artefacts with long-term value. version-controlling them preserves history and enables team sharing.
-- **exception**: the codegraph sqlite database file (`.codegraph/graph.db` or equivalent) should be gitignored and regenerated per machine via `/map-codebase`. the vault itself (lessons + context) is always small and should always be committed.
+- **exception**: generated code-analysis indexes (for example `.codegraph/graph.db` or graphify cache output) should be gitignored and regenerated per machine via `/map-codebase`. the vault itself (lessons + context) is always small and should always be committed.
 
 a `.gitignore` template covering this exception is included in the init workflow.
 
@@ -134,5 +134,5 @@ a `.gitignore` template covering this exception is included in the init workflow
 |----------|---------|--------|
 | codegraph install mode | local npm package vs global install | open — depends on codegraph's packaging |
 | obsidian headless write | cli tool vs direct markdown writes | open — affects skills/map-codebase implementation |
-| vault location | `vault/` in project root vs `.spekificity/vault/` | open — to be decided in planning phase |
-| caveman integration point | always-on vs opt-in per session | open — user preference, configurable |
+| vault location | `vault/` in project root vs `.spekificity/vault/` | resolved — use `vault/` in project root |
+| caveman integration point | always-on vs opt-in per session | resolved — auto-enable lite in `spek.prepare`, auto-enable compression in `spek.post`, allow override |

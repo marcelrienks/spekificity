@@ -46,7 +46,7 @@ Together they ensure **persistent memory** + **deterministic workflow** + **auto
 - ✓ Code graph fresh or refreshed
 - ✓ `/memories/session/context-loaded.md` (decisions, patterns, lessons)
 - ✓ `/memories/session/current-feature.md` (feature state tracker)
-- ✓ Ready for `/spek.specify`
+- ✓ Ready for `/spek.automate`
 
 **→ [Detailed Prepare Spec](prepare-command.md) for full step-by-step definitions**
 
@@ -104,7 +104,7 @@ Together they ensure **persistent memory** + **deterministic workflow** + **auto
 
 ## Success Criteria (Feature Lifecycle)
 
-**Prepare success:** Workspace clean, context loaded, feature state initialized, ready for `/spek.specify`
+**Prepare success:** Workspace clean, context loaded, feature state initialized, ready for `/spek.automate`
 
 **Post success:** Lessons extracted + archived, vault updated, repo memory synced, graph refreshed, session cleared
 
@@ -157,7 +157,7 @@ Session Start
     ├── Feature state init
     └── Ready
     ↓
-User runs: /spek.specify, /spek.plan, /spek.tasks, /spek.implement
+User runs: /spek.automate, reviews outputs, then /spek.implement
     ↓
 Feature Complete
     ↓

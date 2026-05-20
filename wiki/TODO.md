@@ -47,7 +47,7 @@ List all tools used across the articles, and which ones are meant to be used in 
 
 ## [x] B.2. Expand `spek prepare` and `spek post` — leverage caveman, graphify, and obsidian fully
 
-**Status**: ✓ **RESOLVED** (2026-05-18) — See [wiki/skills/spek-prepare.md](skills/spek-prepare.md) and [wiki/skills/spek-post.md](skills/spek-post.md) for comprehensive skill definitions.
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [wiki/specs/prepare-and-post-skills.md](specs/prepare-and-post-skills.md), [wiki/specs/prepare-command.md](specs/prepare-command.md), and [wiki/specs/post-command.md](specs/post-command.md) for comprehensive definitions.
 
 **What was defined:**
 
@@ -77,12 +77,16 @@ List all tools used across the articles, and which ones are meant to be used in 
 spek automate <feature>
   → spek prepare (git, caveman, vault, graph)
   → create feature branch
-  → /speckit-enrich-specify
-  → /speckit-enrich-plan
-  → /speckit.tasks
+  → /speckit.specify
+  → /speckit.clarify (optional)
+  → /speckit.plan
   → /speckit.analyze (optional)
   → [manual remediation if needed]
-  → /speckit-enrich-implement
+  → /speckit.tasks
+
+then, separately:
+
+  → /spek.implement
   → spek post (lessons, vault update, graph refresh, docs simplify)
 ```
 
@@ -97,7 +101,7 @@ spek automate <feature>
 
 ## [x] B.3. Ensure `spek post` creates structured lessons learnt from spec + implementation steps
 
-**Status**: ✓ **RESOLVED** (2026-05-18) — See [wiki/skills/spek-lessons-learnt.md](skills/spek-lessons-learnt.md) for comprehensive lesson format definition and self-contained validation.
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [wiki/specs/lessons-format.md](specs/lessons-format.md) for lesson format definition and self-contained validation.
 
 **What was defined:**
 
@@ -124,7 +128,7 @@ spek automate <feature>
 
 ## [x] B.4. Incorporate `cel.docs.simplify` into `spek post`
 
-**Status**: ✓ **RESOLVED** (2026-05-18) — See [wiki/skills/spek-post.md](skills/spek-post.md) Step 6 for complete integration and invocation patterns.
+**Status**: ✓ **RESOLVED** (2026-05-18) — See [wiki/specs/prepare-and-post-skills.md](specs/prepare-and-post-skills.md) and [wiki/specs/post-command.md](specs/post-command.md) for integration and invocation patterns.
 
 **What was defined:**
 
@@ -174,8 +178,8 @@ spek post (7-step workflow)
 **SpecKit Vanilla (unchanged; `speckit.*` namespace for clarity):**
 - `/speckit.specify`, `/speckit.plan`, `/speckit.implement`, `/speckit.tasks`, etc.
 
-**SpecKit Enriched (use `spek.*` prefix with same names as base):**
-- `/spek.specify`, `/spek.plan`, `/spek.implement` (prefix signals "enriched Spekificity version")
+**Spekificity Workflow Surface:**
+- `/spek.automate`, `/spek.implement`
 
 **Current → New Mapping:**
 - `spek.prepare` → `/spek.prepare` (already simple) ✓
@@ -184,9 +188,9 @@ spek post (7-step workflow)
 - `spek.map-codebase` → `/spek.map` (simplify)
 - `spek.lessons-learnt` → `/spek.lessons` (simplify)
 - `spek.automate` → `/spek.automate` (already simple) ✓
-- `speckit-enrich-specify` → `/spek.specify` (add prefix, simplify)
-- `speckit-enrich-plan` → `/spek.plan` (add prefix, simplify)
-- `speckit-enrich-implement` → `/spek.implement` (add prefix, simplify)
+- `speckit-enrich-specify` → `/spek.automate` specify phase
+- `speckit-enrich-plan` → `/spek.automate` plan phase
+- `speckit-enrich-implement` → `/spek.implement`
 - **SpecKit commands unchanged** (keep `speckit.*` for namespace distinction)
 
 **Key Decisions:**
@@ -199,7 +203,7 @@ spek post (7-step workflow)
 **User Mental Model:**
 - All Spekificity commands: `/spek.*` (consistent prefix)
 - All SpecKit vanilla commands: `/speckit.*` (distinct namespace)
-- Enriched commands: `/spek.specify`, `/spek.plan`, `/spek.implement` are the "default" Spekificity versions
+- `spek.automate` owns spec-through-task orchestration; `/spek.implement` remains separate
 - One-word or minimal command portions: easy to type and remember
 
 **Result:** Namespace ownership is visible, commands are shorter and memorable, filesystem organization groups skills logically.
@@ -298,9 +302,8 @@ Cost: ~5-10K tokens (lessons generation + compression)
 | Component | Responsibility | Pattern | Input | Output |
 |-----------|-----------------|---------|-------|--------|
 | **SpecKit** | Core workflow | Global framework | Natural language | Code + artifacts |
-| **Spekificity** | Context + enrichment | Decorator wrapper | Decisions, patterns, code graph | Context-aware specs, plans, code |
-| **/spek.specify** | Enrich spec generation | Wrapper | Feature description + context | spec.md (with context) |
-| **/spek.plan** | Enrich plan generation | Wrapper | spec.md + context + code graph | plan.md (architecture-aware) |
+| **Spekificity** | Context + orchestration | Workflow orchestrator | Decisions, patterns, code graph | Context-aware specs, plans, tasks |
+| **/spek.automate** | Orchestrate spec-through-task flow | Workflow orchestrator | Feature description + context | spec.md + plan.md + tasks.md |
 | **/speckit.tasks** | Task generation | Direct (no wrapper) | spec.md + plan.md | tasks.md (ordered, IDs, dependencies) |
 | **/spek.implement** | Enrich implementation | Wrapper | tasks.md + context | Code changes + artifacts |
 | **/spek.context** | Load context | Spekificity-only | Session state | /memories/session/context-loaded.md |
@@ -309,11 +312,11 @@ Cost: ~5-10K tokens (lessons generation + compression)
 
 **Data Flow:**
 ```
-/spek.context → /spek.prepare → /spek.specify → /spek.plan → /speckit.tasks → /spek.implement → /spek.post
-     ↓                ↓               ↓              ↓             ↓               ↓               ↓
-  Load all       Git + graph      Inject ctx    Inject ctx    Generate    Execute +      Lessons +
-  context       validation        + call        + code graph   tasks       collect        vault
-                                  speckit                                  artifacts      updates
+/spek.context → /spek.prepare → /spek.automate → /spek.implement → /spek.post
+    ↓                ↓               ↓                 ↓               ↓
+  Load all       Git + graph   specify/plan/      Execute +      Lessons +
+  context       validation     analyze/tasks      collect        vault
+                                    artifacts      updates
 ```
 
 **Key Design Decisions:**
@@ -420,10 +423,10 @@ Cost: ~5-10K tokens (lessons generation + compression)
 4. **3-Layer Query Rule** — Document in `.spekificity/guides/context-navigation.md` (prioritize graph → vault → code)
 5. **Session Logs as Vault Artifacts** — Archive `/memories/session/current-feature.md` sections to vault/lessons with wikilinks
 
-**Real-World Results (Validated):**
-- 71.5x fewer tokens per session
+**Real-World Results (Referenced):**
+- Large token savings per session reported by the source project
 - 499x reduction on specific queries  
-- 659 stars, active community, production-tested
+- 659 stars, active community, and signs of practical use
 - 780+ vault notes at scale
 
 **Zero Conflicts with Spekificity Design:** The architecture is complementary, not competing. Can adopt patterns directly.
@@ -495,7 +498,7 @@ Cost: ~5-10K tokens (lessons generation + compression)
 
 **Part 4 — Performance & Refresh Strategy:**
 - Timing strategy table (manual, prepare-triggered, post-sync, git hook, watch, scheduled)
-- SHA256 caching (99%+ hit rate on unchanged files; 1-2s incremental vs. 28s full)
+- SHA256 caching (high hit rate on unchanged files; fast incremental refresh versus full rebuilds)
 - Parallel processing (4-worker thread pool; 3-4x speedup)
 - Language-selective indexing (skip slow languages if desired)
 - 3-layer query rule (graph 280 tokens → vault 500 tokens → code 5000+ tokens = 20x savings)
@@ -504,7 +507,7 @@ Cost: ~5-10K tokens (lessons generation + compression)
 - B.8.1: Hybrid architecture (code nodes + doc nodes merged into single nodes.jsonl)
 - B.8.4 /spek.prepare Step 3: Graph freshness check (read config.json timestamp, compare age to threshold 1h, offer refresh)
 - B.8.4 /spek.post Step 6: Incremental sync (get git diff, run /spek.map --code-only --incremental on changed files)
-- Context injection: /spek.specify & /spek.plan query graph for recent changes + impact analysis
+- Context injection: `/spek.automate` queries graph during specify/plan phases for recent changes + impact analysis
 
 **Part 6 — Configuration Reference:**
 - Complete .spekificity/config.yaml template (graphify section with 50+ fields)
@@ -533,13 +536,13 @@ Cost: ~5-10K tokens (lessons generation + compression)
 - /spek.map skill orchestrates full/incremental/watch modes
 - SHA256 caching strategy (incremental updates in 2-4 seconds)
 - Optional git hooks (auto-sync but user-controlled)
-- 3-layer query rule reduces token cost by 20x
+- 3-layer query rule reduces token cost substantially when used consistently
 
 **Integration Confirmed:**
 - ✅ B.8.1 doc mapping (code + doc pass merger)
 - ✅ B.8.4 /spek.prepare (freshness check, optional refresh)
 - ✅ B.8.4 /spek.post (incremental sync for changed files)
-- ✅ /spek.specify & /spek.plan context injection (impact analysis)
+- ✅ `/spek.automate` context injection for specify/plan phases (impact analysis)
 
 ---
 
@@ -598,7 +601,7 @@ Full specification for `/spek.automate` — autonomous orchestration of SpecKit 
 
 **Success Criteria Met:**
 - ✅ No wrapper methods; all skills invokable independently
-- ✅ Automates full SpecKit workflow dynamically
+- ✅ Automates pre-implementation SpecKit workflow dynamically
 - ✅ Future SpecKit versions supported automatically (no code changes)
 - ✅ Works with past versions, present, and future versions
 - ✅ Sub-agent delegation for complex skills
@@ -691,7 +694,7 @@ Implement the 5 core adoptions (S1-S5) during agent skill development:
   - Layer 1: Code graph (~280 tokens)
   - Layer 2: Vault (~500 tokens)
   - Layer 3: Raw code files (~5000+ tokens, avoid!)
-  - Token cost comparison (20x savings with 3-layer)
+  - Token cost comparison (substantial savings with 3-layer)
   - When to query each layer with examples
   - Integration into `/spek.context` skill
   - Enforcement rules + alerts on expensive queries

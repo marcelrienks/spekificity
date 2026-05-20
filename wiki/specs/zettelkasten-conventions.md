@@ -375,6 +375,6 @@ When loading context, verify:
 
 ## References
 
-- **Production Source:** https://github.com/lucasrosati/claude-code-memory-setup (71.5x token savings, 659⭐)
+- **Production Source:** https://github.com/lucasrosati/claude-code-memory-setup (external reference for token-efficient note conventions)
 - **Zettelkasten Method:** https://zettelkasten.de/ (original methodology)
 - **Obsidian Graph Navigation:** https://obsidian.md/features (wikilink navigation)

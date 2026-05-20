@@ -163,25 +163,27 @@
 ## Spekificity Integration: How Enrich-* Skills Fit
 
 ```
-/context-load
-    ↓ (load vault decisions + patterns + lessons)
-/speckit-enrich-specify
-    ↓ (wrap /speckit.specify with code context + related symbols)
-/speckit-enrich-plan
-    ↓ (wrap /speckit.plan with impact analysis from code graph)
-/speckit.tasks
+/spek.automate
+    ↓ (loads context and orchestrates upstream SpecKit flow)
+/speckit.specify
+    ↓
+/speckit.clarify (optional)
+    ↓
+/speckit.plan
     ↓
 /speckit.analyze (optional)
     ↓
 [REMEDIATE IN-PLACE IF NEEDED]
     ↓
-/speckit-enrich-implement
-    ↓ (wrap /speckit.implement with code map + spec + plan in scope)
-/lessons-learnt
+/speckit.tasks
+    ↓
+/spek.implement
+    ↓ (execute approved tasks with code map + spec + plan in scope)
+/spek.post or lessons flow
     ↓ (capture feature summary + decisions + patterns)
 ```
 
-**Key design:** All enrich-* skills wrap vanilla speckit via decorator pattern. Vanilla speckit remains untouched and independently upgradable.
+**Key design:** Spekificity does not expose separate wrapper commands for every SpecKit phase. `spek.automate` owns spec-through-task orchestration; `spek.implement` stays separate so execution happens only after review.
 
 ---
 
@@ -190,14 +192,10 @@
 **Canonical sequencing (B.1 resolved):**
 
 1. **Pre-flight:** Clean working tree, create feature branch
-2. **Load context:** `/context-load` (vault decisions + patterns + lessons)
-3. **Specify:** `/speckit-enrich-specify` with code context
-4. **Plan:** `/speckit-enrich-plan` with impact analysis
-5. **Tasks:** `/speckit.tasks` (vanilla, deterministic)
-6. **Analyze:** `/speckit.analyze` (optional; report only)
-7. **Review & Fix:** Developer reviews analyze report, edits artifacts in-place if needed (manual step)
-8. **Implement:** `/speckit-enrich-implement` with code map context
-9. **Post-flight:** `/lessons-learnt`, graph refresh, optional: `cel.wiki.simplify`
+2. **Automate:** `/spek.automate` loads context and runs `/speckit.specify` → `/speckit.clarify` (optional) → `/speckit.plan` → `/speckit.analyze` (optional) → remediation loop → `/speckit.tasks`
+3. **Review & Fix:** Developer reviews analyze report and generated artifacts, edits in-place if needed (manual step)
+4. **Implement:** `/spek.implement` with code map context
+5. **Post-flight:** `/spek.post` or lessons flow, graph refresh, optional: `cel.wiki.simplify`
 
 **Decision:** Analyze is **optional and non-blocking**. If findings are minor, skip remediation and proceed to implement. High-severity issues should be addressed before implement.
 

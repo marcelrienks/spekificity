@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-The **claude-code-memory-setup** repository by Lucas Rosati demonstrates a proven, production-tested two-system memory architecture: **Obsidian (declarative) + Graphify (structural)**. The design aligns closely with spekificity's planned memory model (extracted spec) while introducing several patterns worth adopting:
+The **claude-code-memory-setup** repository by Lucas Rosati demonstrates a documented two-system memory architecture: **Obsidian (declarative) + Graphify (structural)**. The design aligns closely with spekificity's planned memory model (extracted spec) while introducing several patterns worth adopting:
 
 1. **Session continuity commands** (`/resume`, `/save`) — Direct implementations of spekificity's `/spek.prepare` and `/spek.post`
 2. **Zettelkasten conventions** — Atomic notes, dense linking, standardized frontmatter → applicable to spekificity lessons/decisions/patterns
@@ -16,7 +16,7 @@ The **claude-code-memory-setup** repository by Lucas Rosati demonstrates a prove
 4. **Centralized single vault** — One vault per user/team (not per project) enables cross-project pattern discovery
 5. **3-layer query rule** — Graph → Vault → Code, preventing unnecessary file re-reads → matches spekificity's planned context loading strategy
 6. **Incremental graph refresh** — Git hooks + watch mode for persistent, low-cost indexing
-7. **Token savings metrics** — 71.5x reduction documented; patterns are replicable in spekificity
+7. **Token savings metrics** — large reductions documented in the source project; patterns are replicable in spekificity
 
 **Verdict:** Spekificity should adopt 4-5 specific patterns from this repository. The architecture is compatible with spekificity's design; no fundamental conflicts.
 
@@ -34,9 +34,9 @@ The **claude-code-memory-setup** repository by Lucas Rosati demonstrates a prove
 - Tied to any specific project structure
 - Proprietary (MIT licensed, 659 stars, actively maintained)
 
-**Real-world results (tested on 126 TypeScript files):**
+**Real-world results reported by the source project (tested on 126 TypeScript files):**
 - 332 graph nodes, 258 edges, 124 communities detected
-- 71.5x fewer tokens per session
+- Large token savings per session
 - 499x token reduction on specific queries
 - 0 tokens in AST mode (pure tree-sitter)
 - 780+ total vault notes (permanent + chats + graphs)
@@ -639,7 +639,7 @@ Both can coexist and reinforce each other.
 - [extracted spec Prepare and Post Skills](../specs/prepare-and-post-skills.md)
 
 **Key Metrics:**
-- 71.5x fewer tokens per session (tested, real-world)
+- Large token savings per session reported by the source project
 - 499x reduction on specific queries
 - 780+ total vault notes (practical scale)
 - 20+ supported languages (graphify)

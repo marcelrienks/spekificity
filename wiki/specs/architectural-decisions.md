@@ -256,7 +256,7 @@ Decision context is loaded at session start via `/spek.context`, compressed, and
 
 ### SpecKit Integration (specify-enrichment.md, plan-enrichment.md)
 
-Recent decisions are injected into `/spek.specify` and `/spek.plan` prompts to guide spec/plan generation toward existing constraints.
+Recent decisions are injected into `/spek.automate` specify and plan prompts to guide spec/plan generation toward existing constraints.
 
 ---
 

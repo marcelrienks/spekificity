@@ -179,7 +179,7 @@ completion: 0
 
 ## Current Phase: Prepared
 
-Ready for `/spek.specify` to generate spec.
+Ready for `/spek.automate` to generate spec, plan, and tasks.
 
 ---
 
@@ -250,10 +250,10 @@ Ready for `/spek.specify` to generate spec.
 
 ## Next Steps
 
-1. Run `/spek.specify [feature description]` to generate spec
-2. Review spec for completeness
-3. Run `/spek.plan` to generate plan
-4. Proceed to implementation
+1. Run `/spek.automate [feature description]` to generate spec, plan, and tasks
+2. Review generated artifacts and any analyze findings
+3. Apply manual remediation if needed
+4. Run `/spek.implement` to execute approved tasks
 
 ---
 

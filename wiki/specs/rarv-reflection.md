@@ -3,7 +3,7 @@
 **Status:** Specification  
 **Priority:** HIGH (Phase 2, post-launch)  
 **Effort:** 4-5 hours  
-**Adoption Source:** B.10 (Loki Mode, 930⭐, production-tested)  
+**Adoption Source:** B.10 (Loki Mode, 930⭐, active open-source project)  
 **Requires:** Automated test infrastructure + C.3.1-C.3.5 + C.3.6 Phase 1-2 specs
 
 ---

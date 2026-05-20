@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION  
 **Type:** Usage — Querying vault/graph/ for Code Context  
 **Depends On:** graph-storage-structure.md  
-**Used By:** /spek.context, /spek.plan, enrichment layers  
+**Used By:** /spek.context, `/spek.automate` plan phase, enrichment layers  
 
 ---
 

@@ -5,13 +5,15 @@
 **Related Specs:** [extracted spec Code and Document Maps](code-and-document-maps.md), [extracted spec Prepare and Post Skills](prepare-and-post-skills.md)  
 **Scope:** Graphify installation, vault integration, skill invocation contracts, refresh strategies, performance optimization  
 
+**Note:** This specification is Graphify-focused and documents transition / fallback setup. Current architecture decisions recommend CodeGraph as the preferred primary code analysis tool for Spekificity.
+
 ---
 
 ## Executive Summary
 
-**graph-setup specifies the complete codegraph (Graphify) setup and integration layer for Spekificity.**
+**graph-setup specifies the Graphify-based codegraph setup and integration layer retained for transition and fallback scenarios in Spekificity.**
 
-Graphify transforms the codebase into a persistent, queryable knowledge graph using tree-sitter AST (Abstract Syntax Tree). This graph becomes a critical input to `/spek.specify` and `/spek.plan` phases, enabling:
+Graphify transforms the codebase into a persistent, queryable knowledge graph using tree-sitter AST (Abstract Syntax Tree). This graph becomes a critical input to `/spek.automate` specify and plan phases, enabling:
 
 - **Context-aware spec generation** — Recent code changes inform feature requirements
 - **Architectural alignment checking** — Plans validated against codebase topology
@@ -472,12 +474,12 @@ In /spek.prepare:
 
 ---
 
-#### Contract 2: `/spek.specify` & `/spek.plan` → `/spek.map` (Context Injection)
+#### Contract 2: `/spek.automate` specify/plan phases → `/spek.map` (Context Injection)
 
 **extracted spec & extracted spec Enriched Specify/Plan:**
 
 ```
-In /spek.specify or /spek.plan:
+In `/spek.automate` specify or plan phase:
 ├── Load vault/graph/nodes.jsonl
 ├── Query graph for:
 │   ├── Recent changes (modified_at in last 7 days)
@@ -544,9 +546,10 @@ In /spek.post after implementation:
 → Log: "Cache corrupted; performing full rebuild"
 ```
 
-**Scenario 3: Graph query (in /spek.specify)**
+**Scenario 3: Graph query (in `/spek.automate` specify phase)**
 ```
-/spek.specify
+/spek.automate
+  └─ specify phase
 → Query: jq '.[] | select(.name == "authenticate")' vault/graph/nodes.jsonl
 → If no results: Continue (graph might be empty or stale)
 → Log: "Graph query found 0 matches"
@@ -660,7 +663,7 @@ Layer 3: Read raw code files (only if needed)
   └── Cost: ~5,000 tokens
 ```
 
-**Result:** 3-layer queries reduce token usage by ~20x vs. always reading raw files.
+**Result:** 3-layer queries reduce token usage materially versus always reading raw files.
 
 ---
 
@@ -929,11 +932,11 @@ graphify:
     - Log: "Graph synced for X changed files"
 
 - [ ] **graph-setup.8** Integrate graph context injection (extracted spec enriched skills)
-  - In `/spek.specify` enrichment:
+  - In `/spek.automate` specify phase:
     - Query `vault/graph/nodes.jsonl` for related modules
     - Query graph for recent changes
     - Inject into prompt: "Recent changes: [list], Related modules: [list]"
-  - In `/spek.plan` enrichment:
+  - In `/spek.automate` plan phase:
     - Query graph for impact analysis
     - Inject: "This change affects: [list of callees/callers]"
 

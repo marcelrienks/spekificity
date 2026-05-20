@@ -51,34 +51,34 @@ Spekificity does not try to replace those systems. It defines how they should wo
 
 The intended Spekificity workflow is:
 
-1. Load project context.
-2. Enrich specification generation with prior decisions and patterns.
-3. Enrich planning with code-graph and impact context.
-4. Generate ordered tasks.
-5. Implement against spec, plan, and code context.
-6. Capture lessons and refresh durable project memory.
+1. Run `spek.automate` to load project context and orchestrate spec generation.
+2. Let `spek.automate` drive the upstream SpecKit flow through specify, clarify (if needed), plan, analyze, remediation, and tasks.
+3. Review resulting artifacts.
+4. Run `spek.implement` to execute against approved spec, plan, tasks, and code context.
+5. Capture lessons and refresh durable project memory.
 
-Canonical command surface for that workflow is:
+Canonical user-facing command surface is:
 
-- `/spek.context`
-- `/spek.specify`
-- `/spek.plan`
-- `/speckit.tasks`
-- `/speckit.analyze` (optional)
-- `/spek.implement`
-- `/spek.lessons`
-- `/spek.post`
-- `/spek.map`
-- `/spek.automate`
+- `/spek.prepare` — initialize workspace, git state, graph freshness, and feature state
+- `/spek.context` — load or reload project context into session
+- `/spek.map` — build or refresh code/document graph
+- `/spek.automate` — orchestrate spec-first flow through task generation
+- `/spek.implement` — execute implementation after automation has prepared artifacts
+- `/spek.post` — archive feature outcomes, lessons, vault updates, and graph refresh
+- `/spek.lessons` — extract structured lessons explicitly when needed
 
-Vanilla SpecKit commands remain part of the model where appropriate:
+Primary workflow commands are `/spek.automate` and `/spek.implement`. Support commands remain user-facing and may also be called internally when orchestration needs them.
+
+Vanilla SpecKit commands remain part of the underlying model:
 
 - `/speckit.specify`
+- `/speckit.clarify`
 - `/speckit.plan`
+- `/speckit.analyze`
 - `/speckit.tasks`
 - `/speckit.implement`
 
-Use the `spek.*` surface when following the Spekificity-enriched workflow.
+Use the `spek.*` surface when following the Spekificity-enriched workflow. `spek.automate` aggregates the main SpecKit lifecycle instead of exposing separate Spekificity wrapper commands for each phase.
 
 ## Current Repository State
 
