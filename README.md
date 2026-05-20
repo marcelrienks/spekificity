@@ -32,20 +32,22 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 # 1. Install Spekificity as a tool
 uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
 
-# 2. Initialize your project
+# 2. Initialize your project (this will also install required tools)
 spek init
 
 # 3. Verify installation
 spek --help
 spek --version
+spek tools --list
 ```
 
 This automatically:
 - ✅ Installs CLI and all dependencies
+- ✅ Installs SpecKit (specify-cli) if not already available
+- ✅ Checks for Obsidian and provides installation instructions
 - ✅ Creates project directories (`.cel/`, `.memories/`, `wiki/`)
 - ✅ Initializes CodeGraph database
-- ✅ Installs SpecKit (if not present)
-- ✅ Runs `specify init .`
+- ✅ Runs `specify init .` to initialize SpecKit
 
 ### Alternative: Manual Installation
 

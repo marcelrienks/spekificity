@@ -68,22 +68,42 @@ spek plan "Your feature"
 ### Automatic Setup
 
 ```bash
-# Single command initializes project structure
+# Single command initializes everything
 spek init
 ```
 
 This automatically:
-1. Creates `.cel/` directory (project metadata)
-2. Creates `.memories/session/` directory (session storage)
-3. Creates `wiki/` directory structure
-4. Initializes CodeGraph SQLite database
-5. Runs `specify init .` if SpecKit is installed
+1. Installs SpecKit (specify-cli) if not available
+2. Checks for Obsidian installation
+3. Creates `.cel/` directory (project metadata)
+4. Creates `.memories/session/` directory (session storage)
+5. Creates `wiki/` directory structure
+6. Initializes CodeGraph SQLite database
+7. Runs `specify init .` to initialize SpecKit
 
-**If SpecKit is not installed:**
+**Installation Progress:**
 ```
-ℹ SpecKit (specify) not found in PATH. Skipping SpecKit initialization.
-  To enable SpecKit features, install with:
-  uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+🚀 Initializing Spekificity project...
+
+Verifying SpecKit installation...
+✓ specify-cli installed successfully     (or already installed)
+
+Checking for Obsidian vault support...
+✓ Obsidian is installed
+(or provides installation instructions if not found)
+
+Setting up directory structures...
+✓ Created memory structure
+✓ Created wiki structure  
+✓ Created .cel directory
+
+Initializing CodeGraph database...
+✓ CodeGraph initialized
+
+Initializing SpecKit...
+✓ SpecKit initialized successfully
+
+✅ Spekificity initialization complete!
 ```
 
 **After installation, typical output:**

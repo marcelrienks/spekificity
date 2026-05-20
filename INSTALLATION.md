@@ -32,13 +32,17 @@ spek init --verbose
 ```
 
 This automatically:
+- ✅ Installs SpecKit (specify-cli) if not already available
+- ✅ Checks for Obsidian and provides installation instructions
 - ✅ Creates `.cel/` directory (project metadata)
 - ✅ Creates `.memories/session/` directory (session data)
 - ✅ Creates `wiki/` directory (documentation)
 - ✅ Initializes CodeGraph database
-- ✅ Runs `specify init .` if SpecKit is installed
+- ✅ Runs `specify init .` to initialize SpecKit in your project
 
-**Note:** If SpecKit is not installed, `spek init` will skip it gracefully with installation instructions.
+**Note:** `spek init` automatically installs required tools (SpecKit). You can skip components with flags:
+- `spek init --skip-speckit` - Skip SpecKit installation/initialization
+- `spek init --skip-codegraph` - Skip CodeGraph initialization
 
 ### 3. Verify Installation
 

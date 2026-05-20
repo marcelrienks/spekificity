@@ -40,21 +40,22 @@ New command that automates:
 - ✅ Creates `.memories/session/` (session storage)
 - ✅ Creates `wiki/specs/` and `wiki/lessons/` (documentation)
 - ✅ Initializes CodeGraph SQLite database
-- ✅ Runs `specify init .` if SpecKit is installed
-- ✅ Displays next steps
+- ✅ Installs SpecKit (specify-cli) if not available
+- ✅ Runs `specify init .` to initialize SpecKit
+- ✅ Checks for Obsidian and provides installation guidance
 
 **Options:**
 ```bash
-spek init --skip-speckit      # Skip SpecKit initialization
+spek init --skip-speckit      # Skip SpecKit installation/initialization
 spek init --skip-codegraph    # Skip CodeGraph initialization
 spek init --verbose           # Verbose output
 spek init --cwd /path         # Initialize specific directory
 ```
 
-**Note:** SpecKit must be installed separately:
-```bash
-uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
-```
+**Features:**
+- ✅ Automatic SpecKit installation if missing
+- ✅ Obsidian compatibility check
+- ✅ Clear guidance for missing tools
 
 ### 3. Enhanced pyproject.toml
 
