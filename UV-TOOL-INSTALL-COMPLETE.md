@@ -40,16 +40,20 @@ New command that automates:
 - ✅ Creates `.memories/session/` (session storage)
 - ✅ Creates `wiki/specs/` and `wiki/lessons/` (documentation)
 - ✅ Initializes CodeGraph SQLite database
-- ✅ Auto-detects and installs SpecKit if available
-- ✅ Runs `specify init .`
+- ✅ Runs `specify init .` if SpecKit is installed
 - ✅ Displays next steps
 
 **Options:**
 ```bash
-spek init --skip-speckit      # Skip SpecKit init
-spek init --skip-codegraph    # Skip CodeGraph init
+spek init --skip-speckit      # Skip SpecKit initialization
+spek init --skip-codegraph    # Skip CodeGraph initialization
 spek init --verbose           # Verbose output
 spek init --cwd /path         # Initialize specific directory
+```
+
+**Note:** SpecKit must be installed separately:
+```bash
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 ```
 
 ### 3. Enhanced pyproject.toml

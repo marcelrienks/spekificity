@@ -21,13 +21,13 @@ This installs Spekificity as a standalone tool with:
 After installation, initialize your project:
 
 ```bash
-# Option A: Using spek init command
+# Using spek init command
 spek init
 
-# Option B: Using spek-init command
+# Or as standalone command
 spek-init
 
-# Option C: Verbose output
+# Verbose output for debugging
 spek init --verbose
 ```
 
@@ -36,8 +36,9 @@ This automatically:
 - ✅ Creates `.memories/session/` directory (session data)
 - ✅ Creates `wiki/` directory (documentation)
 - ✅ Initializes CodeGraph database
-- ✅ Checks for SpecKit (specify) and installs if needed
-- ✅ Runs `specify init .` to initialize SpecKit
+- ✅ Runs `specify init .` if SpecKit is installed
+
+**Note:** If SpecKit is not installed, `spek init` will skip it gracefully with installation instructions.
 
 ### 3. Verify Installation
 

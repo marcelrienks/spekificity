@@ -58,7 +58,7 @@ spek plan "Your feature"
 - jinja2 (templates)
 
 ✅ **Optional Features**
-- SpecKit (auto-installed if available)
+- SpecKit (install separately if desired)
 - CodeGraph (included by default)
 
 ---
@@ -68,7 +68,7 @@ spek plan "Your feature"
 ### Automatic Setup
 
 ```bash
-# Single command initializes everything
+# Single command initializes project structure
 spek init
 ```
 
@@ -77,10 +77,16 @@ This automatically:
 2. Creates `.memories/session/` directory (session storage)
 3. Creates `wiki/` directory structure
 4. Initializes CodeGraph SQLite database
-5. Checks for SpecKit and installs if needed
-6. Runs `specify init .`
+5. Runs `specify init .` if SpecKit is installed
 
-**Output:**
+**If SpecKit is not installed:**
+```
+ℹ SpecKit (specify) not found in PATH. Skipping SpecKit initialization.
+  To enable SpecKit features, install with:
+  uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+```
+
+**After installation, typical output:**
 ```
 🚀 Initializing Spekificity project...
 
