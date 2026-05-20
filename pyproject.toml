@@ -12,6 +12,9 @@ authors = [
     {name = "Marcel Rienks", email = "marcel@example.com"}
 ]
 requires-python = ">=3.11"
+keywords = ["ai", "agent", "specification", "code-analysis", "cli"]
+homepage = "https://github.com/marcelrienks/spekificity"
+repository = "https://github.com/marcelrienks/spekificity"
 
 dependencies = [
     "click>=8.1.0",        # CLI framework (deterministic, well-tested)
@@ -34,9 +37,19 @@ dev = [
     "mypy>=1.4.0",         # Type checking
     "pytest-mock>=3.11.0", # Mocking for tests
 ]
+speckit = [
+    "specify-cli>=0.1.0",  # SpecKit CLI for spec/plan generation
+]
+codegraph = [
+    "sqlalchemy>=2.0.0",   # Already in main deps, but explicit for optional
+]
+integrations = [
+    "specify-cli>=0.1.0",  # SpecKit integration
+]
 
 [project.scripts]
 spek = "spekificity.cli.main:cli"
+spek-init = "spekificity.cli.init:execute"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/spekificity"]
@@ -104,3 +117,7 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
 ]
+
+[tool.uv]
+# Configuration for uv tool install
+# Usage: uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git

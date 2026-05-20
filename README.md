@@ -24,30 +24,44 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 ### Prerequisites
 
 - Python 3.11+
-- Git (initialized project)
-- `uv` package manager
+- `uv` package manager ([install](https://docs.astral.sh/uv/))
 
-### Installation & Setup
+### Installation & Setup (Recommended)
 
 ```bash
-# 1. Clone and enter the project
+# 1. Install Spekificity as a tool
+uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
+
+# 2. Initialize your project
+spek init
+
+# 3. Verify installation
+spek --help
+spek --version
+```
+
+This automatically:
+- ✅ Installs CLI and all dependencies
+- ✅ Creates project directories (`.cel/`, `.memories/`, `wiki/`)
+- ✅ Initializes CodeGraph database
+- ✅ Installs SpecKit (if not present)
+- ✅ Runs `specify init .`
+
+### Alternative: Manual Installation
+
+```bash
+# Clone repository
 git clone <repo-url>
 cd spekificity
 
-# 2. Install SpecKit globally
-uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+# Install in development mode
+pip install -e .
 
-# 3. Initialize Spekificity in your project
-specify init .
-
-# 4. Set up knowledge vault (Obsidian-compatible)
-# → Read: wiki/quickstart.md for step-by-step guide
-
-# 5. Start your first feature
-/spek.prepare
+# Initialize project
+spek init
 ```
 
-**Next:** Read [wiki/quickstart.md](wiki/quickstart.md) for full walkthrough.
+**Full guide:** See [INSTALLATION.md](INSTALLATION.md) for detailed setup options.
 
 ---
 

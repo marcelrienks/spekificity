@@ -4,7 +4,7 @@ import click
 from loguru import logger
 
 # Import skill commands
-from . import prepare, context, plan, map_, implement, post, lessons, tools
+from . import prepare, context, plan, map_, implement, post, lessons, tools, init
 
 
 @click.group(invoke_without_command=True)
@@ -114,6 +114,17 @@ def lessons_cmd(ctx: click.Context, format: str) -> None:
 def tools_cmd(ctx: click.Context, tool: str, symbol: str, file: str, max_results: int, list_tools: bool, format: str) -> None:
     """Query CodeGraph via MCP tools."""
     tools.execute(tool=tool, symbol=symbol, file=file, max_results=max_results, list_tools=list_tools, format=format)
+
+
+@cli.command(name="init")
+@click.option("--skip-speckit", is_flag=True, help="Skip SpecKit initialization")
+@click.option("--skip-codegraph", is_flag=True, help="Skip CodeGraph initialization")
+@click.option("--cwd", type=click.Path(exists=True, file_okay=False, dir_okay=True), default=None, help="Directory to initialize")
+@click.option("--verbose", "-v", is_flag=True, help="Verbose output")
+@click.pass_context
+def init_cmd(ctx: click.Context, skip_speckit: bool, skip_codegraph: bool, cwd: str, verbose: bool) -> None:
+    """Initialize Spekificity project structure."""
+    init.execute(skip_speckit=skip_speckit, skip_codegraph=skip_codegraph, cwd=cwd, verbose=verbose)
 
 
 if __name__ == "__main__":

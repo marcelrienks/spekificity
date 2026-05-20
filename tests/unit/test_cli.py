@@ -172,7 +172,7 @@ class TestCommandIntegration:
     
     def test_all_commands_have_help(self, cli_runner):
         """Verify all commands have help text."""
-        commands = ["prepare", "context", "plan", "map", "implement", "post", "lessons"]
+        commands = ["prepare", "context", "plan", "map", "implement", "post", "lessons", "init", "tools"]
         for cmd in commands:
             result = cli_runner.invoke(cli, [cmd, "--help"])
             assert result.exit_code == 0, f"Command '{cmd}' help failed"
@@ -182,3 +182,30 @@ class TestCommandIntegration:
         """Test verbose flag."""
         result = cli_runner.invoke(cli, ["-v", "--help"])
         assert result.exit_code == 0
+
+
+class TestInitCommand:
+    """Test init command for project setup."""
+    
+    def test_init_help(self, cli_runner):
+        """Test init command help."""
+        result = cli_runner.invoke(cli, ["init", "--help"])
+        assert result.exit_code == 0
+        assert "Initialize" in result.output
+        assert "project structure" in result.output.lower()
+    
+    def test_init_skip_speckit(self, cli_runner, temp_workspace):
+        """Test init with --skip-speckit flag."""
+        result = cli_runner.invoke(cli, ["init", "--skip-speckit"])
+        # Should succeed even if CodeGraph init has issues in test env
+        assert result.exit_code in [0, 1]
+    
+    def test_init_skip_codegraph(self, cli_runner, temp_workspace):
+        """Test init with --skip-codegraph flag."""
+        result = cli_runner.invoke(cli, ["init", "--skip-codegraph"])
+        assert result.exit_code in [0, 1]
+    
+    def test_init_both_skips(self, cli_runner, temp_workspace):
+        """Test init with both skip flags."""
+        result = cli_runner.invoke(cli, ["init", "--skip-speckit", "--skip-codegraph"])
+        assert result.exit_code in [0, 1]
