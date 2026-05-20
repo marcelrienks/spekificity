@@ -66,7 +66,7 @@ pip install -e .
 spek init
 ```
 
-**Full guide:** See [INSTALLATION.md](INSTALLATION.md) for detailed setup options.
+**Full guide:** See [wiki/install.md](wiki/install.md) for detailed setup options.
 
 ---
 

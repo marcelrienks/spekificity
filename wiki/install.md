@@ -310,7 +310,7 @@ spek tools --list
 
 ### 5. Integrate with Your Workflow
 
-See [WORKFLOW.md](wiki/workflow.md) for workflow integration patterns.
+See [workflow.md](workflow.md) for workflow integration patterns.
 
 ---
 
@@ -365,8 +365,8 @@ rm -rf wiki/lessons
 
 ## Support & Documentation
 
-- **Quick Reference:** [QUICK-REFERENCE.md](QUICK-REFERENCE.md)
-- **Full Documentation:** See `wiki/` directory
+- **Quick Reference:** [quickstart.md](quickstart.md)
+- **Full Documentation:** See this `wiki/` directory
 - **Issues & Discussions:** GitHub Issues
 - **Contributing:** See CONTRIBUTING.md
 
