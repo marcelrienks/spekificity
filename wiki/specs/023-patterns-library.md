@@ -9,11 +9,11 @@
 
 ## Overview
 
-A patterns library captures reusable solutions discovered during feature work. Stored in `vault/patterns.md`, it enables future features to learn from and apply proven approaches, reducing design decisions and accelerating implementation.
+A patterns library captures reusable solutions discovered during feature work. Stored in `wiki/vault/patterns.md`, it enables future features to learn from and apply proven approaches, reducing design decisions and accelerating implementation.
 
 ---
 
-## Vault Patterns (vault/patterns.md)
+## Vault Patterns (wiki/vault/patterns.md)
 
 ### Purpose
 Permanent collection of reusable patterns from all features; queryable by domain and frequency of use.
@@ -64,7 +64,7 @@ step 3: ...
 **References:**
 
 Features using this:
-- spec-003: vault/lessons/2026-05-18-003-*.md
+- spec-003: wiki/vault/lessons/2026-05-18-003-*.md
 - spec-001: vault/lessons/2026-05-10-001-*.md
 
 Code examples:

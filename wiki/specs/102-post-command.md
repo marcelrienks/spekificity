@@ -36,9 +36,9 @@
 /spek.post [--caveman-mode=full|lite|ultra] [--dry-run]
 ├─ Step 1: Collect artifacts (spec/plan/tasks/execution trace/code changes)
 ├─ Step 2: Activate caveman mode for compression
-├─ Step 3: Generate lessons document (vault/lessons/<date>-<feature>-<name>.md)
-├─ Step 4: Update vault/decision.md (append new decisions)
-├─ Step 5: Update vault/patterns.md (add/refine patterns)
+├─ Step 3: Generate lessons document (wiki/vault/lessons/<date>-<feature>-<name>.md)
+├─ Step 4: Update wiki/vault/decision.md (append new decisions)
+├─ Step 5: Update wiki/vault/patterns.md (add/refine patterns)
 ├─ Step 6: Sync to /memories/repo/architectural-decisions.md
 ├─ Step 7: Sync to /memories/repo/patterns-index.md
 ├─ Step 8: Refresh code graph via /spek.map (incremental)
@@ -67,14 +67,14 @@
 ### Step 3: Generate Lessons
 - Extract 8 sections from artifacts
 - Compress with caveman mode
-- Write vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md
+- Write wiki/vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md
 - **Output:** Lesson file created
 
 ### Step 4-5: Update Vault Decisions + Patterns
 - Extract from lessons
 - De-duplicate against existing
-- Append to vault/decision.md (with feature source, status=active)
-- Update vault/patterns.md (First Used / Last Used / frequency)
+- Append to wiki/vault/decision.md (with feature source, status=active)
+- Update wiki/vault/patterns.md (First Used / Last Used / frequency)
 
 ### Steps 6-7: Sync Repo Memory
 - Compress recent decisions (last 3 features)
@@ -84,7 +84,7 @@
 
 ### Step 8: Refresh Code Graph
 - Call `/spek.map` (incremental mode)
-- Update vault/graph/nodes.jsonl with new symbols
+- Update wiki/vault/graph/nodes.jsonl with new symbols
 - Update edges (new calls, dependencies)
 
 ### Step 9: Archive Session Memory

@@ -140,7 +140,7 @@ spek post --caveman-mode=ultra --dry-run
 1. Extract lessons from artifacts (spec, plan, tasks, execution)
 2. Format per [Lessons Format](lessons-format.md)
 3. Apply compression mode (`full` by default)
-4. Write to `vault/lessons/<date>-<feature>-<name>.md`
+4. Write to `wiki/vault/lessons/<date>-<feature>-<name>.md`
 5. Log compression ratio to feature state (e.g., "80% reduction via caveman full")
 
 **Impact:**
@@ -157,13 +157,13 @@ spek post --caveman-mode=ultra --dry-run
 **Spec:** [Architectural Decisions](architectural-decisions.md)
 
 **Compression Rule:**
-- Primary storage (`vault/decision.md`): `lite` (preserve full reasoning)
+- Primary storage (`wiki/vault/decision.md`): `lite` (preserve full reasoning)
 - Repo cache (`/memories/repo/architectural-decisions.md`): `full` (compressed index)
 - Inline references: `ultra` (single-line summary)
 
 **Example:**
 ```markdown
-# vault/decision.md (LITE)
+# wiki/vault/decision.md (LITE)
 ## Decision: Caveman Integration for Token Efficiency
 Reasoning: Token usage was critical constraint in autonomous workflows...
 [Full explanation, rationale, alternatives considered]
@@ -192,7 +192,7 @@ Decisions applied: Caveman compression (lite/full/ultra modes).
 
 **Example:**
 ```markdown
-# vault/patterns.md (LITE)
+# wiki/vault/patterns.md (LITE)
 ## Pattern: Decorator for Workflow Enrichment
 Description: Wrapper functions that inject context before calling external tools.
 Example: Specify enrichment wraps /speckit.specify to load architectural decisions.

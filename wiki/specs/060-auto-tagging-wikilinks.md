@@ -347,7 +347,7 @@ Final tags (sorted):
 ```
 After auto-linking complete, check:
   1. Is this lesson similar to existing lessons?
-     - Compare against all vault/lessons/*.md
+     - Compare against all wiki/vault/lessons/*.md
      - Semantic similarity > 0.80?
      - Alert: "Similar lesson exists: [[existing-lesson]]; review for duplication"
   2. Do wikilinks form circular patterns?
@@ -379,7 +379,7 @@ When lesson auto-links to multiple patterns:
 /spek.post Step 3: Generate Lessons
   1. Collect artifacts (spec, plan, tasks, trace)
   2. Generate lesson content (What/How/Tasks/Decisions/Patterns/Next/Metrics)
-  3. Save to vault/lessons/<date>-<feature>-*.md
+  3. Save to wiki/vault/lessons/<date>-<feature>-*.md
 ```
 
 ### Enhanced Workflow (with C.3.2)
@@ -393,7 +393,7 @@ When lesson auto-links to multiple patterns:
   5. [NEW] Auto-insert wikilinks into lesson content
   6. [NEW] Auto-generate tags for frontmatter
   7. [NEW] Run redundancy check; alert if issues
-  8. Save to vault/lessons/<date>-<feature>-*.md
+  8. Save to wiki/vault/lessons/<date>-<feature>-*.md
 ```
 
 ### Implementation Details

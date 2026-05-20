@@ -310,7 +310,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 | Test ID | Test Name | Setup | Assertion |
 |---------|-----------|-------|-----------|
 | I-PR1 | Prepare creates feature state | Run prepare on new feature | feature-state.json created, phase="not_started" |
-| I-PR2 | Prepare creates vault dir | Run prepare | vault/decisions/ created, vault/patterns/ created |
+| I-PR2 | Prepare creates vault dir | Run prepare | wiki/vault/decisions/ created, wiki/vault/patterns/ created |
 | I-PR3 | Prepare initializes config | Run prepare | .spekificity/config.yaml created w/ defaults |
 | I-PR4 | Prepare initializes CodeGraph | Run prepare w/ codegraph=true | codegraph init called, DB created |
 | I-PR5 | Prepare exits cleanly | All prep steps succeed | exit code 0, success message |
@@ -341,7 +341,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 | I-SP1 | Specify loads vault context | spec.specify() called | vault decisions + patterns loaded |
 | I-SP2 | Specify queries CodeGraph | spec.specify() called | CodeGraph queried for project symbols |
 | I-SP3 | Specify injects context | context injected into SpecKit prompt | SpecKit receives enriched prompt |
-| I-SP4 | Specify saves spec | SpecKit returns spec JSON | spec saved to vault/specs/<feature>.json |
+| I-SP4 | Specify saves spec | SpecKit returns spec JSON | spec saved to wiki/vault/specs/<feature>.json |
 | I-SP5 | Specify updates state | Spec saved | feature state phase → "specified", % → 20 |
 | I-SP6 | Specify handles CodeGraph error | CodeGraph timeout | spec still generated (vault-only context) |
 | I-SP7 | Specify compresses context if enabled | feature.compress=true | context injected in caveman format |
@@ -374,7 +374,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 | I-PL2 | Plan loads vault context | plan called | vault decisions + patterns loaded |
 | I-PL3 | Plan queries CodeGraph by topic | plan called | CodeGraph filtered by affected modules |
 | I-PL4 | Plan injects enriched context | context injected | SpecKit receives spec + decisions + patterns + symbols |
-| I-PL5 | Plan saves plan | SpecKit returns plan JSON | plan saved to vault/plans/<feature>.json |
+| I-PL5 | Plan saves plan | SpecKit returns plan JSON | plan saved to wiki/vault/plans/<feature>.json |
 | I-PL6 | Plan updates state | Plan saved | feature state phase → "planned", % → 40 |
 | I-PL7 | Plan handles spec missing | spec.json not found | raise MissingArtifactError w/ clear message |
 | I-PL8 | Plan exits with code 0 | All steps succeed | exit code 0 |
@@ -438,7 +438,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 |---------|-----------|-------|-----------|
 | I-PT1 | Post loads feature artifacts | post called | spec + plan loaded from vault |
 | I-PT2 | Post calls lessons command | post → /spek.lessons | lesson generation triggered |
-| I-PT3 | Post saves lesson | lesson generated | lesson.md saved to vault/lessons/ |
+| I-PT3 | Post saves lesson | lesson generated | lesson.md saved to wiki/vault/lessons/ |
 | I-PT4 | Post compresses lesson | lesson compressed flag set | lesson output in caveman format (~75% reduction) |
 | I-PT5 | Post updates state final | Lesson saved | feature state phase → "complete", % → 100 |
 | I-PT6 | Post locks feature | Feature complete | feature state immutable (no re-open) |
@@ -528,7 +528,7 @@ synthetic_project/
 | E-FW3 | Full workflow plan | plan.json generated w/ 3 tasks (add logging to main.py, utils.py, config.py) |
 | E-FW4 | Full workflow implement | Tasks executed, code modified, 3 git diffs collected |
 | E-FW5 | Full workflow post | lesson.md created w/ 8 sections, feature complete |
-| E-FW6 | Full workflow artifacts | All files (spec, plan, lesson) saved to vault/ |
+| E-FW6 | Full workflow artifacts | All files (spec, plan, lesson) saved to wiki/vault/ |
 | E-FW7 | Full workflow state | feature-state.json shows phase="complete", all phases recorded |
 
 **Success Criteria:**
@@ -549,7 +549,7 @@ synthetic_project/
 
 | Test ID | Test Name | Error | Expected Behavior |
 |---------|-----------|-------|------------------|
-| E-ES1 | Missing vault | vault/ dir doesn't exist | Auto-created, workflow continues |
+| E-ES1 | Missing vault | wiki/vault/ dir doesn't exist | Auto-created, workflow continues |
 | E-ES2 | Missing spec | Try implement without spec | Error: "Missing spec.json", exit code 2 |
 | E-ES3 | Missing plan | Try implement without plan | Error: "Missing plan.json", exit code 2 |
 | E-ES4 | Task fails | Task 1 fails → Task 2 should still run | Continue-on-error: Task 1 failed, Task 2 executed |
@@ -580,7 +580,7 @@ synthetic_project/
 | E-MF3 | Feature 2 complete | Feature "add-tests" phase="complete", separate lesson saved |
 | E-MF4 | Feature isolation | Feature 1 & 2 specs/plans/lessons separate files, no cross-contamination |
 | E-MF5 | State isolation | feature-state.json tracks both features independently |
-| E-MF6 | Vault organization | vault/specs/, vault/plans/, vault/lessons/ organized by feature ID |
+| E-MF6 | Vault organization | wiki/vault/specs/, wiki/vault/plans/, wiki/vault/lessons/ organized by feature ID |
 
 **Success Criteria:**
 - ✅ All 6 tests pass

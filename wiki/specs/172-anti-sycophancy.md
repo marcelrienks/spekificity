@@ -67,7 +67,7 @@ Prevent AI drift by enforcing **explicit validation rules** that:
 Vault Decision: "Use dependency injection pattern"
 Spec Proposes: "Inject via service locator"
 
-Conflict: "Spec contradicts vault/decision-use-di.md"
+Conflict: "Spec contradicts wiki/vault/decision-use-di.md"
 Alert Level: HIGH
 User Action Required: Justify deviation or align with decision
 ```
@@ -77,7 +77,7 @@ User Action Required: Justify deviation or align with decision
 ```
 For each spec requirement:
   1. Extract architectural choice
-  2. Check vault/decisions.md for related decisions
+  2. Check wiki/vault/decisions.md for related decisions
   3. If contradiction found:
      a. Alert: "Spec contradicts vault decision [X]"
      b. Show rationale from vault
@@ -100,7 +100,7 @@ Alert: "Complexity 67% higher than similar features; justify additional scope"
 **Implementation:**
 
 ```
-1. Get similar past features from vault/lessons
+1. Get similar past features from wiki/vault/lessons
 2. Calculate average LOC + patterns
 3. If current estimate > (avg * 1.5):
    a. Alert user
@@ -152,7 +152,7 @@ Alert: "New technology Rust not in current stack; justify addition"
 **Implementation:**
 
 ```
-1. Extract tech stack from vault/decisions
+1. Extract tech stack from wiki/vault/decisions
 2. Scan spec for new technologies
 3. If new tech found:
    a. Alert: "New tech [X]; not in current stack"
@@ -265,13 +265,13 @@ Create per-project rules (team + solo):
 ## Plan Generation Rules (`/spek.automate` plan phase)
 
 ### Rule: Architecture aligns with decisions
-- **Trigger:** Plan violates vault/decision-*.md
+- **Trigger:** Plan violates wiki/vault/decision-*.md
 - **Action:** ALERT - show decision + rationale
 - **Override:** Allowed; may trigger RARV reflection
 
 ### Rule: Use established patterns
 - **Trigger:** Plan reinvents wheel
-- **Action:** ALERT - suggest vault/patterns
+- **Action:** ALERT - suggest wiki/vault/patterns
 - **Override:** Allowed with innovation-memo
 
 ## Implementation Rules (/spek.implement)

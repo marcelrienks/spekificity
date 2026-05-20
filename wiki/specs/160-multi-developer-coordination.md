@@ -152,7 +152,7 @@ Developer A (Feature 1): "Use Builder pattern for config"
 Developer B (Feature 2): "Avoid Builder pattern; too complex"
 
 Merge Result:
-vault/decision.md:
+wiki/vault/decision.md:
   1. Use Builder pattern for config (Feature 1, 2026-05-20) — SUPERCEDED
   2. Avoid Builder pattern; too complex (Feature 2, 2026-05-21, rationale: ...)
      Related: See Decision 1 (prior attempt, lessons learned)
@@ -246,7 +246,7 @@ def check_conflicts(main_branch, feature_branch):
 
 #### 3.2.3 Communication: Coordination Checkins
 
-**File:** `vault/coordination/checkins.md` (shared, human-readable log)
+**File:** `wiki/vault/coordination/checkins.md` (shared, human-readable log)
 
 ```markdown
 # Team Coordination Checkins
@@ -449,7 +449,7 @@ If Developer A finishes first:
 
 **Timing:** Feature start + feature end (2 checkins per feature)
 
-**Location:** `vault/coordination/checkins.md`
+**Location:** `wiki/vault/coordination/checkins.md`
 
 **Format:**
 
@@ -535,7 +535,7 @@ Feature B spec: "Depends on Feature A: Add Logging (merged 2026-05-20)"
 **Strategy:** Sync meeting + decision record.
 
 ```
-vault/coordination/team-sync-2026-05-22.md:
+wiki/vault/coordination/team-sync-2026-05-22.md:
 ---
 title: Team Sync - Conflict Resolution
 date: 2026-05-22

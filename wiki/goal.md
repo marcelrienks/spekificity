@@ -117,16 +117,16 @@ project/
 │  └─ [TESTS: unit + integration + e2e]
 │  └─ [DOCUMENTATION: docstrings, examples]
 │
-├─ wiki/
-│  └─ specs/
-│     └─ [FEATURE SPEC: NNN-feature-name.md]
-│
-└─ vault/
-   ├─ Architectural decisions recorded
-   ├─ Patterns discovered and indexed
-   └─ lessons/
-      └─ [LESSONS LEARNED: YYYY-MM-DD-feature-name-topic.md]
-         └─ [What worked, what didn't, why, for future reference]
+└─ wiki/
+   ├─ specs/
+   │  └─ [FEATURE SPEC: NNN-feature-name.md]
+   │
+   └─ vault/
+      ├─ Architectural decisions recorded
+      ├─ Patterns discovered and indexed
+      └─ lessons/
+         └─ [LESSONS LEARNED: YYYY-MM-DD-feature-name-topic.md]
+            └─ [What worked, what didn't, why, for future reference]
 ```
 
 ### In Session Memory
@@ -161,7 +161,7 @@ codegraph.db (updated)
 ### In Vault Metadata
 
 ```
-vault/
+wiki/vault/
 ├─ Current feature state (COMPLETED)
 ├─ All decisions documented
 ├─ All patterns captured
@@ -191,9 +191,9 @@ READY: Workspace prepared for feature development
 
 **What happened:**
 - Git verified clean (no uncommitted work)
-- Vault pulled (latest specs/decisions/lessons)
+- Vault pulled (latest specs/decisions/lessons from wiki/vault/)
 ├─ CodeGraph queried for affected files
-- Session memory loaded (decisions, patterns from vault)
+- Session memory loaded (decisions, patterns from wiki/vault/)
 - Feature state file created
 
 #### Specify Feature
@@ -231,7 +231,7 @@ SPEC GENERATION
 │     - Tokens: ~2,000-3,000 for full cycle
 │     - Time: 1-2 hours
 │
-└─ Output: vault/specs/150-user-auth-api.md (CREATED)
+└─ Output: wiki/vault/specs/150-user-auth-api.md (CREATED)
    └─ Ready for planning phase
 ```
 
@@ -379,11 +379,11 @@ Step 3: Generate Lessons
 │  - Why: JWT chosen over session for statelessness (scalability)
 │  - Why: Token expiry set to 24h (balance security + UX)
 │
-└─ Output: vault/lessons/2026-05-20-user-auth-api-implementation.md (CREATED)
+└─ Output: wiki/vault/lessons/2026-05-20-user-auth-api-implementation.md (CREATED)
 
 Step 4-5: Update Vault
-├─ vault/decision.md (append new architectural decisions)
-├─ vault/patterns.md (log pattern usage + frequency)
+├─ wiki/vault/decision.md (append new architectural decisions)
+├─ wiki/vault/patterns.md (log pattern usage + frequency)
 └─ Feature marked as COMPLETED
 
 Step 6-7: Sync Repo Memory
@@ -397,7 +397,7 @@ Step 8: Refresh CodeGraph
 └─ Graph now includes login handler, tests
 
 Step 9: Archive Feature State
-├─ Move /memories/session/current-feature.md to vault/archive/
+├─ Move /memories/session/current-feature.md to wiki/vault/archive/
 ├─ Clean up session temporary files
 └─ Ready for next feature
 

@@ -119,17 +119,17 @@ Layer 1 Query: "What changed in the auth module in the last commit?"
 
 ```
 Layer 2 Query: "Why did we choose dependency injection?"
-  → Response: vault/decision-use-di.md
+  → Response: wiki/vault/decision-use-di.md
   → Rationale, alternatives considered, consequences
   → Cost: ~300 tokens
   
 Layer 2 Query: "What patterns work for state management?"
-  → Response: vault/patterns/state-management-*.md
+  → Response: wiki/vault/patterns/state-management-*.md
   → Multiple patterns, when to use each
   → Cost: ~400 tokens
   
 Layer 2 Query: "What did we learn from the auth feature?"
-  → Response: vault/lessons/lessons-from-auth-feature.md
+  → Response: wiki/vault/lessons/lessons-from-auth-feature.md
   → What worked, what failed, metrics
   → Cost: ~200 tokens
 ```

@@ -169,7 +169,7 @@ Creates technical implementation plan, guided by spec, decisions, patterns, and 
 
 **Code Graph Injection (NEW):**
 1. Read spec.md (identify affected modules)
-2. Query vault/graph/nodes.jsonl for affected modules
+2. Query wiki/vault/graph/nodes.jsonl for affected modules
 3. Extract code structure:
    - List existing modules in affected areas
    - Show recently changed files (might be relevant)

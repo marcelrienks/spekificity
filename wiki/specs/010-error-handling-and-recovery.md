@@ -78,7 +78,7 @@ Then: /spek.prepare
 
 **Example:**
 ```
-Warning: Vault inaccessible (permission denied: vault/decision.md)
+Warning: Vault inaccessible (permission denied: wiki/vault/decision.md)
 Fallback: Using cached decisions from /memories/repo/architectural-decisions.md (age: 2 days)
 Retry: Vault access will be attempted every 30s for 3 retries
 Action: Check vault permissions: `chmod -R 755 vault/`
@@ -173,7 +173,7 @@ Continue: Full context available after cleanup
 - **Default Action:** FAIL + GUIDE (provide alternative location or recovery steps)
 - **Recovery Flow:**
   1. Check disk space: `df -h`
-  2. If full: Offer cleanup: "Archive old lessons: `mv vault/lessons/2024-* archive/`"
+  2. If full: Offer cleanup: "Archive old lessons: `mv wiki/vault/lessons/2024-* archive/`"
   3. If permissions: Offer fix: "Fix permissions: `chmod 755 specs/`"
   4. If locked: Offer retry: "Close any open editors, then retry"
   5. If parent missing: Create directory and retry
@@ -182,8 +182,8 @@ Continue: Full context available after cleanup
 
 **Example:**
 ```
-Error: Disk full (Failed to write vault/lessons/2026-05-19-feature.md)
-Fix 1: Free up space: `rm -rf vault/lessons/2024-*` (archive old lessons)
+Error: Disk full (Failed to write wiki/vault/lessons/2026-05-19-feature.md)
+Fix 1: Free up space: `rm -rf wiki/vault/lessons/2024-*` (archive old lessons)
 Fix 2: Use external storage: `export VAULT_DIR=/external/vault`
 Action: Choose fix, then run `/spek.post` again
 ```
@@ -329,7 +329,7 @@ while attempt <= 3:
 
 **Implementation:**
 - Define **fallback hierarchy** for each data source:
-  1. Primary: Fresh data from vault/graph
+  1. Primary: Fresh data from wiki/vault/graph
   2. Secondary: Cached data from `/memories/repo/` or `.cel/`
   3. Tertiary: Empty/minimal data (continue with no context)
 - Always log which fallback was used

@@ -22,7 +22,7 @@ Spekificity is a **specification-driven agent development framework** that ties 
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  ┌──────────────────┐   ┌──────────────────┐                │
-│  │  Obsidian Vault  │   │   CodeGraph MCP  │                │
+│  │  wiki/Vault      │   │   CodeGraph MCP  │                │
 │  │  (Knowledge)     │   │   (Code Intel)   │                │
 │  └────────┬─────────┘   └────────┬─────────┘                │
 │           │                      │                          │
@@ -59,7 +59,7 @@ Spekificity is a **specification-driven agent development framework** that ties 
 START FEATURE
     │
     ├─ /spek.prepare ─────────────► Workspace Ready
-    │  (Git state, vault fresh, graph synced)
+    │  (Git state, wiki/vault fresh, graph synced)
     │
     ├─ /spek.automate ────────────────┐
     │  (Orchestrate SpecKit)           │
@@ -79,10 +79,10 @@ START FEATURE
     │  (Per-task execution)            (Tests, Docs)
     │
     ├─ /spek.post ────────────────────► Outcomes Archived
-    │  (Archive, Lessons, Refresh)     (Vault + Graph Updated)
+    │  (Archive, Lessons, Refresh)     (wiki/Vault + Graph Updated)
     │
     ├─ /spek.lessons ─────────────────► Lessons Extracted
-    │  (Structured capture)            (Vault + Session Updated)
+    │  (Structured capture)            (wiki/Vault + Session Updated)
     │
     END FEATURE
 ```
@@ -113,7 +113,7 @@ START FEATURE
 
 **Specification → Plan → Tasks orchestration.**
 
-- Receives spec document from vault
+- Receives spec document from wiki/vault
 - Generates execution plan with dependencies and task breakdown
 - Routes tasks to agent for implementation
 - Collects analysis (risk, metrics, dependencies)
@@ -161,7 +161,7 @@ START FEATURE
                │
 ┌──────────────▼───────────────────────────────────┐
 │  CORE LAYER: Knowledge + Analysis                │
-│  ├─ Obsidian Vault (persistent knowledge)        │
+│  ├─ wiki/Vault (persistent knowledge)           │
 │  ├─ CodeGraph MCP (real-time code analysis)      │
 │  ├─ Git (version control)                        │
 │  └─ Session State (temp context)                 │
@@ -176,7 +176,7 @@ START FEATURE
 
 When a user invokes `/spek.context` or any `/spek.*` command:
 
-1. **Load Vault Context:** Fetch specs, plans, decisions from Obsidian
+1. **Load Vault Context:** Fetch specs, plans, decisions from wiki/vault
 2. **Load Repo Memory:** Read `.git/spek-memory/` for workspace-scoped facts
 3. **Refresh CodeGraph:** Sync latest code changes via MCP
 4. **Populate Session State:** Assemble context for SpecKit engine or skill execution
@@ -188,7 +188,7 @@ When a user invokes `/spek.context` or any `/spek.*` command:
    - `/speckit.specify`: Generate feature spec with enrichments
    - `/speckit.plan`: Break spec into tasks
    - `/speckit.analyze`: Validate plan (risk, feasibility, token budget)
-3. **Storage:** Archive spec/plan in vault (Git commit)
+3. **Storage:** Archive spec/plan in wiki/vault (Git commit)
 4. **Return:** Hand off to `spek.implement` for task execution
 
 ---
@@ -197,7 +197,7 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 
 | Layer | Storage | Sync | Lifetime |
 |-------|---------|------|----------|
-| **Knowledge Vault** | Git (Obsidian sync) | Manual (user commits) + Auto (post/lessons) | Persistent (feature cycle + beyond) |
+| **Knowledge Vault** | Git (wiki/vault sync) | Manual (user commits) + Auto (post/lessons) | Persistent (feature cycle + beyond) |
 | **Repo Memory** | `.git/spek-memory/` (YAML) | Git hook + manual | Persistent (workspace lifetime) |
 | **CodeGraph** | SQLite in `.codegraph/` | File watcher (auto) | Persistent (session lifetime) |
 | **Session State** | In-memory + context window | Manual commits to memory | Temporary (single session) |

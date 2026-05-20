@@ -132,7 +132,7 @@ For each test failure:
 
 ### New Vault Location
 
-**File:** `vault/failures/<YYYY-MM-DD>-<feature>-failures.md`
+**File:** `wiki/vault/failures/<YYYY-MM-DD>-<feature>-failures.md`
 
 **Purpose:** Persistent record of test failures + remediation
 
@@ -249,7 +249,7 @@ type: "pattern"
 **From failure analysis:** Race conditions observed in concurrent access  
 **Issue:** Multiple threads accessing singleton instance simultaneously  
 **Solution:** Add mutex lock or use thread-safe wrapper  
-**Reference:** [[vault/failures/2026-05-15-auth-refactor-failures.md#race-condition]]
+**Reference:** [[wiki/vault/failures/2026-05-15-auth-refactor-failures.md#race-condition]]
 
 When using singleton pattern:
 1. Document thread-safety assumptions
@@ -279,7 +279,7 @@ When using singleton pattern:
      a. Query last test run (CI/CD API or local)
      b. Parse failures
      c. Extract patterns + affected modules
-     d. Create failure log (vault/failures/...)
+     d. Create failure log (wiki/vault/failures/...)
      e. Update related decisions/patterns with warnings
   3. Tag lesson with failure patterns
      tags: ["lesson/auth-refactor", "failure/race-condition", ...]
@@ -312,7 +312,7 @@ def analyze_test_failures_for_feature(feature_name):
         })
     
     # Step 3: Create failure log
-    failure_log_path = f"vault/failures/{date_slug}-{feature_name}-failures.md"
+    failure_log_path = f"wiki/vault/failures/{date_slug}-{feature_name}-failures.md"
     failure_log = generate_failure_log(failures, feature_name)
     write_vault_file(failure_log_path, failure_log)
     
@@ -336,7 +336,7 @@ When loading context for next feature, surface failure warnings:
 /spek.context Step 3: Query Vault
 
 [NEW] Failure Warnings Check:
-  → Query vault/failures/ for recent failures
+  → Query wiki/vault/failures/ for recent failures
   → Filter by related domain/patterns
   → Alert user: "Previous auth feature had race conditions; review [[singleton-pattern]] warnings"
   
@@ -406,7 +406,7 @@ backprop:
 ## Success Criteria
 
 - ✅ Test failure parsing + pattern extraction working
-- ✅ Failure logs created in `vault/failures/` with Zettelkasten format
+- ✅ Failure logs created in `wiki/vault/failures/` with Zettelkasten format
 - ✅ Related decisions/patterns auto-updated with failure warnings
 - ✅ Lessons tagged with failure patterns (failure/race-condition, etc.)
 - ✅ `/spek.context` surfaces past failure warnings

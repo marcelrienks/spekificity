@@ -43,7 +43,7 @@
 
 ### Step 3: Code Graph Freshness Check
 - If `--force-graph-refresh`: skip to Step 4
-- Else check vault/graph/config.json mtime
+- Else check wiki/vault/graph/config.json mtime
 - If age > 1 hour: offer refresh to user
 - If age < 1 hour: skip Step 4
 

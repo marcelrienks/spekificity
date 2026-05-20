@@ -34,7 +34,7 @@ spek [global-options] <command> [command-options]
 **Global Options:**
 ```bash
 --workspace <path>       # Override workspace root (default: git root)
---vault <path>           # Override vault location (default: vault/)
+--vault <path>           # Override vault location (default: wiki/vault/)
 --dry-run                # Preview changes, don't write (applies to all commands)
 --verbose                # Enable verbose logging (debug output)
 --caveman-mode <mode>    # Force caveman compression mode (lite|full|ultra)
@@ -175,9 +175,9 @@ spek post [options]
 7. Report completion
 
 **Output:**
-- `vault/lessons/<date>-<feature>.md` created
-- `vault/decision.md` updated
-- `vault/patterns.md` updated
+- `wiki/vault/lessons/<date>-<feature>.md` created
+- `wiki/vault/decision.md` updated
+- `wiki/vault/patterns.md` updated
 - `/memories/repo/` synced
 - Code graph refreshed
 - Session memory archived
@@ -204,12 +204,12 @@ spek map [options]
 1. Run graphify to index code symbols
 2. Export Obsidian document nodes
 3. Merge code + doc nodes
-4. Write to `vault/graph/nodes.jsonl`
-5. Update graph metadata (`vault/graph/config.json`)
+4. Write to `wiki/vault/graph/nodes.jsonl`
+5. Update graph metadata (`wiki/vault/graph/config.json`)
 
 **Output:**
-- `vault/graph/nodes.jsonl` created/updated
-- `vault/graph/config.json` created/updated
+- `wiki/vault/graph/nodes.jsonl` created/updated
+- `wiki/vault/graph/config.json` created/updated
 - Context available for refreshing
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
@@ -229,10 +229,10 @@ spek context [options]
 ```
 
 **Behavior:**
-1. Load decisions from `vault/decision.md` (or cache)
-2. Load patterns from `vault/patterns.md` (or cache)
-3. Load recent lessons (top 3-5) from `vault/lessons/`
-4. Load code graph from `vault/graph/nodes.jsonl`
+1. Load decisions from `wiki/vault/decision.md` (or cache)
+2. Load patterns from `wiki/vault/patterns.md` (or cache)
+3. Load recent lessons (top 3-5) from `wiki/vault/lessons/`
+4. Load code graph from `wiki/vault/graph/nodes.jsonl`
 5. Compose into session context (`/memories/session/context-loaded.md`)
 
 **Output:**
@@ -398,7 +398,7 @@ Spekificity CLI:
 ⚠ /spek.post warning
   Vault not accessible (permissions): Using cached decisions (2h old)
   
-  Tip: Check vault permissions: chmod 755 vault/
+  Tip: Check vault permissions: chmod 755 wiki/vault/
   
   Continuing: Feature archival with stale context
   (Exit code: 0, proceeding)
@@ -413,7 +413,7 @@ Spekificity CLI:
 ```yaml
 workspace:
   root: ${PWD}  # Git root of project
-  vault: vault/
+  vault: wiki/vault/
   specs: specs/
   
 memory:
@@ -421,7 +421,7 @@ memory:
   session: /memories/session/
   
 graph:
-  cache_dir: vault/graph/
+  cache_dir: wiki/vault/graph/
   refresh_interval_hours: 24
   force_refresh_on_prepare: false
   

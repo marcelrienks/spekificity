@@ -165,7 +165,7 @@ Action:
 2. For each decision that changed:
    a. Was change justified? (document rationale)
    b. Should this decision be updated? (affect future features?)
-   c. Is this a new pattern? (add to vault/patterns.md)
+   c. Is this a new pattern? (add to wiki/vault/patterns.md)
 3. Update vault with decision changes
 4. Add reflection notes to feature lesson
 ```
@@ -182,17 +182,17 @@ reflect_results:
     - decision: "use singleton for auth service"
       change: "use factory instead"
       rationale: "better testability, lower coupling"
-      action: "update vault/decision-auth-service-pattern.md"
+      action: "update wiki/vault/decision-auth-service-pattern.md"
     
     - decision: "token expiry: 1 hour"
       change: "token expiry: 30 minutes"
       rationale: "security audit recommendation"
-      action: "update vault/decision-token-lifecycle.md"
+      action: "update wiki/vault/decision-token-lifecycle.md"
   
   new_patterns:
     - name: "Factory pattern for service creation"
       source: "discovered in auth service implementation"
-      action: "add to vault/patterns/factory-pattern.md"
+      action: "add to wiki/vault/patterns/factory-pattern.md"
 ```
 
 ### Phase 4: VERIFY - Re-Validate Against Decisions

@@ -17,13 +17,13 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 
 ### SHA256 File Hashing
 
-**Store in:** vault/graph/cache/sha256.json
+**Store in:** wiki/vault/graph/cache/sha256.json
 
 ```json
 {
   "src/services/auth.py": "abc123def456...",
   "src/api/handlers.py": "ghi789jkl012...",
-  "vault/patterns.md": "jkl012mno345..."
+  "wiki/vault/patterns.md": "jkl012mno345..."
 }
 ```
 
@@ -38,7 +38,7 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 
 ### Node Index Lookup Table
 
-**Store in:** vault/graph/cache/node-index.json
+**Store in:** wiki/vault/graph/cache/node-index.json
 
 ```json
 {
@@ -70,7 +70,7 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 2. Compare with cache/sha256.json
 3. Identify changed files (list A)
 4. Re-index changed files only
-5. Update vault/graph/nodes.jsonl
+5. Update wiki/vault/graph/nodes.jsonl
 6. Update edges (remove old, add new)
 7. Update cache/sha256.json
 8. Update node-index.json
@@ -171,19 +171,19 @@ graphify:
 
 ### Check 1: File Exists
 ```bash
-ls -la vault/graph/cache/sha256.json
+ls -la wiki/vault/graph/cache/sha256.json
 ```
 If missing: Initialize empty cache → full rebuild
 
 ### Check 2: Cache Age
 ```bash
-find vault/graph/cache/sha256.json -mtime +1
+find wiki/vault/graph/cache/sha256.json -mtime +1
 ```
 If > 1 day old: Force full rebuild
 
 ### Check 3: Cache Integrity
 ```bash
-jq . vault/graph/cache/sha256.json > /dev/null
+jq . wiki/vault/graph/cache/sha256.json > /dev/null
 ```
 If invalid JSON: Rebuild cache
 

@@ -78,7 +78,7 @@ related: ["[[note-name]]", "[[other-note]]"]
 **Rules:**
 - Use lowercase letters, numbers, hyphens only
 - Maximum 50 characters (including extension)
-- Must be globally unique within `vault/` directory
+- Must be globally unique within `wiki/vault/` directory
 - Spaces → hyphens: "Singleton Pattern" → `singleton-pattern.md`
 - Abbreviations OK: "DI Pattern" → `di-pattern.md`
 
@@ -148,7 +148,7 @@ We decided to use [[dependency-injection]] over service locators
 because [[service-locator-anti-pattern]] violates testability constraints.
 ```
 
-**Validation Rule:** Every wikilink MUST reference an existing note in `vault/` (except external links, which use standard Markdown `[text](url)`).
+**Validation Rule:** Every wikilink MUST reference an existing note in `wiki/vault/` (except external links, which use standard Markdown `[text](url)`).
 
 ---
 
@@ -276,7 +276,7 @@ status: "active"
    1. Extract feature name + date
    2. Generate kebab-case filename: "<YYYY-MM-DD>-<feature>-lesson.md"
    3. Verify globally unique within vault/
-   4. Save to vault/lessons/
+   4. Save to wiki/vault/lessons/
    ```
 
 ### Validation Checklist
@@ -346,8 +346,8 @@ When loading context, verify:
 
 ### Week 3: Vault Backfill & Testing
 - [ ] Migrate existing vault notes to Zettelkasten format
-  - Add frontmatter to `vault/decision.md` entries
-  - Add frontmatter to `vault/patterns.md` entries
+  - Add frontmatter to `wiki/vault/decision.md` entries
+  - Add frontmatter to `wiki/vault/patterns.md` entries
 - [ ] Audit for atomicity violations
 - [ ] Test wikilink generation + validation
 - [ ] Test query patterns in `/spek.context`

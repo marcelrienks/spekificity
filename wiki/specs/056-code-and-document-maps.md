@@ -18,8 +18,8 @@
 
 **Options:**
 
-1. **File-level nodes** — One node per markdown file (e.g., `vault/decision.md` → one node)
-2. **Heading-level nodes** — One node per heading (e.g., `vault/decision.md#heading-1`, `vault/decision.md#heading-2`)
+1. **File-level nodes** — One node per markdown file (e.g., `wiki/vault/decision.md` → one node)
+2. **Heading-level nodes** — One node per heading (e.g., `wiki/vault/decision.md#heading-1`, `wiki/vault/decision.md#heading-2`)
 3. **Link-graph topology** — Nodes based on markdown link structure (e.g., decision nodes linked to affected specs)
 4. **Hybrid** — Different granularity for different document types (file-level for specs, heading-level for decisions)
 
@@ -48,8 +48,8 @@ Code node: {
 
 Documentation node (file-level): {
   type: "doc",
-  id: "vault/decision.md",
-  file: "vault/decision.md",
+  id: "wiki/vault/decision.md",
+  file: "wiki/vault/decision.md",
   title: "Decision Index",
   level: "file",
   description: "...",
@@ -59,13 +59,13 @@ Documentation node (file-level): {
 
 Documentation node (heading-level): {
   type: "doc",
-  id: "vault/decision.md#api-versioning-strategy",
-  file: "vault/decision.md",
+  id: "wiki/vault/decision.md#api-versioning-strategy",
+  file: "wiki/vault/decision.md",
   heading: "API Versioning Strategy",
   level: "h2",
   description: "...",
   tags: ["api", "versioning"],
-  references: ["vault/decision.md"]
+  references: ["wiki/vault/decision.md"]
 }
 
 Skill node (file-level): {
@@ -80,7 +80,7 @@ Skill node (file-level): {
 }
 ```
 
-**Storage:** All nodes stored in `vault/graph/nodes.jsonl` (one JSON object per line for streaming)
+**Storage:** All nodes stored in `wiki/vault/graph/nodes.jsonl` (one JSON object per line for streaming)
 
 ---
 
@@ -118,9 +118,9 @@ Skill node (file-level): {
 
 ```bash
 # In spek.map workflow:
-spek.map step 1: graphify index-code → vault/graph/nodes-code.jsonl
-spek.map step 2: obsidian export-graph (via CLI or plugin) → vault/graph/nodes-docs.jsonl
-spek.map step 3: merge both → vault/graph/nodes.jsonl
+spek.map step 1: graphify index-code → wiki/vault/graph/nodes-code.jsonl
+spek.map step 2: obsidian export-graph (via CLI or plugin) → wiki/vault/graph/nodes-docs.jsonl
+spek.map step 3: merge both → wiki/vault/graph/nodes.jsonl
 ```
 
 (Obsidian can export via CLI, plugin API, or metadata.json cache depending on setup)
@@ -136,15 +136,15 @@ spek.map step 3: merge both → vault/graph/nodes.jsonl
 
 **For Documentation:**
 - `specs/` — Feature specifications (heading-level)
-- `vault/decision.md` — Architectural decisions (heading-level)
-- `vault/intention.md` — Intention statements (file-level)
-- `vault/patterns.md` — Patterns library (heading-level)
-- `vault/lessons/` — Lessons learned (file-level, one per feature)
+- `wiki/vault/decision.md` — Architectural decisions (heading-level)
+- `wiki/vault/intention.md` — Intention statements (file-level)
+- `wiki/vault/patterns.md` — Patterns library (heading-level)
+- `wiki/vault/lessons/` — Lessons learned (file-level, one per feature)
 - `wiki/` — General wiki/reference docs (heading-level by default, can override with frontmatter)
 - `.github/agents/skills/*/SKILL.md` — Skill definitions (file-level)
 
 **Exclude:**
-- `node_modules/`, `dist/`, `.git/`, `vault/graph/` — Build/generated/index files
+- `node_modules/`, `dist/`, `.git/`, `wiki/vault/graph/` — Build/generated/index files
 - `.env`, `*.log`, `*.tmp` — Temporary/config files
 - `wiki/raw/` — Raw research materials (not part of canonical docs)
 
@@ -187,7 +187,7 @@ Content here.
 - Cross-file function calls: `foo()` → link to `Foo` definition
 
 **Doc references:**
-- Markdown links: `[text](vault/decision.md#heading)` → doc node link
+- Markdown links: `[text](wiki/vault/decision.md#heading)` → doc node link
 - Implicit tags: Mention of `spek.prepare` in a spec → implicit link to skill node
 - Heading anchors: `# API Versioning Strategy` → node id = `#api-versioning-strategy`
 
@@ -196,7 +196,7 @@ Content here.
 {
   "id": "node-id",
   "references": [
-    "vault/decision.md",
+    "wiki/vault/decision.md",
     "src/prepare/prepare.ts:Prepare",
     "skills/spek-prepare/SKILL.md"
   ]
@@ -231,7 +231,7 @@ interface CodeNode {
 ```typescript
 interface DocNodeHeading {
   type: "doc";
-  id: string; // e.g., "vault/decision.md#api-versioning-strategy"
+  id: string; // e.g., "wiki/vault/decision.md#api-versioning-strategy"
   file: string; // relative path
   heading: string; // "API Versioning Strategy"
   level: 1 | 2 | 3 | 4 | 5 | 6; // h1, h2, ... h6
@@ -252,7 +252,7 @@ interface DocNodeHeading {
 ```typescript
 interface DocNodeFile {
   type: "doc";
-  id: string; // e.g., "vault/intention.md" or "skills/spek-prepare/SKILL.md"
+  id: string; // e.g., "wiki/vault/intention.md" or "skills/spek-prepare/SKILL.md"
   file: string; // relative path
   title: string; // first h1 or filename
   level: "file";
@@ -292,7 +292,7 @@ vault/graph/
 
 ```jsonl
 {"type":"code","id":"src/prepare/prepare.ts:Prepare",...}
-{"type":"doc","id":"vault/decision.md#api-versioning-strategy",...}
+{"type":"doc","id":"wiki/vault/decision.md#api-versioning-strategy",...}
 {"type":"doc","id":"skills/spek-prepare/SKILL.md",...}
 ```
 
@@ -300,13 +300,13 @@ vault/graph/
 
 ```bash
 # Find all decisions (from Obsidian graph)
-grep '"docType":"decision"' vault/graph/nodes.jsonl
+grep '"docType":"decision"' wiki/vault/graph/nodes.jsonl
 
-# Find all code that references vault/decision.md
-grep '"vault/decision.md"' vault/graph/nodes.jsonl | grep '"references"'
+# Find all code that references wiki/vault/decision.md
+grep '"wiki/vault/decision.md"' wiki/vault/graph/nodes.jsonl | grep '"references"'
 
 # Find all active docs (metadata from Obsidian frontmatter)
-grep '"status":"active"' vault/graph/nodes.jsonl
+grep '"status":"active"' wiki/vault/graph/nodes.jsonl
 ```
 
 ---
@@ -328,12 +328,12 @@ grep '"status":"active"' vault/graph/nodes.jsonl
   },
   "indexing": {
     "codePaths": ["src/", ".github/agents/skills/", ".spekificity/"],
-    "docPaths": ["specs/", "vault/decision.md", "vault/intention.md", "vault/patterns.md", "vault/lessons/", "wiki/", ".github/agents/skills/*/SKILL.md"],
+    "docPaths": ["specs/", "wiki/vault/decision.md", "wiki/vault/intention.md", "wiki/vault/patterns.md", "wiki/vault/lessons/", "wiki/", ".github/agents/skills/*/SKILL.md"],
     "exclude": [
       "node_modules/",
       "dist/",
       ".git/",
-      "vault/graph/",
+      "wiki/vault/graph/",
       "wiki/raw/",
       ".obsidian/",
       "**/*.log",
@@ -345,7 +345,7 @@ grep '"status":"active"' vault/graph/nodes.jsonl
     "spec": { "folder": "specs/", "file": "*.md", "granularity": "heading", "source": "obsidian" },
     "skill": { "folder": ".github/agents/skills/", "file": "SKILL.md", "granularity": "file", "source": "obsidian" },
     "pattern": { "folder": "vault/", "file": "patterns.md", "granularity": "heading", "source": "obsidian" },
-    "lesson": { "folder": "vault/lessons/", "file": "*.md", "granularity": "file", "source": "obsidian" },
+    "lesson": { "folder": "wiki/vault/lessons/", "file": "*.md", "granularity": "file", "source": "obsidian" },
     "guide": { "folder": "wiki/", "file": "*.md", "granularity": "heading", "source": "obsidian" }
   },
   "frontmatter": {
@@ -364,19 +364,19 @@ grep '"status":"active"' vault/graph/nodes.jsonl
 ```
 
 ---
-Export Obsidian graph (via dataview, cache, or CLI tool) → vault/graph/nodes-docs.jsonl
+Export Obsidian graph (via dataview, cache, or CLI tool) → wiki/vault/graph/nodes-docs.jsonl
    - Extract heading structure from Obsidian's link graph and frontmatter
    - Convert Obsidian links to node references
-4. Merge both into vault/graph/nodes.jsonl (deduplicate, compute backreferences)
-5. Update vault/graph/metadata.json (timestamp, Obsidian version, file hashes)
+4. Merge both into wiki/vault/graph/nodes.jsonl (deduplicate, compute backreferences)
+5. Update wiki/vault/graph/metadata.json (timestamp, Obsidian version, file hashes)
 6. Report: "Graph indexed: X code nodes, Y doc nodes (from Obsidian)
 
 ```
-1. Load config from vault/graph/config.json
-2. Run graphify on code paths → vault/graph/nodes-code.jsonl
-3. Run spek-doc-parser on doc paths → vault/graph/nodes-docs.jsonl
-4. Merge both into vault/graph/nodes.jsonl (deduplicate, compute backreferences)
-5. Update vault/graph/metadata.json (timestamp, file hashes, version)
+1. Load config from wiki/vault/graph/config.json
+2. Run graphify on code paths → wiki/vault/graph/nodes-code.jsonl
+3. Run spek-doc-parser on doc paths → wiki/vault/graph/nodes-docs.jsonl
+4. Merge both into wiki/vault/graph/nodes.jsonl (deduplicate, compute backreferences)
+5. Update wiki/vault/graph/metadata.json (timestamp, file hashes, version)
 6. Report: "Graph indexed: X code nodes, Y doc nodes"
 ```
 
@@ -385,11 +385,11 @@ Export Obsidian graph (via dataview, cache, or CLI tool) → vault/graph/nodes-d
 **Input:**
 - Source code files (all languages supported by graphify)
 - Documentation files (markdown, YAML frontmatter optional)
-- Config file (vault/graph/config.json)
+- Config file (wiki/vault/graph/config.json)
 
 **Output:**
-- `vault/graph/nodes.jsonl` — Queryable index
-- `vault/graph/metadata.json` — Timestamp, source hashes, version info
+- `wiki/vault/graph/nodes.jsonl` — Queryable index
+- `wiki/vault/graph/metadata.json` — Timestamp, source hashes, version info
 - Console output — Summary of indexing
 
 **Exit codes:**
@@ -419,14 +419,14 @@ Step 4: Verify code analysis tool is fresh
 Step 5: Run code analysis tool in incremental mode
 
 - `/spek.map` (incremental: only re-index files that changed during feature)
-- Update vault/graph/metadata.json with new timestamp
+- Update wiki/vault/graph/metadata.json with new timestamp
 ```
 
 ### In `/spek.context`
 
 ```
 When loading vault context:
-- Read vault/graph/nodes.jsonl
+- Read wiki/vault/graph/nodes.jsonl
 - Query for skill nodes → pass to user fo sourced from Obsidian export
 - File-level parsing for skills and configurations
 - Link discovery from Obsidian's built-in graph structure and markdown `[text](url)` syntax
@@ -475,9 +475,9 @@ When loading vault context:
 
 - **Decision:** Use Obsidian's graph export as authoritative source for doc nodes; merge with graphify code nodes
 - **Node schema:** Unified structure for code and doc nodes with references; docs sourced from Obsidian
-- **Storage:** JSONL in `vault/graph/nodes.jsonl` derived from Obsidian vault + graphify code output
+- **Storage:** JSONL in `wiki/vault/graph/nodes.jsonl` derived from Obsidian vault + graphify code output
 - **Integration:** `/spek.map`, `/spek.prepare`, `/spek.post`, `/spek.context`
-- **Config:** `vault/graph/config.json` specifies Obsidian export method, indexing rules, refresh policy
+- **Config:** `wiki/vault/graph/config.json` specifies Obsidian export method, indexing rules, refresh policy
 - **Authority:** Obsidian vault is single source of truth for documentation; graph is derived
 5. **Document query patterns** — Create a guide for agents on how to query the graph
 
@@ -487,6 +487,6 @@ When loading vault context:
 
 - **Decision:** Heading-level for docs with variable granularity; separate parsing passes
 - **Node schema:** Unified structure for code and doc nodes with references
-- **Storage:** JSONL in `vault/graph/nodes.jsonl` for simplicity and streaming
+- **Storage:** JSONL in `wiki/vault/graph/nodes.jsonl` for simplicity and streaming
 - **Integration:** `/spek.map`, `/spek.prepare`, `/spek.post`, `/spek.context`
-- **Config:** `vault/graph/config.json` defines indexing rules and refresh policy
+- **Config:** `wiki/vault/graph/config.json` defines indexing rules and refresh policy

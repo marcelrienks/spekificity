@@ -165,11 +165,11 @@ doc_indexing:
 # Graph Storage
 graph_storage:
   # SQLite database location
-  database_path: "vault/graph/codegraph.db"
+  database_path: "wiki/vault/graph/codegraph.db"
   
   # Query cache (for fast repeated queries)
   cache_enabled: true
-  cache_path: "vault/graph/cache/"
+  cache_path: "wiki/vault/graph/cache/"
   cache_ttl_seconds: 3600  # 1 hour
   
   # Incremental refresh
@@ -242,13 +242,13 @@ validation:
 codegraph init --config .spekificity/config.yaml
 
 # Output:
-# ✓ Created vault/graph/codegraph.db (SQLite)
-# ✓ Created vault/graph/cache/ (query cache)
-# ✓ Created vault/graph/config.json (metadata)
+# ✓ Created wiki/vault/graph/codegraph.db (SQLite)
+# ✓ Created wiki/vault/graph/cache/ (query cache)
+# ✓ Created wiki/vault/graph/config.json (metadata)
 # ✓ Configuration validated
 
 # Verify initialization
-ls -la vault/graph/
+ls -la wiki/vault/graph/
 # Expected: codegraph.db, cache/, config.json
 ```
 
@@ -277,7 +277,7 @@ codegraph index --full
 #   ✓ No orphaned nodes
 #   ✓ Circular dependencies: 3 (acceptable)
 #
-# Graph built: vault/graph/codegraph.db (12.4 MB)
+# Graph built: wiki/vault/graph/codegraph.db (12.4 MB)
 # Time: 47 seconds
 ```
 
@@ -584,7 +584,7 @@ Result: 4x speedup on large codebases
 | Issue | Symptom | Fix |
 |-------|---------|-----|
 | CodeGraph not found | "command not found: codegraph" | `npm install -g @codegraph/cli` |
-| DB corruption | "SQLite database is locked" | `rm vault/graph/codegraph.db && spek map --full` |
+| DB corruption | "SQLite database is locked" | `rm wiki/vault/graph/codegraph.db && spek map --full` |
 | Stale graph | Queries return old symbols | `spek map --full` (rebuild) |
 | High CPU | `codegraph index` consuming 100% CPU | Reduce `parallel_workers` in config.yaml |
 | Watch mode not syncing | Files modified but not indexed | Check `watch_debounce_ms`, increase to 1000 |
@@ -596,7 +596,7 @@ Result: 4x speedup on large codebases
 
 - [ ] CodeGraph installed + verified (npm list @codegraph/cli)
 - [ ] Configuration file created (.spekificity/config.yaml)
-- [ ] Initial index built (vault/graph/codegraph.db exists)
+- [ ] Initial index built (wiki/vault/graph/codegraph.db exists)
 - [ ] Git hook installed + tested
 - [ ] `/spek.map --full` tested (successful rebuild)
 - [ ] `/spek.map --incremental` tested (<5s runtime)

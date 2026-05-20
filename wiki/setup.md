@@ -104,37 +104,38 @@ The knowledge vault (Obsidian-format markdown) stores lessons learned, decisions
 
 ```
 your-project/
-└── vault/
-    ├── lessons/         ← written by /spek.post
-    ├── context/         ← maintained by agent across sessions
-    │   ├── decisions.md
-    │   └── patterns.md
-    └── graph/           ← populated by code analysis tool
+└── wiki/
+    └── vault/
+        ├── lessons/         ← written by /spek.post
+        ├── context/         ← maintained by agent across sessions
+        │   ├── decisions.md
+        │   └── patterns.md
+        └── graph/           ← populated by code analysis tool
 ```
 
 ### Initialization Steps
 
 1. Create vault directory:
    ```bash
-   mkdir -p vault/lessons
-   mkdir -p vault/context
-   mkdir -p vault/graph
+   mkdir -p wiki/vault/lessons
+   mkdir -p wiki/vault/context
+   mkdir -p wiki/vault/graph
    ```
 
 2. Create initial vault files:
    ```bash
    # Decisions index
-   touch vault/context/decisions.md
+   touch wiki/vault/context/decisions.md
    
    # Patterns library
-   touch vault/context/patterns.md
+   touch wiki/vault/context/patterns.md
    ```
 
 3. Verify vault structure:
    ```bash
-   ls -R vault/
+   ls -R wiki/vault/
    # Expected: context/  lessons/  graph/
-   cat vault/context/decisions.md
+   cat wiki/vault/context/decisions.md
    # Expected: (file readable, even if empty)
    ```
 
@@ -143,7 +144,7 @@ your-project/
 **The vault is just markdown files on your filesystem.** Spekificity agents access it directly via file I/O. The Obsidian app is entirely optional:
 
 - ✅ **Agents work without Obsidian** — They read/write `.md` files directly
-- ✅ **Vault is fully git-committable** — Commit `vault/` to version control
+- ✅ **Vault is fully git-committable** — Commit `wiki/vault/` to version control
 - ⚠️ **Obsidian app is optional** — Use only if you want to browse backlinks or visualize the knowledge graph in a rich UI
 
 ### Optional: Obsidian Desktop App (Interactive UI)
@@ -155,30 +156,30 @@ If you want the interactive visualization and backlink browsing (optional):
 2. Open the `.dmg` and drag Obsidian to Applications
 3. Launch Obsidian
 4. Select **Open folder as vault**
-5. Navigate to `your-project/vault/` and select it
+5. Navigate to `your-project/wiki/vault/` and select it
 6. Obsidian will index and build the graph view
 
 #### Linux
 1. Download the `.appimage` from [obsidian.md/download](https://obsidian.md/download)
 2. Make executable: `chmod +x obsidian-*.appimage`
 3. Run: `./obsidian-*.appimage`
-4. Select **Open folder as vault** → navigate to `your-project/vault/`
+4. Select **Open folder as vault** → navigate to `your-project/wiki/vault/`
 
 #### Configuration (Optional)
 
 No configuration required for agent-only use. The `.obsidian/` directory is created automatically by the app on first open and can be committed to git to preserve graph layout settings.
 
 **Safe to gitignore:**
-- `vault/.obsidian/workspace.json` — Window/panel layout (regenerates each app open)
-- `vault/.obsidian/cache` — Link index cache (regenerates each app open)
+- `wiki/vault/.obsidian/workspace.json` — Window/panel layout (regenerates each app open)
+- `wiki/vault/.obsidian/cache` — Link index cache (regenerates each app open)
 
 These are already excluded in the project `.gitignore`.
 
 ### Troubleshooting
 
-- **Obsidian shows no graph nodes** → Ensure you opened `vault/` as the vault root, not the project root
+- **Obsidian shows no graph nodes** → Ensure you opened `wiki/vault/` as the vault root, not the project root
 - **Backlinks missing after agent writes** → Close and reopen vault to trigger re-indexing
-- **Agent says vault does not exist** → Confirm `vault/` is present at project root; if not, run code analysis tool initialization
+- **Agent says vault does not exist** → Confirm `wiki/vault/` is present; if not, run code analysis tool initialization
 
 ---
 
@@ -223,23 +224,23 @@ If you explicitly choose Graphify for your project:
 
 4. **Initialize vault graph directory:**
    ```bash
-   mkdir -p vault/graph/nodes
-   mkdir -p vault/graph/cache
+   mkdir -p wiki/vault/graph/nodes
+   mkdir -p wiki/vault/graph/cache
    ```
 
 5. **Run initial full build:**
    ```bash
-   graphify . --output jsonl --obsidian-dir vault/graph/nodes/
+   graphify . --output jsonl --obsidian-dir wiki/vault/graph/nodes/
    ```
 
    This generates:
-   - `vault/graph/nodes.jsonl` — Queryable graph
-   - `vault/graph/graph.html` — Interactive visualization
-   - `vault/graph/GRAPH_REPORT.md` — Human-readable summary
+   - `wiki/vault/graph/nodes.jsonl` — Queryable graph
+   - `wiki/vault/graph/graph.html` — Interactive visualization
+   - `wiki/vault/graph/GRAPH_REPORT.md` — Human-readable summary
 
 6. **Verify graph generated:**
    ```bash
-   wc -l vault/graph/nodes.jsonl
+   wc -l wiki/vault/graph/nodes.jsonl
    # Expected: 50+ lines (depends on codebase size)
    ```
 
@@ -307,7 +308,7 @@ graphify . --full
 graphify . --watch
 
 # Query the graph using jq:
-jq '.[] | select(.name == "authenticate")' vault/graph/nodes.jsonl
+jq '.[] | select(.name == "authenticate")' wiki/vault/graph/nodes.jsonl
 ```
 
 ---
@@ -323,7 +324,7 @@ After installing all tools:
 
 2. **Verify Vault:**
    ```bash
-   ls vault/context/
+   ls wiki/vault/context/
    # Expected: decisions.md, patterns.md
    ```
 
@@ -332,12 +333,12 @@ After installing all tools:
    - If Graphify:
      ```bash
      graphify --version
-     ls vault/graph/
+     ls wiki/vault/graph/
      ```
 
 4. **Commit to Git:**
    ```bash
-   git add vault/ .specify/
+   git add wiki/vault/ .specify/
    git commit -m "Initialize Spekificity tools and vault"
    ```
 
@@ -370,7 +371,7 @@ tools:
   
   vault:
     enabled: true
-    location: vault/
+    location: wiki/vault/
     mode: local
 
 context_loading:

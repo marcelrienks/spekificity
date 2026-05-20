@@ -211,12 +211,12 @@ pytest tests/error_handling/test_error_messages.py
 
 | Criterion | Validation | Success Criteria |
 |-----------|-----------|------------------|
-| Vault creation | Vault structure created on first use | `vault/decision.md`, `vault/patterns.md`, `vault/lessons/` exist |
+| Vault creation | Vault structure created on first use | `wiki/vault/decision.md`, `wiki/vault/patterns.md`, `wiki/vault/lessons/` exist |
 | Lesson persistence | Lessons stored and retrievable | Lessons readable 1+ days later, searchable |
 | Decision archival | Architectural decisions captured + indexed | Future features can reference past decisions |
 | Pattern reuse | Patterns indexed and recommended | New specs can reference established patterns |
 | Repo memory sync | Compressed cache synced with vault | `/memories/repo/` stays <5 decisions + patterns |
-| Graph integration | Code graph nodes stored in vault | `vault/graph/nodes.jsonl` contains ≥100 symbols |
+| Graph integration | Code graph nodes stored in vault | `wiki/vault/graph/nodes.jsonl` contains ≥100 symbols |
 | Cross-session context | Context available across sessions | Start new session, old context accessible |
 
 **Validation (Automated Tests):**
@@ -298,7 +298,7 @@ pytest tests/performance/test_graph_performance.py
 
 **Validation (Manual Tests):**
 - [ ] Run `/spek.map`, verify code graph populated with symbols
-- [ ] Manually check `vault/graph/nodes.jsonl`, verify format
+- [ ] Manually check `wiki/vault/graph/nodes.jsonl`, verify format
 - [ ] Modify a code file, re-run `/spek.map`, verify only changed file re-indexed
 - [ ] Query graph for symbols in modified file, verify results accurate
 - [ ] Time graph operations, verify <5s for load, <100ms for query
@@ -426,7 +426,7 @@ spek post
 
 **Reason:** Lessons are archived but not auto-pruned
 
-**Workaround:** Manually archive old lessons monthly: `mv vault/lessons/2024-* archive/`
+**Workaround:** Manually archive old lessons monthly: `mv wiki/vault/lessons/2024-* archive/`
 
 **Future Fix:** Auto-archival policy + compression (Phase 2+)
 

@@ -26,7 +26,7 @@
 2. Doc pass: export Obsidian vault
 3. Merge: combine code symbols + doc nodes into unified graph
 4. Validate: check schema + node count
-5. Write: vault/graph/nodes.jsonl + edges.jsonl + config.json
+5. Write: wiki/vault/graph/nodes.jsonl + edges.jsonl + config.json
 
 **Cost:** 1-3 seconds (CodeGraph queries are 20x faster than graphify)
 
@@ -72,7 +72,7 @@
 │  ├─ Parse arguments
 │  ├─ Validate config.yaml
 │  ├─ Verify CodeGraph is available (MCP tool check)
-│  └─ Create vault/graph/ if missing
+│  └─ Create wiki/vault/graph/ if missing
 ├─ Phase 2: Code Pass (CodeGraph Query)
 │  ├─ Call codegraph_symbols (all | recent-only, based on mode)
 │  ├─ Call codegraph_references + codegraph_impact for each symbol
@@ -84,7 +84,7 @@
 │  ├─ Combine code symbols + doc nodes
 │  ├─ Deduplicate (by name + type)
 │  ├─ Compute unified edges (code calls + doc links + dependencies)
-│  ├─ Output: vault/graph/nodes.jsonl + edges.jsonl
+│  ├─ Output: wiki/vault/graph/nodes.jsonl + edges.jsonl
 │  └─ Generate node-index.json
 ├─ Phase 5: Validate
 │  ├─ Check schema compliance
@@ -92,7 +92,7 @@
 │  ├─ Check edges reference valid nodes
 │  └─ Report validation results
 └─ Phase 6: Finalize
-   ├─ Write vault/graph/config.json
+   ├─ Write wiki/vault/graph/config.json
    ├─ Update refresh-log.md
    └─ Report completion
 ```
@@ -102,12 +102,12 @@
 ## Output
 
 **Files Created/Updated:**
-- vault/graph/nodes.jsonl (MERGED code + doc nodes)
-- vault/graph/edges.jsonl (relationships)
-- vault/graph/config.json (metadata)
-- vault/graph/node-index.json (lookup table)
-- vault/graph/GRAPH_REPORT.md (summary)
-- vault/graph/refresh-log.md (history)
+- wiki/vault/graph/nodes.jsonl (MERGED code + doc nodes)
+- wiki/vault/graph/edges.jsonl (relationships)
+- wiki/vault/graph/config.json (metadata)
+- wiki/vault/graph/node-index.json (lookup table)
+- wiki/vault/graph/GRAPH_REPORT.md (summary)
+- wiki/vault/graph/refresh-log.md (history)
 
 **Report:**
 ```

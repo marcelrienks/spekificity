@@ -11,9 +11,9 @@
 
 **Problem:** After each feature completes, context is lost. Next feature requires re-reading spec/plan/tasks. Solution: capture "what was built + how + decisions" in self-contained lesson file.
 
-**Solution:** Define lesson template with 8 sections, write to vault/lessons/ after feature, compress with caveman mode for token efficiency.
+**Solution:** Define lesson template with 8 sections, write to wiki/vault/lessons/ after feature, compress with caveman mode for token efficiency.
 
-**Outcome:** vault/lessons/<YYYY-MM-DD>-<number>-<name>.md files that can be loaded by next feature session, reducing context reload cost by ~70%.
+**Outcome:** wiki/vault/lessons/<YYYY-MM-DD>-<number>-<name>.md files that can be loaded by next feature session, reducing context reload cost by ~70%.
 
 ---
 
@@ -22,9 +22,9 @@
 **Pattern:** `<YYYY-MM-DD>-<number>-<feature-name>.md`
 
 **Examples:**
-- `vault/lessons/2026-05-18-00spek-full-workflow-cli.md`
-- `vault/lessons/2026-05-12-00persistent-memories.md`
-- `vault/lessons/2026-05-10-00initial-setup.md`
+- `wiki/vault/lessons/2026-05-18-00spek-full-workflow-cli.md`
+- `wiki/vault/lessons/2026-05-12-00persistent-memories.md`
+- `wiki/vault/lessons/2026-05-10-00initial-setup.md`
 
 **Rationale:**
 - Date: Sort by recency (newest first)
@@ -295,12 +295,12 @@ Tech stack:
 - [Implementation Tasks](specs/00tasks.md)
 
 **Architectural Decisions:**
-- [Decorator Pattern Decision](vault/decision.md#decorator-pattern-integration)
-- [Vault Single Source Decision](vault/decision.md#vault-single-source)
+- [Decorator Pattern Decision](wiki/vault/decision.md#decorator-pattern-integration)
+- [Vault Single Source Decision](wiki/vault/decision.md#vault-single-source)
 
 **Related Lessons:**
-- [Feature 002: Persistent Memories](vault/lessons/2026-05-12-00persistent-memories.md)
-- [Feature 001: Initial Setup](vault/lessons/2026-05-10-00initial-setup.md)
+- [Feature 002: Persistent Memories](wiki/vault/lessons/2026-05-12-00persistent-memories.md)
+- [Feature 001: Initial Setup](wiki/vault/lessons/2026-05-10-00initial-setup.md)
 
 **Code Artifacts:**
 - Pull Request: [github.com/owner/repo/pull/XXX](https://github.com/marcelrienks/spekificity/pull/XXX)
@@ -311,7 +311,7 @@ Tech stack:
 
 ## Quality Checklist
 
-Before writing to vault/lessons/, validate:
+Before writing to wiki/vault/lessons/, validate:
 
 - [ ] **Self-Contained:** Can a developer understand feature without reading spec.md/plan.md?
 - [ ] **Compressed:** Caveman format applied; no fluff; concrete language
@@ -345,8 +345,8 @@ Before writing to vault/lessons/, validate:
 │   ├── Read spec/plan/tasks
 │   ├── Extract What/How/Tasks/Decisions/Patterns/Lessons/Metrics/References
 │   ├── Compress with caveman mode
-│   └── Write to vault/lessons/<YYYY-MM-DD>-<number>-<name>.md
-└── Report: "Lessons written to vault/lessons/"
+│   └── Write to wiki/vault/lessons/<YYYY-MM-DD>-<number>-<name>.md
+└── Report: "Lessons written to wiki/vault/lessons/"
 ```
 
 ---

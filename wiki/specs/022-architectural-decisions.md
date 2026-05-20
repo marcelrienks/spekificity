@@ -10,14 +10,14 @@
 ## Overview
 
 Architectural decisions are explicit, documented choices about system design, constraints, and rationale. They persist in two places:
-1. **Vault (authoritative):** `vault/decision.md` — Full, permanent archive
+1. **Vault (authoritative):** `wiki/vault/decision.md` — Full, permanent archive
 2. **Repo Memory (cached):** `/memories/repo/architectural-decisions.md` — Recent, compressed summary
 
 This spec defines the structure, lifecycle, and sync strategy for both.
 
 ---
 
-## Vault Decisions (vault/decision.md)
+## Vault Decisions (wiki/vault/decision.md)
 
 ### Purpose
 Permanent archive of all architectural decisions; source of truth for understanding project constraints and rationale.
@@ -111,17 +111,17 @@ Permanent archive of all architectural decisions; source of truth for understand
 
 **"What are active decisions?"**
 ```bash
-grep -B2 "status: active" vault/decision.md | grep "##"
+grep -B2 "status: active" wiki/vault/decision.md | grep "##"
 ```
 
 **"What decisions affect [system]?"**
 ```bash
-grep -l "[system-name]" vault/decision.md
+grep -l "[system-name]" wiki/vault/decision.md
 ```
 
 **"What was decided in feature 003?"**
 ```bash
-grep -B5 "spec-003" vault/decision.md | grep "##"
+grep -B5 "spec-003" wiki/vault/decision.md | grep "##"
 ```
 
 ---
@@ -170,7 +170,7 @@ Compressed, recent-only summary of active decisions. Used for session startup co
 
 ## Superseded Decisions
 
-See vault/decision.md for full history. Recent supersessions:
+See wiki/vault/decision.md for full history. Recent supersessions:
 - [Superseded decision name] → [new decision name] (when)
 
 ---
@@ -195,7 +195,7 @@ See vault/decision.md for full history. Recent supersessions:
 **Sync Trigger:** After each feature (`/spek.post` step 4)
 
 **Sync Process:**
-1. Read vault/decision.md
+1. Read wiki/vault/decision.md
 2. Filter to active decisions from last 3 features
 3. Compress each decision to 1-2 sentences (caveman mode)
 4. Create table of recent decisions
@@ -222,7 +222,7 @@ See vault/decision.md for full history. Recent supersessions:
 - Mark for inclusion in lessons when feature completes
 
 **At feature end (`/spek.post` step 4):**
-- Extract decisions from lessons → Append to vault/decision.md
+- Extract decisions from lessons → Append to wiki/vault/decision.md
 - De-duplicate (check if decision already exists)
 - Mark status and feature source
 - Sync recent decisions to /memories/repo/architectural-decisions.md
@@ -235,17 +235,17 @@ See vault/decision.md for full history. Recent supersessions:
 - Load into agent context
 
 **During spec/plan writing:**
-- Query vault/decision.md for decisions about [topic]
+- Query wiki/vault/decision.md for decisions about [topic]
 - Use past decisions to inform new choices
 - Cite related decisions in new spec/plan
 
 **Before implementing:**
-- Review vault/decision.md to understand constraints
+- Review wiki/vault/decision.md to understand constraints
 - Check if implementation would violate any active decision
 
 ### Retention Policy
 
-**Vault (vault/decision.md):**
+**Vault (wiki/vault/decision.md):**
 - Keep all decisions indefinitely (permanent archive)
 - Mark old ones as `deprecated` but don't delete
 
@@ -260,7 +260,7 @@ See vault/decision.md for full history. Recent supersessions:
 
 ### Lessons Format (lessons-format.md)
 
-Decisions made during a feature are extracted in the "Decisions Made" section of vault/lessons/ files. The post-processing phase (post-command.md) converts these to formal decision entries.
+Decisions made during a feature are extracted in the "Decisions Made" section of wiki/vault/lessons/ files. The post-processing phase (post-command.md) converts these to formal decision entries.
 
 ### Context Loading (memory-architecture.md)
 
@@ -286,7 +286,7 @@ Recent decisions are injected into `/spek.automate` specify and plan prompts to 
 
 ## Implementation Checklist
 
-- [ ] Create vault/decision.md template
+- [ ] Create wiki/vault/decision.md template
 - [ ] Implement decision extraction in /spek.post
 - [ ] Implement decision sync to /memories/repo/
 - [ ] Update /spek.context to load recent decisions
