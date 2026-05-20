@@ -998,241 +998,45 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage.xml
-          fail_ci_if_error: false
           flags: unittests
           name: codecov-umbrella
 ```
 
-**File:** `.github/workflows/performance.yaml` (Monthly)
+---
 
-```yaml
-name: Performance Baseline
+## 7. Success Criteria
 
-on:
-  schedule:
-    - cron: '0 0 1 * *'  # Run on 1st of each month
+✅ **Test Coverage:**
+- Unit tests: 60% of total (40+ tests)
+- Integration tests: 30% of total (15+ tests)
+- E2E tests: 10% of total (5+ tests)
+- Overall coverage: 80%+
 
-jobs:
-  perf:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: Install dependencies
-        run: |
-          pip install -e .
-          pip install pytest pytest-benchmark
-      
-      - name: Run performance tests
-        run: pytest tests/e2e/test_performance_baseline.py -v --benchmark-only
-      
-      - name: Store baseline
-        run: |
-          mkdir -p perf-baselines
-          cp .benchmarks/0001_*.json perf-baselines/$(date +%Y-%m-%d).json || true
-      
-      - name: Commit baseline
-        run: |
-          git config user.name "Performance Bot"
-          git config user.email "bot@spekificity.dev"
-          git add perf-baselines/ || true
-          git commit -m "Perf baseline: $(date +%Y-%m-%d)" || true
-          git push || true
-```
+✅ **Test Speed:**
+- Unit: < 10s
+- Integration: < 60s
+- E2E: < 300s (optional, slow)
+- Full suite: < 370s
+
+✅ **Error Handling:**
+- All error paths tested
+- Recovery scenarios validated
+- State corruption prevented
+
+✅ **Resilience:**
+- Tests pass consistently (no flakiness)
+- Mocks are deterministic
+- Fixtures are isolated (no cross-test pollution)
+
+✅ **CI/CD Integration:**
+- Local pre-commit hooks enforce unit tests
+- GitHub Actions run on every PR
+- Coverage reports generated
 
 ---
 
-## 7. Coverage & Success Criteria
+## 8. References
 
-### 7.1 Overall Coverage Target
-
-| Layer | Target | Tests | Est. Time |
-|-------|--------|-------|-----------|
-| Unit | 80% | 60 | < 10s |
-| Integration | 80% | 40 | < 60s |
-| E2E | 80% | 35 | < 300s |
-| **Total** | **80%** | **135** | **< 370s** |
-
-### 7.2 Per-Module Coverage
-
-| Module | Target | Tests |
-|--------|--------|-------|
-| enrichment_layer.py | 95% | 10 |
-| memory_layer.py | 95% | 10 |
-| feature_state.py | 95% | 10 |
-| decorator_wrapper.py | 95% | 10 |
-| context_injection.py | 95% | 10 |
-| compression.py | 95% | 10 |
-| prepare_workflow.py | 90% | 5 |
-| specify_workflow.py | 90% | 8 |
-| plan_workflow.py | 90% | 8 |
-| implement_workflow.py | 90% | 10 |
-| post_workflow.py | 90% | 8 |
-| Full integration | 95% | 8 |
-| E2E scenarios | 85% | 35 |
-
-### 7.3 Success Criteria
-
-✅ **All tests pass (135/135)**
-
-✅ **Coverage ≥ 80% (overall line coverage)**
-
-✅ **Performance baselines established & tracked:**
-- Prepare: < 5s
-- Specify: < 500ms (context load)
-- Plan: < 500ms (context load)
-- Implement: < 2s (per-task execution)
-- Post: < 1s
-- Full pipeline: < 10s
-
-✅ **Error handling validated:**
-- Missing artifacts → clear errors
-- External tool timeouts → graceful degradation
-- State corruption → recovery prompts
-- Task failures → continue-on-error semantics verified
-
-✅ **State persistence validated:**
-- Session interruption → state saved
-- Session resume → state loaded correctly
-- Multi-feature isolation → no cross-contamination
-
-✅ **No regressions:**
-- Future runs must maintain baselines (< 10% variance)
-- Coverage must not decrease
-
----
-
-## 8. Test Maintenance & Evolution
-
-### 8.1 Adding New Tests
-
-When adding new Spekificity workflows:
-
-1. **Add unit tests first** (mock externals, fast feedback)
-2. **Add integration tests** (real code, mocked externals)
-3. **Add E2E tests** (synthetic fixture, validate end-to-end)
-4. **Measure performance** (establish baseline)
-5. **Update this spec** (document new test cases)
-
-### 8.2 Updating Mocks
-
-When external tools (SpecKit, CodeGraph) change:
-
-1. Update mock in `tests/fixtures/conftest.py`
-2. Update corresponding unit/integration tests
-3. Re-run full suite (should still pass)
-4. Update this spec with new mock behavior
-
-### 8.3 Baseline Regression Management
-
-Monthly performance baseline runs (GitHub Actions) track:
-- Wall-clock time (prepare, specify, plan, implement, post)
-- Token usage (injected context)
-- Memory peak usage
-- CodeGraph query latency
-
-If regression detected (> 10% variance):
-- Alert sent to contributors
-- Investigation required before merge
-- Optimization opportunity logged
-
----
-
-## 9. Quick Reference: Test Command Aliases
-
-```bash
-# Unit tests only (fast, pre-commit)
-pytest tests/unit/ -v
-
-# Integration tests only
-pytest tests/integration/ -v
-
-# E2E tests only
-pytest tests/e2e/ -v
-
-# Full suite (all layers)
-pytest tests/ -v --cov=src --cov-report=html
-
-# Critical path (unit + integration pipeline)
-pytest tests/unit/ tests/integration/test_full_pipeline.py -v
-
-# With coverage report
-pytest tests/ --cov=src --cov-report=html && open htmlcov/index.html
-
-# GitHub-style check (fail fast)
-pytest tests/ -x -q  # Stop on first failure, quiet output
-
-# Performance baseline
-pytest tests/e2e/test_performance_baseline.py -v --benchmark-only
-```
-
----
-
-## 10. Dependencies & Setup
-
-### 10.1 Python Test Dependencies
-
-```
-pytest>=7.0
-pytest-cov>=4.0
-pytest-mock>=3.10
-pytest-timeout>=2.1
-pytest-benchmark>=4.0
-```
-
-### 10.2 Installation
-
-```bash
-pip install -e .[test]
-# or
-pip install pytest pytest-cov pytest-mock pytest-timeout pytest-benchmark
-```
-
-### 10.3 Project Root Structure for Tests
-
-```
-spekificity/
-├── src/
-│   ├── enrichment_layer.py
-│   ├── memory_layer.py
-│   ├── feature_state.py
-│   ├── decorator_wrapper.py
-│   ├── context_injection.py
-│   ├── compression.py
-│   ├── prepare_workflow.py
-│   ├── specify_workflow.py
-│   ├── plan_workflow.py
-│   ├── implement_workflow.py
-│   └── post_workflow.py
-│
-├── tests/
-│   ├── __init__.py
-│   ├── unit/
-│   ├── integration/
-│   ├── e2e/
-│   ├── fixtures/
-│   └── conftest.py
-│
-├── .github/workflows/
-│   ├── test-pr.yaml
-│   └── performance.yaml
-│
-└── setup.py
-```
-
----
-
-## References
-
-- **Feature State Tracking:** [specs/feature-state-tracking.md](specs/feature-state-tracking.md)
-- **Enrichment Layer:** [specs/enrichment-layer.md](specs/enrichment-layer.md)
-- **Memory Architecture:** [specs/memory-architecture.md](specs/memory-architecture.md)
-- **Spek Implement Workflow:** [specs/spek-implement-workflow.md](specs/spek-implement-workflow.md)
-- **Spek Lessons Command:** [specs/spek-lessons-command.md](specs/spek-lessons-command.md)
-- **CodeGraph Setup:** [specs/codegraph-setup-complete.md](specs/codegraph-setup-complete.md)
+- **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
+- **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
+- **Spek Implement Workflow:** [specs/spek-implement-workflow.md](../specs/105-spek-implement-workflow.md)

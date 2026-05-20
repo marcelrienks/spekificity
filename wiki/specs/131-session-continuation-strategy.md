@@ -793,12 +793,12 @@ Output:
 
 ## 12. References
 
-- **Memory Architecture:** [specs/memory-architecture.md](specs/memory-architecture.md)
-- **Feature State Tracking:** [specs/feature-state-tracking.md](specs/feature-state-tracking.md)
-- **Prepare Command:** [specs/prepare-command.md](specs/prepare-command.md)
-- **Post Command:** [specs/post-command.md](specs/post-command.md)
-- **Spek Implement Workflow:** [specs/spek-implement-workflow.md](specs/spek-implement-workflow.md)
-- **Token Budget (Phase 2):** [specs/token-budget.md](specs/token-budget.md)
+- **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
+- **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
+- **Prepare Command:** [specs/prepare-command.md](../specs/100-prepare-command.md)
+- **Post Command:** [specs/post-command.md](../specs/102-post-command.md)
+- **Spek Implement Workflow:** [specs/spek-implement-workflow.md](../specs/105-spek-implement-workflow.md)
+- **Token Budget (Phase 2):** [specs/token-budget.md](../specs/130-token-budget.md)
 
 ---
 

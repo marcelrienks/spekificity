@@ -730,11 +730,11 @@ Exit codes:
 
 ## 12. References
 
-- **Feature State Tracking:** [specs/feature-state-tracking.md](specs/feature-state-tracking.md)
-- **Memory Architecture:** [specs/memory-architecture.md](specs/memory-architecture.md)
-- **Git Verification:** [specs/git-verification.md](specs/git-verification.md)
-- **Spek Post Command:** [specs/post-command.md](specs/post-command.md)
-- **Prepare Command:** [specs/prepare-command.md](specs/prepare-command.md)
+- **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
+- **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
+- **Git Verification:** [specs/git-verification.md](../specs/012-git-verification.md)
+- **Spek Post Command:** [specs/post-command.md](../specs/102-post-command.md)
+- **Prepare Command:** [specs/prepare-command.md](../specs/100-prepare-command.md)
 
 ---
 
