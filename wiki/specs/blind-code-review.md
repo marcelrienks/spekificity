@@ -1,10 +1,10 @@
-# C.3.9 Blind Code Review
+# ⚠️ REDIRECT: Blind Code Review
 
-**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Priority:** MEDIUM (Phase 2, optional enhancement)  
-**Effort:** 4-5 hours  
-**Adoption Source:** B.10 (Pilot Shell, Loki Mode)  
-**Requires:** Code review infrastructure (GitHub Actions, etc.)
+**This specification has been consolidated into a single archive file.**
+
+**Status:** REDIRECTED (Consolidated 2026-05-20)  
+**Original ID:** C.3.9  
+**See:** [Validation Patterns Archive](validation-patterns-archive.md#section-4-blind-code-review)
 
 ---
 

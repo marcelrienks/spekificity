@@ -1,10 +1,10 @@
-# C.3.6 Backprop Reflex: Test Failures → Vault Updates
+# ⚠️ REDIRECT: Backprop Reflex: Test Failures → Vault Updates
 
-**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Priority:** HIGH (Phase 2, post-launch)  
-**Effort:** 3-4 hours  
-**Adoption Source:** B.10 (Cavekit, 920⭐, active open-source project)  
-**Requires:** Automated test infrastructure + C.3.1-C.3.5 Phase 1 specs
+**This specification has been consolidated into a single archive file.**
+
+**Status:** REDIRECTED (Consolidated 2026-05-20)  
+**Original ID:** C.3.6  
+**See:** [Validation Patterns Archive](validation-patterns-archive.md#section-2-backprop-reflex-test-failures--vault-updates)
 
 ---
 

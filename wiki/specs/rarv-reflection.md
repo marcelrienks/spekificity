@@ -1,10 +1,10 @@
-# C.3.7 RARV Reflection Cycles: Reason-Act-Reflect-Verify
+# ⚠️ REDIRECT: RARV Reflection Cycles: Reason-Act-Reflect-Verify
 
-**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Priority:** HIGH (Phase 2, post-launch)  
-**Effort:** 4-5 hours  
-**Adoption Source:** B.10 (Loki Mode, 930⭐, active open-source project)  
-**Requires:** Automated test infrastructure + C.3.1-C.3.5 + C.3.6 Phase 1-2 specs
+**This specification has been consolidated into a single archive file.**
+
+**Status:** REDIRECTED (Consolidated 2026-05-20)  
+**Original ID:** C.3.7  
+**See:** [Validation Patterns Archive](validation-patterns-archive.md#section-3-rarv-reflection-cycle-reason-act-reflect-verify)
 
 ---
 

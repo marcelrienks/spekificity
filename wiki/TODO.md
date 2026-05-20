@@ -1,83 +1,60 @@
 # TODO
 
-Personal action items to investigate and incorporate before implementing feature 003.
+Action items for current and future work.
 
 ---
 
-## [x] A.1 Review all documents in 'wiki/raw/llm wiki' and compile vision
+## Current Phase (Phase B.12+: Implementation)
 
-Review all documents in the articles under the raw wiki documentation directory, and compile consensus on intentions, philosophy, methodology, use cases, and architectures.
+### [ ] B.12. Implement High-Priority Adoptions
 
-**Completed:** Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Vision & Philosophy section
+Implement S-tier pattern adoptions from [research.md](research.md):
 
----
+- [ ] **S1: Zettelkasten Conventions** — YAML frontmatter for vault notes
+- [ ] **S2: Auto-Tagging + Auto-Wikilink** — Keyword extraction → vault mapping
+- [ ] **S3: 3-Layer Query Rule** — Enforce hierarchical query priority
+- [ ] **S4: Graphify Git Hooks** — Auto-sync on commits
+- [ ] **S5: Session Logs as Artifacts** — Archive ephemeral context to vault
 
-## [x] A.2 Review all documents in wiki/raw and compile confusion
-
-Review all documents in the articles under the raw wiki documentation directory, and compile contradictions, inconsistencies, and disagreements.
-
-**Completed:** Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Confusion Resolution section
-
----
-
-## [x] A.3 List all tools and document toolsets
-
-List all tools used across the articles, and which ones are meant to be used in conjunction. Include suggested workflows.
-
-**Completed:** Consolidated into [wiki/llm-wiki.md](wiki/llm-wiki.md) — Tool Ecosystem section
+**Target:** High-priority adoptions complete and tested by end of phase.
 
 ---
 
-## [x] B.1. Understand the proper full speckit workflow
+### [ ] B.13. Validation & Correctness Testing
 
-**Question**: What is the intended end-to-end speckit flow, including post-remediation?
+Comprehensive testing across all components:
 
-**Status**: ✓ **RESOLVED** (2026-05-18) — See [wiki/speckit-workflow.md](speckit-workflow.md) for full canonical flow, command descriptions, remediation mechanics, re-entry points, and integration with spekificity.
-
-**Summary of findings:**
-- Remediation happens **in-place** (direct file editing of spec.md, plan.md, tasks.md)
-- Canonical flow: constitution → specify → clarify (opt) → plan → tasks → analyze (opt) → [fix in-place] → implement
-- Re-entry: `/speckit.analyze` can be re-run after fixes to verify; each command can be re-run to regenerate artifacts
-- Analyze is **non-blocking and optional**; implement does NOT require a clean analyze pass
-- `spek automate` sequencing: load context → enrich-specify → enrich-plan → tasks → analyze (opt) → [manual remediate if needed] → enrich-implement → lessons
-
-**Key decision**: Analyze identifies issues but does not trigger automatic remediation. Developer manually edits artifacts in response to report, then continues to implement. This is intentional design: templates constrain output quality upfront, so analyze findings are typically low-frequency and low-severity.
+- [ ] Unit tests for all /spek.* commands
+- [ ] Integration tests for full 5-phase workflow
+- [ ] Token budget validation (actual vs. estimated)
+- [ ] Vault consistency checks (no circular refs, all links valid)
+- [ ] CodeGraph query performance benchmarking
 
 ---
 
-## [x] B.2. Expand `spek prepare` and `spek post` — leverage caveman, graphify, and obsidian fully
+## Future Work (Phase C+)
 
-**Status**: ✓ **RESOLVED** (2026-05-18) — See [wiki/specs/prepare-and-post-skills.md](specs/prepare-and-post-skills.md), [wiki/specs/prepare-command.md](specs/prepare-command.md), and [wiki/specs/post-command.md](specs/post-command.md) for comprehensive definitions.
+### Medium-Priority Adoptions
 
-**What was defined:**
+- [ ] **C1: Backprop Reflex** — Test failures → vault updates
+- [ ] **C2: RARV Reflection** — Continuous alignment cycles
 
-**`spek.prepare`** (runs at feature start):
-- Git state verification (clean tree, feature branch)
-- Auto-activate caveman mode (lite by default; log activation for visibility)
-- Load vault context: decisions, patterns, recent lessons (via `/context-load`)
-- Verify code analysis tool freshness (resync if >2 hours old)
-- Report ready status (decisions loaded, patterns available, graph fresh)
+See [research.md](research.md) for prioritization rationale.
 
-**`spek.post`** (runs after feature complete):
-- Collect feature artifacts (spec, plan, tasks, execution trace)
-- Activate caveman for compression (lessons output in compressed format)
-- Generate structured lessons learned: feature digest + implementation steps + decisions + patterns (self-contained, no need to re-read spec/plan)
-- Update vault context: append new decisions + patterns to vault/decisions.md + vault/patterns.md
-- Run code analysis tool in incremental mode (after lessons written, so lesson files are indexed)
-- Run `cel.docs.simplify` to consolidate documentation (feature-branch scoped)
-- Report completion + update workflow-state.json
+---
 
-**Caveman activation strategy:**
-- `spek.prepare`: Auto-enable caveman lite (with visibility to user; can disable via CAVEMAN_DISABLED=1)
-- `spek.post`: Auto-enable caveman for lessons compression (token efficiency default for post)
-- Both skills explicitly document activation in output
+## Completed Items
 
-**Integration with `spek automate` CLI:**
-```
-spek automate <feature>
-  → spek prepare (git, caveman, vault, graph)
-  → create feature branch
-  → /speckit.specify
+✅ A.1 — Review LLM wiki documents and compile vision  
+✅ A.2 — Review raw documents and identify contradictions  
+✅ A.3 — List tools and document toolsets  
+✅ B.1 — Understand full SpecKit workflow  
+✅ B.2 — Expand /spek.prepare and /spek.post  
+✅ B.3 — Complete architectural specification (B.3-B.11)  
+✅ B.11 — Phase 1 Documentation Review (fallacy, contradiction, inconsistency fixes)  
+✅ B.12a — Wiki Consolidation & Simplification (8 consolidations)  
+
+---
   → /speckit.clarify (optional)
   → /speckit.plan
   → /speckit.analyze (optional)

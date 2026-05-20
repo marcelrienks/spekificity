@@ -1,153 +1,102 @@
-# Naming Conventions for Skills and Workflows
+# Naming Conventions: Brief Style Guide
 
-**See also:** [intention.md](intention.md), [architecture.md](architecture.md), [workflow.md](workflow.md), [decision.md](decision.md)
-
----
-
-## Status
-
-**RESOLVED** (2026-05-18, Corrected Intent)
-
-**Design Principle:** Keep `spek.*` prefix always. Simplify command portion to one-word wherever possible.
-
-This ensures:
-- Namespace is always clear: `spek.*` = Spekificity, `speckit.*` = SpecKit
-- Command portions are short and memorable (`prepare`, `post`, `context`, `map`, `lessons`)
-- Invocation is easy to type and remember
-- Prefix provides consistent visual/organizational grouping
+**See also:** [skill-index.md](skill-index.md) (primary command reference), [workflow.md](workflow.md), [architecture.md](architecture.md)
 
 ---
 
-## Naming Convention by Category
+## Quick Reference
 
-### 1. Spekificity User-Facing Skills (`spek.*` prefix)
+**Command Prefixes:**
+- `spek.*` — Spekificity user-facing commands (prepare, specify, plan, implement, post, lessons)
+- `speckit.*` — SpecKit wrapped commands (constitution, specify, clarify, plan, tasks, analyze)
+- `context.*` — Context loading and injection (load, inject)
+- `cg.*` — CodeGraph queries (query, sync)
+- `caveman.*` — Compression mode (caveman, review)
 
-**Format:** `/spek.oneword` or `/spek.hyphenated` (only when one word insufficient)  
-**Prefix:** `spek.` (always)  
-**Pattern:** Action-noun or imperative verb
-
-| Skill | Command | Purpose | Example |
-|-------|---------|---------|---------|
-| Preparation | `/spek.prepare` | Initialize workspace, git state, graph freshness, and feature state | `/spek.prepare` |
-| Context loading | `/spek.context` | Load vault, repo memory, and graph context into session | `/spek.context` |
-| Code mapping | `/spek.map` | Build or refresh code/document graph | `/spek.map` |
-| Full automation | `/spek.automate` | Orchestrate SpecKit flow through spec, plan, analyze | `/spek.automate` |
-| Implementation | `/spek.implement` | Execute approved tasks with project context | `/spek.implement` |
-| Post-processing | `/spek.post` | Archive feature outcomes, lessons, vault updates, graph refresh | `/spek.post` |
-| Lessons capture | `/spek.lessons` | Extract structured lessons when run explicitly | `/spek.lessons` |
-
-**Rationale:**
-- All commands keep `spek.` prefix for namespace consistency
-- Command portions are single words where possible (`context`, `map`, `lessons`, `prepare`, `post`, `automate`)
-- Hyphenation avoided; one-word names preferred for ergonomics
-- Pattern is action/imperative, not noun (e.g., `prepare` not `prep`)
+**Style:**
+- Single words where possible (`prepare` not `prep`, `context` not `ctx`)
+- No hyphens in command names (ergonomic to type)
+- Prefix is intentional; provides grouping and namespace clarity
+- All commands are action-oriented (verbs)
 
 ---
 
-### 2. Underlying SpecKit Commands
+## Core Naming Principles
 
-**Format:** `speckit.*` (distinct namespace)  
-**Prefix:** `speckit.` (always)  
-**Pattern:** Action-noun
-
-| Command | Purpose | Used By | Example |
-|---------|---------|---------|---------|
-| `/speckit.constitution` | Define project principles, success criteria | Manual or `/spek.automate` | `/speckit.constitution` |
-| `/speckit.specify` | Create feature spec with enrichments | `/spek.automate` | `/speckit.specify --feature="auth"` |
-| Clarification | `/speckit.clarify` | Resolve spec ambiguities | `/spek.automate` |
-| Planning | `/speckit.plan` | Create implementation plan | `/spek.automate` |
-| Task generation | `/speckit.tasks` | Generate task list | `/spek.automate` |
-| Analysis | `/speckit.analyze` | Cross-artifact consistency check | `/spek.automate` |
-| Implementation | `/speckit.implement` | Execute tasks | `/spek.implement` |
-| Task-to-issues | `/speckit.taskstoissues` | Convert tasks to GitHub issues | upstream/manual |
-
-**Rationale:**
-- Vanilla SpecKit commands use `speckit.*` namespace for clarity (SpecKit-owned tools, not Spekificity)
-- Distinction is intentional and visible in command name
-- No aliasing needed; namespace distinction is primary signal
+1. **Namespace Clarity:** Prefix always present; `spek.*` = Spekificity, `speckit.*` = SpecKit, `context.*` = memory
+2. **Simplicity:** Single-word command portions where possible (short, memorable, easy to type)
+3. **Consistency:** All workflow commands use same pattern; easy to discover and learn
+4. **Modularity:** Each command accepts same flags (`--verbose`, `--format`, `--dry-run`, `--quiet`)
 
 ---
 
-### 3. Support Commands
+## Naming Rationale
 
-Support capabilities such as context loading, graph refresh, preparation, post-processing, and lessons capture are user-facing commands in their own right. They can also be called internally by `spek.automate` or `spek.implement` when orchestration needs them.
+### Why `/spek.prepare` instead of `/spek.pre`?
 
----
+- Full words are more discoverable (`/spek.` + tab-complete shows full meaning)
+- Single word is still short enough to type comfortably
+- Imperative verb (action) is clearer than abbreviation
 
-### 4. Auxiliary Commands (Agent-Level, No Prefix)
+### Why `speckit.*` instead of aliasing to `spek.*`?
 
-**Format:** One-word command (no prefix needed; system-level utilities)  
-**Pattern:** Domain-specific actions
+- Namespace distinction is intentional; shows vendor separation
+- No confusion about which tool owns a command
+- Users understand SpecKit is underneath but separate
+- Supports independent tool upgrades
 
-| Skill | Command | Purpose |
-|-------|---------|---------|
-| Token compression | `/caveman` | Activate compression mode (lite/full/ultra) |
-| Wiki reading | `/read-wiki` | Analyze wiki + persist context |
-| Wiki simplification | `/simplify-docs` | Consolidate + audit documentation |
-| Code review | `/review` | Review PR or code diff (caveman compressed) |
+### Why keep `spek.*` prefix for all Spekificity commands?
 
-**Rationale:**
-- Auxiliary commands are system-level utilities, not part of feature workflow
-- No prefix needed; invocation simplicity prioritized
-- Can optionally use prefix if confusion arises (e.g., `/spek.caveman`), but unprefixed is simpler
+- Visual/organizational grouping in shell history and documentation
+- Prevents collision with other tools (`context` alone would conflict)
+- Reinforces that these are Spekificity-specific workflows
 
 ---
 
-## Invocation Quick Reference
+## Implementation Patterns
 
-### Primary Workflow
-```
-/spek.prepare         # Pre-feature setup
-/spek.context         # Load or reload project context
-/spek.map             # Build or refresh graph explicitly
-/spek.automate        # Load context, run specify/clarify/plan/analyze/remediate/tasks
-/spek.implement       # Execute approved tasks with enriched code context
-/spek.post            # Persist lessons, vault updates, graph refresh
-/spek.lessons         # Extract lessons explicitly when needed
+All commands follow:
+
+```bash
+# Invocation style
+/spek.commandname [target] [--flags]
+
+# Examples
+/spek.prepare                              # Prepare for feature
+/spek.automate --phase=specify             # Run spec phase
+/spek.implement feature-name --verbose     # Verbose output
+/cg.query symbol my_function               # Query code graph
 ```
 
-### Underlying SpecKit Flow Used by `/spek.automate`
-```
-/speckit.specify
-/speckit.clarify      # Optional
-/speckit.plan
-/speckit.analyze      # Optional but available for remediation loop
-/speckit.tasks
-```
-
-### Utilities
-```
-/caveman              # Compression control
-/read-wiki            # Wiki analysis + caching
-```
+**Flags Pattern:**
+- `--verbose`: Expand explanations
+- `--format [text|json|mermaid]`: Output format
+- `--dry-run`: Show without making changes
+- `--quiet`: Suppress non-essential output
 
 ---
 
-## Implementation Details
+## File & Directory Naming
 
-### Directory Structure for Skills
-Directory name matches command suffix (prefix `spek-` for Spekificity skills to group them)
-
+**Skills Directory:**  
 ```
 .github/agents/skills/
+├── spek-prepare/       # Directory name matches command
 ├── spek-automate/
-│   └── SKILL.md
-├── spek-implement/
-│   └── SKILL.md
-├── internal-support/
-│   └── ...
-└── [speckit skills managed by SpecKit, not in this structure]
+├── context-load/
+└── cg-query/
 ```
 
-**Rationale:** 
-- Directory prefix `spek-` groups all Spekificity skills together in file system
-- Suffix matches command portion (e.g., `spek-context/` → `/spek.context`)
-- Easy to scan filesystem and see all Spekificity skills at a glance
-**Rationale:** Skill directory name matches command name exactly; removes ambiguity.
+**Artifact Files:**
+- Specs: `wiki/specs/feature-name.md` (kebab-case)
+- Plans: `wiki/specs/feature-name-plan.md`
+- Lessons: `vault/lessons/YYYY-MM-DD-feature-name.md`
+- Decisions: `vault/decisions.md` (single file, append-only)
+- Patterns: `vault/patterns.md` (single file)
 
 ---
 
-### Namespace Distinctions (in Documentation)
+**For full command reference, see:** [skill-index.md](skill-index.md)
 
 **Copilot-instructions.md will document:**
 

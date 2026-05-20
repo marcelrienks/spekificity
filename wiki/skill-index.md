@@ -404,31 +404,116 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 
 ---
 
-## Skill Conventions
+## Command Naming & Invocation
 
-### Naming Rules
+### Spekificity User-Facing Skills (`spek.*` prefix)
 
-- Workflow commands: `/spek.*` (feature lifecycle)
-- Context commands: `/context.*` (memory + injection)
-- Analysis commands: `/cg.*` (CodeGraph queries)
-- Compression: `/caveman.*` (token reduction)
-- Utilities: `/help`, `/config`
+**Pattern:** `/spek.oneword` — action-oriented, imperative verbs
 
-### Common Patterns
+| Skill | Command | Purpose |
+|-------|---------|---------|
+| Preparation | `/spek.prepare` | Initialize workspace, git state, CodeGraph, context |
+| Context loading | `/spek.context` | Load vault, repo memory, and graph context |
+| Code mapping | `/spek.map` | Build or refresh code/document graph |
+| Automation | `/spek.automate` | Orchestrate spec → plan → tasks → analyze |
+| Implementation | `/spek.implement` | Execute approved tasks with context |
+| Post-processing | `/spek.post` | Archive outcomes, extract lessons, refresh state |
+| Lessons capture | `/spek.lessons` | Explicit, detailed lesson extraction |
 
-All skills accept:
-- `--verbose`: Expand output (full explanations)
-- `--format [text|json|mermaid]`: Output format
-- `--dry-run`: Show what would happen (no changes)
-- `--quiet`: Suppress non-essential output
+**Design:** All commands keep `spek.` prefix for namespace consistency. Command portions are single words where possible (`context`, `map`, `lessons`, `prepare`, `post`, `automate`) for ergonomics and easy memorization.
 
-### Error Handling
+---
 
-All skills follow:
-1. Validate input (early exit if invalid)
-2. Log all decisions + changes to vault
-3. Provide recovery options on failure
-4. Never delete files (archive instead)
+### SpecKit Underlying Commands (`speckit.*` namespace)
+
+**Pattern:** `/speckit.oneword` — wrapped by Spekificity enrichment layer
+
+| Command | Purpose | Invoked By |
+|---------|---------|-----------|
+| `/speckit.constitution` | Define project principles | Manual or `/spek.automate` |
+| `/speckit.specify` | Create feature spec | `/spek.automate --phase=specify` |
+| `/speckit.clarify` | Resolve spec ambiguities (optional) | `/spek.automate --phase=clarify` |
+| `/speckit.plan` | Create implementation plan | `/spek.automate --phase=plan` (Step 1) |
+| `/speckit.tasks` | Generate task list | `/spek.automate --phase=plan` (Step 2) |
+| `/speckit.analyze` | Cross-artifact consistency check (optional) | `/spek.automate --phase=analyze` |
+
+**Design:** Vanilla SpecKit commands use `speckit.*` namespace. Spekificity wraps these (decorator pattern) to inject enrichment layers (vault decisions, CodeGraph context, pattern references) without modifying SpecKit internals.
+
+---
+
+### Support Command Namespaces
+
+**Context Commands:** `/context.*`  
+- `/context.load` — Load memory scope (user|session|repo)
+- `/context.inject` — Inject context at workflow stages
+
+**CodeGraph Queries:** `/cg.*`  
+- `/cg.query` — Query code intelligence
+- `/cg.sync` — Refresh code graph
+
+**Compression:** `/caveman.*`  
+- `/caveman` — Activate compression mode  
+- `/caveman.review` — Compressed code review
+
+**Utilities:** No prefix  
+- `/help` — Get help on any command
+- `/config` — View/modify configuration
+
+---
+
+### Invocation Quick Reference
+
+**Primary Workflow:**
+```
+/spek.prepare         # Pre-feature setup
+/spek.context         # Load project context
+/spek.map             # Build or refresh graph
+/spek.automate        # Spec → plan → tasks
+/spek.implement       # Execute approved tasks
+/spek.post            # Archive outcomes + lessons
+/spek.lessons         # Explicit lesson extraction
+```
+
+**Underlying SpecKit (via /spek.automate):**
+```
+/speckit.specify
+/speckit.clarify      # Optional
+/speckit.plan
+/speckit.analyze      # Optional  
+/speckit.tasks
+```
+
+**Context & Analysis:**
+```
+/context.load         # Load memory
+/context.inject       # Stage-specific context
+/cg.query            # Code intelligence
+/cg.sync             # Refresh graph
+```
+
+**Compression & Utilities:**
+```
+/caveman             # Compression toggle
+/caveman.review      # Compressed PR review
+/help                # Command help
+/config              # Configuration
+```
+
+---
+
+### Naming Conventions: Design Principles
+
+**Consistency:** All workflow commands use `spek.*` prefix. Namespace distinction is intentional and visible in command name (no aliasing needed).
+
+**Simplicity:** Command portions are single words where possible (`prepare`, not `prep`; `context`, not `ctx`). Hyphenation avoided for ergonomics.
+
+**Clarity:** Command name describes action (verb-oriented). Prefixes group related tools (`spek.*` = Spekificity, `speckit.*` = SpecKit, `context.*` = memory, `cg.*` = code analysis).
+
+**Modularity:** Each command follows same patterns:
+- Input: Feature name, spec file, or target item
+- Output: Artifacts (specs, plans, tasks, lessons)
+- Flags: `--verbose`, `--format`, `--dry-run`, `--quiet`
+- Logging: All changes to vault; never silent failures
 
 ---
 

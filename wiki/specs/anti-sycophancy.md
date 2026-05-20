@@ -1,10 +1,10 @@
-# C.3.8 Anti-Sycophancy Validation Rules
+# ⚠️ REDIRECT: Anti-Sycophancy Validation Rules
 
-**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Priority:** HIGH (Phase 2, solo dev critical)  
-**Effort:** 3-4 hours  
-**Adoption Source:** B.10 (Loki Mode, 930⭐)  
-**Requires:** C.3.1-C.3.5 Phase 1 specs
+**This specification has been consolidated into a single archive file.**
+
+**Status:** REDIRECTED (Consolidated 2026-05-20)  
+**Original ID:** C.3.8  
+**See:** [Validation Patterns Archive](validation-patterns-archive.md#section-1-anti-sycophancy-validation-rules)
 
 ---
 

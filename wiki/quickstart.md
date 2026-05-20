@@ -18,10 +18,13 @@ This guide walks you through building a **complete feature** using Spekificity's
 
 **Prerequisites:**
 
+Before starting, complete the setup in [setup.md](setup.md):
 - ✅ Python 3.11+
-- ✅ Git (project initialized)
-- ✅ SpecKit installed globally (`uv tool install specify-cli --from git+https://github.com/github/spec-kit.git`)
-- ✅ Spekificity initialized in project (`specify init .`)
+- ✅ Git initialized
+- ✅ SpecKit installed globally
+- ✅ Spekificity initialized in project
+
+See [setup.md](setup.md) for detailed prerequisite verification.
 
 ---
 
@@ -31,29 +34,14 @@ This guide walks you through building a **complete feature** using Spekificity's
 
 Validate that your workspace is ready: git is clean, vault is current, code analysis tools are fresh, and session context is loaded.
 
-### Step 1a: Check Prerequisites
+### Step 1a: Quick Verification
+
+Use this quick checklist (detailed verification in [setup.md](setup.md)):
 
 ```bash
-# Verify Python
-python3 --version
-
-# Verify Git is initialized
-git status
-
-# Verify SpecKit
-specify --version
-
-# Verify project structure
-ls -la | grep -E "^d.*\.specify"
-ls -la | grep -E "^d.*\.git"
-```
-
-**Expected Output:**
-```
-Python 3.11.x or higher ✓
-On branch main/main
-.specify/ directory exists ✓
-.git/ directory exists ✓
+python3 --version   # 3.11 or higher
+git status          # On main branch, working tree clean
+specify --version   # Global SpecKit installed
 ```
 
 ### Step 1b: Run /spek.prepare

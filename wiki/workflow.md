@@ -278,6 +278,55 @@ Each task execution includes:
 - ✅ Code committed with task references
 - ✅ Plan marked as "Implementation Complete"
 
+### Pre-Shipping Integration Checklist
+
+Before moving to Phase 5 Closeout, verify all quality gates:
+
+**Code Quality**
+- [ ] All functions have docstrings (purpose, args, return)
+- [ ] All classes have docstrings (purpose, key methods)
+- [ ] Complex logic has inline comments explaining *why*
+- [ ] No console.log or debug statements in production code
+- [ ] No unused imports or variables
+- [ ] Code follows project style guide (linting passes)
+
+**Testing**
+- [ ] Unit tests pass locally (< 5 minutes)
+- [ ] Integration tests pass locally (< 10 minutes)
+- [ ] Edge cases covered (null, empty, invalid input)
+- [ ] Error paths tested (exceptions, boundary conditions)
+- [ ] Test coverage > 80% for new code
+- [ ] Existing tests still pass (no breaking changes)
+- [ ] Full test suite runs locally < 5 minutes
+
+**CodeGraph Integration**
+- [ ] CodeGraph reflects all new code (symbols, functions, classes)
+- [ ] Impact analysis shows affected downstream components
+- [ ] CodeGraph queries used during implementation (not file grep)
+
+**Vault Integration**
+- [ ] Spec stored in vault with correct metadata
+- [ ] Plan stored in vault with task linkage
+- [ ] All artifacts committed to git (no uncommitted changes)
+
+**Spekificity Workflow**
+- [ ] `/spek.prepare` passed pre-flight checks
+- [ ] `/spek.automate --phase=specify` produced valid spec
+- [ ] `/spek.automate --phase=plan` produced valid plan
+- [ ] `/spek.implement` executed all tasks
+- [ ] All `/spek.*` commands worked end-to-end
+
+**Performance**
+- [ ] Token budget not exceeded (if one was set)
+- [ ] CodeGraph query performance acceptable (< 100ms per query)
+- [ ] API responses < 100ms for simple queries (if applicable)
+- [ ] No N+1 queries or unnecessary loops
+
+**Sign-Off**
+- [ ] Code reviewed (if applicable)
+- [ ] All Integration Checklist items checked
+- [ ] Feature ready for archive and closeout
+
 ---
 
 ## Phase 5: Post-Feature Closeout

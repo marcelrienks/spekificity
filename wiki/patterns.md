@@ -21,32 +21,69 @@ This document catalogs all reusable architectural, workflow, and optimization pa
 
 ## Quick Reference Table
 
-| # | Pattern Name | Category | Problem | Primary Spec | Frequency |
-|---|---|---|---|---|---|
-| 1 | Decorator Wrapper Pattern | Architectural | Extend functionality without modifying internals | [decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md) | HIGH |
-| 2 | Three-Layer Memory Model | Architectural | Persist context across sessions | [memory-architecture.md](wiki/specs/memory-architecture.md) | HIGH |
-| 3 | Three-Layer Query Rule | Query | Optimize token usage via hierarchical queries | [3layer-query-rule.md](wiki/specs/3layer-query-rule.md) | HIGH |
-| 4 | Enrichment Layer Pattern | Architectural | Inject context into SpecKit commands | [enrichment-layer.md](wiki/specs/enrichment-layer.md) | HIGH |
-| 5 | Context Injection Pattern | Integration | Load & compose context for tool invocation | [context-layer.md](wiki/specs/context-layer.md) | HIGH |
-| 6 | Feature Lifecycle Pattern | Workflow | End-to-end feature orchestration | [cli-orchestration.md](wiki/specs/cli-orchestration.md) | HIGH |
-| 7 | Error Categorization Pattern | Error Handling | Classify errors for targeted recovery | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH |
-| 8 | Zettelkasten Convention Pattern | Memory | Atomic, interconnected notes with frontmatter | [zettelkasten-conventions.md](wiki/specs/zettelkasten-conventions.md) | MEDIUM |
-| 9 | Caveman Compression Mode | Compression | Reduce token usage 75-90% | [caveman-integration.md](wiki/specs/caveman-integration.md) | HIGH |
-| 10 | Auto-Tagging + Auto-Wikilink Pattern | Memory | Automate knowledge interconnection | [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md) | MEDIUM |
-| 11 | Skill Chaining Pattern | Integration | Sequential execution with dependencies | [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md) | HIGH |
-| 12 | Post-Processing Pattern | Workflow | Artifact collection → compression → archive | [post-processing.md](wiki/specs/post-processing.md) | HIGH |
-| 13 | Hybrid Graph Pattern | Graph | Unify code + doc + skill nodes | [code-and-document-maps.md](wiki/specs/code-and-document-maps.md) | MEDIUM |
-| 14 | Graph Merge Integration Pattern | Graph | Combine heterogeneous node types | [graph-merge-integration.md](wiki/specs/graph-merge-integration.md) | MEDIUM |
-| 15 | Incremental Sync Pattern | Graph | Cache + file watching for efficient updates | [graph-refresh-strategy.md](wiki/specs/graph-refresh-strategy.md) | MEDIUM |
-| 16 | Feature State Tracking Pattern | State Management | Track feature lifecycle phases | [feature-state-tracking.md](wiki/specs/feature-state-tracking.md) | HIGH |
-| 17 | Session-to-Vault Archival Pattern | Memory | Convert ephemeral context to permanent | [session-logs-vault-artifacts.md](wiki/specs/session-logs-vault-artifacts.md) | MEDIUM |
-| 18 | Anti-Sycophancy Validation Pattern | Validation | Flag AI drift & contradictions | [anti-sycophancy.md](wiki/specs/anti-sycophancy.md) | LOW |
-| 19 | Blind Code Review Pattern | Validation | Anonymized independent review | [blind-code-review.md](wiki/specs/blind-code-review.md) | LOW |
-| 20 | Backprop Reflex Pattern | Validation | Test failures → vault updates → better specs | [backprop-reflex.md](wiki/specs/backprop-reflex.md) | MEDIUM |
-| 21 | RARV Reflection Pattern | Validation | Reason-Act-Reflect-Verify alignment cycle | [rarv-reflection.md](wiki/specs/rarv-reflection.md) | LOW |
-| 22 | Token Budget Tracking Pattern | Compression | Allocate & monitor per-phase token costs | [token-budget.md](wiki/specs/token-budget.md) | MEDIUM |
-| 23 | Fallback Hierarchy Pattern | Error Handling | Graceful degradation via layered fallbacks | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH |
-| 24 | Sequential Error Recovery Pattern | Error Handling | Pre-core-post with error classification | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH |
+| # | Pattern Name | Category | Problem | Primary Spec | Frequency | Adoption Priority |
+|---|---|---|---|---|---|---|
+| 1 | Decorator Wrapper Pattern | Architectural | Extend functionality without modifying internals | [decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md) | HIGH | ✅ ACTIVE |
+| 2 | Three-Layer Memory Model | Architectural | Persist context across sessions | [memory-architecture.md](wiki/specs/memory-architecture.md) | HIGH | ✅ ACTIVE |
+| 3 | Three-Layer Query Rule | Query | Optimize token usage via hierarchical queries | [3layer-query-rule.md](wiki/specs/3layer-query-rule.md) | HIGH | 🟢 S3 |
+| 4 | Enrichment Layer Pattern | Architectural | Inject context into SpecKit commands | [enrichment-layer.md](wiki/specs/enrichment-layer.md) | HIGH | ✅ ACTIVE |
+| 5 | Context Injection Pattern | Integration | Load & compose context for tool invocation | [context-layer.md](wiki/specs/context-layer.md) | HIGH | ✅ ACTIVE |
+| 6 | Feature Lifecycle Pattern | Workflow | End-to-end feature orchestration | [cli-orchestration.md](wiki/specs/cli-orchestration.md) | HIGH | ✅ ACTIVE |
+| 7 | Error Categorization Pattern | Error Handling | Classify errors for targeted recovery | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH | ✅ ACTIVE |
+| 8 | Zettelkasten Convention Pattern | Memory | Atomic, interconnected notes with frontmatter | [zettelkasten-conventions.md](wiki/specs/zettelkasten-conventions.md) | MEDIUM | 🟢 S1 |
+| 9 | Caveman Compression Mode | Compression | Reduce token usage 75-90% | [caveman-integration.md](wiki/specs/caveman-integration.md) | HIGH | ✅ ACTIVE |
+| 10 | Auto-Tagging + Auto-Wikilink Pattern | Memory | Automate knowledge interconnection | [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md) | MEDIUM | 🟢 S2 |
+| 11 | Skill Chaining Pattern | Integration | Sequential execution with dependencies | [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md) | HIGH | ✅ ACTIVE |
+| 12 | Post-Processing Pattern | Workflow | Artifact collection → compression → archive | [post-processing.md](wiki/specs/post-processing.md) | HIGH | ✅ ACTIVE |
+| 13 | Hybrid Graph Pattern | Graph | Unify code + doc + skill nodes | [code-and-document-maps.md](wiki/specs/code-and-document-maps.md) | MEDIUM | 📅 FUTURE |
+| 14 | Graph Merge Integration Pattern | Graph | Combine heterogeneous node types | [graph-merge-integration.md](wiki/specs/graph-merge-integration.md) | MEDIUM | 📅 FUTURE |
+| 15 | Incremental Sync Pattern | Graph | Cache + file watching for efficient updates | [graph-refresh-strategy.md](wiki/specs/graph-refresh-strategy.md) | MEDIUM | 🟢 S4 |
+| 16 | Feature State Tracking Pattern | State Management | Track feature lifecycle phases | [feature-state-tracking.md](wiki/specs/feature-state-tracking.md) | HIGH | ✅ ACTIVE |
+| 17 | Session-to-Vault Archival Pattern | Memory | Convert ephemeral context to permanent | [session-logs-vault-artifacts.md](wiki/specs/session-logs-vault-artifacts.md) | MEDIUM | 🟢 S5 |
+| 18 | Anti-Sycophancy Validation Pattern | Validation | Flag AI drift & contradictions | [anti-sycophancy.md](wiki/specs/anti-sycophancy.md) | LOW | 📅 FUTURE |
+| 19 | Blind Code Review Pattern | Validation | Anonymized independent review | [blind-code-review.md](wiki/specs/blind-code-review.md) | LOW | 📅 FUTURE |
+| 20 | Backprop Reflex Pattern | Validation | Test failures → vault updates → better specs | [backprop-reflex.md](wiki/specs/backprop-reflex.md) | MEDIUM | 🟡 C1 |
+| 21 | RARV Reflection Pattern | Validation | Reason-Act-Reflect-Verify alignment cycle | [rarv-reflection.md](wiki/specs/rarv-reflection.md) | LOW | 🟡 C2 |
+| 22 | Token Budget Tracking Pattern | Compression | Allocate & monitor per-phase token costs | [token-budget.md](wiki/specs/token-budget.md) | MEDIUM | 📅 FUTURE |
+| 23 | Fallback Hierarchy Pattern | Error Handling | Graceful degradation via layered fallbacks | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH | ✅ ACTIVE |
+| 24 | Sequential Error Recovery Pattern | Error Handling | Pre-core-post with error classification | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH | ✅ ACTIVE |
+
+**Adoption Legend:**
+- ✅ ACTIVE: Currently implemented
+- 🟢 S1–S5: SHOULD adopt (high priority, production-validated)
+- 🟡 C1–C2: COULD adopt (medium priority, for future phases)
+- 📅 FUTURE: Research/experimental, defer for now
+
+---
+
+## Adoption Guidance (From Research)
+
+### High Priority (`S` tier) — Should Adopt Soon
+
+**S1: Zettelkasten Conventions** (Atomic vault notes with YAML frontmatter)  
+Enable graph navigation, make lessons discoverable, zero conflicts with current design. Dependencies: None.
+
+**S2: Auto-Tagging + Auto-Wikilink** (Keyword extraction → vault mapping)  
+Create natural interconnection, enable discovery, validate lessons against patterns. Dependencies: S1 (Zettelkasten).
+
+**S3: 3-Layer Query Rule** (Graph → Vault → Code priority)  
+Reduce token waste, already planned. Dependencies: None.
+
+**S4: Graphify Git Hooks** (Auto-sync on commits)  
+Keep graph fresh, prevent stale queries, already planned. Dependencies: CodeGraph setup spec.
+
+**S5: Session Logs as Vault Artifacts** (Archive session memory)  
+Provide audit trail, enable cross-feature discovery. Dependencies: S1, S2 (auto-linking).
+
+### Medium Priority (`C` tier) — Consider for Future Phases
+
+**C1: Backprop Reflex** (Test failures → vault updates)  
+Reduce repeat mistakes, depends on automated testing infrastructure.
+
+**C2: RARV Reflection** (Reason-Act-Reflect-Verify cycles)  
+Continuous alignment, requires orchestration loop-back.
+
+For details, see [research.md](research.md).
 
 ---
 
