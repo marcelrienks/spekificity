@@ -15,7 +15,7 @@ Spekificity consolidates existing best-in-class tools to solve four foundational
 3. **Memory Persistence** — Store decisions, lessons, patterns; survive session boundaries
 4. **Autonomy** — Enable agents to operate independently without constant developer hand-holding
 
-**Core Promise:** From raw code + documentation → idea → spec → implementation → lessons learned, all with AI agent as autonomous copilot, all tracked in persistent project memory, with minimal token waste and minimal tool-switching. Each feature makes the next one faster.
+**Core Promise:** From raw code + documentation → idea → spec → implementation → lessons learned, all with AI agent as autonomous copilot, all tracked in persistent project memory, with minimal tool-switching.
 
 ---
 
@@ -54,7 +54,7 @@ Spekificity consolidates existing best-in-class tools to solve four foundational
 | **Stage 2: Feature Dev** | `/context-load` loads vault once per session; graph queries replace file reads | spec → plan → tasks → implement enforced; no exploration phase | decisions + lessons captured in vault | agent executes workflow autonomously with graph + vault context |
 | **Stage 3: Refinement** | lesions written terse (caveman style); graph incrementally updated | outcomes feed back into vault structure | agent learns from each feature; compounding | next feature starts with richer context; less dev guidance needed |
 
-**Result:** token reduction is 3-4x cumulative. determinism improves with each cycle. persistence means NO context reset. autonomy grows as vault accumulates.
+**Result:** token usage is managed through targeted graph queries and context caching. determinism improves with each cycle. persistence means NO context reset. autonomy grows as vault accumulates.
 
 ---
 
@@ -76,7 +76,7 @@ spekificity init
 
 **Output:** `.spekificity/` config, `.agents/skills/` skill routing, obsidian vault ready
 
-**Time:** ~10 minutes (first time); ~2 minutes (re-init on new project)
+**Setup required:** One-time initialization of tools and vault structure
 
 ---
 
@@ -102,7 +102,7 @@ spekificity init
 **User:** "Implement user authentication system"
 
 **Agent Workflow:**
-1. `/spek.automate` → Load vault + code context, then orchestrate SpecKit through specification, clarification, planning, analysis, remediation, and tasks
+1. `/spek.automate` → Load vault + code context, then orchestrate SpecKit through specification, clarification, planning, tasks, analysis, and remediation
    - Injects context: related code modules, prior decisions, lessons from similar features
    - Generates: `specs/<feature>/spec.md`, `specs/<feature>/plan.md`, `specs/<feature>/tasks.md`
 2. Human reviews generated artifacts and any analyze findings
@@ -116,7 +116,7 @@ spekificity init
 - Execution trace (stores in vault for analysis)
 - Lessons entry → `vault/lessons/<date>-<feature>.md`
 
-**Time to Value:** Feature spec to working code: typically 30-60 minutes (depending on complexity)
+**Time to Value:** Feature development workflow from spec through code
 
 ---
 
@@ -161,7 +161,7 @@ spekificity init
 ### Token Efficiency / Response Compression (Optional)
 - **Role:** Minimize token usage while preserving technical accuracy
 - **Integration:** Invoked at key stages (spec review, plan review) for optimization
-- **Contribution:** 25-40% token reduction on outputs; optional efficiency multiplier
+- **Contribution:** Optional compression layer; works alongside graph queries
 - **Independent:** Can be omitted; optional enhancement layer
 - **Current Recommendation:** Terse notation systems that preserve code + technical substance
 
@@ -180,12 +180,12 @@ spekificity init
 
 **Without Spekificity:**
 - User manually: installs spec framework, installs code mapper, creates vault, configures agent, sets up compression tool, links them together
-- Time: 1-2 hours; 10+ manual steps; high error rate; decisions about which tools to use
+- Traditional approach: Manual context setup and orchestration; trial-and-error tool integration
 
 **With Spekificity:**
 - User runs: `spekificity init`
 - Spekificity orchestrates: evaluates available tools, installs recommended ones, configurations, wiring
-- Time: 10 minutes; 1 command; verifiable state
+- One command for verifiable state
 
 Spekificity doesn't build installers; it evaluates and chains existing ones + adds the glue.
 

@@ -363,7 +363,7 @@ Timeline: Session Start
    └─ /memories/session/context-loaded.md
 ```
 
-**Cost:** ~3-5K tokens (with compression)
+**Content:** Extracted decisions and patterns from prior features (read-only for session)
 
 **Frequency:** Once per session (at `/spek.prepare` → `/spek.context`)
 
@@ -404,7 +404,7 @@ Timeline: Feature End
    └─ "Feature complete. Lessons written to vault/lessons/. Decisions synced."
 ```
 
-**Cost:** ~5-10K tokens (lessons generation + compression)
+**Content:** Structured lessons learned from feature execution (written to vault)
 
 **Frequency:** Once per feature (after implementation complete)
 

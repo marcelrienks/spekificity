@@ -192,7 +192,7 @@
 **Canonical sequencing (B.1 resolved):**
 
 1. **Pre-flight:** Clean working tree, create feature branch
-2. **Automate:** `/spek.automate` loads context and runs `/speckit.specify` → `/speckit.clarify` (optional) → `/speckit.plan` → `/speckit.analyze` (optional) → remediation loop → `/speckit.tasks`
+2. **Automate:** `/spek.automate` loads context and runs `/speckit.specify` → `/speckit.clarify` (optional) → `/speckit.plan` → `/speckit.tasks` → `/speckit.analyze` (optional) → remediation loop
 3. **Review & Fix:** Developer reviews analyze report and generated artifacts, edits in-place if needed (manual step)
 4. **Implement:** `/spek.implement` with code map context
 5. **Post-flight:** `/spek.post` or lessons flow, graph refresh, optional: `cel.wiki.simplify`

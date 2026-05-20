@@ -38,7 +38,7 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 |--------|-----------|
 | Purpose | Pre-indexed code intelligence for agents |
 | Output | SQLite graph + MCP tools |
-| Agent Experience | Instant tool calls with order-of-magnitude token reduction and faster queries |
+| Agent Experience | Pre-indexed tool calls for code analysis without file scanning |
 | Impact Analysis | Built-in (`codegraph_impact`, `codegraph_callers`) |
 | Sync | Automatic (file watcher, debounced) |
 | Setup | Medium (init + MCP config) |
@@ -51,8 +51,8 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 **CodeGraph:** Agent queries pre-indexed graph → few tool calls per feature
 
 **Concrete impact:**
-- Feature cycle with Graphify: ~90+ minutes (includes token overhead)
-- Feature cycle with CodeGraph: ~45 minutes (instant queries, impact analysis)
+- CodeGraph provides pre-indexed queries without file scanning overhead
+- Graphify requires repeated markdown file reads per query
 
 ---
 
@@ -114,7 +114,7 @@ Spekificity Workflow (via agent)
     └── Writes back to vault
 ```
 
-**Result:** 30-40% faster development on refactoring/debugging tasks.
+**Result:** Faster development on refactoring/debugging tasks with pre-indexed analysis.
 
 ---
 
@@ -186,7 +186,7 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | clipforge-PAKT | Compression | Low | 5/10 | 50%+ | Lossless for JSON/YAML; library + CLI + MCP + browser extension |
 | claw-compactor | Compression | Low | 4/10 | 70%+ | 14-stage pipeline; AST-aware; reversible; complex setup |
 
-**Recommendation:** Use `Caveman` for token compression. Sufficient for most use cases; if higher compression needed, evaluate `squeez` (70% savings, multi-tool support) or `contextzip` (60-90% savings, stdout focus).
+**Recommendation:** Use `Caveman` for token compression. Evaluating additional compression tools for specific use cases.
 
 ---
 

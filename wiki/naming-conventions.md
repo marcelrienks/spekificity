@@ -27,7 +27,7 @@ This ensures:
 | Preparation | `/spek.prepare` | Initialize workspace, git state, graph freshness, and feature state |
 | Context loading | `/spek.context` | Load vault, repo memory, and graph context into session |
 | Code mapping | `/spek.map` | Build or refresh code/document graph |
-| Full automation | `/spek.automate` | Orchestrate SpecKit flow through spec, plan, analyze, remediation, and tasks |
+| Full automation | `/spek.automate` | Orchestrate SpecKit flow through spec, plan, tasks, analyze, and remediation |
 | Implementation | `/spek.implement` | Execute approved tasks with project context |
 | Post-processing | `/spek.post` | Archive feature outcomes, lessons, vault updates, and graph refresh |
 | Lessons capture | `/spek.lessons` | Extract structured lessons when run explicitly |

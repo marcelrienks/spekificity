@@ -12,11 +12,11 @@
 
 `spek.automate` is a single entry point that autonomously orchestrates the pre-implementation SpecKit workflow without requiring the user to manually invoke individual SpecKit skills.
 
-**Key Design Principle:** `spek.automate` does **not hardcode** which SpecKit skills to call. Instead, it:
-1. **Discovers** the currently installed SpecKit version
-2. **Queries** the SpecKit registry to determine available skills and recommended workflow
-3. **Orchestrates** skills in order, handling user input, remediation, and error recovery
-4. **Adapts** automatically to future SpecKit updates (no code changes required)
+**Key Design Principle:** `spek.automate` uses a concrete SpecKit integration contract to determine available skills and workflow. It:
+1. **Scans** `.specify/README` or local SpecKit installation for available skills (if present)
+2. **Detects** any new skills added beyond the canonical defaults
+3. **Falls back** to hardcoded canonical SpecKit workflow if auto-detection unavailable
+4. **Orchestrates** skills in order, handling user input, remediation, and error recovery
 
 **Purpose:**
 - Enable hands-off feature preparation using SpecKit
@@ -32,21 +32,35 @@
 ```
 spek.automate <feature-description>
 ├─ Step 1: Load workspace context (via /spek.context)
-├─ Step 2: Discover SpecKit version + available skills
-├─ Step 3: Query recommended workflow from SpecKit registry
+├─ Step 2: Scan for available SpecKit skills (local .specify/ or installation)
+├─ Step 3: Use concrete canonical workflow (see speckit-integration-contract.md)
 ├─ Step 4: Initialize feature state tracking
 └─ Ready: Begin skill orchestration
 ```
 
-### Layer 2: Dynamic Workflow Discovery
+### Layer 2: Concrete Workflow (Canonical SpecKit Flow)
+
+Based on [speckit-integration-contract.md](speckit-integration-contract.md), the canonical workflow is:
+
 ```
-For each step in SpecKit recommended workflow:
-  ├─ Query registry: What is this step?
-  ├─ Load: Input requirements (prerequisites, context)
-  ├─ Load: Typical failure modes (validation, recovery)
-  ├─ Load: Success criteria (what makes step complete)
-  └─ Prepare: User prompts if input needed
+constitution (optional; created if missing)
+  ↓
+specify
+  ↓
+clarify (optional)
+  ↓
+plan
+  ↓
+tasks
+  ↓
+analyze (optional)
+  ↓
+manual remediation if needed
+  ↓
+implement
 ```
+
+Each step has defined inputs, outputs, and success criteria (documented in speckit-integration-contract.md).
 
 ### Layer 3: Skill Execution
 ```
@@ -86,65 +100,59 @@ After all skills complete successfully:
 
 ---
 
-## Step 1: SpecKit Discovery
+## Step 1: Discover Available SpecKit Skills
 
-### 1.1 Query SpecKit Version
+### 1.1 Auto-Detection (Optional)
 
-```bash
-# Get installed SpecKit version
-spek.automate --discover-version
-  → Output: speckit version X.Y.Z
-  → Query: ~/.speckit/registry/ OR /usr/local/lib/speckit/ OR global npm/pip installation
-```
-
-**Implementation:**
-- Try multiple locations: local project, user home, global install
-- Fallback: `speckit --version` CLI command
-- Parse version string to extract major.minor.patch
-
----
-
-### 1.2 Query SpecKit Registry
+Attempt to discover new skills beyond the canonical defaults:
 
 ```bash
-# Get available skills for this SpecKit version
-spek.automate --discover-skills
-  → Query: ~/.speckit/registry/skills.json OR equivalent
-  → Discover: [specify, clarify, plan, analyze, tasks, implement]
-  → Return: Structured list with metadata per skill
+# Scan local .specify/ directory (if exists) for README or skill metadata
+if [ -f ./.specify/README.md ]; then
+  parse_available_skills ./.specify/README.md
+  → Extract skill names and order
+fi
+
+# Scan installed SpecKit for available skills
+if command -v speckit &> /dev/null; then
+  SPECKIT_PATH=$(which speckit)
+  parse_installed_skills "$SPECKIT_PATH"
+  → Look for skills/ directory or manifest
+fi
 ```
 
-**Registry Query Returns:**
-```json
-{
-  "speckit_version": "2.1.0",
-  "available_skills": [
-    {
-      "name": "specify",
-      "version": "2.1.0",
-      "input_requirements": ["constitution", "feature_description"],
-      "output_files": ["spec.md"],
-      "typical_failure_modes": ["invalid_constitution", "missing_feature_description"],
-      "success_criteria": ["spec.md_created", "spec.md_well_formed"]
-    },
-    {
-      "name": "clarify",
-      "version": "2.1.0",
-      "optional": true,
-      "input_requirements": ["spec.md"],
-      "output_files": ["spec.md"],
-      "suggested_when": ["spec_ambiguous", "user_requests_clarification"]
-    },
-    ...
-  ],
-  "recommended_workflow": ["specify", "clarify", "plan", "tasks", "analyze", "implement"],
-  "optional_steps": ["clarify", "analyze"],
-  "remediation_workflow": {
-    "if_analyze_fails": ["manual_edit_tasks", "rerun_analyze", "skip_to_implement"],
-    "if_implement_fails": ["manual_fix_code", "rerun_implement"]
-  }
-}
+### 1.2 Fallback to Canonical Defaults
+
+If auto-detection unavailable or inconclusive, use hardcoded canonical workflow:
+
+```python
+CANONICAL_SKILLS = [
+    "specify",
+    "clarify",  # optional
+    "plan",
+    "tasks",
+    "analyze",  # optional
+    "implement"
+]
+
+OPTIONAL_SKILLS = ["clarify", "analyze"]
+
+# Determine workflow
+if new_skills_detected:
+    workflow = discovered_skills + new_skills
+else:
+    workflow = CANONICAL_SKILLS
 ```
+
+### 1.3 Workflow Execution
+
+For each skill in determined workflow:
+1. **Input:** Collect required artifacts (spec.md, plan.md, etc.)
+2. **Execute:** Call `/speckit.<skill-name>` with context injection
+3. **Validate:** Check output files exist and are well-formed
+4. **Decide:** Continue or offer remediation
+
+See [speckit-integration-contract.md](speckit-integration-contract.md) for input/output contracts per skill.
 
 ---
 

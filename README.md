@@ -9,7 +9,7 @@ Spekificity is an agentic consolidation platform aimed at four recurring LLM age
 - context loss
 - low autonomy
 
-Core idea: combine spec-driven workflow, indexed code context, persistent project memory, and aggressive output compression so an AI agent can move from feature request to implementation with less rescanning, less drift, and less manual steering.
+Core idea: combine spec-driven workflow, indexed code context, persistent project memory, and output compression so an AI agent can move from feature request to implementation with less rescanning and less manual steering.
 
 ## What This Repository Is
 
@@ -33,7 +33,7 @@ Spekificity is built around four pillars:
 |---|---|---|
 | Token efficiency | Spend tokens on reasoning, not file rediscovery | indexed graph queries, scoped context loading, Caveman compression |
 | Determinism | Keep feature work on a repeatable track | SpecKit workflow: specify -> plan -> tasks -> implement |
-| Persistence | Preserve architectural context across sessions | vault-style markdown knowledge store for decisions, patterns, lessons |
+| Persistence | Preserve architectural context across sessions | knowledge vault (markdown store for decisions, patterns, lessons) |
 | Autonomy | Reduce developer hand-holding | reusable project memory + graph-grounded context injection |
 
 ## Target Tool Stack
@@ -42,7 +42,7 @@ Current design direction across the wiki is:
 
 - SpecKit / Specify for spec-first workflow generation
 - CodeGraph as the recommended code intelligence layer for agent workflows
-- Obsidian-compatible markdown vault for durable project knowledge
+- Obsidian-compatible knowledge vault for durable project knowledge
 - Caveman mode for response compression and token control
 
 Spekificity does not try to replace those systems. It defines how they should work together.
@@ -51,10 +51,10 @@ Spekificity does not try to replace those systems. It defines how they should wo
 
 The intended Spekificity workflow is:
 
-1. Run `spek.automate` to load project context and orchestrate spec generation.
-2. Let `spek.automate` drive the upstream SpecKit flow through specify, clarify (if needed), plan, analyze, remediation, and tasks.
+1. Run `/spek.automate` to load project context and orchestrate spec generation.
+2. Let `/spek.automate` drive the upstream SpecKit flow through specify, clarify (if needed), plan, tasks, analyze, and remediation.
 3. Review resulting artifacts.
-4. Run `spek.implement` to execute against approved spec, plan, tasks, and code context.
+4. Run `/spek.implement` to execute against approved spec, plan, tasks, and code context.
 5. Capture lessons and refresh durable project memory.
 
 Canonical user-facing command surface is:
@@ -78,7 +78,9 @@ Vanilla SpecKit commands remain part of the underlying model:
 - `/speckit.tasks`
 - `/speckit.implement`
 
-Use the `spek.*` surface when following the Spekificity-enriched workflow. `spek.automate` aggregates the main SpecKit lifecycle instead of exposing separate Spekificity wrapper commands for each phase.
+Use the `/spek.*` surface when following the Spekificity workflow. **Enrichment** means context injection: `/spek.automate` loads decisions and patterns from the knowledge vault before calling `/speckit.specify`, `/speckit.plan`, etc., so those commands operate with project-specific constraints already in scope. This guides spec and plan generation toward existing patterns without requiring manual context setup.
+
+Vanilla SpecKit commands remain the execution layer; Spekificity adds context loading, orchestration, and post-processing around them.
 
 ## Current Repository State
 

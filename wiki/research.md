@@ -29,7 +29,6 @@ These are **strongly recommended** based on production validation and alignment 
 - Kebab-case filenames
 
 **Why adopt:**
-- ✅ Informed by production examples that report large token savings
 - ✅ Enables graph navigation in Obsidian
 - ✅ Makes lessons discoverable by future `/spek.context` loads
 - ✅ Zero conflicts with current design (B.8.2 vault already uses metadata)
@@ -38,8 +37,6 @@ These are **strongly recommended** based on production validation and alignment 
 - Update `vault/decision.md`, `vault/patterns.md`, `vault/lessons/` with frontmatter template
 - Add wikilink generation logic to `/spek.post` Step 3 (Generate Lessons)
 - Document in `.spekificity/guides/vault-conventions.md`
-
-**Effort:** 3-4 hours
 
 **Affected files:**
 - `specs/b8-4-prepare-and-post-skills.md` (enhance Step 3)
@@ -61,7 +58,6 @@ These are **strongly recommended** based on production validation and alignment 
 - Auto-generate tags (domain, tech stack, methodology)
 
 **Why adopt:**
-- ✅ Reduces manual linking work (~70% of linking could be automated)
 - ✅ Creates natural interconnection in vault
 - ✅ Enables knowledge discovery across features
 - ✅ Validates lessons against prior patterns
@@ -92,8 +88,6 @@ These are **strongly recommended** based on production validation and alignment 
 
 3. Document in `.spekificity/guides/auto-linking.md`
 
-**Effort:** 4-6 hours
-
 **Affected files:**
 - `.spekificity/config.yaml` (add KEYWORD_TAG_MAP)
 - `specs/b8-4-prepare-and-post-skills.md` (enhance Step 3)
@@ -105,7 +99,7 @@ These are **strongly recommended** based on production validation and alignment 
 
 ### S3. 3-Layer Query Rule Documentation & Enforcement
 
-**From:** B.9 (claude-code-memory-setup, 71x token savings)
+**From:** B.9 (claude-code-memory-setup, demonstrated compression approach)
 
 **What it is:**
 ```
@@ -115,10 +109,8 @@ Layer 3: Read raw code files (only when needed) — 5000+ tokens
 ```
 
 **Why adopt:**
-- ✅ Can reduce token waste substantially when done correctly
-- ✅ Prioritizes cached/indexed data over expensive file re-reads
+- ✅ Can reduce token waste by prioritizing cached/indexed data over file re-reads
 - ✅ Already planned in B.8.2 memory model; just needs explicit documentation
-- ✅ Supported by external examples that report large savings in real usage
 
 **Implementation:**
 1. Create `.spekificity/guides/context-navigation.md` with:
@@ -136,14 +128,12 @@ Layer 3: Read raw code files (only when needed) — 5000+ tokens
    2. Query vault second (searchable, compiled)
    3. Read code only if layers 1-2 insufficient
    
-   This reduces token cost by ~20x.
+   This prioritizes cached/indexed data before expensive file reads.
    ```
 
 3. Implement in `/spek.context` skill:
    - Query graph first → fall back to vault → fall back to code
    - Log which layers were queried for transparency
-
-**Effort:** 2-3 hours
 
 **Affected files:**
 - `.spekificity/guides/context-navigation.md` (new)
@@ -183,8 +173,6 @@ Layer 3: Read raw code files (only when needed) — 5000+ tokens
       enable_git_hook: true  # Auto-sync on commits
   ```
 
-**Effort:** 1 hour (already specified in B.11)
-
 **Affected files:**
 - `.spekificity/bin/spek setup` (add hook installation)
 - `.spekificity/guides/quickstart.md` (document)
@@ -216,8 +204,6 @@ Layer 3: Read raw code files (only when needed) — 5000+ tokens
   3. Add structured YAML frontmatter
   4. Insert wikilinks to related decisions/patterns
   5. Commit to vault
-
-**Effort:** 2-3 hours
 
 **Affected files:**
 - `specs/b8-4-prepare-and-post-skills.md` (enhance Step 9)
@@ -274,8 +260,6 @@ Suggest updated pattern for next feature
    Alert: "Previous feature had failures in X; consider pattern Y"
    ```
 
-**Effort:** 3-4 hours
-
 **Timeline:** Post B.12 (after basic skills working)
 
 **Affected files:**
@@ -316,8 +300,6 @@ After implementation:
 2. Add feedback loop option:
    - If significant deviations found, offer to re-run plan
    - Iterate until aligned
-
-**Effort:** 4-5 hours (orchestration + comparison logic)
 
 **Timeline:** Post B.14 (after integration testing works)
 
@@ -370,8 +352,6 @@ After implementation:
    - `/spek.automate` plan phase: Compare plan against code graph + decisions
    - `/spek.implement`: Validate against test coverage + architectural constraints
 
-**Effort:** 3-4 hours
-
 **Timeline:** Post B.13 (after skills stabilize)
 
 **Affected files:**
@@ -413,8 +393,6 @@ After implementation:
      enable_blind_review: false  # Optional
      review_tool: "github_actions"  # or "custom"
    ```
-
-**Effort:** 4-5 hours
 
 **Timeline:** Post B.13 (after code generation stabilizes)
 
@@ -470,8 +448,6 @@ Per-feature token budget:
    - Suggest compression if needed
 
 3. Add report to `/spek.post` completion summary
-
-**Effort:** 2-3 hours
 
 **Timeline:** Can be added anytime (useful data point)
 
@@ -593,8 +569,6 @@ These are patterns from other frameworks that Spekificity **deliberately does no
 - ✅ S4: Graphify git hooks
 - ✅ S5: Session logs as vault artifacts
 
-**Effort:** 12-15 hours (distributed across skill development)
-
 **Timeline:** Integrate during B.12 (agent skills creation)
 
 ---
@@ -608,8 +582,6 @@ These are patterns from other frameworks that Spekificity **deliberately does no
 - ⚠️ C4: Blind code review (requires review tool)
 - ⚠️ C5: Token budget tracking (quick win, any time)
 
-**Effort:** 15-20 hours (distributed, iterative)
-
 **Timeline:** After B.14 integration testing succeeds
 
 ---
@@ -622,8 +594,6 @@ These are patterns from other frameworks that Spekificity **deliberately does no
 - 🔮 R3: Watch mode
 - 🔮 R4: Steering rules
 
-**Effort:** 20+ hours (based on user feedback)
-
 **Timeline:** Q3 2026+
 
 ---
@@ -634,7 +604,7 @@ These are patterns from other frameworks that Spekificity **deliberately does no
 |----------|----------|--------|---------|--------------|-----------|
 | S1. Zettelkasten | HIGH | 3-4h | High (indexing) | None | **YES** |
 | S2. Auto-linking | HIGH | 4-6h | High (discovery) | S1 | **YES** |
-| S3. 3-Layer Rule | HIGH | 2-3h | High (token savings) | None | **YES** |
+| S3. 3-Layer Rule | HIGH | Medium | High (code organization) | None | **YES** |
 | S4. Git Hooks | HIGH | 1h | High (auto-refresh) | B.11 | **YES** |
 | S5. Session Logs | HIGH | 2-3h | Medium (audit trail) | S1, S2 | **YES** |
 | C1. Backprop | MEDIUM | 3-4h | Medium (learning) | Tests | Optional |
@@ -656,8 +626,7 @@ These are patterns from other frameworks that Spekificity **deliberately does no
 **Implement all SHOULD adoptions (S1-S5):**
 - These are production-validated patterns
 - Zero conflicts with core design
-- Effort ~12-15 hours (distributed across skills)
-- High impact on usability + token efficiency
+- All recommended for initial implementation
 
 **Optional: S5 token budget tracking** (quick win)
 
@@ -707,13 +676,11 @@ Create specs and implement the following 5 high-value adoptions during B.12 agen
 
 | ID | Item | Effort | Priority | Spec Item |
 |----|------|--------|----------|-----------|
-| S1 | Zettelkasten conventions for vault notes | 3-4h | **MUST** | C.3.1 |
-| S2 | Auto-tagging + auto-wikilink insertion | 4-6h | **MUST** | C.3.2 |
-| S3 | 3-Layer query rule documentation | 2-3h | **MUST** | C.3.3 |
-| S4 | Graphify git hooks integration | 1h | **MUST** | C.3.4 |
-| S5 | Session logs as vault artifacts | 2-3h | **MUST** | C.3.5 |
-
-**Total Effort:** 12-15 hours (distributed across B.12 skill implementation)
+| S1 | Zettelkasten vault conventions | **MUST** | C.3.1 |
+| S2 | Auto-tagging + auto-wikilink insertion | **MUST** | C.3.2 |
+| S3 | 3-Layer query rule documentation | **MUST** | C.3.3 |
+| S4 | Graphify git hooks integration | **MUST** | C.3.4 |
+| S5 | Session logs as vault artifacts | **MUST** | C.3.5 |
 
 **Integration Points:**
 - S1, S2: Integrate into `/spek.post` Step 3 (Lesson Generation)
