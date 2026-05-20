@@ -23,7 +23,7 @@
    ├─ Vault: load vault context (decisions, patterns)
    └─ Memory: create /memories/session/current-feature.md
 
-2. /spek.automate
+2. /spek.plan
    ├─ Feature work (specify → plan → implement)
    └─ Memory: update /memories/session/current-feature.md
 
@@ -71,7 +71,7 @@ Feature Start (Developer A):
    └─ Notification: Post feature start in vault/coordination/checkins.md
 
 Feature Work (Developer A):
-2. /spek.automate → /spek.implement
+2. /spek.plan → /spek.implement
    ├─ Work on feature branch (isolated from other devs)
    ├─ Memory: update /memories/session/current-feature-a.md
    └─ Vault: NO writes during feature (avoid conflicts)
@@ -565,7 +565,7 @@ attendees: [Developer A, B, C]
    → Vault: load context
    → Memory: create session
 
-2. /spek.automate → /spek.implement
+2. /spek.plan → /spek.implement
    → Work on branch
    → Update memory
 
@@ -733,7 +733,7 @@ Exit codes:
 - **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
 - **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
 - **Git Verification:** [specs/git-verification.md](../specs/012-git-verification.md)
-- **Spek Post Command:** [specs/post-command.md](../specs/102-post-command.md)
+- **Spek Conclude Command:** [specs/conclude-command.md](../specs/102-conclude-command.md)
 - **Prepare Command:** [specs/prepare-command.md](../specs/100-prepare-command.md)
 
 ---

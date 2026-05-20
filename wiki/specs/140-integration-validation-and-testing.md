@@ -49,7 +49,7 @@ This spec defines acceptance criteria, validation strategies, and testing approa
 
 **Deliverables:**
 - `/spek.prepare` skill (7-step feature initialization)
-- `/spek.post` skill (10-step feature archival + vault sync)
+- `/spek.conclude` skill (10-step feature archival + vault sync)
 - `/spek.context` skill (context loading)
 - `/spek.map` skill (code graph generation/refresh)
 - `.spekificity/skills/` directory structure with all skill code
@@ -86,7 +86,7 @@ pytest tests/performance/test_token_usage.py
 
 **Validation (Manual Tests):**
 - [ ] Run `/spek.prepare` on actual project, verify context loads
-- [ ] Run `/spek.post` after completing a feature, verify vault updated
+- [ ] Run `/spek.conclude` after completing a feature, verify vault updated
 - [ ] Run `/spek.map` and verify code graph populated
 - [ ] Trigger error condition (git dirty), verify error message clear + actionable
 
@@ -109,7 +109,7 @@ pytest tests/performance/test_token_usage.py
 ## Phase 2: Enrichment Layers
 
 **Deliverables:**
-- `/spek.automate` specify/plan enrichment phases (graph-aware `/speckit.specify` and `/speckit.plan`)
+- `/spek.plan` specify/plan enrichment phases (graph-aware `/speckit.specify` and `/speckit.plan`)
 - `/spek.implement` enrichment wrapper (graph-aware `/speckit.implement`)
 
 **Acceptance Criteria:**
@@ -138,8 +138,8 @@ pytest tests/performance/test_enrichment_overhead.py
 ```
 
 **Validation (Manual Tests):**
-- [ ] Run `/spek.automate` on new feature, verify spec uses architectural patterns
-- [ ] Verify `/spek.automate` plan output accounts for existing code
+- [ ] Run `/spek.plan` on new feature, verify spec uses architectural patterns
+- [ ] Verify `/spek.plan` plan output accounts for existing code
 - [ ] Compare output with vanilla SpecKit (enriched vs. non-enriched)
 - [ ] Verify enrichment works with stale context (fallback)
 
@@ -363,7 +363,7 @@ spek post
 |-----------|--------|-------------------|-----------|
 | `/spek.prepare` | <10s | Time full execution | <10s wall time |
 | `/spek.context` | <5s | Time context loading | <5s wall time |
-| `/spek.post` | <30s | Time full execution | <30s wall time |
+| `/spek.conclude` | <30s | Time full execution | <30s wall time |
 | `/spek.map` | <60s | Time graph refresh | <60s wall time |
 | Context size | <10K tokens | Measure loaded context | <10K tokens |
 | Session memory | <100MB | Monitor /memories/session/ | <100MB disk |
@@ -460,9 +460,9 @@ spek post
 
 **Issue:** If vault is edited outside Spekificity workflow, changes not auto-synced to repo memory
 
-**Reason:** Sync only runs on `/spek.post`
+**Reason:** Sync only runs on `/spek.conclude`
 
-**Workaround:** Run `/spek.post --dry-run` after manual vault edits to trigger sync
+**Workaround:** Run `/spek.conclude --dry-run` after manual vault edits to trigger sync
 
 **Future Fix:** File watcher + event-driven sync (Phase 2+)
 

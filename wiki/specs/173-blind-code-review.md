@@ -40,7 +40,7 @@ Implement optional second-pass code review that:
 ## Success Criteria
 
 - ✅ Code anonymization strips AI markers without removing logic or structure
-- ✅ Blind review invocation post-implementation (before `/spek.post` archival)
+- ✅ Blind review invocation post-implementation (before `/spek.conclude` archival)
 - ✅ Review checks run independently (linters, tests, style analysis pass/fail)
 - ✅ AI-specific issues detected (hallucinations, over-context-reliance, logic gaps)
 - ✅ Issues flagged for developer review before production deployment

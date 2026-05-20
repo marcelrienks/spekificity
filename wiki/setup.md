@@ -106,7 +106,7 @@ The knowledge vault (Obsidian-format markdown) stores lessons learned, decisions
 your-project/
 └── wiki/
     └── vault/
-        ├── lessons/         ← written by /spek.post
+        ├── lessons/         ← written by /spek.conclude
         ├── context/         ← maintained by agent across sessions
         │   ├── decisions.md
         │   └── patterns.md
@@ -349,7 +349,7 @@ After installing all tools:
 Once all tools are installed and verified:
 
 1. Run `/spek.prepare` to initialize workspace and load context
-2. Run `/spek.automate [feature description]` to begin a feature workflow
+2. Run `/spek.plan [feature description]` to begin a feature workflow
 3. See [wiki/workflow.md](../workflow.md) for complete workflow documentation
 
 ---

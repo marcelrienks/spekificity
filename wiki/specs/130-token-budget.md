@@ -53,11 +53,11 @@ token_budget:
   phases:
     specify_phase:
       budget: 2000  # Spec generation
-      tools: ["/spek.automate (specify phase)", "C.3.2 auto-linking"]
+      tools: ["/spek.plan (specify phase)", "C.3.2 auto-linking"]
     
     plan_phase:
       budget: 3000  # Plan generation + architecture decisions
-      tools: ["/spek.automate (plan phase)", "code graph queries"]
+      tools: ["/spek.plan (plan phase)", "code graph queries"]
     
     implement_phase:
       budget: 5000  # Code generation + debugging
@@ -103,9 +103,9 @@ enterprise_cost_sensitive:
 
 ### Per-Phase Tracking
 
-**During `/spek.automate` Specify Phase:**
+**During `/spek.plan` Specify Phase:**
 ```
-/spek.automate specify-phase execution:
+/spek.plan specify-phase execution:
   Layer 1 query (code graph):   ~500 tokens
   Layer 2 query (vault):        ~1000 tokens
   Spec generation:              ~300 tokens
@@ -117,9 +117,9 @@ enterprise_cost_sensitive:
   Status:                        ✓ On budget
 ```
 
-**During `/spek.automate` Plan Phase:**
+**During `/spek.plan` Plan Phase:**
 ```
-/spek.automate plan-phase execution:
+/spek.plan plan-phase execution:
   Context reload:               ~400 tokens
   Code graph analysis:          ~800 tokens
   Plan generation:              ~1200 tokens
@@ -138,7 +138,7 @@ enterprise_cost_sensitive:
 [Implement happens locally; token tracking at feature end]
 ```
 
-**During Post Phase:**
+**During Conclude Phase:****
 ```
 /spek.post execution:
   Context reload:               ~300 tokens
@@ -209,7 +209,7 @@ Total:               2000t (100% of budget)
 ## Implement Phase
 [Local; tokens estimated at feature end]
 
-## Post Phase
+## Conclude Phase
 - Lessons:            600t
 - Vault updates:      400t
 - Archival:           300t
@@ -287,7 +287,7 @@ Average          | 10567 | 2233    | 3100 | 3900      | 1333 | 2.1t/LOC
 
 Trend:
 - Tokens/LOC improving (1.9 < 2.4): ✓ Getting more efficient
-- Post phase decreasing: ✓ Lessons compression working
+- Conclude phase decreasing: ✓ Lessons compression working
 - Specify stable: ✓ Consistent cost
 ```
 

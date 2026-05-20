@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Skill — /spek.map (Code Graph Generation & Maintenance)  
 **Depends On:** codegraph-setup-and-integration.md, graph-storage-structure.md  
-**Used By:** /spek.prepare (Step 4), /spek.post (Step 8)  
+**Used By:** /spek.prepare (Step 4), /spek.conclude (Step 8)  
 
 ---
 

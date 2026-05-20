@@ -59,9 +59,9 @@ Spekificity is a **specification-driven agent development framework** built arou
 
 - **Reusable Skills:** `/spek.*` commands are composable and opinionated
   - `/spek.prepare` — Pre-flight checks
-  - `/spek.automate` — SpecKit orchestration
+  - `/spek.plan` — SpecKit orchestration
   - `/spek.implement` — Task execution
-  - `/spek.post` — Completion & vault sync
+  - `/spek.conclude` — Completion & vault sync
 
 ### 3. Persistence
 **Knowledge outlives sessions.**
@@ -98,9 +98,119 @@ Spekificity is a **specification-driven agent development framework** built arou
   - Deterministic analysis, not emergent reasoning
 
 - **Skill Chaining:** Multi-agent workflows are explicit, composable
-  - `/spek.prepare` → `/spek.automate --phase=specify` → `/spek.automate --phase=plan` → `/spek.implement` → `/spek.post`
-  - Each skill is independent but coordinated
-  - Can be run sequentially or in parallel
+  - Five core skills form a deterministic pipeline (see "Spekificity Skills" section for details)
+
+---
+
+## Spekificity Skills: The Complete Toolkit
+
+The framework is implemented through a set of reusable, composable skills. All skills are prefixed with `/spek.` and follow a deterministic pattern.
+
+### Core Skills (Usage Order)
+
+These five skills form the primary workflow. Each is required; each has a specific place in the cycle:
+
+| Order | Skill | Purpose | Input | Output |
+|-------|-------|---------|-------|--------|
+| 1️⃣ | `/spek.prepare` | Pre-flight checks | Workspace state | Clean workspace + vault synced + CodeGraph fresh |
+| 2️⃣ | `/spek.plan --phase=specify` | Enriched spec generation | Feature intent | `wiki/specs/NNN-feature-name.md` with enrichment layers |
+| 3️⃣ | `/spek.plan --phase=plan` | Task breakdown & validation | Specification | `wiki/specs/NNN-feature-plan.md` with dependencies |
+| 4️⃣ | `/spek.implement` | Execute tasks with full context | Tasks from plan | Code + tests + docs in git |
+| 5️⃣ | `/spek.conclude` | Archive & vault sync | Execution artifacts | Lessons in vault + decisions logged + CodeGraph refreshed |
+
+**Bookend Principle:** Skills 1 & 5 are semantic opposites:
+- `/spek.prepare` prepares the workspace FOR work
+- `/spek.conclude` completes the work and persists knowledge
+
+**The Complete Workflow:**
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Feature Development Cycle (Fully Deterministic)             │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  /spek.prepare                                               │
+│  ├─ Pre-flight checks (git clean, vault synced)             │
+│  ├─ CodeGraph refresh (indexed queries ready)               │
+│  └─ Session context loaded                                  │
+│       ↓                                                      │
+│  /spek.plan --phase=specify                                 │
+│  ├─ Feature intent enriched                                 │
+│  ├─ Success criteria defined                                │
+│  ├─ Assumptions documented                                  │
+│  ├─ Risks assessed                                          │
+│  └─ Spec stored in wiki/specs/                              │
+│       ↓                                                      │
+│  /spek.plan --phase=plan                                    │
+│  ├─ Tasks broken down                                       │
+│  ├─ Dependencies analyzed                                   │
+│  ├─ Impact mapped (CodeGraph)                               │
+│  └─ Plan stored in wiki/specs/                              │
+│       ↓                                                      │
+│  /spek.implement                                            │
+│  ├─ Tasks executed sequentially/parallel                    │
+│  ├─ Code written per spec                                   │
+│  ├─ Tests written (95%+ coverage)                           │
+│  ├─ Docs updated                                            │
+│  └─ Changes committed to git                                │
+│       ↓                                                      │
+│  /spek.conclude                                             │
+│  ├─ Lessons extracted & stored                              │
+│  ├─ Decisions logged with rationale                         │
+│  ├─ Patterns indexed for reuse                              │
+│  ├─ CodeGraph updated                                       │
+│  └─ Session archived → ready for next feature               │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Optional/Enhancement Skills
+
+These skills augment the core workflow. Use them when the situation calls for it:
+
+| Skill | When to Use | Purpose |
+|-------|------------|---------|
+| `/spek.context` | Start of session | Load persisted vault (decisions, patterns, lessons) |
+| `/spek.map` | During planning | Generate visual code map + impact analysis |
+| `/spek.lessons` | During conclude | Enhanced lesson extraction with guided prompts |
+
+**Placement in Workflow:**
+- `/spek.context` — Optional enhancement to `/spek.prepare` (load vault context)
+- `/spek.map` — Optional enhancement to `/spek.plan` phases (visualize code structure)
+- `/spek.lessons` — Optional enhancement to `/spek.conclude` Step 3 (generate richer lessons)
+
+### Skill Reuse Patterns
+
+**Single Feature Workflow:**
+```
+/spek.prepare → /spek.plan --phase=specify → /spek.plan --phase=plan 
+→ /spek.implement → /spek.conclude
+```
+
+**Multi-Session Feature (resume):**
+```
+Session 1: /spek.prepare → /spek.plan (both phases) → /spek.implement (partial)
+[Interrupted]
+Session 2: /spek.prepare → /spek.implement (continue) → /spek.conclude
+```
+
+**Multi-Developer Coordination:**
+```
+Dev A: /spek.prepare → /spek.plan --phase=specify → [Review checkpoint]
+Dev B: /spek.plan --phase=plan → /spek.implement → /spek.conclude
+       (Uses spec from Dev A; Dev A reviews plan before implementing)
+```
+
+**With Enrichment Layers:**
+```
+/spek.prepare 
+→ /spek.context (load vault)
+→ /spek.plan --phase=specify (enrich with patterns/decisions from context)
+→ /spek.map (visualize code impact)
+→ /spek.plan --phase=plan
+→ /spek.implement
+→ /spek.lessons (enhanced lesson generation)
+→ /spek.conclude
+```
 
 ---
 
@@ -198,7 +308,7 @@ READY: Workspace prepared for feature development
 
 #### Specify Feature
 
-**Command:** `/spek.automate --phase=specify --feature="user-auth-api"`
+**Command:** `/spek.plan --phase=specify --feature="user-auth-api"`
 
 ```
 SPEC GENERATION
@@ -244,7 +354,7 @@ SPEC GENERATION
 
 #### Create Plan
 
-**Command:** `/spek.automate --phase=plan`
+**Command:** `/spek.plan --phase=plan`
 
 ```
 TASK BREAKDOWN
@@ -344,7 +454,7 @@ Ready for closing phase.
 
 #### Archive & Close
 
-**Command:** `/spek.post --caveman-mode=full`
+**Command:** `/spek.conclude --caveman-mode=full`
 
 ```
 FEATURE COMPLETION & VAULT SYNC
@@ -493,17 +603,17 @@ KNOWLEDGE DEBT: Next time, developer repeats same analysis
 ```
 Day 1 (Morning - 30 min):
 ├─ /spek.prepare (CodeGraph shows JWT utilities exist)
-├─ /spek.automate --phase=specify (spec written with enrichment)
+├─ /spek.plan --phase=specify (spec written with enrichment)
 ├─ Success criteria clear, assumptions documented
 ├─ Spec reviewed + approved by team
 └─ Ready to implement
 
 Day 1 (Afternoon - 2 hours):
-├─ /spek.automate --phase=plan (tasks broken down, dependencies checked)
+├─ /spek.plan --phase=plan (tasks broken down, dependencies checked)
 ├─ /spek.implement (code written per task spec)
 ├─ Tests written (95%+ coverage)
 ├─ Decisions logged: "JWT chosen for statelessness"
-└─ /spek.post (lessons captured, patterns indexed)
+└─ /spek.conclude (lessons captured, patterns indexed)
 
 TOTAL: 2.5 hours active work, 3,200 tokens, knowledge captured
 

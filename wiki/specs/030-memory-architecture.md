@@ -574,7 +574,7 @@ completion: 0
 
 ## Next Steps
 
-1. Run `/spek.automate [feature description]`
+1. Run `/spek.plan [feature description]`
 2. Review generated artifacts
 3. Run `/spek.implement`
 ```

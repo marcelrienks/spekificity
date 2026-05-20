@@ -425,7 +425,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 
 **File:** `tests/integration/test_post_workflow.py`
 
-**Scope:** /spek.post command (create lessons, finalize feature state)
+**Scope:** /spek.conclude command (create lessons, finalize feature state)
 
 **Fixtures:**
 - `mock_plan`: Plan JSON from prior implement

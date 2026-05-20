@@ -151,7 +151,7 @@ Continue: Proceeding with stale graph; some code references may be incomplete
 ```
 Warning: Context too large for session (245K tokens, budget: 200K)
 Fallback: Loading compressed context (decisions + patterns index only, ~50K tokens)
-Tip: Run `/spek.post --caveman-mode=ultra` on recent features to reduce vault size
+Tip: Run `/spek.conclude --caveman-mode=ultra` on recent features to reduce vault size
 Continue: Full context available after cleanup
 ```
 
@@ -185,7 +185,7 @@ Continue: Full context available after cleanup
 Error: Disk full (Failed to write wiki/vault/lessons/2026-05-19-feature.md)
 Fix 1: Free up space: `rm -rf wiki/vault/lessons/2024-*` (archive old lessons)
 Fix 2: Use external storage: `export VAULT_DIR=/external/vault`
-Action: Choose fix, then run `/spek.post` again
+Action: Choose fix, then run `/spek.conclude` again
 ```
 
 ---
@@ -250,7 +250,7 @@ Manual fallback: Create specs/plan.md manually, then run `/spek.tasks`
 **Example:**
 ```
 Warning: Session memory 75% full (375MB of 500MB)
-Offer: Compress artifacts? Run `/spek.post --caveman-mode=ultra` after this feature
+Offer: Compress artifacts? Run `/spek.conclude --caveman-mode=ultra` after this feature
 Continue: Proceeding with current context
 [After feature end]
 Info: Compressed lessons 2026-05-19 (80% reduction via caveman mode)
@@ -374,7 +374,7 @@ while attempt <= 3:
 
 #### Error 1: Vault Permission Denied
 - Time: 2026-05-19 14:32:15
-- Component: /spek.post (Step 4)
+- Component: /spek.conclude (Step 4)
 - Severity: MEDIUM
 - Action: Retry after permission fix
 - Recovery: SUCCESS (after `chmod 755 vault/`)

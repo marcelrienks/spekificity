@@ -3,13 +3,13 @@
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Skill — /spek.implement (5-step task execution + enrichment wrapper)  
 **Depends On:** speckit-integration-contract.md, enrichment-layer.md, feature-state-tracking.md  
-**Used By:** `/spek.automate` (after task generation), CLI entry point  
+**Used By:** `/spek.plan` (after task generation), CLI entry point  
 
 ---
 
 ## Overview
 
-`/spek.implement` executes approved implementation tasks from task list, enriched with project context (code graph, vault decisions, patterns). Tasks run sequentially with error resilience; final code diff captured for `/spek.post` artifact collection.
+`/spek.implement` executes approved implementation tasks from task list, enriched with project context (code graph, vault decisions, patterns). Tasks run sequentially with error resilience; final code diff captured for `/spek.conclude` artifact collection.
 
 ---
 
@@ -163,7 +163,7 @@ Execution Trace:
 **Git State:**
 - All code changes staged (git add) but NOT committed
 - User reviews + approves before merge
-- `/spek.post` will commit after lessons written
+- `/spek.conclude` will commit after lessons written
 
 ---
 
@@ -187,7 +187,7 @@ Failed Tasks:
 - Task 5: Database migration (syntax error in migration script)
   Action: Review error log; manual fix or retry
 
-Next: Review staged changes, then run /spek.post to archive lessons
+Next: Review staged changes, then run /spek.conclude to archive lessons
 ```
 
 **Exit Code:**
@@ -228,7 +228,7 @@ Next: Review staged changes, then run /spek.post to archive lessons
 - [speckit-integration-contract.md](speckit-integration-contract.md) — SpecKit integration details
 - [enrichment-layer.md](enrichment-layer.md) — Context injection strategy
 - [feature-state-tracking.md](feature-state-tracking.md) — Feature state machine
-- [post-processing.md](post-processing.md) — Post-feature workflow
+- [conclude-processing.md](conclude-processing.md) — Conclude-feature workflow
 
 **External:**
 - [extracted spec /spek.implement](speckit-integration-contract.md#spekimplement)
@@ -239,7 +239,7 @@ Next: Review staged changes, then run /spek.post to archive lessons
 ✅ Code diff collected (final unified diff for all tasks)  
 ✅ Execution trace saved (JSON + human-readable summary)  
 ✅ Feature state updated (phase = completing, %90)  
-✅ User can proceed to `/spek.post`  
+✅ User can proceed to `/spek.conclude`  
 
 ---
 
@@ -247,7 +247,7 @@ Next: Review staged changes, then run /spek.post to archive lessons
 
 **Error Category 1: Missing Artifacts (Blockers)**
 - Action: HALT + GUIDE
-- Example: "tasks.md not found. Run `/spek.automate` first."
+- Example: "tasks.md not found. Run `/spek.plan` first."
 
 **Error Category 2: Task Execution Failures (Resilient)**
 - Action: Log error, output status, continue to next task
@@ -297,9 +297,9 @@ spek implement [options]
 - Read: current feature name, check phase
 - Write: update phase to `completing`, increment % to 90
 
-**With Execution Tracing (post-processing.md):**
+**With Execution Tracing (conclude-processing.md):**
 - Generate execution trace (JSON + human summary)
-- Pass to `/spek.post` Step 1 (collect artifacts)
+- Pass to `/spek.conclude` Step 1 (collect artifacts)
 
 **With Enrichment Layer (enrichment-layer.md):**
 - Load context (decisions, patterns, code graph)
@@ -314,5 +314,5 @@ spek implement [options]
 - [SpecKit Integration Contract](speckit-integration-contract.md) — Integration with `/speckit.implement`
 - [Enrichment Layer](enrichment-layer.md) — Context injection pattern
 - [Feature State Tracking](feature-state-tracking.md) — State transitions
-- [Post Processing](post-processing.md) — Artifact collection workflow
+- [Conclude Processing](conclude-processing.md) — Artifact collection workflow
 - [Memory Architecture](memory-architecture.md) — Context loading lifecycle

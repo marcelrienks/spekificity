@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Concern:** Template and lifecycle for lessons learned files written at feature end  
 **Extracted from:** extracted spec Type 1 (Per-Feature Lessons)  
-**Used by:** post-command, /spek.post skill  
+**Used by:** conclude-command, /spek.conclude skill  
 
 ---
 
@@ -86,7 +86,7 @@ Collects lessons. Updates vault. Incremental graph sync. Caveman activation buil
 
 Core changes:
 - /spek.prepare command (7-step workflow)
-- /spek.post command (10-step workflow)
+- /spek.conclude command (10-step workflow)
 - Vault sync (decisions, patterns, code graph)
 - Caveman compression at each step
 
@@ -145,9 +145,9 @@ Key patterns:
 - Incremental update (SHA256 caching; only changed files re-indexed)
 
 Implementation:
-1. Define orchestration/enrichment pattern for `/spek.automate` phases and `/spek.implement`
+1. Define orchestration/enrichment pattern for `/spek.plan` phases and `/spek.implement`
 2. Implement /spek.context loader (vault → session memory)
-3. Implement /spek.prepare + /spek.post workflows
+3. Implement /spek.prepare + /spek.conclude workflows
 4. Integrate graphify + Obsidian export into /spek.map
 5. Create caveman compression at prepare + post steps
 
@@ -218,7 +218,7 @@ Tech stack:
 ## Patterns Identified or Reused
 
 **Reused Patterns:**
-- Workflow Enrichment: Applied to `/spek.automate` phases and `/spek.implement` (context injection pattern from prior features)
+- Workflow Enrichment: Applied to `/spek.plan` phases and `/spek.implement` (context injection pattern from prior features)
 - Three-Layer Memory: Applied to vault/repo/session layers (from claude-code-memory-setup reference)
 - Incremental Updates: Applied to graph refresh via SHA256 caching (proven in feature 002)
 
@@ -259,8 +259,8 @@ Tech stack:
 
 **Next Steps Enabled by This Feature:**
 - Phase 1 ✓ (Architectural specs B.1-graph-setup)
-- Phase 2 (Agent skill creation; /spek.context, /spek.prepare, /spek.post skills)
-- Phase 3 (CLI orchestration; /spek.automate entry point)
+- Phase 2 (Agent skill creation; /spek.context, /spek.prepare, /spek.conclude skills)
+- Phase 3 (CLI orchestration; /spek.plan entry point)
 ```
 
 **Rationale:**
@@ -359,12 +359,12 @@ Before writing to wiki/vault/lessons/, validate:
 - [x] Retention policy defined (keep forever, archive old)
 - [x] Caveman compression reduces token cost by ~60%
 - [x] Lessons are linked to original spec, decisions, related lessons
-- [x] Integration point with /spek.post is clear
+- [x] Integration point with /spek.conclude is clear
 
 ---
 
 ## References
 
-- **Used by:** /spek.post skill, /spek.context skill (loads lessons at session start)
+- **Used by:** /spek.conclude skill, /spek.context skill (loads lessons at session start)
 - **Related:** architectural-decisions, patterns-library, memory-architecture
 - **Caveman mode:** Compression applied at write time (caveman lite/full as configured)

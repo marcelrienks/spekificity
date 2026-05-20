@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Memory Layer 2 — Patterns Library  
 **Depends On:** lessons-format.md  
-**Used By:** /spek.context (read at session start), `/spek.automate` plan phase (suggest patterns during planning)  
+**Used By:** /spek.context (read at session start), `/spek.plan` plan phase (suggest patterns during planning)  
 
 ---
 
@@ -305,7 +305,7 @@ See vault/patterns.md (permanent archive with all patterns)
 
 ### Update Rules
 
-**Sync Trigger:** After each feature (`/spek.post` step 4)
+**Sync Trigger:** After each feature (`/spek.conclude` step 4)
 
 **Sync Process:**
 1. Read vault/patterns.md
@@ -358,7 +358,7 @@ grep "Patterns Applied" vault/lessons/2026-05-18-003-*.md
 **During feature work:**
 - When a pattern is discovered/applied → Note in `/memories/session/current-feature.md`
 
-**At feature end (`/spek.post` step 4):**
+**At feature end (`/spek.conclude` step 4):****
 - Extract patterns from lessons
 - Add new patterns to vault/patterns.md (with "First Used" = current feature)
 - Update existing patterns (increment frequency, update "Last Used")
@@ -370,7 +370,7 @@ grep "Patterns Applied" vault/lessons/2026-05-18-003-*.md
 - Load pattern index from /memories/repo/patterns-index.md
 - Include recent patterns in context briefing
 
-**During planning (`/spek.automate` plan phase):**
+**During planning (`/spek.plan` plan phase):**
 - Query vault/patterns.md for patterns applicable to current feature
 - Suggest patterns in plan generation prompt
 
@@ -402,7 +402,7 @@ Pattern index is loaded at session start and included in context briefing for ag
 
 ### Enrichment (enrichment-layer.md)
 
-Recent patterns are injected into `/spek.automate` plan prompts to guide architecture decisions toward proven approaches.
+Recent patterns are injected into `/spek.plan` plan prompts to guide architecture decisions toward proven approaches.
 
 ---
 
@@ -421,11 +421,11 @@ Recent patterns are injected into `/spek.automate` plan prompts to guide archite
 ## Implementation Checklist
 
 - [ ] Create vault/patterns.md template
-- [ ] Implement pattern extraction in /spek.post
+- [ ] Implement pattern extraction in /spek.conclude
 - [ ] Implement pattern index sync to /memories/repo/
 - [ ] Update /spek.context to load recent patterns
 - [ ] Add pattern query patterns to wiki guide
-- [ ] Inject patterns into `/spek.automate` plan prompts
+- [ ] Inject patterns into `/spek.plan` plan prompts
 
 ---
 

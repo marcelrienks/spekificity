@@ -199,7 +199,7 @@ If invalid JSON: Rebuild cache
 
 **Timing:**
 - `/spek.prepare` (Step 3-4): Check freshness + refresh if stale
-- End of feature (`/spek.post` Step 8): Incremental sync
+- End of feature (`/spek.conclude` Step 8): Incremental sync
 - Manual: `spek.map` command
 
 **Frequency:**

@@ -110,7 +110,7 @@ Out of Scope: Multi-factor authentication, session management, OAuth integration
 Run the specify command:
 
 ```bash
-/spek.automate --phase=specify --feature="Add user authentication API endpoint"
+/spek.plan --phase=specify --feature="Add user authentication API endpoint"
 ```
 
 Or use the direct SpecKit command:
@@ -212,7 +212,7 @@ Break the specification into **concrete tasks** with clear dependencies. This pl
 ### Step 3a: Generate Implementation Plan
 
 ```bash
-/spek.automate --phase=plan --feature="user-auth-api"
+/spek.plan --phase=plan --feature="user-auth-api"
 ```
 
 Or directly:
@@ -453,12 +453,12 @@ If you're running low, enable Caveman mode to compress responses:
 
 Archive implementation results, extract lessons learned, update project vault, and refresh code analysis.
 
-### Step 5a: Run Post-Processing
+### Step 5a: Run Conclusion
 
 When all tasks are complete:
 
 ```bash
-/spek.post --feature="user-auth-api"
+/spek.conclude --feature="user-auth-api"
 ```
 
 This command:
@@ -520,7 +520,7 @@ Ready to commit:
 7 files changed, 156 insertions(+), 12 deletions(-)
 
 Type: git push
-Or type: /spek.post --commit to stage automatically
+Or type: /spek.conclude --commit to stage automatically
 ```
 
 ### Step 5b: Commit & Push
@@ -562,7 +562,7 @@ Your first feature is complete! 🎉
 /spek.prepare
 
 # Start next feature
-/spek.automate --phase=specify --feature="Add user password reset"
+/spek.plan --phase=specify --feature="Add user password reset"
 ```
 
 ---
@@ -588,7 +588,7 @@ cd ..
 1. Edit spec file in vault
 2. Add more detail to scope/constraints
 3. Commit changes
-4. Regenerate plan: `/spek.automate --phase=plan`
+4. Regenerate plan: `/spek.plan --phase=plan`
 
 ### Issue: CodeGraph context is out of date
 
@@ -628,7 +628,7 @@ git commit -m "WIP: tasks 1-3 complete"
 
 ### Enrichment Layers
 
-**Enrichment = context injection from vault.** When you run `/spek.automate`, it:
+**Enrichment = context injection from vault.** When you run `/spek.plan`, it:
 1. Reads your feature intent
 2. Queries vault for decisions, patterns, lessons
 3. Injects that context into spec generation

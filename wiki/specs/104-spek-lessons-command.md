@@ -218,7 +218,7 @@ Step 3: Generate lessons
 **Error Handling:**
 - No current feature active → error: "No active feature. Run `/spek.prepare` first."
 - Feature already completed → error: "Feature 003 already completed. Lessons immutable."
-- Missing artifacts → error: "tasks.md not found. Run `/spek.automate` first."
+- Missing artifacts → error: "tasks.md not found. Run `/spek.plan` first."
 
 **Use Case Example:**
 Developer wants to validate lessons midway through feature 003:
@@ -405,7 +405,7 @@ commit_range: abc123..def456
 |----------|-------|--------|
 | No current feature | "No active feature" | Prompt: Run `/spek.prepare` first |
 | Feature already done | "Lessons immutable" | Suggest: Review existing lesson |
-| Missing artifacts | "tasks.md not found" | Prompt: Run `/spek.automate` first |
+| Missing artifacts | "tasks.md not found" | Prompt: Run `/spek.plan` first |
 | Pattern not found | "Pattern '[X]' not in library" | Show: Available patterns |
 | Search timeout | "Search timeout (>5s)" | Show: Partial results, suggest refinement |
 

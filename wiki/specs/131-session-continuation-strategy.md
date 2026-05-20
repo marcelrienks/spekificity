@@ -24,9 +24,9 @@ Session Start (Day 1, 14:00)
   └─ /memories/session/current-feature.md (create session state)
 
 Feature Work (Day 1, 14:00-15:30)
-  ├─ /spek.automate (specify → plan)
+  ├─ /spek.plan (specify → plan)
   ├─ /spek.implement (task 1, task 2, task 3)
-  ├─ /spek.post (lessons, vault update)
+  ├─ /spek.conclude (lessons, vault update)
   └─ Feature COMPLETE
 
 Session End (Day 1, 15:30)
@@ -40,7 +40,7 @@ SCENARIO: Interrupt Mid-Implementation (Task 2 of 3)
 
 Session Start (Day 1, 14:00)
   ├─ /spek.prepare → Feature branch created
-  └─ /spek.automate → specify + plan complete (60% of session)
+  └─ /spek.plan → specify + plan complete (60% of session)
 
 Session Interrupted (Day 1, 14:45)
   ├─ /spek.implement running
@@ -56,7 +56,7 @@ Session Restart (Day 2, 10:00)
 Feature Continuation (Day 2, 10:00-10:30)
   ├─ Task 2 restarted (code context reloaded)
   ├─ Task 3 executed
-  ├─ /spek.post (lessons generated from combined work)
+  ├─ /spek.conclude (lessons generated from combined work)
   └─ Feature COMPLETE
 
 Session End (Day 2, 10:30)
@@ -284,7 +284,7 @@ Step 4: Collect Results
   └─ Update state: phase=completing, progress=90%
 
 Step 5: Finalize
-  ├─ Run /spek.post (generates lessons with multi-session metadata)
+  ├─ Run /spek.conclude (generates lessons with multi-session metadata)
   └─ Complete feature
 ```
 
@@ -351,7 +351,7 @@ token-usage-by-phase:
 **During Session (Real-Time Tracking):**
 
 ```
-/spek.automate progress:
+/spek.plan progress:
   ✓ Specify complete (1000 tokens used)
   Token budget: 1000 / 8000 (12%)
   
@@ -368,7 +368,7 @@ token-usage-by-phase:
   ⧐ Task 3 in progress... (estimated 150 tokens)
   Token budget: ~2000 / 8000 (25%) — On track
 
-/spek.post phase (lessons generation):
+/spek.conclude phase (lessons generation):
   Estimating lessons token cost: ~300 tokens
   Final budget projection: 2300 / 8000 (28%)
   ✓ Feature will complete within budget
@@ -377,7 +377,7 @@ token-usage-by-phase:
 
 SCENARIO: Token Exhaustion Risk
 
-/spek.automate phase 1:
+/spek.plan phase 1:
   ✓ Specify complete (2500 tokens — higher than expected!)
   Token budget: 2500 / 8000 (31%)
   
@@ -411,7 +411,7 @@ SCENARIO: Token Exhaustion Risk
   Token budget: 5500 / 8000 (68%)
   
   ⚠️  ALERT: Approaching budget limit (over 80%)
-      /spek.post estimated cost: 300-400 tokens
+      /spek.conclude estimated cost: 300-400 tokens
       Final projection: 5800-5900 / 8000 (73%)
       ✓ Feature will complete (soft limit allows)
 ```
@@ -578,7 +578,7 @@ Any check fails?
 
 ### 7.1 Session Metadata in Lessons
 
-**When `/spek.post` runs after multi-session feature:**
+**When `/spek.conclude` runs after multi-session feature:****
 
 ```markdown
 ---
@@ -643,7 +643,7 @@ created-at: 2026-05-21T10:30:00Z
 ✅ Vault updated (decisions + patterns)  
 ✅ /memories/session/ prepared for archival  
 ✅ Feature branch ready to merge  
-✅ User confirmed feature is ready for /spek.post  
+✅ User confirmed feature is ready for /spek.conclude  
 
 ### 8.2 Resume Capability
 
@@ -796,7 +796,7 @@ Output:
 - **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
 - **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
 - **Prepare Command:** [specs/prepare-command.md](../specs/100-prepare-command.md)
-- **Post Command:** [specs/post-command.md](../specs/102-post-command.md)
+- **Conclude Command:** [specs/conclude-command.md](../specs/102-conclude-command.md)
 - **Spek Implement Workflow:** [specs/spek-implement-workflow.md](../specs/105-spek-implement-workflow.md)
 - **Token Budget (Phase 2):** [specs/token-budget.md](../specs/130-token-budget.md)
 

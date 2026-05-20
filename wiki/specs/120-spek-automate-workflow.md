@@ -1,4 +1,4 @@
-# SPECIFICATION: spek.automate — SpecKit Workflow Orchestration (C.2.0)
+# SPECIFICATION: spek.plan — SpecKit Workflow Orchestration (C.2.0)
 
 **Status:** ATOMIC SPECIFICATION  
 **Type:** Skill — Autonomous SpecKit Workflow Orchestration  
@@ -10,9 +10,9 @@
 
 ## Overview
 
-`spek.automate` is a single entry point that autonomously orchestrates the pre-implementation SpecKit workflow without requiring the user to manually invoke individual SpecKit skills.
+`spek.plan` is a single entry point that autonomously orchestrates the pre-implementation SpecKit workflow without requiring the user to manually invoke individual SpecKit skills.
 
-**Key Design Principle:** `spek.automate` uses a concrete SpecKit integration contract to determine available skills and workflow. It:
+**Key Design Principle:** `spek.plan` uses a concrete SpecKit integration contract to determine available skills and workflow. It:
 1. **Scans** `.specify/README` or local SpecKit installation for available skills (if present)
 2. **Detects** any new skills added beyond the canonical defaults
 3. **Falls back** to hardcoded canonical SpecKit workflow if auto-detection unavailable
@@ -30,7 +30,7 @@
 
 ### Layer 1: Initialization
 ```
-spek.automate <feature-description>
+spek.plan <feature-description>
 ├─ Step 1: Load workspace context (via /spek.context)
 ├─ Step 2: Scan for available SpecKit skills (local .specify/ or installation)
 ├─ Step 3: Use concrete canonical workflow (see speckit-integration-contract.md)
@@ -377,9 +377,9 @@ Trace: Added to error log: "Manual fix applied to auth.py"
 - Multiple potential remediation paths (needs decision tree)
 - Skill has unpredictable failure modes (needs debugging)
 
-**Example: /implement stays outside `spek.automate`**
+**Example: /implement stays outside `spek.plan`**
 ```
-After spek.automate completes:
+After spek.plan completes:
   ├─ User reviews artifacts and analyze output
   ├─ User invokes /spek.implement separately
   ├─ Implementation path can use sub-agent if needed
@@ -400,7 +400,7 @@ After spek.automate completes:
 
 ## Step 6: Version Adaptation
 
-### How spek.automate Handles SpecKit Updates
+### How spek.plan Handles SpecKit Updates
 
 **Scenario 1: New skill added in SpecKit v3.0**
 ```
@@ -408,9 +408,9 @@ Old workflow (v2.1): specify → clarify → plan → tasks → analyze → impl
 New workflow (v3.0): specify → clarify → plan → validate → tasks → analyze → implement
                                                     ↑ NEW
 Detection:
-  1. spek.automate queries registry on startup
+  1. spek.plan queries registry on startup
   2. Registry returns new workflow with 'validate' step
-  3. spek.automate discovers 'validate' is new (not in prior runs)
+  3. spek.plan discovers 'validate' is new (not in prior runs)
   4. Offers user: "SpecKit v3.0 includes new 'validate' step. Run it? (yes/no)"
   5. If yes: Includes 'validate' in this run
   6. If no: Skips it (maintains backward compatibility)
@@ -422,7 +422,7 @@ Old name: /clarify
 New name: /clarify-spec (same functionality, better name)
 Detection:
   1. Registry query returns /clarify-spec (not /clarify)
-  2. spek.automate uses new name when orchestrating
+  2. spek.plan uses new name when orchestrating
   3. Old hardcoded calls would break; dynamic discovery prevents this
 ```
 
@@ -433,13 +433,13 @@ Old workflow: specify → plan → tasks → analyze → implement
 New workflow: specify → plan → tasks → implement
 Detection:
   1. Registry query returns no /analyze skill
-  2. spek.automate skips it (not hardcoded to require it)
+  2. spek.plan skips it (not hardcoded to require it)
   3. Workflow adapts automatically; no code change needed
 ```
 
 **Implementation: Registry Query Mechanism**
 ```bash
-# spek.automate checks registry on every run (or cache with TTL)
+# spek.plan checks registry on every run (or cache with TTL)
 REGISTRY_PATH="$SPECKIT_HOME/registry.json"  # or query via API
 
 if registry_modified_recently; then
@@ -460,7 +460,7 @@ active_workflow=$(filter_workflow_by_available_skills)
 ## Execution Flow (End-to-End)
 
 ```
-User: spek.automate "Implement user authentication system"
+User: spek.plan "Implement user authentication system"
 
 Step 0: Initialize
   ├─ Load context (/spek.context)
@@ -516,7 +516,7 @@ Step 6: /implement (Required)
   ├─ Post: Validate output (syntax, imports, tests pass)
   └─ Success: Continue
 
-Step 7: /spek.post (Spekificity)
+Step 7: /spek.conclude (Spekificity)
   ├─ Extract lessons learned
   ├─ Update vault (decisions, patterns)
   ├─ Refresh code graph
@@ -537,7 +537,7 @@ Final Output:
 ### Command
 
 ```bash
-spek.automate <feature-description> [options]
+spek.plan <feature-description> [options]
 ```
 
 ### Options
@@ -555,16 +555,16 @@ spek.automate <feature-description> [options]
 
 ```bash
 # Full orchestration with prompts
-spek.automate "Implement user authentication system"
+spek.plan "Implement user authentication system"
 
 # Auto-remediation, skip optional steps
-spek.automate "Implement user auth" --remediation=auto --skip-optional=yes
+spek.plan "Implement user auth" --remediation=auto --skip-optional=yes
 
 # Dry-run preview
-spek.automate "Implement user auth" --dry-run
+spek.plan "Implement user auth" --dry-run
 
 # Verbose logging (for debugging)
-spek.automate "Implement user auth" --verbose
+spek.plan "Implement user auth" --verbose
 ```
 
 ---
@@ -694,7 +694,7 @@ All errors are handled per [error-handling-and-recovery.md](error-handling-and-r
 
 ## Final Notes
 
-`spek.automate` is the **primary workflow entry point** for Spekificity. By dynamically discovering and orchestrating SpecKit skills through task generation, it:
+`spek.plan` is the **primary workflow entry point** for Spekificity. By dynamically discovering and orchestrating SpecKit skills through task generation, it:
 
 - **Simplifies user experience** — One command instead of many
 - **Handles complexity invisibly** — User sees prompts, not internals

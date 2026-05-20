@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Integration Layer — Context injection across all enrichment phases  
 **Replaces:** specify-enrichment.md, plan-enrichment.md, implement-enrichment.md  
-**Used By:** `/spek.automate` (all phases)
+**Used By:** `/spek.plan` (all phases)
 
 ---
 
@@ -24,7 +24,7 @@ All three follow the same pattern: **PRE → CORE → POST** execution sequence.
 Each enrichment phase follows this structure:
 
 ```
-/spek.automate [feature-description]
+/spek.plan [feature-description]
    └─ <phase> phase
       ├─ PRE: Load context
       │  ├─ Load decisions + patterns from session memory
@@ -52,7 +52,7 @@ Specifies what to build, guided by project decisions and patterns.
 ### Execution Sequence
 
 ```
-/spek.automate [feature-description]
+/spek.plan [feature-description]
    └─ specify phase
       ├─ PRE: Load context
       ├─ CORE: Call `/speckit.specify`
@@ -153,7 +153,7 @@ Creates technical implementation plan, guided by spec, decisions, patterns, and 
 ### Execution Sequence
 
 ```
-/spek.automate
+/spek.plan
    └─ plan phase
       ├─ PRE: Load context + code graph
       ├─ CORE: Call `/speckit.plan`
@@ -351,13 +351,13 @@ See [context-layer.md](context-layer.md) for how context is composed and made av
 Enrichment is implemented via the decorator pattern:
 
 ```
-/spek.automate
+/spek.plan
   └─ Decorator wrapper around SpecKit flow
      ├─ /spek.prepare (context loading, graph validation)
      ├─ Specify Enrichment (wraps /speckit.specify)
      ├─ Plan Enrichment (wraps /speckit.plan)
      ├─ Implement Enrichment (wraps /speckit.implement)
-     └─ /spek.post (lessons extraction, vault sync)
+     └─ /spek.conclude (lessons extraction, vault sync)
 ```
 
 **Key principle:** SpecKit commands are never modified. Enrichment is layered on top:

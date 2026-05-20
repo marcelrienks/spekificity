@@ -161,7 +161,7 @@
 ## Spekificity Integration: How Enrich-* Skills Fit
 
 ```
-/spek.automate
+/spek.plan
     ↓ (loads context and orchestrates upstream SpecKit flow)
 /speckit.specify
     ↓
@@ -177,23 +177,23 @@
     ↓
 /spek.implement
     ↓ (execute approved tasks with code map + spec + plan in scope)
-/spek.post or lessons flow
+/spek.conclude or lessons flow
     ↓ (capture feature summary + decisions + patterns)
 ```
 
-**Key design:** Spekificity does not expose separate wrapper commands for every SpecKit phase. `spek.automate` owns spec-through-task orchestration; `spek.implement` stays separate so execution happens only after review.
+**Key design:** Spekificity does not expose separate wrapper commands for every SpecKit phase. `spek.plan` owns spec-through-task orchestration; `spek.implement` stays separate so execution happens only after review.
 
 ---
 
-## For `spek automate` Implementation
+## For `spek plan` Implementation
 
 **Canonical sequencing (B.1 resolved):**
 
 1. **Pre-flight:** Clean working tree, create feature branch
-2. **Automate:** `/spek.automate` loads context and runs `/speckit.specify` → `/speckit.clarify` (optional) → `/speckit.plan` → `/speckit.tasks` → `/speckit.analyze` (optional) → remediation loop
+2. **Plan:** `/spek.plan` loads context and runs `/speckit.specify` → `/speckit.clarify` (optional) → `/speckit.plan` → `/speckit.tasks` → `/speckit.analyze` (optional) → remediation loop
 3. **Review & Fix:** Developer reviews analyze report and generated artifacts, edits in-place if needed (manual step)
 4. **Implement:** `/spek.implement` with code map context
-5. **Post-flight:** `/spek.post` or lessons flow, graph refresh, optional: `cel.wiki.simplify`
+5. **Post-flight:** `/spek.conclude` or lessons flow, graph refresh, optional: `cel.wiki.simplify`
 
 **Decision:** Analyze is **optional and non-blocking**. If findings are minor, skip remediation and proceed to implement. High-severity issues should be addressed before implement.
 

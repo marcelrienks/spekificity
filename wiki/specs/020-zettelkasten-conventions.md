@@ -281,7 +281,7 @@ status: "active"
 
 ### Validation Checklist
 
-When a lesson is generated in `/spek.post` Step 3:
+When a lesson is generated in `/spek.conclude` Step 3:
 
 - [ ] Frontmatter has all required fields (title, type, tags, status, created, updated, source)
 - [ ] Filename follows kebab-case convention
@@ -295,7 +295,7 @@ When a lesson is generated in `/spek.post` Step 3:
 
 ## Validation & Enforcement
 
-### Automated Validation (in `/spek.post`)
+### Automated Validation (in `/spek.conclude`)
 
 ```
 After lesson generated:
@@ -338,8 +338,8 @@ When loading context, verify:
 - [ ] Document frontmatter schema in copilot-instructions.md
 - [ ] Create template for each note type (decision, pattern, lesson, guide)
 
-### Week 2: Integration into /spek.post
-- [ ] Enhance `/spek.post` Step 3 to generate frontmatter automatically
+### Week 2: Integration into /spek.conclude
+- [ ] Enhance `/spek.conclude` Step 3 to generate frontmatter automatically
 - [ ] Add wikilink validation and alerting
 - [ ] Add filename generation + uniqueness check
 - [ ] Test lesson generation with full frontmatter
@@ -355,7 +355,7 @@ When loading context, verify:
 ### Week 4: Documentation & Launch
 - [ ] Update wiki documentation with Zettelkasten schema
 - [ ] Create training guide for future contributors
-- [ ] Add Zettelkasten checklist to `/spek.post` acceptance criteria
+- [ ] Add Zettelkasten checklist to `/spek.conclude` acceptance criteria
 - [ ] Launch with C.3.1 complete
 
 ---
@@ -367,8 +367,8 @@ When loading context, verify:
 - ✅ All vault notes contain 2+ wikilinks (density validated)
 - ✅ All wikilinks reference existing vault notes
 - ✅ Notes are atomic (single concept per file)
-- ✅ `/spek.post` Step 3 generates Zettelkasten frontmatter automatically
-- ✅ Wikilink validation integrated into `/spek.post`
+- ✅ `/spek.conclude` Step 3 generates Zettelkasten frontmatter automatically
+- ✅ Wikilink validation integrated into `/spek.conclude`
 - ✅ Existing vault notes migrated to Zettelkasten format
 - ✅ Vault is fully indexed and searchable in Obsidian
 

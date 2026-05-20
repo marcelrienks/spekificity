@@ -1,39 +1,39 @@
-# ATOMIC SPECIFICATION: Post Command (C4.2)
+# ATOMIC SPECIFICATION: Conclude Command (C4.2)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Skill — /spek.post (10-step feature completion + vault sync)  
-**Depends On:** lessons-format.md, architectural-decisions.md, post-processing.md  
+**Type:** Skill — /spek.conclude (10-step feature completion + vault sync)  
+**Depends On:** lessons-format.md, architectural-decisions.md, conclude-processing.md  
 
 ---
 
 ## Overview
 
-`/spek.post` completes feature work by extracting lessons, updating vault, and syncing memory (10 steps, 5-10K tokens).
+`/spek.conclude` completes feature work by extracting lessons, updating vault, and syncing memory (10 steps, 5-10K tokens).
 
 ---
 
 ## Scope & Relationship
 
 **This spec defines:**
-- **ORCHESTRATION** — The 10-step sequence that `/spek.post` executes
+- **ORCHESTRATION** — The 10-step sequence that `/spek.conclude` executes
 - **INTEGRATION POINTS** — Which systems are called and in what order
 - **INPUTS & OUTPUTS** — What data flows in/out of each step
 - **ERROR HANDLING** — High-level error recovery for each step
 
 **Related specs define implementation details:**
-- [Post Processing](post-processing.md) provides detailed implementation for each of the 10 steps (lessons generation, vault updates, graph sync, etc.)
-- [Post Command](post-command.md) (THIS SPEC) orchestrates the workflow
+- [Conclude Processing](conclude-processing.md) provides detailed implementation for each of the 10 steps (lessons generation, vault updates, graph sync, etc.)
+- [Conclude Command](conclude-command.md) (THIS SPEC) orchestrates the workflow
 
 **Use together:**
-- For *overall workflow sequence, integration points, high-level design*: Start here (post-command.md)
-- For *detailed implementation of each step, error recovery details, validation*: See post-processing.md
+- For *overall workflow sequence, integration points, high-level design*: Start here (conclude-command.md)
+- For *detailed implementation of each step, error recovery details, validation*: See conclude-processing.md
 
 ---
 
 ## 10-Step Sequence
 
 ```
-/spek.post [--caveman-mode=full|lite|ultra] [--dry-run]
+/spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]
 ├─ Step 1: Collect artifacts (spec/plan/tasks/execution trace/code changes)
 ├─ Step 2: Activate caveman mode for compression
 ├─ Step 3: Generate lessons document (wiki/vault/lessons/<date>-<feature>-<name>.md)
@@ -129,9 +129,9 @@
 
 **Related Specs:**
 - [lessons-format.md](lessons-format.md) — Lessons template
-- [post-processing.md](post-processing.md) — Post-processing layer details
+- [conclude-processing.md](conclude-processing.md) — Conclusion layer details
 - [architectural-decisions.md](architectural-decisions.md) — Decision sync
 - [patterns-library.md](patterns-library.md) — Pattern sync
 
 **External:**
-- [extracted spec /spek.post](prepare-and-post-skills.md#spekpost)
+- [extracted spec /spek.conclude](prepare-and-conclude-skills.md#spekconclude)

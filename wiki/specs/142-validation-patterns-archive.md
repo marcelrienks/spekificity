@@ -3,7 +3,7 @@
 **Status:** CONSOLIDATED SPECIFICATION ARCHIVE   | **Version:** 1.0.0-alpha.1 (2026-05-20)  
 **Type:** Validation Patterns — AI Drift Prevention, Code Quality, Failure Learning, Alignment Verification  
 **Consolidated From:** 4 separate specifications (C.3.6, C.3.7, C.3.8, C.3.9)  
-**Used By:** `/spek.post` steps 3, 7, 8b; `/spek.automate` phases  
+**Used By:** `/spek.conclude` steps 3, 7, 8b; `/spek.plan` phases  
 
 ---
 
@@ -101,13 +101,13 @@ Alert: "Scope grew; confirm intended"
 
 ### Validation Points
 
-**During `/spek.automate` specify phase:**
+**During `/spek.plan` specify phase:**
 - Check vault contradictions (Rule 1)
 - Check complexity vs similar features (Rule 2)
 - Check pattern suggestions (Rule 3)
 - Check tech stack alignment (Rule 4)
 
-**During `/spek.automate` plan phase:**
+**During `/spek.plan` plan phase:**
 - Check architecture vs decisions (Rule 1)
 - Check pattern alignment (Rule 3)
 - Check scope complexity (Rule 2)
@@ -175,7 +175,7 @@ Automatically capture and learn from test failures by:
 
 ### Workflow
 
-**When:** During `/spek.post` Step 3 (Generate Lessons)
+**When:** During `/spek.conclude` Step 3 (Generate Lessons)
 
 ```
 /spek.post Step 3: Generate Lessons (Enhanced)
@@ -747,7 +747,8 @@ validation_patterns:
 
 **Command Specs:**
 - spek-post-command.md (Step 3, 7, 8b integration)
-- spek-automate-workflow.md (specify/plan phase integration)
+- spek-conclude-command.md (Step 3, 7, 8b integration)
+- spek-plan-workflow.md (specify/plan phase integration)
 
 **Quality & Learning:**
 - lessons-format.md (lesson document format)
@@ -777,7 +778,7 @@ This file consolidates 4 validation pattern specifications (C.3.6, C.3.7, C.3.8,
 **Why consolidated?**
 - All 4 patterns serve similar purpose (validation + learning)
 - Related status (Phase 2 implementation, post-launch features)
-- Integration points overlap (/spek.post, /spek.automate, /spek.context)
+- Integration points overlap (/spek.post, /spek.plan, /spek.context)
 - Users benefit from seeing all options in one place
 
 **Original files (now archived):**

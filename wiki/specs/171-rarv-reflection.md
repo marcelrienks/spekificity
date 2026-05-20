@@ -28,7 +28,7 @@ Implement continuous alignment verification loop that:
 - Code-to-spec comparison (auto-diff analysis)
 - Deviation detection + classification
 - Reflection loop logic (re-plan if needed)
-- Integration into `/spek.post` (post-implementation analysis)
+- Integration into `/spek.conclude` (post-implementation analysis)
 - Optional re-entry points (run mid-feature if desired)
 - Decision alignment verification
 
@@ -52,7 +52,7 @@ Implement continuous alignment verification loop that:
 - ✅ Reflection loop updates decisions (new rationale captured in vault)
 - ✅ Verification re-validates against decisions (alignment checked)
 - ✅ Loop prevents spec drift (misalignments caught before accumulating)
-- ✅ Integration seamless (optional in `/spek.post` workflow)
+- ✅ Integration seamless (optional in `/spek.conclude` workflow)
 
 ---
 
@@ -60,7 +60,7 @@ Implement continuous alignment verification loop that:
 
 ### Phase 1: REASON - Code vs. Spec Comparison
 
-**When:** After `/spek.implement` completes, before `/spek.post`
+**When:** After `/spek.implement` completes, before `/spek.conclude`
 
 **Process:**
 

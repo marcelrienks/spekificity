@@ -61,14 +61,14 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 - Decision tree path (if decisions needed)
 - Token allocation per phase
 
-**Spec Reference:** [spek-automate-workflow.md](../specs/spek-automate-workflow.md) (plan phase)
+**Spec Reference:** [spek-plan-workflow.md](../specs/spek-plan-workflow.md) (plan phase)
 
 ---
 
-### `/spek.automate`
+### `/spek.plan`
 
 **Purpose:** Automated spec generation, planning, and validation  
-**Usage:** `/spek.automate --mode [specify|plan|validate]`
+**Usage:** `/spek.plan --mode [specify|plan|validate]`
 
 **Modes:**
 
@@ -94,7 +94,7 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 - Test Success Criteria completeness
 
 **Output:** Varies by mode (candidate specs, plan, or validation report)  
-**Spec Reference:** [spek-automate-workflow.md](../specs/spek-automate-workflow.md)
+**Spec Reference:** [spek-plan-workflow.md](../specs/spek-plan-workflow.md)
 
 ---
 
@@ -151,10 +151,10 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 
 ---
 
-### `/spek.post`
+### `/spek.conclude`
 
 **Purpose:** Archive feature outcomes, extract lessons, update vault + refresh CodeGraph  
-**Usage:** `/spek.post [--caveman-mode=full|lite|ultra] [--dry-run]`
+**Usage:** `/spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]`
 
 **What it does:**
 1. Collect implementation artifacts (spec, plan, tasks, execution trace, code changes)
@@ -172,7 +172,7 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 - Synced repo memory + graph refreshed
 - Completion report
 
-**Spec Reference:** [post-command.md](../specs/102-post-command.md)
+**Spec Reference:** [conclude-command.md](../specs/102-conclude-command.md)
 
 ---
 
@@ -399,16 +399,16 @@ For fine-grained context control at specific workflow points:
 /spek.prepare [feature-name]
   → Workspace ready, git clean, CodeGraph fresh
   ↓
-/spek.automate --phase=specify
+/spek.plan --phase=specify
   → Feature specification generated
   ↓
-/spek.automate --phase=plan
+/spek.plan --phase=plan
   → Implementation plan + task breakdown
   ↓
 /spek.implement [feature-name]
   → Execute tasks
   ↓
-/spek.post
+/spek.conclude
   → Archive outcomes, refresh vault, sync graph
 ```
 
@@ -438,7 +438,7 @@ For fine-grained context control at specific workflow points:
 ### Workflow C: Impact Analysis During Planning
 
 ```
-/spek.automate --phase=plan
+/spek.plan --phase=plan
   → Generate implementation plan (REQUIRED)
   ↓
 /cg.query impact [affected-code]
@@ -459,9 +459,9 @@ For fine-grained context control at specific workflow points:
 | Tier | Command | Purpose |
 |------|---------|----------|
 | **REQUIRED** | `/spek.prepare` | Initialize workspace, git state, CodeGraph |
-| **REQUIRED** | `/spek.automate` | Generate specs, plans, task breakdown |
+| **REQUIRED** | `/spek.plan` | Generate specs, plans, task breakdown |
 | **REQUIRED** | `/spek.implement` | Execute tasks with context |
-| **REQUIRED** | `/spek.post` | Archive outcomes, update vault, sync graph |
+| **REQUIRED** | `/spek.conclude` | Archive outcomes, update vault, sync graph |
 | *Optional* | `/spek.context` | Load vault decisions, patterns, lessons |
 | *Optional* | `/spek.map` | Analyze dependencies + impact |
 | *Optional* | `/spek.lessons` | Explicit retrospective + pattern extraction |
@@ -476,12 +476,12 @@ For fine-grained context control at specific workflow points:
 
 | Command | Purpose | Invoked By |
 |---------|---------|-----------|
-| `/speckit.constitution` | Define project principles | Manual or `/spek.automate` |
-| `/speckit.specify` | Create feature spec | `/spek.automate --phase=specify` |
-| `/speckit.clarify` | Resolve spec ambiguities | `/spek.automate --phase=clarify` (optional) |
-| `/speckit.plan` | Create implementation plan | `/spek.automate --phase=plan` |
-| `/speckit.tasks` | Generate task list | `/spek.automate --phase=plan` |
-| `/speckit.analyze` | Cross-artifact consistency check | `/spek.automate --phase=analyze` (optional) |
+| `/speckit.constitution` | Define project principles | Manual or `/spek.plan` |
+| `/speckit.specify` | Create feature spec | `/spek.plan --phase=specify` |
+| `/speckit.clarify` | Resolve spec ambiguities | `/spek.plan --phase=clarify` (optional) |
+| `/speckit.plan` | Create implementation plan | `/spek.plan --phase=plan` |
+| `/speckit.tasks` | Generate task list | `/spek.plan --phase=plan` |
+| `/speckit.analyze` | Cross-artifact consistency check | `/spek.plan --phase=analyze` (optional) |
 
 **Design:** Vanilla SpecKit commands use `speckit.*` namespace. Spekificity wraps these (decorator pattern) to inject enrichment layers (vault decisions, CodeGraph context, pattern references) without modifying SpecKit internals.
 
@@ -512,9 +512,9 @@ For fine-grained context control at specific workflow points:
 **Core Workflow (Required):**
 ```
 /spek.prepare         # Workspace ready
-/spek.automate        # Spec → plan → tasks
+/spek.plan        # Spec → plan → tasks
 /spek.implement       # Execute tasks
-/spek.post            # Archive + sync
+/spek.conclude            # Archive + sync
 ```
 
 **Enhancements (Optional):**
@@ -525,7 +525,7 @@ For fine-grained context control at specific workflow points:
 /context.inject       # Stage-specific context
 ```
 
-**Underlying SpecKit (via /spek.automate):**
+**Underlying SpecKit (via /spek.plan):**
 ```
 /speckit.specify
 /speckit.clarify      # Optional
@@ -570,7 +570,7 @@ For fine-grained context control at specific workflow points:
 
 ## Skill Status
 
-- **Required Core (alpha.1):** `/spek.prepare`, `/spek.automate`, `/spek.implement`, `/spek.post`
+- **Required Core (alpha.1):** `/spek.prepare`, `/spek.plan`, `/spek.implement`, `/spek.conclude`
 - **Optional Enhancements (alpha.1):** `/spek.context`, `/spek.map`, `/spek.lessons`, `/context.inject`
 - **Status:** All documented skills are available. Implementation proceeds per wiki/specs documentation.
 

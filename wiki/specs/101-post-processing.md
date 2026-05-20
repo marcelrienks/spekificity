@@ -1,39 +1,39 @@
-# ATOMIC SPECIFICATION: Post-Processing (C3.6)
+# ATOMIC SPECIFICATION: Conclude-Processing (C3.6)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Integration Layer 3 — /spek.post Workflow  
+**Type:** Integration Layer 3 — /spek.conclude Workflow  
 **Depends On:** lessons-format.md, architectural-decisions.md, patterns-library.md  
 
 ---
 
 ## Overview
 
-`/spek.post` extracts lessons from completed feature work, updates vault with decisions and patterns, syncs repo memory, and archives session state.
+`/spek.conclude` extracts lessons from completed feature work, updates vault with decisions and patterns, syncs repo memory, and archives session state.
 
 ---
 
 ## Scope & Relationship
 
 **This spec defines:**
-- **IMPLEMENTATION DETAILS** — How each of the 10 post-feature steps are executed
+- **IMPLEMENTATION DETAILS** — How each of the 10 conclude-feature steps are executed
 - **ERROR HANDLING** — Detailed error recovery for vault writes, file I/O, graph sync failures
 - **VALIDATION** — Success criteria for each step (what makes a step succeed vs. fail)
 - **INTEGRATION** — Detailed integration points (vault file formats, repo memory structure, graph refresh)
 
 **Related specs define orchestration and high-level design:**
-- [Post Command](post-command.md) orchestrates the workflow and defines the 10-step sequence
-- [Post Processing](post-processing.md) (THIS SPEC) provides implementation details for each step
+- [Conclude Command](conclude-command.md) orchestrates the workflow and defines the 10-step sequence
+- [Conclude Processing](conclude-processing.md) (THIS SPEC) provides implementation details for each step
 
 **Use together:**
-- For *overall workflow sequence, integration points*: Start with post-command.md
-- For *implementation details, error recovery, validation*: Consult this spec (post-processing.md)
+- For *overall workflow sequence, integration points*: Start with conclude-command.md
+- For *implementation details, error recovery, validation*: Consult this spec (conclude-processing.md)
 
 ---
 
 ## Execution Sequence
 
 ```
-/spek.post
+/spek.conclude
 ├─ Step 1: Collect artifacts
 │  ├─ Read spec/plan/tasks/execution trace
 │  ├─ Gather code changes (git diff)
@@ -67,7 +67,7 @@
 
 ### Steps 1-3: Collect + Generate Lessons
 
-See [lessons-format.md](lessons-format.md) and [post-command.md](post-command.md) for detailed specs.
+See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-command.md) for detailed specs.
 
 ### Step 4: Update Vault
 
@@ -193,8 +193,8 @@ See [lessons-format.md](lessons-format.md) and [post-command.md](post-command.md
 - [lessons-format.md](lessons-format.md) — Lessons template
 - [architectural-decisions.md](architectural-decisions.md) — Decisions structure
 - [patterns-library.md](patterns-library.md) — Patterns structure
-- [post-command.md](post-command.md) — Full /spek.post spec
+- [conclude-command.md](conclude-command.md) — Full /spek.conclude spec
 - [spek-map-command.md](spek-map-command.md) — Code graph refresh
 
 **External:**
-- [extracted spec Layer 3](speckit-integration-contract.md#layer-3-post-processing-layer-spekpost)
+- [extracted spec Layer 3](speckit-integration-contract.md#layer-3-conclude-processing-layer-spekconclude)

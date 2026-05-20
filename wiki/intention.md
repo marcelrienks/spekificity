@@ -100,14 +100,14 @@ Real-time, pre-indexed code analysis via CodeGraph MCP. No file scanning.
 
 ### 4. Skills are Deterministic Checkpoints
 
-Agent skills (`/spek.prepare`, `/spek.automate`, etc.) are deterministic, composable steps.
+Agent skills (`/spek.prepare`, `/spek.plan`, etc.) are deterministic, composable steps.
 
 - Each skill has a clear pre-condition and post-condition
 - Skills can be chained or run standalone
 - Skill output is predictable (spec exists, plan exists, etc.)
 - Skills don't invent new workflows; they execute known ones
 
-**Implication:** Users know what will happen when they invoke `/spek.automate`. No surprises.
+**Implication:** Users know what will happen when they invoke `/spek.plan`. No surprises.
 
 ---
 

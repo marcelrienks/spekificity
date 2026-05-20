@@ -54,7 +54,7 @@ Pre-flight checks before feature development begins. Ensures workspace is ready,
 
 ### Commands
 ```
-/spek.automate --phase=specify
+/spek.plan --phase=specify
 # or directly:
 /speckit.specify --feature="feature-name"
 ```
@@ -114,7 +114,7 @@ Each spec includes structured enrichment:
 
 ### Commands
 ```
-/spek.automate --phase=plan
+/spek.plan --phase=plan
 # or directly (two-step):
 /speckit.plan --spec="feature-spec-id"
 /speckit.tasks --plan="feature-plan-id"
@@ -311,8 +311,8 @@ Before moving to the final stage, verify all quality gates:
 
 **Spekificity Workflow**
 - [ ] `/spek.prepare` passed pre-flight checks
-- [ ] `/spek.automate --phase=specify` produced valid spec
-- [ ] `/spek.automate --phase=plan` produced valid plan
+- [ ] `/spek.plan --phase=specify` produced valid spec
+- [ ] `/spek.plan --phase=plan` produced valid plan
 - [ ] `/spek.implement` executed all tasks
 - [ ] All `/spek.*` commands worked end-to-end
 
@@ -329,16 +329,16 @@ Before moving to the final stage, verify all quality gates:
 
 ---
 
-## Stage 5: Post-Feature Archival
+## Stage 5: Feature Conclusion
 
 ### Commands
 ```
-/spek.post
+/spek.conclude
 # Includes: archive, lessons extraction (automatic), state refresh
 
 # Optional (for deeper analysis):
 /spek.lessons --deep
-# Explicit, detailed lesson extraction (runs separately from /spek.post)
+# Explicit, detailed lesson extraction (runs separately from /spek.conclude)
 ```
 
 ### Purpose
@@ -349,7 +349,7 @@ Archive outcomes, extract lessons learned (automatic), refresh state for future 
 ```
 IMPLEMENTATION COMPLETE
     ↓
-/spek.post
+/spek.conclude
     ├─ Archive Feature Artifacts
     │  ├─ Spec → Archive folder (vault)
     │  ├─ Plan → Archive folder (vault)
@@ -429,7 +429,7 @@ Status: Complete
 
 ### Lesson Extraction Details
 
-**Automatic (via `/spek.post`):**
+**Automatic (via `/spek.conclude`):**
 - Lightweight, structured format
 - Runs as part of standard closeout workflow
 - Suitable for most features
@@ -439,12 +439,12 @@ Status: Complete
 - Detailed reflection and analysis
 - Cross-references specs, plans, code, and decisions
 - Optional, for complex features or research projects
-- Runs independently after `/spek.post`
+- Runs independently after `/spek.conclude`
 - Produces: comprehensive feature retrospective with architectural insights
 
 **When to use:**
-- Standard feature: `/spek.post` (automatic lessons)
-- Complex refactor or architectural change: `/spek.post` + `/spek.lessons --deep`
+- Standard feature: `/spek.conclude` (automatic lessons)
+- Complex refactor or architectural change: `/spek.conclude` + `/spek.lessons --deep`
 - Research/experimental work: `/spek.lessons --deep` for thorough analysis
 
 ## Timeline Diagram
@@ -452,7 +452,7 @@ Status: Complete
 ```
 DAY 1
 ├─ Morning: /spek.prepare          [~5 min]
-├─ Morning: /spek.automate         [~30 min: spec + plan review]
+├─ Morning: /spek.plan         [~30 min: spec + plan review]
 ├─ Afternoon: Review & Approve     [~15 min: stakeholder sign-off]
 │
 DAY 2
@@ -462,7 +462,7 @@ DAY 2
 │
 DAY 3
 ├─ Morning: Final validation       [~15 min]
-├─ Afternoon: /spek.post           [~15 min: archive + lessons]
+├─ Afternoon: /spek.conclude           [~15 min: archive + lessons]
 │
 TOTAL: ~24 hours across 3 days
 ```
@@ -487,7 +487,7 @@ TOTAL: ~24 hours across 3 days
 - **Outcome:** Code correction + test validation
 
 ### Lessons Not Captured
-- **Problem:** `/spek.post` completes but lessons are shallow
+- **Problem:** `/spek.conclude` completes but lessons are shallow
 - **Recovery:** `/spek.lessons --deep` (explicit, detailed extraction)
 - **Outcome:** Richer lessons in vault
 

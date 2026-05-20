@@ -9,7 +9,7 @@
 
 ## Overview
 
-The CLI is the user-facing entry point to Spekificity. `spek automate` is the primary orchestration command for pre-implementation flow, `spek implement` is the primary execution command after review, and support commands such as `spek prepare`, `spek context`, `spek map`, `spek post`, and `spek lessons` remain user-facing while also being callable internally when needed.
+The CLI is the user-facing entry point to Spekificity. `spek plan` is the primary orchestration command for pre-implementation flow, `spek implement` is the primary execution command after review, and support commands such as `spek prepare`, `spek context`, `spek map`, `spek post`, and `spek lessons` remain user-facing while also being callable internally when needed.
 
 **Scope:**
 - Entry points and command routing
@@ -71,7 +71,7 @@ spek prepare [options]
 **Output:**
 - Feature state initialized
 - Context loaded and available
-- Ready for `/spek.automate`
+- Ready for `/spek.plan`
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
 
@@ -79,12 +79,12 @@ spek prepare [options]
 
 ---
 
-### 2. `spek automate` — Orchestrate SpecKit Workflow
+### 2. `spek plan` — Orchestrate SpecKit Workflow
 
 **Purpose:** Orchestrate the pre-implementation workflow from feature description through approved task list.
 
 ```bash
-spek automate [options]
+spek plan [options]
   --feature-name <name>       # Feature name (auto-loaded from feature state if omitted)
   --description <text>        # Feature description (interactive if not provided)
   --dry-run                   # Preview spec, don't write
@@ -121,7 +121,7 @@ spek automate [options]
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
 
-**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [spek.automate Workflow](spek-automate-workflow.md)
+**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [spek.plan Workflow](spek-plan-workflow.md)
 
 ---
 
@@ -251,7 +251,7 @@ spek context [options]
 
 ```
 [IDLE] → /spek.prepare → [PREPARED]
-[PREPARED] → /spek.automate → [TASKED]
+[PREPARED] → /spek.plan → [TASKED]
 [TASKED] → /spek.implement → [IMPLEMENTED]
 [IMPLEMENTED] → /spek.post → [ARCHIVED]
 [ARCHIVED] → (ready for next feature)
@@ -275,7 +275,7 @@ Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
 | Step | Command | Status | Timestamp | Output |
 |------|---------|--------|-----------|--------|
 | 1 | /spek.prepare | ✓ COMPLETE | 2026-05-19 10:00:15 | Context loaded |
-| 2 | /spek.automate | ✓ COMPLETE | 2026-05-19 10:18:30 | spec.md, plan.md, tasks.md |
+| 2 | /spek.plan | ✓ COMPLETE | 2026-05-19 10:18:30 | spec.md, plan.md, tasks.md |
 | 3 | /spek.implement | ✓ COMPLETE | 2026-05-19 15:30:22 | 24 files modified, 1200 lines added |
 | 4 | /spek.post | ⏳ PENDING | — | Ready to run |
 

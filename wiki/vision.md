@@ -128,7 +128,7 @@ spekificity init
 **User:** "Implement user authentication system"
 
 **Agent Workflow:**
-1. `/spek.automate` → Load vault + code context, then orchestrate SpecKit through specification, clarification, planning, tasks, analysis, and remediation
+1. `/spek.plan` → Load vault + code context, then orchestrate SpecKit through specification, clarification, planning, tasks, analysis, and remediation
    - Injects context: related code modules, prior decisions, lessons from similar features
    - Generates: `specs/<feature>/spec.md`, `specs/<feature>/plan.md`, `specs/<feature>/tasks.md`
 2. Human reviews generated artifacts and any analyze findings
@@ -150,7 +150,7 @@ spekificity init
 
 **After feature complete:**
 
-1. Agent runs `/spek.post`
+1. Agent runs `/spek.conclude`
    - Analyzes execution trace
    - Extracts: what worked, what was harder, what we learned about the codebase
    - Files structured entry into vault
@@ -178,9 +178,9 @@ Skills are markdown files that an AI agent reads and executes. Each skill file c
 - `/spek.prepare` — Initialize workspace, git state, graph freshness, and feature state
 - `/spek.context` — Load or reload project context into session
 - `/spek.map` — Build or refresh code/document graph
-- `/spek.automate` — Orchestrate spec-first flow through task generation
+- `/spek.plan` — Orchestrate spec-first flow through task generation
 - `/spek.implement` — Execute implementation after automation has prepared artifacts
-- `/spek.post` — Archive feature outcomes, lessons, vault updates, and graph refresh
+- `/spek.conclude` — Archive feature outcomes, lessons, vault updates, and graph refresh
 - `/spek.lessons` — Extract structured lessons explicitly when needed
 
 ### 2. CLI Scripts
@@ -319,7 +319,7 @@ Spekificity doesn't build installers; it evaluates and chains existing ones + ad
 - Risk: Misses dependencies; repeats past mistakes; context is fragmented
 
 **With Spekificity:**
-- `/spek.automate` automatically injects related components + lessons during specify/plan phases
+- `/spek.plan` automatically injects related components + lessons during specify/plan phases
 - Code map + vault are pre-indexed (fresh on session start)
 - Agent reads one document; gets full context
 
@@ -375,7 +375,7 @@ This repository is design-first and ahead on architectural definition. It curren
 - Project vision and philosophy
 - Architecture and component structure
 - Workflow definitions for enriched SpecKit usage
-- Atomic specifications for context loading, orchestration, memory, graph integration, and post-processing
+- Atomic specifications for context loading, orchestration, memory, graph integration, and conclusion processing
 - Setup notes for supporting tools
 - Design decisions and rationale
 

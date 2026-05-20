@@ -5,7 +5,7 @@
 **Version:** 2026-05-20  
 **Replaces:** graphify-installation.md, graphify-git-hooks.md (Graphify specs archived as legacy)  
 **Depends On:** spek-map-command.md, graph-refresh-strategy.md, node-schema-design.md  
-**Used By:** `/spek.prepare` (freshness check), `/spek.post` (incremental sync), `/spek.automate` (context queries)  
+**Used By:** `/spek.prepare` (freshness check), `/spek.conclude` (incremental sync), `/spek.plan` (context queries)  
 
 ## Success Criteria
 
@@ -362,7 +362,7 @@ spek map --incremental
 # 5. Validate: no broken references
 # 6. Report: files processed, changes merged, time elapsed
 
-# Use case: Normal workflow (called by /spek.prepare, /spek.post)
+# Use case: Normal workflow (called by /spek.prepare, /spek.conclude)
 # Time: 2-5 seconds
 ```
 
@@ -484,7 +484,7 @@ Output: [
 
 ## Part 5: Context Injection into Agent Workflows
 
-### During `/spek.automate` Specify Phase
+### During `/spek.plan` Specify Phase
 
 ```
 Agent is writing specification...
@@ -498,7 +498,7 @@ Agent is writing specification...
 3. Agent writes specification accounting for recent code state
 ```
 
-### During `/spek.automate` Plan Phase
+### During `/spek.plan` Plan Phase
 
 ```
 Agent is writing plan...
@@ -602,8 +602,8 @@ Result: 4x speedup on large codebases
 - [ ] `/spek.map --incremental` tested (<5s runtime)
 - [ ] MCP tools callable (VS Code integration verified)
 - [ ] `/spek.prepare` freshness check working
-- [ ] `/spek.post` incremental sync working
-- [ ] `/spek.automate` context queries working
+- [ ] `/spek.conclude` incremental sync working
+- [ ] `/spek.plan` context queries working
 - [ ] Performance benchmarks met (queries <500ms)
 - [ ] Documentation updated (agent guide + user guide)
 

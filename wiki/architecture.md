@@ -61,7 +61,7 @@ START FEATURE
     ├─ /spek.prepare ─────────────► Workspace Ready
     │  (Git state, wiki/vault fresh, graph synced)
     │
-    ├─ /spek.automate ────────────────┐
+    ├─ /spek.plan ────────────────┐
     │  (Orchestrate SpecKit)           │
     │                                  │
     │  ├─ /speckit.specify ──────────► Spec Created
@@ -78,7 +78,7 @@ START FEATURE
     ├─ /spek.implement ───────────────► Features Coded
     │  (Per-task execution)            (Tests, Docs)
     │
-    ├─ /spek.post ────────────────────► Outcomes Archived
+    ├─ /spek.conclude ─────────────→ Outcomes Archived
     │  (Archive, Lessons, Refresh)     (wiki/Vault + Graph Updated)
     │
     ├─ /spek.lessons ─────────────────► Lessons Extracted
@@ -123,9 +123,9 @@ START FEATURE
 **Deterministic, repeatable workflow steps.**
 
 - `spek.prepare`: Pre-flight checks (workspace state, graph freshness, vault ready)
-- `spek.automate`: Invoke SpecKit pipeline (specify → plan → analyze)
+- `spek.plan`: Invoke SpecKit pipeline (specify → plan → analyze)
 - `spek.implement`: Execute approved tasks with full context
-- `spek.post`: Archive outcomes, update vault, refresh graph
+- `spek.conclude`: Archive outcomes, update vault, refresh graph
 - `spek.lessons`: Structured lesson extraction (run standalone or post-feature)
 - `spek.context`: Load session context (vault, repo memory, graph state)
 - `spek.map`: Build/refresh code graph
@@ -143,9 +143,9 @@ START FEATURE
 ┌──────────────▼───────────────────────────────────┐
 │  SKILLS LAYER: /spek.* commands                  │
 │  ├─ spek.prepare        (pre-flight)             │
-│  ├─ spek.automate       (orchestrate)            │
+│  ├─ spek.plan           (orchestrate)            │
 │  ├─ spek.implement      (execute)                │
-│  ├─ spek.post           (wrap-up)                │
+│  ├─ spek.conclude           (wrap-up)                │
 │  ├─ spek.lessons        (learn)                  │
 │  └─ spek.context        (load)                   │
 └──────────────┬───────────────────────────────────┘
@@ -181,7 +181,7 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 3. **Refresh CodeGraph:** Sync latest code changes via MCP
 4. **Populate Session State:** Assemble context for SpecKit engine or skill execution
 
-### Command Execution (Example: `/spek.automate`)
+### Command Execution (Example: `/spek.plan`)
 
 1. **Preparation:** Run pre-flight checks (`spek.prepare` substeps)
 2. **Orchestration:** Call SpecKit pipeline
@@ -211,7 +211,7 @@ User Intention
     ↓
 /spek.prepare
     ↓ (invokes)
-/spek.automate
+/spek.plan
     ├→ /speckit.specify (reads vault, writes spec)
     ├→ /speckit.plan (reads spec, writes plan)
     ├→ /speckit.analyze (queries CodeGraph, validates)
@@ -221,7 +221,7 @@ User Intention
     ├→ Query CodeGraph for context (callers, definitions)
     ├→ Generate + execute code changes
     │
-/spek.post
+/spek.conclude
     ├→ Archive spec/plan/outcomes in vault
     ├→ Refresh CodeGraph (commit changes)
     ├→ Update repo memory

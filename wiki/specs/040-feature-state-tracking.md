@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** State Schema — workflow-state.json Structure  
 **Depends On:** memory-architecture.md  
-**Used By:** /spek.prepare (create), /spek.post (update), all commands (read)  
+**Used By:** /spek.prepare (create), /spek.conclude (update), all commands (read)  
 
 ---
 
@@ -88,12 +88,12 @@ post: completing (100%)
 - New feature file with initialized status
 
 **Update:** Each command completion
-- /spek.automate specify phase → specifying (25%)
-- /spek.automate plan phase → planning (50%)
+- /spek.plan specify phase → specifying (25%)
+- /spek.plan plan phase → planning (50%)
 - /spek.implement → implementing (75%)
-- /spek.post → completing (100%)
+- /spek.conclude → completing (100%)
 
-**Archive:** /spek.post (Step 9)
+**Archive:** /spek.conclude (Step 9)
 - Move to /memories/session/archive/
 - Keep for post-mortem reference
 

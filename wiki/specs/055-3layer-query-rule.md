@@ -44,7 +44,7 @@ Document and enforce the **3-Layer Query Rule** — a token-efficient context lo
 - ✅ Layer 2 (vault) queries return results in <2s with architecture context loaded
 - ✅ Layer 3 (code files) only accessed when Layers 1-2 insufficient (token savings measurable)
 - ✅ Token cost breakdown documented per layer (280 tokens avg Layer 1, 500 tokens avg Layer 2)
-- ✅ Integration points in `/spek.context` and `/spek.post` follow 3-layer rule
+- ✅ Integration points in `/spek.context` and `/spek.conclude` follow 3-layer rule
 - ✅ Documentation in copilot-instructions.md clearly lists all rules
 - ✅ Enforcement rules prevent unnecessary code file reads (fallback only)
 

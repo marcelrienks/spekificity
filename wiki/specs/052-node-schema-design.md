@@ -318,7 +318,7 @@ interface SkillNode {
   "outputs": ["feature_state (current-feature.md)", "readiness_report (string)"],
   "tags": ["workflow", "setup", "skill", "spekificity"],
   "references": ["skills/spek-context/SKILL.md", "skills/spek-map/SKILL.md"],
-  "referencedBy": ["skills/spek-automate/SKILL.md"],
+  "referencedBy": ["skills/spek-plan/SKILL.md"],
   "indexed_at": "2026-05-18T15:00:00Z",
   "hash": "d4e5f6g7h8i9..."
 }

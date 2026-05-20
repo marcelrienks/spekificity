@@ -355,7 +355,7 @@ grep '"status":"active"' wiki/vault/graph/nodes.jsonl
   },
   "refreshPolicy": {
     "fullRefresh": "on-demand or after-obsidian-rebuild",
-    "incrementalRefresh": "after-feature (spek.post)",
+    "incrementalRefresh": "after-feature (spek.conclude)",
     "obsidianCacheMonitor": "watch .obsidian/cache.json for
     "incrementalRefresh": "after-feature (spek.post)",
     "cacheInvalidation": "when source file hash changes"
@@ -413,7 +413,7 @@ Step 4: Verify code analysis tool is fresh
   - Else: Skip (graph already current)
 ```
 
-### In `/spek.post`
+### In `/spek.conclude`
 
 ```
 Step 5: Run code analysis tool in incremental mode
@@ -466,7 +466,7 @@ When loading vault context:
 2. **Implement Obsidian export integration** — Script or plugin that exports Obsidian graph to JSONL format
 3. **Update `/spek.map` skill** — Integrate graphify + Obsidian export into unified command
 4. **Create config.json template** — Place in `.spekificity/config/graph-config.json`
-5. **Integrate with `/spek.prepare` and `/spek.post`** — Add graph refresh steps (watch Obsidian cache for changes)
+5. **Integrate with `/spek.prepare` and `/spek.conclude`** — Add graph refresh steps (watch Obsidian cache for changes)
 6. **Document query patterns** — Create a guide for agents on how to query the merged graph
 
 ---
@@ -476,7 +476,7 @@ When loading vault context:
 - **Decision:** Use Obsidian's graph export as authoritative source for doc nodes; merge with graphify code nodes
 - **Node schema:** Unified structure for code and doc nodes with references; docs sourced from Obsidian
 - **Storage:** JSONL in `wiki/vault/graph/nodes.jsonl` derived from Obsidian vault + graphify code output
-- **Integration:** `/spek.map`, `/spek.prepare`, `/spek.post`, `/spek.context`
+- **Integration:** `/spek.map`, `/spek.prepare`, `/spek.conclude`, `/spek.context`
 - **Config:** `wiki/vault/graph/config.json` specifies Obsidian export method, indexing rules, refresh policy
 - **Authority:** Obsidian vault is single source of truth for documentation; graph is derived
 5. **Document query patterns** — Create a guide for agents on how to query the graph

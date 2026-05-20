@@ -461,7 +461,7 @@ def generate_lesson_with_auto_linking(spec, plan, tasks, trace):
 2. **Incremental Expansion:**
    - As users encounter new keywords, add to mapping
    - Config can be updated without code changes
-   - `/spek.post` automatically uses updated mappings
+   - `/spek.conclude` automatically uses updated mappings
 
 3. **Team Collaboration:**
    - keyword_tag_map lives in config (tracked in git)
@@ -505,7 +505,7 @@ Result: ✅ Mostly auto-linked; user enhances for future features
 ### Scenario C: New Pattern (Extension)
 
 ```
-1. /spek.post generates lesson about "circuit breaker pattern"
+1. /spek.conclude generates lesson about "circuit breaker pattern"
 2. Auto-linking extracts: circuit-breaker, resilience, retry, etc.
 3. "circuit-breaker" not in keyword_tag_map
 4. Alert: "Unknown keyword 'circuit-breaker'; suggest mapping in config"
@@ -523,7 +523,7 @@ Result: ✅ Vault continuously enriched; no stale patterns
 
 ## Success Criteria
 
-- ✅ Auto-linking enabled in `/spek.post` Step 3
+- ✅ Auto-linking enabled in `/spek.conclude` Step 3
 - ✅ ~70% of wikilinks auto-generated (< 30% manual work)
 - ✅ Confidence score > 0.75 for all auto-inserted links
 - ✅ Auto-generated tags match manual tagging conventions
