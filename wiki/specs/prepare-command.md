@@ -96,7 +96,7 @@
 
 **Related Specs:**
 - [git-verification.md](git-verification.md) — Git state validation
-- [context-load-lifecycle.md](context-load-lifecycle.md) — Context loading
+- [memory-architecture.md](memory-architecture.md) — Context loading and memory layers
 - [feature-state-tracking.md](feature-state-tracking.md) — Feature state
 - [spek-map-command.md](spek-map-command.md) — Code graph refresh
 

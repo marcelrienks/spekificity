@@ -358,5 +358,5 @@ Before writing to vault/lessons/, validate:
 ## References
 
 - **Used by:** /spek.post skill, /spek.context skill (loads lessons at session start)
-- **Related:** architectural-decisions, patterns-library, session-memory
+- **Related:** architectural-decisions, patterns-library, memory-architecture
 - **Caveman mode:** Compression applied at write time (caveman lite/full as configured)

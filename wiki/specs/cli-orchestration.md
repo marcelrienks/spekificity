@@ -141,7 +141,7 @@ spek implement [options]
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
 
-**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [Implement Enrichment](implement-enrichment.md)
+**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [Enrichment Layer](enrichment-layer.md)
 
 ---
 
@@ -231,7 +231,7 @@ spek context [options]
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
 
-**Related:** [Context Layer](context-layer.md), [Context Load Lifecycle](context-load-lifecycle.md)
+**Related:** [Context Layer](context-layer.md), [Memory Architecture](memory-architecture.md)
 
 ---
 

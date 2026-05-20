@@ -99,8 +99,7 @@ If you are evaluating the project today, treat this repository as the source for
 
 Use these documents first:
 
-- [wiki/intention.md](wiki/intention.md) — project vision, philosophy, and lifecycle framing
-- [wiki/architecture.md](wiki/architecture.md) — system structure, component boundaries, update model
+- [wiki/vision.md](wiki/vision.md) — project vision, philosophy, architecture, and lifecycle framing
 - [wiki/decision.md](wiki/decision.md) — major tool and architecture decisions
 - [wiki/naming-conventions.md](wiki/naming-conventions.md) — current command names and directory conventions
 - [wiki/speckit-workflow.md](wiki/speckit-workflow.md) — canonical SpecKit flow and Spekificity integration points
@@ -110,8 +109,7 @@ Use these documents first:
 
 ### Core docs
 
-- [wiki/intention.md](wiki/intention.md)
-- [wiki/architecture.md](wiki/architecture.md)
+- [wiki/vision.md](wiki/vision.md)
 - [wiki/decision.md](wiki/decision.md)
 - [wiki/llm-wiki.md](wiki/llm-wiki.md)
 - [wiki/research.md](wiki/research.md)
@@ -121,9 +119,7 @@ Use these documents first:
 
 ### Setup notes
 
-- [wiki/setup/speckit-setup.md](wiki/setup/speckit-setup.md)
-- [wiki/setup/obsidian-setup.md](wiki/setup/obsidian-setup.md)
-- [wiki/setup/graphify-setup.md](wiki/setup/graphify-setup.md)
+- [wiki/setup.md](wiki/setup.md)
 
 ### Key specifications
 

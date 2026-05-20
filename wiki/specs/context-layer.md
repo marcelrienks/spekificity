@@ -2,8 +2,8 @@
 
 **Status:** ATOMIC SPECIFICATION  
 **Type:** Integration Layer 1 — Context Loading and Injection  
-**Depends On:** context-load-lifecycle.md, session-memory.md  
-**Used By:** All enrichment layers (specify-enrichment, plan-enrichment, implement-enrichment)  
+**Depends On:** memory-architecture.md  
+**Used By:** All enrichment layers (enrichment-layer.md)  
 
 ---
 
@@ -21,13 +21,12 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 - **WHERE** context is stored (session memory, variables, file references)
 
 **Related specs define complementary concerns:**
-- [Context Load Lifecycle](context-load-lifecycle.md) defines **WHEN** context is loaded, **COSTS** (token counts, latency), and **CACHING** strategy
-- [Persistent Memories & Lessons](persistent-memories-and-lessons.md) defines the 3-layer memory model (vault, repo memory, session memory)
+- [Memory Architecture](memory-architecture.md) defines the 3-layer memory model (vault, repo memory, session memory), **WHEN** context is loaded, **COSTS** (token counts, latency), and **CACHING** strategy
 - [Context Layer](context-layer.md) (THIS SPEC) defines **WHAT** + **HOW** + **WHERE**
 
 **Use together:**
 - For *what to load, injection patterns, access*: Start here (context-layer.md)
-- For *timing, costs, caching strategy*: See context-load-lifecycle.md
+- For *memory model, timing, costs, caching strategy*: See memory-architecture.md
 
 ---
 
@@ -301,11 +300,9 @@ context_layer:
 ## References
 
 **Related Specs:**
-- [context-load-lifecycle.md](context-load-lifecycle.md) — How context is loaded
-- [session-memory.md](session-memory.md) — Where session context is stored
+- [memory-architecture.md](memory-architecture.md) — How context is loaded + memory layers
+- [enrichment-layer.md](enrichment-layer.md) — Uses context in `/spek.automate` phases
 - [decorator-wrapper-pattern.md](decorator-wrapper-pattern.md) — Pattern for injection
-- [specify-enrichment.md](specify-enrichment.md) — Uses context in `/spek.automate` specify phase
-- [plan-enrichment.md](plan-enrichment.md) — Uses context in `/spek.automate` plan phase
 
 **External:**
 - [extracted spec Context Layer](speckit-integration-contract.md#layer-1-context-layer-spekcontext) — Original spec

@@ -2,7 +2,7 @@
 
 **Status:** ATOMIC SPECIFICATION  
 **Type:** Memory Layer 2 — Architectural Decisions  
-**Depends On:** lessons-format.md, context-load-lifecycle.md  
+**Depends On:** lessons-format.md, memory-architecture.md  
 **Used By:** /spek.context (read at session start), /spek.post (write at feature end)  
 
 ---
@@ -250,11 +250,11 @@ See vault/decision.md for full history. Recent supersessions:
 
 Decisions made during a feature are extracted in the "Decisions Made" section of vault/lessons/ files. The post-processing phase (post-command.md) converts these to formal decision entries.
 
-### Context Loading (context-load-lifecycle.md)
+### Context Loading (memory-architecture.md)
 
 Decision context is loaded at session start via `/spek.context`, compressed, and added to /memories/session/context-loaded.md for agent awareness.
 
-### SpecKit Integration (specify-enrichment.md, plan-enrichment.md)
+### SpecKit Integration (enrichment-layer.md)
 
 Recent decisions are injected into `/spek.automate` specify and plan prompts to guide spec/plan generation toward existing constraints.
 
@@ -287,10 +287,9 @@ Recent decisions are injected into `/spek.automate` specify and plan prompts to 
 
 **Related Specs:**
 - [lessons-format.md](lessons-format.md) — Decisions captured here first
-- [context-load-lifecycle.md](context-load-lifecycle.md) — Decisions loaded at session start
-- [specify-enrichment.md](specify-enrichment.md) — Decisions injected into spec generation
-- [plan-enrichment.md](plan-enrichment.md) — Decisions injected into plan generation
+- [memory-architecture.md](memory-architecture.md) — Decisions loaded at session start
+- [enrichment-layer.md](enrichment-layer.md) — Decisions injected into spec/plan/implement phases
 - [post-command.md](post-command.md) — Decisions synced to vault here
 
 **External:**
-- [extracted spec Persistent Memories](persistent-memories-and-lessons.md#type-2-architectural-decisions-vault--repo-memory) — Original spec
+- [extracted spec Memory Architecture](memory-architecture.md) — Original spec

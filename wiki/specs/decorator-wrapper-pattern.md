@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION  
 **Type:** Integration Pattern — Pre/Core/Post Layer Structure  
 **Depends On:** None (foundational pattern)  
-**Used By:** specify-enrichment, plan-enrichment, implement-enrichment, post-processing  
+**Used By:** enrichment-layer.md (all three phases: specify, plan, implement)  
 
 ---
 
@@ -287,9 +287,7 @@ decorator_wrapper:
 
 **Related Specs:**
 - [context-layer.md](context-layer.md) — Context loading in pre-execution
-- [specify-enrichment.md](specify-enrichment.md) — Specific wrapper for specify
-- [plan-enrichment.md](plan-enrichment.md) — Specific wrapper for plan
-- [implement-enrichment.md](implement-enrichment.md) — Specific wrapper for implement
+- [enrichment-layer.md](enrichment-layer.md) — Specific wrappers for all phases
 
 **External:**
 - [extracted spec Decorator Pattern](speckit-integration-contract.md#integration-pattern-decorator-wrapper) — Original spec

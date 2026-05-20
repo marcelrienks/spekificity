@@ -235,7 +235,7 @@ Prompt: "Changed: [files]. Test files that import these: [test_files].
 **Related Specs:**
 - [graph-storage-structure.md](graph-storage-structure.md) — nodes.jsonl, edges.jsonl schemas
 - [context-layer.md](context-layer.md) — Context queries code graph
-- [plan-enrichment.md](plan-enrichment.md) — Plan uses code graph queries
+- [enrichment-layer.md](enrichment-layer.md) — Enrichment uses code graph queries
 
 **External:**
 - [graph-setup Part 5](codegraph-setup-and-integration.md#part-5-query-patterns)

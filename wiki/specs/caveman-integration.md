@@ -389,7 +389,7 @@ Both capture the same decision information; compression just removes verbosity.
 - [Architectural Decisions](architectural-decisions.md) — Decision archival
 - [Patterns Library](patterns-library.md) — Pattern storage
 - [Error Handling and Recovery](error-handling-and-recovery.md) — Error logging
-- [Persistent Memories & Lessons](persistent-memories-and-lessons.md) — 3-layer memory model
+- [Memory Architecture](memory-architecture.md) — 3-layer memory model
 
 ---
 

@@ -701,7 +701,7 @@ Spekificity + Multi-agent + Full-stack = Future enterprise SDD
 
 **Spekificity related:**
 - [B.1 SpecKit Workflow](../wiki/speckit-workflow.md)
-- [extracted spec Persistent Memories](persistent-memories-and-lessons.md)
+- [Memory Architecture](memory-architecture.md) (replaces persistent-memories-and-lessons.md)
 - [extracted spec SpecKit Integration](speckit-integration-contract.md)
 - [extracted spec Prepare and Post Skills](prepare-and-post-skills.md)
 

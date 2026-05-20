@@ -455,7 +455,7 @@ while attempt <= 3:
 ## Related Specs
 
 **Vault and Memory:**
-- [Persistent Memories & Lessons](persistent-memories-and-lessons.md)
+- [Memory Architecture](memory-architecture.md)
 - [Architectural Decisions](architectural-decisions.md)
 - [Patterns Library](patterns-library.md)
 
@@ -466,9 +466,7 @@ while attempt <= 3:
 **Skills:**
 - [Prepare Command](prepare-command.md)
 - [Post Command](post-command.md)
-- [Specify Enrichment](specify-enrichment.md)
-- [Plan Enrichment](plan-enrichment.md)
-- [Implement Enrichment](implement-enrichment.md)
+- [Enrichment Layer](enrichment-layer.md)
 
 **Integration:**
 - [Speckit Integration Contract](speckit-integration-contract.md)

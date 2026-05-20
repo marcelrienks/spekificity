@@ -2,7 +2,7 @@
 
 **Status:** ATOMIC SPECIFICATION  
 **Type:** State Schema — workflow-state.json Structure  
-**Depends On:** session-memory.md  
+**Depends On:** memory-architecture.md  
 **Used By:** /spek.prepare (create), /spek.post (update), all commands (read)  
 
 ---
@@ -111,7 +111,7 @@ post: completing (100%)
 ## References
 
 **Related Specs:**
-- [session-memory.md](session-memory.md) — Session memory structure
+- [memory-architecture.md](memory-architecture.md) — Session memory structure
 - [prepare-command.md](prepare-command.md) — State creation (Step 6)
 - [post-command.md](post-command.md) — State archival (Step 9)
 

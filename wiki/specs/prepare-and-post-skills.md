@@ -3,7 +3,7 @@
 **Status:** HIGH-LEVEL OVERVIEW (2026-05-19)  
 **Feature:** spekificity feature 003 — Full Workflow CLI  
 **Purpose:** Entry/exit points for feature lifecycle; brackets all work with context + vault sync  
-**Related:** [Detailed Prepare Spec](prepare-command.md), [Detailed Post Spec](post-command.md), [Integration Contract](speckit-integration-contract.md), [Memory Architecture](persistent-memories-and-lessons.md)
+**Related:** [Detailed Prepare Spec](prepare-command.md), [Detailed Post Spec](post-command.md), [Integration Contract](speckit-integration-contract.md), [Memory Architecture](memory-architecture.md)
 
 ---
 
@@ -128,7 +128,7 @@ Both skills include error handling for common failures:
 - [Git Verification](git-verification.md) — Workspace state validation
 - [Context Layer](context-layer.md) — Context injection
 - [/spek.map Command](spek-map-command.md) — Graph refresh
-- [Session Memory](session-memory.md) — Feature state tracking
+- [Memory Architecture](memory-architecture.md) — Feature state tracking + session memory
 
 **Post depends on:**
 - [Lessons Format](lessons-format.md) — Lesson document template
@@ -139,8 +139,7 @@ Both skills include error handling for common failures:
 
 **Both integrate with:**
 - [Speckit Integration Contract](speckit-integration-contract.md) — How they fit into speckit workflow
-- [Persistent Memories & Lessons](persistent-memories-and-lessons.md) — 3-layer memory model
-- [Context Load Lifecycle](context-load-lifecycle.md) — Context loading costs + caching
+- [Memory Architecture](memory-architecture.md) — 3-layer memory model + context loading
 
 ---
 

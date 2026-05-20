@@ -2,7 +2,7 @@
 
 **Status:** SPECIFICATION (2026-05-18)  
 **Feature:** spekificity feature 003 — Full Workflow CLI  
-**Related:** [SpecKit Workflow](../wiki/speckit-workflow.md), [Memory Architecture](persistent-memories-and-lessons.md)
+**Related:** [SpecKit Workflow](../wiki/speckit-workflow.md), [Memory Architecture](memory-architecture.md)
 
 ---
 
@@ -653,7 +653,7 @@ vault/
 **Related specs:**
 - [SpecKit Workflow](../wiki/speckit-workflow.md)
 - [extracted spec Code and Document Maps](code-and-document-maps.md)
-- [extracted spec Persistent Memories and Lessons](persistent-memories-and-lessons.md)
+- [extracted spec Memory Architecture](memory-architecture.md)
 
 **SpecKit canonical documentation:**
 - [SpecKit GitHub](https://github.com/github/spec-kit)

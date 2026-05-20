@@ -188,7 +188,7 @@ Step 2: Test each layer independently
 
 **References:**
 - Features: spec-002 (SpecKit integration), spec-003 (full CLI)
-- Related specs: speckit-integration-contract.md, specify-enrichment.md
+- Related specs: speckit-integration-contract.md, enrichment-layer.md
 - Lesson: vault/lessons/2026-05-18-003-*.md#implementation
 ```
 
@@ -384,11 +384,11 @@ grep "Patterns Applied" vault/lessons/2026-05-18-003-*.md
 
 Patterns discovered during a feature are documented in the "Patterns Identified" section of vault/lessons/ files. The post-processing phase converts these to formal pattern entries.
 
-### Context Loading (context-load-lifecycle.md)
+### Context Loading (memory-architecture.md)
 
 Pattern index is loaded at session start and included in context briefing for agent awareness.
 
-### Plan Enrichment (plan-enrichment.md)
+### Enrichment (enrichment-layer.md)
 
 Recent patterns are injected into `/spek.automate` plan prompts to guide architecture decisions toward proven approaches.
 
@@ -421,9 +421,9 @@ Recent patterns are injected into `/spek.automate` plan prompts to guide archite
 
 **Related Specs:**
 - [lessons-format.md](lessons-format.md) — Patterns captured here first
-- [context-load-lifecycle.md](context-load-lifecycle.md) — Patterns loaded at session start
-- [plan-enrichment.md](plan-enrichment.md) — Patterns injected into planning
+- [memory-architecture.md](memory-architecture.md) — Patterns loaded at session start
+- [enrichment-layer.md](enrichment-layer.md) — Patterns injected into planning + specification
 - [post-command.md](post-command.md) — Patterns synced to vault here
 
 **External:**
-- [extracted spec Persistent Memories](persistent-memories-and-lessons.md#type-3-patterns-library-vault) — Original spec
+- [extracted spec Memory Architecture](memory-architecture.md) — Original spec
