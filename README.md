@@ -12,7 +12,7 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 |---------|----------|
 | **Token bloat** | Indexed code analysis (CodeGraph) + scoped context loading |
 | **Shallow planning** | Spec-first workflow with enriched validation layers |
-| **Context loss** | Persistent knowledge vault (Git-backed Obsidian) |
+| **Context loss** | Persistent knowledge vault (Git-backed Obsidian vault/) |
 | **Low autonomy** | Reusable agent skills with deterministic sequencing |
 
 **Value Proposition:** Build features **faster** with deterministic specs, persistent memory, and zero context loss between sessions.
@@ -25,6 +25,10 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 
 - Python 3.11+
 - `uv` package manager ([install](https://docs.astral.sh/uv/))
+- **Obsidian** (optional but recommended) - for vault visualization and browsing
+  - [Download Obsidian](https://obsidian.md/download)
+  - macOS: `brew install obsidian`
+  - Windows: `choco install obsidian`
 
 ### Installation & Setup (Recommended)
 

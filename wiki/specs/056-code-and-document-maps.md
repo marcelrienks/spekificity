@@ -136,10 +136,10 @@ spek.map step 3: merge both → wiki/vault/graph/nodes.jsonl
 
 **For Documentation:**
 - `specs/` — Feature specifications (heading-level)
-- `wiki/vault/decision.md` — Architectural decisions (heading-level)
-- `wiki/vault/intention.md` — Intention statements (file-level)
-- `wiki/vault/patterns.md` — Patterns library (heading-level)
-- `wiki/vault/lessons/` — Lessons learned (file-level, one per feature)
+- `vault/decision.md` — Architectural decisions (heading-level)
+- `vault/intention.md` — Intention statements (file-level)
+- `vault/patterns.md` — Patterns library (heading-level)
+- `vault/lessons/` — Lessons learned (file-level, one per feature)
 - `wiki/` — General wiki/reference docs (heading-level by default, can override with frontmatter)
 - `.github/agents/skills/*/SKILL.md` — Skill definitions (file-level)
 
@@ -252,7 +252,7 @@ interface DocNodeHeading {
 ```typescript
 interface DocNodeFile {
   type: "doc";
-  id: string; // e.g., "wiki/vault/intention.md" or "skills/spek-prepare/SKILL.md"
+  id: string; // e.g., "vault/intention.md" or "skills/spek-prepare/SKILL.md"
   file: string; // relative path
   title: string; // first h1 or filename
   level: "file";
@@ -328,7 +328,7 @@ grep '"status":"active"' wiki/vault/graph/nodes.jsonl
   },
   "indexing": {
     "codePaths": ["src/", ".github/agents/skills/", ".spekificity/"],
-    "docPaths": ["specs/", "wiki/vault/decision.md", "wiki/vault/intention.md", "wiki/vault/patterns.md", "wiki/vault/lessons/", "wiki/", ".github/agents/skills/*/SKILL.md"],
+    "docPaths": ["specs/", "vault/decision.md", "vault/intention.md", "vault/patterns.md", "vault/lessons/", "wiki/", ".github/agents/skills/*/SKILL.md"],
     "exclude": [
       "node_modules/",
       "dist/",

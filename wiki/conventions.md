@@ -90,9 +90,9 @@ All commands follow:
 **Artifact Files:**
 - Specs: `wiki/specs/feature-name.md` (kebab-case)
 - Plans: `wiki/specs/feature-name-plan.md`
-- Lessons: `wiki/vault/lessons/YYYY-MM-DD-feature-name.md`
-- Decisions: `wiki/vault/decisions.md` (single file, append-only)
-- Patterns: `wiki/vault/patterns.md` (single file)
+- Lessons: `vault/lessons/YYYY-MM-DD-feature-name.md`
+- Decisions: `vault/decision.md` (single file, append-only)
+- Patterns: `vault/patterns.md` (single file)
 
 ---
 

@@ -96,7 +96,7 @@ spekificity init
 1. Auto-detect installed tools (spec framework, code mapper, vault system, compression tool, git, Python, Node)
 2. Install missing tools with user prompts (recommending current best practices)
 3. Deploy spekificity skills locally to project
-4. Initialize knowledge vault structure (wiki/specs/, wiki/vault/)
+4. Initialize knowledge vault structure (wiki/specs/, vault/)
 5. Initialize code mapping/analysis
 6. Confirm setup complete + tool integrations verified
 
@@ -110,14 +110,14 @@ spekificity init
 
 **Inputs:** Code repository + any raw documentation (PDFs, articles, notes, transcripts)
 
-**Entry Point:** Developer drops files into `wiki/vault/raw/` or uses web clipper for articles
+**Entry Point:** Developer drops files into `vault/raw/` or uses web clipper for articles
 
 **Automatic Actions:**
 1. Code analysis tool indexes source → stores structure map in vault
 2. Knowledge system processes raw docs via LLM
 3. Vault accumulates as source of truth
 
-**Output:** `wiki/vault/graph/index.md` (codebase topology), `wiki/vault/` (growing knowledge base)
+**Output:** `vault/graph/index.md` (codebase topology), `vault/` (growing knowledge base)
 
 **Trigger:** Manual (`/map-codebase`), or automatic on session start via `/context-load`
 

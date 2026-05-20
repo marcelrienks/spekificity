@@ -31,6 +31,19 @@ updated: 2026-05-15
 
 4. **Portability Without Complexity:** Unlike enterprise knowledge management systems, this is intentionally personal, local, and portable—just markdown files, no vendor lock-in, no cloud dependency.
 
+### Spekificity Implementation: Obsidian Vault
+
+In Spekificity, **the Obsidian vault (Layer 1 of memory architecture)** is the LLM Wiki implementation:
+
+- **vault/lessons/** - Learned concepts extracted from feature execution
+- **vault/patterns.md** - Reusable patterns discovered during implementation
+- **vault/decision.md** - Architectural decisions and rationale
+- **vault/intention.md** - Project vision and guiding principles
+
+When you run `spek post` (outcome archival), lessons, decisions, and patterns are automatically written to the vault and committed to Git. The vault becomes your **persistent, compounding knowledge base that survives all sessions**.
+
+**Integration:** The vault is Git-backed, version-controlled, and optional to open in Obsidian for visualization. It works equally well in any markdown editor or command-line tools.
+
 ### Core Principles
 
 1. **The Wiki is a Persistent, Compounding Artifact**

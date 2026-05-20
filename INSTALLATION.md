@@ -31,16 +31,23 @@ spek-init
 spek init --verbose
 ```
 
-This automatically:
-- ✅ Creates `.cel/` directory (project metadata)
-- ✅ Creates `.memories/session/` directory (session data)
-- ✅ Creates `wiki/` directory (documentation)
-- ✅ Initializes CodeGraph database
-- ✅ Runs `specify init .` to initialize SpecKit in your project
+This automatically creates:
+- ✅ `vault/` - Obsidian vault for persistent memory (Git-backed)
+  - `vault/lessons/` - Per-feature lessons learned
+  - `vault/patterns.md` - Reusable patterns library
+  - `vault/decision.md` - Architectural decisions
+  - `vault/intention.md` - Project vision & tenets
+- ✅ `.memories/session/` - Session-scoped memory
+- ✅ `.cel/` - Project metadata and CodeGraph database
+- ✅ `wiki/` - Documentation structure
 
-**Note:** All dependencies including SpecKit are installed during `uv tool install spekificity`. You can skip components with flags if needed:
-- `spek init --skip-speckit` - Skip SpecKit initialization
-- `spek init --skip-codegraph` - Skip CodeGraph initialization
+Then runs `specify init .` to initialize SpecKit in your project.
+
+**Optional:** Open the `vault/` directory in Obsidian for graph visualization and knowledge browsing:
+1. Open Obsidian
+2. Click "Open folder as vault"
+3. Select your project's `vault/` directory
+4. Use Obsidian's graph view, search, and plugins
 
 ### 3. Verify Installation
 

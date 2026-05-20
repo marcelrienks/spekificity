@@ -139,10 +139,10 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 3. Log new decisions if architecture changed
 4. Update Success Criteria if spec changed
 5. Generate post-mortem summary
-6. Archive to wiki/vault/lessons/YYYY-MM-DD-feature-name.md
+6. Archive to vault/lessons/YYYY-MM-DD-feature-name.md
 
 **Output:**
-- Post-mortem document (wiki/vault/lessons/)
+- Post-mortem document (vault/lessons/)
 - New patterns proposed (for review + wiki/patterns.md)
 - New decisions logged (for wiki/decision.md)
 - Spec version incremented (if changes made)
@@ -160,14 +160,14 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 1. Collect implementation artifacts (spec, plan, tasks, execution trace, code changes)
 2. Generate lessons document from artifacts
 3. Document architectural decisions and rationale
-4. Update wiki/vault/patterns.md with new patterns
+4. Update vault/patterns.md with new patterns
 5. Sync repo memory (architectural decisions, pattern index)
 6. Refresh CodeGraph via /spek.map (incremental)
 7. Archive current feature session state
 8. Report completion
 
 **Output:**
-- Lessons document (wiki/vault/lessons/YYYY-MM-DD-feature-name.md)
+- Lessons document (vault/lessons/YYYY-MM-DD-feature-name.md)
 - Decisions and patterns documented
 - Synced repo memory + graph refreshed
 - Completion report

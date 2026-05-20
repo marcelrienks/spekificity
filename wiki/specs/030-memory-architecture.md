@@ -9,7 +9,7 @@
 
 ## Overview
 
-Spekificity defines a coherent memory architecture with three layers: persisted vault (Obsidian), repo-scoped memories (Copilot), and session-scoped context (ephemeral). Each layer has explicit granularity, ownership, persistence, and lifecycle. This spec covers:
+Spekificity defines a coherent memory architecture with three layers: Obsidian vault (persistent), repo-scoped memories (Copilot), and session-scoped context (ephemeral). Each layer has explicit granularity, ownership, persistence, and lifecycle. This spec covers:
 
 - **What** each memory layer stores and why
 - **When** memory is read (load lifecycle) and written (write lifecycle)
@@ -21,7 +21,7 @@ Spekificity defines a coherent memory architecture with three layers: persisted 
 
 ## Success Criteria
 
-- ✅ Vault layer persists (decisions, patterns, lessons survive sessions)
+- ✅ **Obsidian vault persists** (decisions, patterns, lessons survive sessions, synced to Git)
 - ✅ Repo layer caches efficiently (compressed memory reduces load time)
 - ✅ Session layer manages context (ephemeral state available during feature)
 - ✅ Layers integrate seamlessly (no manual sync between layers)

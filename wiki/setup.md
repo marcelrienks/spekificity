@@ -96,90 +96,81 @@ Running `specify init .` is **idempotent** — safe to run multiple times:
 
 ---
 
-## Tool 2: Knowledge Vault (Local Setup)
+## Tool 2: Obsidian Vault (Local Setup)
 
-The knowledge vault (Obsidian-format markdown) stores lessons learned, decisions, patterns, and project context. Spekificity agents read and write to this vault directly as plain markdown files.
+The Obsidian vault is your persistent memory layer—lessons learned, decisions, patterns, and project context stored as plain markdown files. Spekificity agents read and write to this vault directly as the authoritative knowledge base.
 
 ### Vault Location in Spekificity
 
 ```
 your-project/
-└── wiki/
-    └── vault/
-        ├── lessons/         ← written by /spek.conclude
-        ├── context/         ← maintained by agent across sessions
-        │   ├── decisions.md
-        │   └── patterns.md
-        └── graph/           ← populated by code analysis tool
+├── vault/                    ← Created automatically by spek init
+│   ├── lessons/              ← written by spek post (per-feature lessons)
+│   ├── patterns.md           ← reusable patterns discovered
+│   ├── decision.md           ← architectural decisions and rationale
+│   └── intention.md          ← project vision and guiding principles
+├── .memories/                ← Session and repo-scoped memory (Copilot layer)
+└── wiki/                     ← Documentation specs and guides
 ```
 
-### Initialization Steps
+### Automatic Initialization
 
-1. Create vault directory:
-   ```bash
-   mkdir -p wiki/vault/lessons
-   mkdir -p wiki/vault/context
-   mkdir -p wiki/vault/graph
-   ```
+When you run `spek init`, the vault is created automatically:
 
-2. Create initial vault files:
-   ```bash
-   # Decisions index
-   touch wiki/vault/context/decisions.md
-   
-   # Patterns library
-   touch wiki/vault/context/patterns.md
-   ```
+```bash
+spek init
+```
 
-3. Verify vault structure:
-   ```bash
-   ls -R wiki/vault/
-   # Expected: context/  lessons/  graph/
-   cat wiki/vault/context/decisions.md
-   # Expected: (file readable, even if empty)
-   ```
+This creates:
+- ✅ `vault/` directory with full structure
+- ✅ `vault/lessons/` for per-feature lessons (one `.md` file per feature)
+- ✅ `vault/patterns.md` — template for reusable patterns
+- ✅ `vault/decision.md` — template for architectural decisions
+- ✅ `vault/intention.md` — template for project vision
 
-### Important: Plain Markdown (No Obsidian App Needed)
+**You do not need to create vault files manually.**
 
-**The vault is just markdown files on your filesystem.** Spekificity agents access it directly via file I/O. The Obsidian app is entirely optional:
+### Important: Plain Markdown (No Obsidian App Required)
+
+**The vault is just markdown files on your filesystem.** Spekificity agents access it directly via file I/O:
 
 - ✅ **Agents work without Obsidian** — They read/write `.md` files directly
-- ✅ **Vault is fully git-committable** — Commit `wiki/vault/` to version control
-- ⚠️ **Obsidian app is optional** — Use only if you want to browse backlinks or visualize the knowledge graph in a rich UI
+- ✅ **Vault is fully git-committable** — Commit `vault/` to version control
+- ✅ **Tool-agnostic** — Use any markdown editor or command-line tools
+- ⚠️ **Obsidian app is optional** — Use only if you want graph visualization or rich UI
 
-### Optional: Obsidian Desktop App (Interactive UI)
+### Optional: Obsidian Desktop App (Enhanced UI)
 
 If you want the interactive visualization and backlink browsing (optional):
 
 #### macOS
-1. Download from [obsidian.md/download](https://obsidian.md/download)
-2. Open the `.dmg` and drag Obsidian to Applications
-3. Launch Obsidian
-4. Select **Open folder as vault**
-5. Navigate to `your-project/wiki/vault/` and select it
-6. Obsidian will index and build the graph view
+1. Download from [obsidian.md/download](https://obsidian.md/download) or: `brew install obsidian`
+2. Launch Obsidian
+3. Select **Open folder as vault**
+4. Navigate to `your-project/vault/` and select it
+5. Obsidian will index and build the graph view
 
-#### Linux
-1. Download the `.appimage` from [obsidian.md/download](https://obsidian.md/download)
-2. Make executable: `chmod +x obsidian-*.appimage`
-3. Run: `./obsidian-*.appimage`
-4. Select **Open folder as vault** → navigate to `your-project/wiki/vault/`
+#### Windows/Linux
+1. Download from [obsidian.md/download](https://obsidian.md/download)
+2. Install and launch Obsidian
+3. Select **Open folder as vault**
+4. Navigate to `your-project/vault/` and select it
 
 #### Configuration (Optional)
 
 No configuration required for agent-only use. The `.obsidian/` directory is created automatically by the app on first open and can be committed to git to preserve graph layout settings.
 
 **Safe to gitignore:**
-- `wiki/vault/.obsidian/workspace.json` — Window/panel layout (regenerates each app open)
-- `wiki/vault/.obsidian/cache` — Link index cache (regenerates each app open)
+- `vault/.obsidian/workspace.json` — Window/panel layout (regenerates)
+- `vault/.obsidian/cache` — Link index cache (regenerates)
 
 These are already excluded in the project `.gitignore`.
 
 ### Troubleshooting
 
-- **Obsidian shows no graph nodes** → Ensure you opened `wiki/vault/` as the vault root, not the project root
+- **Obsidian shows no graph nodes** → Ensure you opened `vault/` as the vault root, not the project root
 - **Backlinks missing after agent writes** → Close and reopen vault to trigger re-indexing
-- **Agent says vault does not exist** → Confirm `wiki/vault/` is present; if not, run code analysis tool initialization
+- **Agent says vault does not exist** → Confirm `vault/` is present; if not, run `spek init` again
 
 ---
 

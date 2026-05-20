@@ -204,4 +204,217 @@ def get_vault_summary() -> Dict[str, Any]:
         "decisions": len(load_architectural_decisions()),
         "patterns": len(load_patterns()),
         "lessons": len(load_lessons()),
+        "obsidian_vault": load_obsidian_vault_summary(),
+    }
+
+
+# ============================================================================
+# Obsidian Vault Functions (vault/ directory as persistent memory)
+# ============================================================================
+
+
+def get_obsidian_vault_dir() -> Path:
+    """Get Obsidian vault directory path."""
+    return Path.cwd() / "vault"
+
+
+def load_obsidian_lessons() -> Dict[str, str]:
+    """Load all lessons from vault/lessons/."""
+    try:
+        vault_dir = get_obsidian_vault_dir()
+        lessons_dir = vault_dir / "lessons"
+        
+        if not lessons_dir.exists():
+            return {}
+        
+        lessons = {}
+        for lesson_file in lessons_dir.glob("*.md"):
+            try:
+                lessons[lesson_file.stem] = lesson_file.read_text()
+            except Exception as e:
+                logger.warning(f"Error reading lesson {lesson_file}: {e}")
+        
+        logger.info(f"Loaded {len(lessons)} lessons from vault/lessons/")
+        return lessons
+    
+    except Exception as e:
+        logger.error(f"Error loading obsidian lessons: {e}")
+        return {}
+
+
+def load_obsidian_patterns() -> Dict[str, str]:
+    """Load patterns library from vault/patterns.md."""
+    try:
+        vault_dir = get_obsidian_vault_dir()
+        patterns_file = vault_dir / "patterns.md"
+        
+        if not patterns_file.exists():
+            return {}
+        
+        content = patterns_file.read_text()
+        patterns = {}
+        
+        # Split by ## (pattern headers)
+        sections = re.split(r'^## ', content, flags=re.MULTILINE)
+        
+        for section in sections[1:]:  # Skip first split (before any ##)
+            lines = section.split('\n')
+            if lines:
+                pattern_name = lines[0].strip()
+                patterns[pattern_name] = section
+        
+        logger.info(f"Loaded {len(patterns)} patterns from vault/patterns.md")
+        return patterns
+    
+    except Exception as e:
+        logger.error(f"Error loading obsidian patterns: {e}")
+        return {}
+
+
+def load_obsidian_decisions() -> Dict[str, str]:
+    """Load architectural decisions from vault/decision.md."""
+    try:
+        vault_dir = get_obsidian_vault_dir()
+        decisions_file = vault_dir / "decision.md"
+        
+        if not decisions_file.exists():
+            return {}
+        
+        content = decisions_file.read_text()
+        decisions = {}
+        
+        # Split by ## (decision headers)
+        sections = re.split(r'^## ', content, flags=re.MULTILINE)
+        
+        for section in sections[1:]:  # Skip first split
+            lines = section.split('\n')
+            if lines:
+                decision_name = lines[0].strip()
+                decisions[decision_name] = section
+        
+        logger.info(f"Loaded {len(decisions)} decisions from vault/decision.md")
+        return decisions
+    
+    except Exception as e:
+        logger.error(f"Error loading obsidian decisions: {e}")
+        return {}
+
+
+def load_obsidian_intention() -> str:
+    """Load project intention/vision from vault/intention.md."""
+    try:
+        vault_dir = get_obsidian_vault_dir()
+        intention_file = vault_dir / "intention.md"
+        
+        if not intention_file.exists():
+            return ""
+        
+        content = intention_file.read_text()
+        logger.info("Loaded project intention from vault/intention.md")
+        return content
+    
+    except Exception as e:
+        logger.error(f"Error loading obsidian intention: {e}")
+        return ""
+
+
+def save_lesson_to_obsidian(feature_name: str, lesson_content: str) -> bool:
+    """Save lesson to vault/lessons/<date>-<feature>.md."""
+    try:
+        from datetime import datetime
+        vault_dir = get_obsidian_vault_dir()
+        lessons_dir = vault_dir / "lessons"
+        lessons_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Create filename: YYYY-MM-DD-<feature>.md
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        lesson_file = lessons_dir / f"{date_str}-{feature_name}.md"
+        
+        lesson_file.write_text(lesson_content)
+        logger.info(f"Saved lesson to {lesson_file}")
+        return True
+    
+    except Exception as e:
+        logger.error(f"Error saving lesson to obsidian: {e}")
+        return False
+
+
+def append_pattern_to_obsidian(pattern_name: str, pattern_content: str) -> bool:
+    """Append pattern to vault/patterns.md."""
+    try:
+        vault_dir = get_obsidian_vault_dir()
+        patterns_file = vault_dir / "patterns.md"
+        
+        if not patterns_file.exists():
+            logger.warning("vault/patterns.md not found")
+            return False
+        
+        # Append new pattern
+        current_content = patterns_file.read_text()
+        
+        # Add pattern if not already present
+        if f"## {pattern_name}" not in current_content:
+            new_content = current_content + f"\n## {pattern_name}\n\n{pattern_content}\n\n---\n"
+            patterns_file.write_text(new_content)
+            logger.info(f"Appended pattern '{pattern_name}' to vault/patterns.md")
+            return True
+        else:
+            logger.info(f"Pattern '{pattern_name}' already exists in vault/patterns.md")
+            return False
+    
+    except Exception as e:
+        logger.error(f"Error appending pattern to obsidian: {e}")
+        return False
+
+
+def append_decision_to_obsidian(decision_name: str, decision_content: str) -> bool:
+    """Append decision to vault/decision.md."""
+    try:
+        vault_dir = get_obsidian_vault_dir()
+        decisions_file = vault_dir / "decision.md"
+        
+        if not decisions_file.exists():
+            logger.warning("vault/decision.md not found")
+            return False
+        
+        # Append new decision
+        current_content = decisions_file.read_text()
+        
+        # Add decision if not already present
+        if f"## {decision_name}" not in current_content:
+            new_content = current_content + f"\n## {decision_name}\n\n{decision_content}\n\n---\n"
+            decisions_file.write_text(new_content)
+            logger.info(f"Appended decision '{decision_name}' to vault/decision.md")
+            return True
+        else:
+            logger.info(f"Decision '{decision_name}' already exists in vault/decision.md")
+            return False
+    
+    except Exception as e:
+        logger.error(f"Error appending decision to obsidian: {e}")
+        return False
+
+
+def update_intention_obsidian(intention_content: str) -> bool:
+    """Update vault/intention.md."""
+    try:
+        vault_dir = get_obsidian_vault_dir()
+        intention_file = vault_dir / "intention.md"
+        
+        intention_file.write_text(intention_content)
+        logger.info("Updated vault/intention.md")
+        return True
+    
+    except Exception as e:
+        logger.error(f"Error updating intention in obsidian: {e}")
+        return False
+
+
+def load_obsidian_vault_summary() -> Dict[str, int]:
+    """Get summary of Obsidian vault contents."""
+    return {
+        "lessons": len(load_obsidian_lessons()),
+        "patterns": len(load_obsidian_patterns()),
+        "decisions": len(load_obsidian_decisions()),
+        "has_intention": bool(load_obsidian_intention()),
     }

@@ -97,6 +97,90 @@ def create_memory_structure() -> None:
     logger.info(f"✓ Created memory structure in {memory_dir}")
 
 
+def create_vault_structure() -> None:
+    """Create Obsidian vault structure for persistent memory."""
+    vault_dir = Path.cwd() / "vault"
+    vault_dir.mkdir(exist_ok=True)
+    
+    lessons_dir = vault_dir / "lessons"
+    lessons_dir.mkdir(exist_ok=True)
+    
+    # Initialize vault files with templates
+    patterns_file = vault_dir / "patterns.md"
+    if not patterns_file.exists():
+        patterns_file.write_text("""# Patterns Library
+
+## [Pattern Name]
+
+**First Used:** spec-[number] (date)  
+**Last Used:** spec-[number] (date)  
+**Frequency:** used in N features
+
+**Summary:** [1-2 sentence description]
+
+**When to Use:**
+- Context: [situations where this pattern applies]
+- Benefits: [why use this pattern]
+
+**Implementation:**
+[Code example or high-level steps]
+
+---
+""")
+    
+    decision_file = vault_dir / "decision.md"
+    if not decision_file.exists():
+        decision_file.write_text("""# Decision Index
+
+## [Decision Title]
+
+**Date:** YYYY-MM-DD  
+**Feature:** spec-[number]  
+**Status:** active | deprecated | superseded-by-[link]
+
+**Context:** Why this decision was needed
+
+**Options Considered:**
+- Option A: [description, pros, cons]
+- Option B: [description, pros, cons]
+
+**Decision:** [Option chosen] because [rationale]
+
+**Impact:** [affected systems, patterns, future constraints]
+
+---
+""")
+    
+    intention_file = vault_dir / "intention.md"
+    if not intention_file.exists():
+        intention_file.write_text("""# Project Intention & Vision
+
+## Vision
+
+[Project vision statement]
+
+## Tenets
+
+- [Core tenet 1]
+- [Core tenet 2]
+- [Core tenet 3]
+
+## Constraints
+
+- [Technical constraint]
+- [Organizational constraint]
+
+## Success Criteria
+
+- [Criterion 1]
+- [Criterion 2]
+
+---
+""")
+    
+    logger.info(f"✓ Created vault structure in {vault_dir}")
+
+
 def create_wiki_structure() -> None:
     """Create wiki directory structure if it doesn't exist."""
     wiki_dir = Path.cwd() / "wiki"
@@ -144,9 +228,10 @@ def execute(
     Initialize Spekificity project structure and infrastructure.
     
     This command sets up all necessary components for Spekificity:
-    - Creates .cel directory for project-specific data
-    - Creates .memories directory for memory persistence
-    - Creates wiki directory for documentation
+    - Creates vault/ directory (Obsidian persistent memory)
+    - Creates .memories/ directories (session memory)
+    - Creates .cel/ directory for project metadata
+    - Creates wiki/ directory for documentation
     - Initializes CodeGraph database
     - Runs 'specify init .' to initialize SpecKit
     
@@ -174,6 +259,7 @@ def execute(
             os.chdir(work_dir)
             
             create_memory_structure()
+            create_vault_structure()
             create_wiki_structure()
             ensure_celdir()
             

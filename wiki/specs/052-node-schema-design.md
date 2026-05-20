@@ -401,8 +401,8 @@ specs/00api-redesign.md#implementation-approach
 ### Doc Nodes (File): `file` (no `#`)
 
 ```
-wiki/vault/intention.md
-wiki/vault/lessons/2026-05-18-00feature-name.md
+vault/intention.md
+vault/lessons/2026-05-18-00feature-name.md
 skills/spek-prepare/SKILL.md
 ```
 

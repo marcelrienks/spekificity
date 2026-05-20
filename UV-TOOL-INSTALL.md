@@ -73,7 +73,11 @@ spek init
 ```
 
 This automatically:
-1. Creates `.cel/` directory (project metadata)
+1. Creates `vault/` directory (Obsidian persistent memory)
+   - `vault/lessons/` - Per-feature lessons learned
+   - `vault/patterns.md` - Reusable patterns
+   - `vault/decision.md` - Architectural decisions
+   - `vault/intention.md` - Project vision
 2. Creates `.memories/session/` directory (session storage)
 3. Creates `wiki/` directory structure
 4. Initializes CodeGraph SQLite database
@@ -85,6 +89,7 @@ This automatically:
 
 Setting up directory structures...
 ✓ Created memory structure
+✓ Created vault structure (Obsidian)
 ✓ Created wiki structure  
 ✓ Created .cel directory
 
@@ -95,6 +100,12 @@ Initializing SpecKit...
 ✓ SpecKit initialized successfully
 
 ✅ Spekificity initialization complete!
+
+Next steps:
+  1. (Optional) Open vault/ in Obsidian for knowledge browsing
+  2. Run: spek prepare           (Initialize workspace)
+  3. Run: spek context           (Load project context)
+  4. Run: spek plan [feature]    (Create specification & plan)
 ```
 
 **After installation, typical output:**
@@ -102,6 +113,7 @@ Initializing SpecKit...
 🚀 Initializing Spekificity project...
 
 ✓ Created memory structure in ./.memories
+✓ Created vault structure in ./vault (Obsidian)
 ✓ Created wiki structure in ./wiki
 ✓ Created .cel directory at ./.cel
 ✓ CodeGraph initialized at ./.cel/codegraph.db
@@ -110,9 +122,10 @@ Initializing SpecKit...
 ✅ Spekificity initialization complete!
 
 Next steps:
-  1. Run: spek prepare           (Initialize workspace)
-  2. Run: spek context           (Load project context)
-  3. Run: spek plan [feature]    (Create specification & plan)
+  1. (Optional) Open vault/ in Obsidian for knowledge browsing
+  2. Run: spek prepare           (Initialize workspace)
+  3. Run: spek context           (Load project context)
+  4. Run: spek plan [feature]    (Create specification & plan)
 ```
 
 ### Manual Setup (if needed)

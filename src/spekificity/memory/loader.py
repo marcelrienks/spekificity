@@ -97,7 +97,7 @@ def load_session_memory(feature_name: Optional[str] = None) -> Optional[SessionM
 
 
 def load_repo_memory() -> Optional[RepoMemory]:
-    """Load repository-scoped memory from .cel/ and wiki/."""
+    """Load repository-scoped memory from .cel/ and vault/."""
     try:
         repo_mem = RepoMemory(
             source_path=get_repo_memories_dir(),
@@ -120,6 +120,22 @@ def load_repo_memory() -> Optional[RepoMemory]:
             if patterns_file.exists():
                 repo_mem.patterns_index = {"source": patterns_file.read_text()[:500]}
         
+        # Load from Obsidian vault (persistent memory)
+        from ..vault.loader import (
+            load_obsidian_lessons,
+            load_obsidian_patterns,
+            load_obsidian_decisions,
+            load_obsidian_intention
+        )
+        
+        vault_dir = Path.cwd() / "vault"
+        if vault_dir.exists():
+            repo_mem.metadata["obsidian_vault"] = str(vault_dir)
+            repo_mem.metadata["lessons_count"] = len(load_obsidian_lessons())
+            repo_mem.metadata["patterns_count"] = len(load_obsidian_patterns())
+            repo_mem.metadata["decisions_count"] = len(load_obsidian_decisions())
+            repo_mem.metadata["has_intention"] = bool(load_obsidian_intention())
+        
         # Load wiki specs metadata
         wiki_dir = get_wiki_dir()
         specs_dir = wiki_dir / "specs"
@@ -128,7 +144,7 @@ def load_repo_memory() -> Optional[RepoMemory]:
             repo_mem.metadata["spec_count"] = spec_count
             repo_mem.metadata["specs_dir"] = str(specs_dir)
         
-        logger.info(f"Loaded repo memory from .cel/ and wiki/")
+        logger.info(f"Loaded repo memory from .cel/, vault/, and wiki/")
         return repo_mem
     
     except Exception as e:

@@ -60,18 +60,27 @@ def execute(layer: str = "all", feature_name: Optional[str] = None, cached: bool
             click.echo("🗂️  Repository Layer:")
             click.echo(f"  ✓ Source: {context.repo_memory.source_path}")
             
+            # Display Obsidian vault stats
+            if context.repo_memory.metadata.get("obsidian_vault"):
+                click.echo(f"\n  📓 Obsidian Vault (Persistent Memory):")
+                click.echo(f"    ✓ Lessons: {context.repo_memory.metadata.get('lessons_count', 0)} learned")
+                click.echo(f"    ✓ Decisions: {context.repo_memory.metadata.get('decisions_count', 0)} recorded")
+                click.echo(f"    ✓ Patterns: {context.repo_memory.metadata.get('patterns_count', 0)} indexed")
+                if context.repo_memory.metadata.get("has_intention"):
+                    click.echo(f"    ✓ Intention: Project vision documented")
+            
             # Get vault summary
             vault_summary = get_vault_summary()
-            click.echo(f"  ✓ Specs: {vault_summary['specs']} documents")
-            click.echo(f"  ✓ Decisions: {vault_summary['decisions']} recorded")
-            click.echo(f"  ✓ Patterns: {vault_summary['patterns']} indexed")
-            click.echo(f"  ✓ Lessons: {vault_summary['lessons']} learned")
+            click.echo(f"\n  📋 Wiki Specs:")
+            click.echo(f"    ✓ Specs: {vault_summary['specs']} documents")
+            click.echo(f"    ✓ Patterns: {vault_summary['patterns']} indexed")
             
             # Check CodeGraph
             graph = CodeGraph()
             stats = graph.get_stats()
             if stats:
-                click.echo(f"  ✓ CodeGraph: {stats.get('node_count', 0)} symbols indexed")
+                click.echo(f"\n  🔗 CodeGraph:")
+                click.echo(f"    ✓ Symbols indexed: {stats.get('node_count', 0)}")
             click.echo()
         
         # Save context for session reuse
