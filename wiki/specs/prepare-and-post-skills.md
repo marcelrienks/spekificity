@@ -1,6 +1,6 @@
 # HIGH-LEVEL OVERVIEW: Prepare and Post Skills
 
-**Status:** HIGH-LEVEL OVERVIEW (2026-05-19)  
+**Status:** HIGH-LEVEL OVERVIEW (2026-05-19)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Feature:** spekificity feature 003 — Full Workflow CLI  
 **Purpose:** Entry/exit points for feature lifecycle; brackets all work with context + vault sync  
 **Related:** [Detailed Prepare Spec](prepare-command.md), [Detailed Post Spec](post-command.md), [Integration Contract](speckit-integration-contract.md), [Memory Architecture](memory-architecture.md)
@@ -49,6 +49,18 @@ Together they ensure **persistent memory** + **deterministic workflow** + **auto
 - ✓ Ready for `/spek.automate`
 
 **→ [Detailed Prepare Spec](prepare-command.md) for full step-by-step definitions**
+
+---
+
+## Success Criteria for Prepare + Post Together
+
+- ✅ Prepare + Post bracket feature lifecycle (initialization + completion)
+- ✅ Context persistent (loaded at prepare, archived at post)
+- ✅ Vault updated (decisions, patterns, lessons stored permanently)
+- ✅ Memory layers intact (vault + repo + session all updated)
+- ✅ Token budget tracked (savings visible in post report)
+- ✅ Workflow deterministic (same inputs → same outputs)
+- ✅ Agent autonomy enabled (full context throughout feature)
 
 ---
 

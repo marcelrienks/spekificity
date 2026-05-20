@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Feature State Tracking (C4.4)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** State Schema — workflow-state.json Structure  
 **Depends On:** memory-architecture.md  
 **Used By:** /spek.prepare (create), /spek.post (update), all commands (read)  
@@ -69,6 +69,16 @@ implement: implementing (75%)
   ↓
 post: completing (100%)
 ```
+
+## Success Criteria
+
+- ✅ State accurately reflects current phase (transitions valid + timely)
+- ✅ Completion % updated at each step (0% → 25% → 50% → 75% → 100%)
+- ✅ Session log tracks all work (every command logs entry + timestamp)
+- ✅ Transitions are valid (no skip phases, linear progression)
+- ✅ State file readable by all commands (consistent YAML format)
+- ✅ Archive process preserves history (old features remain available for reference)
+- ✅ Feature state survives session interruption (persisted to disk)
 
 ---
 

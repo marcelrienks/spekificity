@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: /spek.map Command (C5.3)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Skill — /spek.map (Code Graph Generation & Maintenance)  
 **Depends On:** graphify-installation.md, graph-storage-structure.md  
 **Used By:** /spek.prepare (Step 4), /spek.post (Step 8)  

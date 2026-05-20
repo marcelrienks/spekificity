@@ -98,6 +98,16 @@ spek automate [options]
 5. Call `/speckit.clarify` if needed
 6. Call `/speckit.plan`
 7. Call `/speckit.analyze` and surface findings
+
+## Success Criteria
+
+- ✅ All CLI commands execute without crashing (robust error handling)
+- ✅ Feature state tracked correctly (phase transitions accurate)
+- ✅ Workflow sequencing enforced (can't skip required steps)
+- ✅ Parameters validated (clear errors for invalid flags/args)
+- ✅ Exit codes correct (0=success, 1=error, 2=validation, 3=user-action)
+- ✅ Help + version work (`--help`, `--version` flags)
+- ✅ Integration seamless (users think in workflow, not technical layers)
 8. Support in-place remediation loop when findings require changes
 9. Call `/speckit.tasks`
 10. Update feature state (`current-feature.md`)

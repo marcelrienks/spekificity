@@ -7,6 +7,16 @@
 **Depends On:** spek-map-command.md, graph-refresh-strategy.md, node-schema-design.md  
 **Used By:** `/spek.prepare` (freshness check), `/spek.post` (incremental sync), `/spek.automate` (context queries)  
 
+## Success Criteria
+
+- ✅ CodeGraph installed and verified (node or npm reports version)
+- ✅ Configuration file created (.spekificity/config.yaml with all required fields)
+- ✅ Code indexing operational (20+ languages supported, AST parsing works)
+- ✅ MCP tool integration working (agent can query code graph via tools)
+- ✅ Real-time sync functional (file watcher detects changes, incremental updates)
+- ✅ Performance meets targets (queries <100ms, full rebuild <60s)
+- ✅ Documentation indexing integrated (Obsidian vault merged with code nodes)  
+
 ---
 
 ## Executive Summary

@@ -1,6 +1,6 @@
 # C.3.6 Backprop Reflex: Test Failures → Vault Updates
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** HIGH (Phase 2, post-launch)  
 **Effort:** 3-4 hours  
 **Adoption Source:** B.10 (Cavekit, 920⭐, active open-source project)  
@@ -36,7 +36,22 @@ Automatically capture and learn from test failures by:
 - CI/CD pipeline setup (assume GitHub Actions or similar)
 - Failure categorization logic (can be extended per project)
 
-**Related specs:**
+---
+
+## Success Criteria
+
+- ✅ Test failures automatically parsed (error messages, stack traces extracted)
+- ✅ Failure patterns extracted and classified (race condition, timeout, assertion, etc.)
+- ✅ Vault updated with failure warnings (appended to decision/pattern records)
+- ✅ Future specs tagged with failure pattern warnings (prevents repeats)
+- ✅ Feedback loop: test failures → vault learnings → better specs → fewer failures
+- ✅ Failure notes captured with context (full stack trace + test name + severity)
+- ✅ Integration into `/spek.post` Step 3 seamless (user sees "Failure analysis complete")
+
+---
+
+## Related Specs
+
 - B.8.4: Post Command (Step 3 lesson generation; where backprop integrates)
 - C.3.1: Zettelkasten Conventions (vault format for failure records)
 - C.3.2: Auto-tagging + Auto-wikilinks (tag failure notes)

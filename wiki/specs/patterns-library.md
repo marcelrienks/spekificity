@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Patterns Library (C2.3)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Memory Layer 2 — Patterns Library  
 **Depends On:** lessons-format.md  
 **Used By:** /spek.context (read at session start), `/spek.automate` plan phase (suggest patterns during planning)  
@@ -131,6 +131,18 @@ Code examples:
 **References:** Traceability
 - Links to vault/lessons files that used this
 - Links to actual code examples in codebase
+
+## Success Criteria
+
+- ✅ Patterns discoverable (searchable by name + tags + domain)
+- ✅ Reuse tracked (\"used in N features\" metric accurate)
+- ✅ Status accurate (active/archived/experimental correctly labeled)
+- ✅ Implementation clear (code examples concrete + tested)
+- ✅ Lessons captured (watch outs + edge cases documented)
+- ✅ Frequency data maintained (first/last used dates track maturity)
+- ✅ Related patterns linked (wikilinks enable pattern discovery)
+
+---
 
 ### Pattern Examples
 

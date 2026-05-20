@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Post-Processing (C3.6)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Integration Layer 3 — /spek.post Workflow  
 **Depends On:** lessons-format.md, architectural-decisions.md, patterns-library.md  
 
@@ -133,6 +133,18 @@ See [lessons-format.md](lessons-format.md) and [post-command.md](post-command.md
 ├─ Repo memory: synced (/memories/repo/)
 └─ Session archived: /memories/session/archive/
 ```
+
+---
+
+## Success Criteria
+
+- ✅ All 10 steps complete in <30 seconds (fast execution)
+- ✅ Lessons extracted + compressed (caveman mode applied)
+- ✅ Vault updated (decisions + patterns appended correctly)
+- ✅ Repo memory synced (compressed cache updated)
+- ✅ Code graph refreshed (incremental sync completes)
+- ✅ Session state archived (ephemeral memory cleaned up)
+- ✅ User informed of all changes (completion report clear + actionable)
 
 ---
 

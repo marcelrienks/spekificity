@@ -1,5 +1,7 @@
 # Spec: Code and Document Maps (extracted spec)
 
+**Status:** ATOMIC SPECIFICATION | **Version:** 1.0.0-alpha.1 (2026-05-20)
+
 ## Overview
 
 **Problem:** The vault graph currently targets source code only. Documentation (specs, plans, skills, architectural decisions) exists in Obsidian vault outside the queryable graph, so AI-assisted steps (specify, plan, implement) cannot easily discover what documentation already exists. This leads to duplicated specs, contradictory plans, and missed opportunities to reuse patterns.
@@ -79,6 +81,18 @@ Skill node (file-level): {
 ```
 
 **Storage:** All nodes stored in `vault/graph/nodes.jsonl` (one JSON object per line for streaming)
+
+---
+
+## Success Criteria
+
+- ✅ Unified graph combines code + documentation nodes (hybrid graph functional)
+- ✅ Hybrid granularity applied (heading-level for specs/decisions, file-level for configs)
+- ✅ Cross-references computed (code ↔ doc bidirectional links working)
+- ✅ Query interface unified (`/spek.map` command single entry point)
+- ✅ Agent can discover documentation (no manual re-reading of full files)
+- ✅ Context-aware spec/plan/implementation enabled (decisions + patterns injected)
+- ✅ Duplicate detection prevents confusion (same concept not indexed twice)
 
 ---
 

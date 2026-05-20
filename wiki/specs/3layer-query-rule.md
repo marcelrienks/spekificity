@@ -1,6 +1,6 @@
 # C.3.3 3-Layer Query Rule: Documentation & Enforcement
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** MUST (Phase 1)  
 **Effort:** 2-3 hours  
 **Adoption Source:** B.9 (claude-code-memory-setup, cited as motivation for large token savings)
@@ -36,7 +36,22 @@ Document and enforce the **3-Layer Query Rule** — a token-efficient context lo
 - Vault structure (see B.8.2 Persistent Memories)
 - Code reading strategies (assume needed only in Layer 3)
 
-**Related specs:**
+---
+
+## Success Criteria
+
+- ✅ Layer 1 (code graph) queries return results in <500ms without API tokens
+- ✅ Layer 2 (vault) queries return results in <2s with architecture context loaded
+- ✅ Layer 3 (code files) only accessed when Layers 1-2 insufficient (token savings measurable)
+- ✅ Token cost breakdown documented per layer (280 tokens avg Layer 1, 500 tokens avg Layer 2)
+- ✅ Integration points in `/spek.context` and `/spek.post` follow 3-layer rule
+- ✅ Documentation in copilot-instructions.md clearly lists all rules
+- ✅ Enforcement rules prevent unnecessary code file reads (fallback only)
+
+---
+
+## Related Specs
+
 - B.11: Codegraph Setup (Layer 1 implementation)
 - B.8.2: Persistent Memories (Layer 2 implementation)
 - B.8.4: Post Command (uses 3-layer rule for context injection)

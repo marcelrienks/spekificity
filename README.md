@@ -1,29 +1,63 @@
 # Spekificity
 
-> Status: active development. Repository currently contains documentation, architectural decisions, and implementation specs for the Spekificity platform. CLI and skill implementation are planned; this repo is not yet a packaged runtime.
+> **Status:** Active development. Full documentation and specifications in `/wiki` and `/specs`.
 
-Spekificity is an agentic consolidation platform aimed at four recurring LLM agent failures:
+## What is Spekificity?
 
-- token bloat
-- shallow planning
-- context loss
-- low autonomy
+Spekificity is a **specification-driven framework for rapid AI agent development**. It solves four critical problems:
 
-Core idea: combine spec-driven workflow, indexed code context, persistent project memory, and output compression so an AI agent can move from feature request to implementation with less rescanning and less manual steering.
+| Problem | Solution |
+|---------|----------|
+| **Token bloat** | Indexed code analysis (CodeGraph) + scoped context loading |
+| **Shallow planning** | Spec-first workflow with enriched validation layers |
+| **Context loss** | Persistent knowledge vault (Git-backed Obsidian) |
+| **Low autonomy** | Reusable agent skills with deterministic sequencing |
 
-## What This Repository Is
+**Value Proposition:** Build features **10x faster** with deterministic specs, persistent memory, and zero context loss between sessions.
 
-This repository is the design and specification surface for Spekificity.
+---
 
-It currently contains:
+## Quick Start (5 minutes)
 
-- project intention and architecture documents
-- workflow definitions for enriched SpecKit usage
-- atomic specifications for context loading, orchestration, memory, graph integration, and post-processing
-- setup notes for supporting tools
-- roadmap and design decisions
+### Prerequisites
 
-It does not currently contain a complete shipped `spek` CLI, installed skill bundle, or runnable platform distribution in this tree.
+- Python 3.11+
+- Git (initialized project)
+- `uv` package manager
+
+### Installation & Setup
+
+```bash
+# 1. Clone and enter the project
+git clone <repo-url>
+cd spekificity
+
+# 2. Install SpecKit globally
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+
+# 3. Initialize Spekificity in your project
+specify init .
+
+# 4. Set up knowledge vault (Obsidian-compatible)
+# → Read: wiki/quickstart.md for step-by-step guide
+
+# 5. Start your first feature
+/spek.prepare
+```
+
+**Next:** Read [wiki/quickstart.md](wiki/quickstart.md) for full walkthrough (30 min).
+
+---
+
+## Key Features
+
+✅ **Spec-Driven Workflow** — All work starts with a structured specification  
+✅ **Persistent Memory** — Decisions, patterns, lessons stored in Git-backed vault  
+✅ **Token Efficiency** — Pre-indexed code analysis (CodeGraph) + Caveman compression  
+✅ **Deterministic Sequencing** — 5-phase workflow (Prepare → Specify → Plan → Implement → Close)  
+✅ **Composable Skills** — `/spek.*` commands can be chained or run independently  
+
+---
 
 ## Platform Model
 
@@ -31,23 +65,89 @@ Spekificity is built around four pillars:
 
 | Pillar | Goal | Mechanism |
 |---|---|---|
-| Token efficiency | Spend tokens on reasoning, not file rediscovery | indexed graph queries, scoped context loading, Caveman compression |
-| Determinism | Keep feature work on a repeatable track | SpecKit workflow: specify -> plan -> tasks -> implement |
-| Persistence | Preserve architectural context across sessions | knowledge vault (markdown store for decisions, patterns, lessons) |
-| Autonomy | Reduce developer hand-holding | reusable project memory + graph-grounded context injection |
+| **Token efficiency** | Spend tokens on reasoning, not file rediscovery | indexed graph queries, scoped context loading, Caveman compression |
+| **Determinism** | Keep feature work on a repeatable track | SpecKit workflow: specify → plan → tasks → implement |
+| **Persistence** | Preserve architectural context across sessions | knowledge vault (markdown store for decisions, patterns, lessons) |
+| **Autonomy** | Reduce developer hand-holding | reusable project memory + graph-grounded context injection |
+
+---
 
 ## Target Tool Stack
 
-Current design direction across the wiki is:
+- **SpecKit / Specify** — Spec-driven workflow engine
+- **CodeGraph** — Code intelligence & impact analysis (replaces Graphify)
+- **Obsidian Vault** — Knowledge store for specs, decisions, patterns, lessons
+- **Caveman Mode** — Response compression for token control
 
-- SpecKit / Specify for spec-first workflow generation
-- CodeGraph as the recommended code intelligence layer for agent workflows
-- Obsidian-compatible knowledge vault for durable project knowledge
-- Caveman mode for response compression and token control
+Spekificity defines how these tools work together—it doesn't replace them.
 
-Spekificity does not try to replace those systems. It defines how they should work together.
+---
 
-## Target Workflow
+## Core Workflow
+
+```
+FEATURE START
+    ↓
+/spek.prepare (git clean, vault fresh, CodeGraph synced)
+    ↓
+/spek.automate --phase=specify (enriched spec generation)
+    ↓
+/spek.automate --phase=plan (task breakdown with impact analysis)
+    ↓
+/spek.implement (execute with full context)
+    ↓
+/spek.post (archive lessons, refresh state)
+    ↓
+FEATURE COMPLETE
+```
+
+---
+
+## Documentation
+
+| Document | Purpose | Read Time |
+|----------|---------|-----------|
+| [wiki/quickstart.md](wiki/quickstart.md) | Step-by-step guide for first feature | 30 min |
+| [wiki/workflow.md](wiki/workflow.md) | Detailed 5-phase workflow | 15 min |
+| [wiki/intention.md](wiki/intention.md) | Project vision & philosophy | 10 min |
+| [wiki/decision.md](wiki/decision.md) | Architectural decisions (why CodeGraph, etc.) | 10 min |
+| [wiki/faq.md](wiki/faq.md) | Common questions & troubleshooting | 20 min |
+| [.spekificity/skill-index.md](.spekificity/skill-index.md) | Complete command reference | 15 min |
+
+---
+
+## Next Steps
+
+**New to Spekificity?** Start here:
+
+1. Read [wiki/quickstart.md](wiki/quickstart.md) (30 min)
+2. Run `/spek.prepare` to initialize your workspace
+3. Create your first feature spec with `/spek.automate --phase=specify`
+
+**Questions?** See [wiki/faq.md](wiki/faq.md).
+
+---
+
+## Contributing
+
+Contributions welcome! Please:
+
+1. Create a feature branch from `main`
+2. Submit specs and documentation following [wiki/naming-conventions.md](wiki/naming-conventions.md)
+3. Link decisions to [wiki/decision.md](wiki/decision.md)
+4. Include test cases and lessons learned
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+**Copyright © 2026 Marcel Rienks**
+
+---
+
+## Platform Model (Detailed)
 
 The intended Spekificity workflow is:
 

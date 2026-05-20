@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Graph Storage Structure (C5.2)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Data Schema — Code Graph Directory & File Formats  
 **Depends On:** node-schema-design.md  
 **Used By:** /spek.map, /spek.context, all enrichment layers  
@@ -119,6 +119,16 @@ One JSON per line:
   "...": "..."
 }
 ```
+
+## Success Criteria
+
+- ✅ Directory structure matches spec layout (all folders + files present)
+- ✅ All files in correct location (nodes.jsonl, edges.jsonl, cache/ at right paths)
+- ✅ nodes.jsonl is valid JSONL (one JSON per line, no parsing errors)
+- ✅ edges.jsonl is valid JSONL (relationship entries complete)
+- ✅ config.json is valid JSON (version, sources, performance metadata present)
+- ✅ Cache files exist and valid (sha256.json, node-index.json readable)
+- ✅ Storage handles large graphs (100K+ symbols supported)
 
 ---
 

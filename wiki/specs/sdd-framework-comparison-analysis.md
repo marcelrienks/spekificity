@@ -1,6 +1,6 @@
 # framework-analysis Investigation — SDD Framework Comparison and SpecKit Positioning
 
-**Status:** INVESTIGATION COMPLETE (2026-05-18)  
+**Status:** INVESTIGATION COMPLETE (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Reference:** Wasowski Medium article (paywalled; supplemented with public landscape analysis)  
 **Scope:** 30+ spec-driven development frameworks analyzed; positioning of SpecKit and implications for Spekificity  
 
@@ -48,6 +48,16 @@ Constitution → Specify → Clarify (optional) → Plan → Tasks → Analyze (
 - Clear separation of concerns (spec ≠ plan ≠ implementation)
 - Highest community adoption and maturity
 - Works with 30+ AI agents (including Claude Code, Cursor, Windsurf)
+
+## Success Criteria
+
+- ✅ SpecKit positioning verified (market leader with 102K stars)
+- ✅ Spekificity value-add clear (memory layer solves SpecKit's persistence gap)
+- ✅ Ecosystem compatibility confirmed (works with 30+ agents)
+- ✅ Adoption metrics accurate (star counts, maturity assessment correct)
+- ✅ Weaknesses acknowledged (context persistence gap identified)
+- ✅ Comparison fair (30+ frameworks analyzed, not just top tier)
+- ✅ Recommendation justified (SpecKit + Spekificity combined approach validated)
 
 **Weaknesses:**
 - **No built-in persistence** — Artifacts live in files, no session-across memory
@@ -700,7 +710,7 @@ Spekificity + Multi-agent + Full-stack = Future enterprise SDD
 - 30+ named frameworks with active adoption tracked
 
 **Spekificity related:**
-- [B.1 SpecKit Workflow](../wiki/speckit-workflow.md)
+- [B.1 SpecKit Workflow](../speckit-workflow.md)
 - [Memory Architecture](memory-architecture.md) (replaces persistent-memories-and-lessons.md)
 - [extracted spec SpecKit Integration](speckit-integration-contract.md)
 - [extracted spec Prepare and Post Skills](prepare-and-post-skills.md)

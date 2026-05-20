@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Implement Command (C4.5)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Skill — /spek.implement (5-step task execution + enrichment wrapper)  
 **Depends On:** speckit-integration-contract.md, enrichment-layer.md, feature-state-tracking.md  
 **Used By:** `/spek.automate` (after task generation), CLI entry point  
@@ -198,6 +198,40 @@ Next: Review staged changes, then run /spek.post to archive lessons
 ---
 
 ## Success Criteria
+
+- ✅ Feature state validated (spec, plan, tasks exist and phase correct)
+- ✅ Context loaded for enrichment (decisions, patterns, code graph injected)
+- ✅ Tasks execute sequentially (one after another, with error resilience)
+- ✅ Code changes captured (git diff collected for each task)
+- ✅ Artifacts collected (execution trace includes all task results)
+- ✅ Session state updated (feature marked implementing, progress tracked)
+- ✅ Errors don't stop workflow (failed tasks don't block subsequent tasks)
+
+---
+
+## Implementation Checklist
+
+- [ ] Implement Step 1 (validate feature state)
+- [ ] Implement Step 2 (load enrichment context)
+- [ ] Implement Step 3 (execute tasks sequentially)
+- [ ] Implement Step 4 (collect artifacts)
+- [ ] Implement Step 5 (update state + report)
+- [ ] Add error handling + continue-on-error
+- [ ] Add execution trace logging
+- [ ] Add git diff collection
+
+---
+
+## References
+
+**Related Specs:**
+- [speckit-integration-contract.md](speckit-integration-contract.md) — SpecKit integration details
+- [enrichment-layer.md](enrichment-layer.md) — Context injection strategy
+- [feature-state-tracking.md](feature-state-tracking.md) — Feature state machine
+- [post-processing.md](post-processing.md) — Post-feature workflow
+
+**External:**
+- [extracted spec /spek.implement](speckit-integration-contract.md#spekimplement)
 
 ✅ All artifacts valid (feature state, spec, plan, tasks)  
 ✅ Context loaded (decisions, patterns, code graph)  

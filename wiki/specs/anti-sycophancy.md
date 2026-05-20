@@ -1,6 +1,6 @@
 # C.3.8 Anti-Sycophancy Validation Rules
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** HIGH (Phase 2, solo dev critical)  
 **Effort:** 3-4 hours  
 **Adoption Source:** B.10 (Loki Mode, 930⭐)  
@@ -35,7 +35,22 @@ Prevent AI drift by enforcing **explicit validation rules** that:
 - Test validation (see C.3.6)
 - Decision updates (see C.3.7)
 
-**Related specs:**
+---
+
+## Success Criteria
+
+- ✅ Contradiction detection identifies spec vs vault decision conflicts (flags HIGH priority)
+- ✅ Complexity increase rule flags specs 50% above baseline (with justification required)
+- ✅ Pattern consistency rule alerts when recent patterns suggest different approach
+- ✅ Scope validation catches silent scope creep (vs similar past features)
+- ✅ Configuration allows project-specific rules (customizable thresholds)
+- ✅ User override mechanism permits justified deviations with documented reason
+- ✅ All conflicts logged with rationale (for learning + future pattern extraction)
+
+---
+
+## Related Specs
+
 - C.3.1-C.3.5: Phase 1 foundations
 - C.3.7: RARV Reflection (complements anti-sycophancy)
 

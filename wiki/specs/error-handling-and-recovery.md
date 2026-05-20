@@ -84,7 +84,15 @@ Retry: Vault access will be attempted every 30s for 3 retries
 Action: Check vault permissions: `chmod -R 755 vault/`
 ```
 
----
+## Success Criteria
+
+- ✅ Error categories clearly defined (Git/Vault/Graph/LLM/SpecKit/User)
+- ✅ Handling strategy per category documented (severity, default action, recovery flow)
+- ✅ Logging comprehensive (all errors captured with context)
+- ✅ Graceful degradation working (failures don't halt workflows)
+- ✅ Autonomous recovery implemented (retries, fallbacks, healing)
+- ✅ User intervention enabled (clear error messages, guidance)
+- ✅ Testing strategy defined (unit + integration tests for error paths)
 
 ### Category 3: Graph/Code Index Errors (TRANSIENT or RECOVERABLE)
 

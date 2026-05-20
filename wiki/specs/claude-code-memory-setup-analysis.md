@@ -1,6 +1,6 @@
 # memory-setup Investigation — claude-code-memory-setup Reference Analysis
 
-**Status:** INVESTIGATION COMPLETE (2026-05-18)  
+**Status:** INVESTIGATION COMPLETE (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Repository:** https://github.com/lucasrosati/claude-code-memory-setup  
 **Investigation Focus:** Memory and context management patterns for spekificity adoption  
 
@@ -19,6 +19,18 @@ The **claude-code-memory-setup** repository by Lucas Rosati demonstrates a docum
 7. **Token savings metrics** — large reductions documented in the source project; patterns are replicable in spekificity
 
 **Verdict:** Spekificity should adopt 4-5 specific patterns from this repository. The architecture is compatible with spekificity's design; no fundamental conflicts.
+
+---
+
+## Success Criteria
+
+- ✅ Memory layers clearly defined (vault, repo, session roles distinct)
+- ✅ Persistence working (vault survives sessions, features)
+- ✅ Caching effective (repo layer reduces load times)
+- ✅ Ephemeral state managed (session memory cleaned up properly)
+- ✅ Integration transparent (layers work together seamlessly)
+- ✅ Security maintained (no sensitive data in memory)
+- ✅ Scalability verified (works with growing vault size)
 
 ---
 
@@ -633,10 +645,10 @@ Both can coexist and reinforce each other.
 - `scripts/` — Python processor, bash automation scripts
 
 **Spekificity Related Specs:**
-- [extracted spec Code and Document Maps](../specs/code-and-document-maps.md)
-- [extracted spec Persistent Memories and Lessons](../specs/persistent-memories-and-lessons.md)
-- [extracted spec SpecKit Integration Contract](../specs/speckit-integration-contract.md)
-- [extracted spec Prepare and Post Skills](../specs/prepare-and-post-skills.md)
+- [extracted spec Code and Document Maps](code-and-document-maps.md)
+- [extracted spec Memory Architecture](memory-architecture.md) (replaced persistent-memories-and-lessons.md)
+- [extracted spec SpecKit Integration Contract](speckit-integration-contract.md)
+- [extracted spec Prepare and Post Skills](prepare-and-post-skills.md)
 
 **Key Metrics:**
 - Large token savings per session reported by the source project

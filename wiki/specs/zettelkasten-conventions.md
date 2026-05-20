@@ -1,6 +1,6 @@
 # C.3.1 Zettelkasten Conventions for Vault Notes
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** MUST (Phase 1)  
 **Effort:** 3-4 hours  
 **Adoption Source:** B.9 (claude-code-memory-setup, production-validated)
@@ -98,6 +98,16 @@ related: ["[[note-name]]", "[[other-note]]"]
 
 - [ ] Note has single, clear title
 - [ ] Content focuses on one concept/pattern/decision
+
+## Success Criteria
+
+- ✅ Frontmatter schema enforced (all required fields present)
+- ✅ Filename conventions followed (kebab-case, unique, <50 chars)
+- ✅ Atomicity maintained (one concept per file)
+- ✅ Wikilinks present (minimum 2-3 cross-references per note)
+- ✅ Metadata searchable (tags enable discovery)
+- ✅ Status tracking accurate (active/deprecated/superseded labels correct)
+- ✅ Notes discoverable (grep + Obsidian search working)
 - [ ] 300-800 words (concise but complete)
 - [ ] Can be understood without reading related notes
 - [ ] Wikilinks enhance (don't require) understanding

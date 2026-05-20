@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Lessons Command (C4.6)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Skill — /spek.lessons (manual lesson extraction + query interface)  
 **Depends On:** lessons-format.md, memory-architecture.md, post-processing.md  
 **Used By:** `/spek.post` (automatic), CLI entry point (manual queries)  
@@ -90,9 +90,15 @@ Total: 2 lessons
 
 **Output format:** Markdown (list of matched lessons + excerpts)
 
----
+## Success Criteria
 
-### Mode 4: Full-Text Search (Search Lessons by Keyword)
+- ✅ Automatic mode generates lessons in <10s (embedded in `/spek.post` Step 3)
+- ✅ Manual regenerate mode works (preview lessons during feature)
+- ✅ Pattern query discovers relevant lessons (search by pattern name)
+- ✅ Full-text search finds lessons by keyword (grep-based query)
+- ✅ Lessons immutable after completion (no regenerate post-feature)
+- ✅ Query results returned in readable format (excerpts + context)
+- ✅ Integration seamless (modes invoked transparently)\n\n---\n\n### Mode 4: Full-Text Search (Search Lessons by Keyword)"}}]
 
 **Entry point:** User searches lessons for keyword
 

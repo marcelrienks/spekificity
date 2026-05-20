@@ -1,6 +1,6 @@
 # Spec: Node Schema Design
 
-**Status:** ATOMIC SPECIFICATION (2026-05-18)  
+**Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Concern:** JSON schema for code and documentation nodes in the knowledge graph  
 **Extracted from:** extracted spec Questions 1 & 4  
 **Used by:** obsidian-graph-export, graph-merge-integration, graph-storage-structure  
@@ -98,6 +98,41 @@ interface CodeNode {
   "referencedBy": ["src/cli/automate.ts", "tests/prepare.test.ts"],
   "indexed_at": "2026-05-18T15:00:00Z",
   "hash": "a1b2c3d4e5f6..."
+}
+```
+
+## Success Criteria
+
+- ✅ Code node schema captures all symbol metadata (complete + queryable)
+- ✅ Doc node schema captures heading-level structure (file + heading + level)
+- ✅ Skill node schema captures workflow information (command + purpose + tags)
+- ✅ Graph relationships captured (calls, calledBy, usedBy, uses, references, referencedBy)
+- ✅ All nodes queryable via unified interface (jq + grep on nodes.jsonl)
+- ✅ Schema extensible (new fields don't break existing queries)
+- ✅ Type safety enforced (TypeScript interfaces + validation)
+
+---
+
+## Implementation Checklist
+
+- [ ] Define code node schema (TypeScript types)
+- [ ] Define doc node schema (TypeScript types)
+- [ ] Define skill node schema (TypeScript types)
+- [ ] Implement code node generation (from graphify output)
+- [ ] Implement doc node generation (from Obsidian export)
+- [ ] Implement skill node generation (from SKILL.md parsing)
+- [ ] Implement node validation (schema conformance checks)
+- [ ] Add tests (roundtrip: generate → validate → query)
+
+---
+
+## References
+
+**Related Specs:**
+- [spek-map-command.md](spek-map-command.md) — Graph generation command
+- [graph-storage-structure.md](graph-storage-structure.md) — Storage format (nodes.jsonl)
+- [obsidian-graph-export.md](obsidian-graph-export.md) — Doc node extraction
+- [graph-query-patterns.md](graph-query-patterns.md) — Node querying strategies
 }
 ```
 

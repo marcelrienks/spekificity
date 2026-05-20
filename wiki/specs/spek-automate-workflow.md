@@ -169,6 +169,16 @@ specify → [clarify (optional)] → plan → tasks → [analyze (optional)] →
 - If new skill appears in future: Auto-include it in workflow
 - If skill renamed: Use new name, not hardcoded name
 
+## Success Criteria
+
+- ✅ All SpecKit skills executed in correct order (workflow orchestration works)
+- ✅ Context loaded before each skill (enrichment active throughout)
+- ✅ Artifacts generated (spec.md, plan.md, tasks.md created)
+- ✅ Validation checks pass (output schema correct, content coherent)
+- ✅ Error recovery works (failed skills rerun with user input)
+- ✅ User informed at each step (progress visible, no silent delays)
+- ✅ Handoff to implementation clear (feature state ready, artifacts complete)
+
 ---
 
 ## Step 2: User Input Collection

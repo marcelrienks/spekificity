@@ -1,6 +1,6 @@
 # C.3.7 RARV Reflection Cycles: Reason-Act-Reflect-Verify
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** HIGH (Phase 2, post-launch)  
 **Effort:** 4-5 hours  
 **Adoption Source:** B.10 (Loki Mode, 930⭐, active open-source project)  
@@ -41,6 +41,18 @@ Implement continuous alignment verification loop that:
 - B.8.4: Post Command (Step 7 optional integration point)
 - C.3.1-C.3.5: Phase 1 specs (context for comparison)
 - C.3.6: Backprop Reflex (failure patterns feed into reflection)
+
+---
+
+## Success Criteria
+
+- ✅ Code-to-spec comparison detects deviations (scope creep, missing features, architecture divergence)
+- ✅ Deviation classification accurate (addition/omission/divergence categorized correctly)
+- ✅ User choice mechanism working (A/B/C options clear, override documented)
+- ✅ Reflection loop updates decisions (new rationale captured in vault)
+- ✅ Verification re-validates against decisions (alignment checked)
+- ✅ Loop prevents spec drift (misalignments caught before accumulating)
+- ✅ Integration seamless (optional in `/spek.post` workflow)
 
 ---
 

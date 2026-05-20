@@ -1,6 +1,6 @@
 # C.3.9 Blind Code Review
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** MEDIUM (Phase 2, optional enhancement)  
 **Effort:** 4-5 hours  
 **Adoption Source:** B.10 (Pilot Shell, Loki Mode)  
@@ -35,7 +35,22 @@ Implement optional second-pass code review that:
 - Architecture validation (see C.3.7 RARV)
 - Performance profiling (assume in tests)
 
-**Related specs:**
+---
+
+## Success Criteria
+
+- ✅ Code anonymization strips AI markers without removing logic or structure
+- ✅ Blind review invocation post-implementation (before `/spek.post` archival)
+- ✅ Review checks run independently (linters, tests, style analysis pass/fail)
+- ✅ AI-specific issues detected (hallucinations, over-context-reliance, logic gaps)
+- ✅ Issues flagged for developer review before production deployment
+- ✅ GitHub Actions integration optional (seamless when configured)
+- ✅ Remediation workflow clear (fix suggestions actionable, not vague)
+
+---
+
+## Related Specs
+
 - B.8.4: Post Command (Step 8b integration point)
 - C.3.6: Backprop Reflex (failure patterns from blind review)
 - C.3.9: This spec

@@ -1,6 +1,6 @@
 # C.3.10 Token Budget Allocation & Tracking
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** MEDIUM (Phase 2, quick win)  
 **Effort:** 2-3 hours  
 **Adoption Source:** B.10 (Pilot Shell)  
@@ -71,6 +71,16 @@ token_budget:
   alert_threshold_percent: 80  # Alert when 80% used
   warning_threshold_percent: 60  # Warning when 60% used
 ```
+
+## Success Criteria
+
+- ✅ Token budget allocated per phase (default 12K per feature, customizable)
+- ✅ Tracking working (actual usage measured + reported)
+- ✅ Alerts functional (warnings at 60%, 80% thresholds)
+- ✅ Reporting comprehensive (metrics visible at feature end)
+- ✅ Cost-aware optimization enabled (users can adjust budget based on feedback)
+- ✅ Token savings measurable (3-layer query rule + caveman compression tracked)
+- ✅ Budget customizable (teams can adjust per their needs)
 
 ### Customize per Team
 

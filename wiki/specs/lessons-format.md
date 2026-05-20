@@ -1,6 +1,6 @@
 # Spec: Per-Feature Lessons Format
 
-**Status:** ATOMIC SPECIFICATION (2026-05-18)  
+**Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Concern:** Template and lifecycle for lessons learned files written at feature end  
 **Extracted from:** extracted spec Type 1 (Per-Feature Lessons)  
 **Used by:** post-command, /spek.post skill  
@@ -92,7 +92,15 @@ Core changes:
 
 Files: 5 modified, +180 LOC net, 85% test coverage
 ```
+## Success Criteria
 
+- ✅ Lesson format self-contained (readable without spec.md/plan.md)
+- ✅ Compression effective (~30-50% token reduction vs. normal prose)
+- ✅ Lessons actionable (next feature can apply recommendations immediately)
+- ✅ Content specific + concrete (code examples, not vague advice)
+- ✅ 8 sections complete (all template sections filled for each lesson)
+- ✅ Wikilinks present (minimum 2-3 cross-references per lesson)
+- ✅ Metrics captured (token count, duration, test coverage included)
 ---
 
 ### Section 3: How We Built It (Technical Approach)

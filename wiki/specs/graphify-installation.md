@@ -1,6 +1,6 @@
 # [ARCHIVED] ATOMIC SPECIFICATION: Graphify Installation — LEGACY
 
-**Status:** ARCHIVED (Superseded 2026-05-20)  
+**Status:** ARCHIVED (Superseded 2026-05-20)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Replacement:** [CodeGraph Setup Complete](codegraph-setup-complete.md)  
 **Type:** Setup — DEPRECATED  
 
@@ -18,6 +18,24 @@ This specification is **ARCHIVED as LEGACY**. Graphify is no longer the supporte
 - **Real-time sync** (file watcher built-in)
 - **Concurrent access** (SQLite DB, better locking)
 - **Lower maintenance** (fewer manual refresh steps)
+
+---
+
+## ⚠️ DEPRECATION NOTICE (Status: ARCHIVED as LEGACY)
+
+This specification is **ARCHIVED as LEGACY**. Graphify is no longer the supported code analysis tool for Spekificity.
+
+**Use CodeGraph instead:** [codegraph-setup-complete.md](codegraph-setup-complete.md)
+
+## Success Criteria (Legacy — Archived)
+
+- ⚠️ Graphify installed (graphify --version reports correct version)
+- ⚠️ Python 3.11+ present (language requirement met)
+- ⚠️ uv package manager available (installation method functional)
+- ⚠️ Configuration created (config.yaml present with all fields)
+- ⚠️ Test index succeeds (graphify can parse sample code)
+- ⚠️ graph/ directory created (storage location ready)
+- ❌ Active support ended (graphify succeeded by CodeGraph)
 
 ---
 

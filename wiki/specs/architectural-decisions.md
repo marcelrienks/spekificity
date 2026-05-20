@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Architectural Decisions (C2.2)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Memory Layer 2 — Architectural Decisions  
 **Depends On:** lessons-format.md, memory-architecture.md  
 **Used By:** /spek.context (read at session start), /spek.post (write at feature end)  
@@ -94,6 +94,18 @@ Permanent archive of all architectural decisions; source of truth for understand
 - Decisions that depend on this one
 - Decisions this supersedes
 - Complementary decisions
+
+## Success Criteria
+
+- ✅ Decisions discoverable (searchable by name + domain + status)
+- ✅ Impact assessment clear (affected components listed)
+- ✅ Trade-offs documented (pros/cons captured)
+- ✅ Rationale understandable (why this choice > alternatives)
+- ✅ Status tracked (active/superseded/deprecated labels accurate)
+- ✅ Wikilinks enable navigation (decisions cross-reference related specs)
+- ✅ Archive maintains history (deprecated decisions kept for context)
+
+---
 
 ### Query Patterns
 

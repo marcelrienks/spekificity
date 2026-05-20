@@ -1,10 +1,14 @@
-# B.7: Naming Conventions for Skills and Workflows
+# Naming Conventions for Skills and Workflows
 
-## Status: RESOLVED (2026-05-18, Corrected Intent)
+**See also:** [intention.md](intention.md), [architecture.md](architecture.md), [workflow.md](workflow.md), [decision.md](decision.md)
 
-## Design Principle
+---
 
-**Keep `spek.*` prefix always. Simplify command portion to one-word wherever possible.**
+## Status
+
+**RESOLVED** (2026-05-18, Corrected Intent)
+
+**Design Principle:** Keep `spek.*` prefix always. Simplify command portion to one-word wherever possible.
 
 This ensures:
 - Namespace is always clear: `spek.*` = Spekificity, `speckit.*` = SpecKit
@@ -20,34 +24,36 @@ This ensures:
 
 **Format:** `/spek.oneword` or `/spek.hyphenated` (only when one word insufficient)  
 **Prefix:** `spek.` (always)  
-**Pattern:** Action-noun or noun
+**Pattern:** Action-noun or imperative verb
 
-| Skill | Command | Purpose |
-|-------|---------|---------|
-| Preparation | `/spek.prepare` | Initialize workspace, git state, graph freshness, and feature state |
-| Context loading | `/spek.context` | Load vault, repo memory, and graph context into session |
-| Code mapping | `/spek.map` | Build or refresh code/document graph |
-| Full automation | `/spek.automate` | Orchestrate SpecKit flow through spec, plan, tasks, analyze, and remediation |
-| Implementation | `/spek.implement` | Execute approved tasks with project context |
-| Post-processing | `/spek.post` | Archive feature outcomes, lessons, vault updates, and graph refresh |
-| Lessons capture | `/spek.lessons` | Extract structured lessons when run explicitly |
+| Skill | Command | Purpose | Example |
+|-------|---------|---------|---------|
+| Preparation | `/spek.prepare` | Initialize workspace, git state, graph freshness, and feature state | `/spek.prepare` |
+| Context loading | `/spek.context` | Load vault, repo memory, and graph context into session | `/spek.context` |
+| Code mapping | `/spek.map` | Build or refresh code/document graph | `/spek.map` |
+| Full automation | `/spek.automate` | Orchestrate SpecKit flow through spec, plan, analyze | `/spek.automate` |
+| Implementation | `/spek.implement` | Execute approved tasks with project context | `/spek.implement` |
+| Post-processing | `/spek.post` | Archive feature outcomes, lessons, vault updates, graph refresh | `/spek.post` |
+| Lessons capture | `/spek.lessons` | Extract structured lessons when run explicitly | `/spek.lessons` |
 
 **Rationale:**
 - All commands keep `spek.` prefix for namespace consistency
-- Command portions simplified: single words where possible (`context`, `map`, `lessons`, `prepare`, `post`, `automate`)
-- Hyphenation avoided; if compound needed, use single word or acceptable hyphen (e.g., `/spek.load-context` would only if `context` alone insufficient, but `context` is clear)
+- Command portions are single words where possible (`context`, `map`, `lessons`, `prepare`, `post`, `automate`)
+- Hyphenation avoided; one-word names preferred for ergonomics
+- Pattern is action/imperative, not noun (e.g., `prepare` not `prep`)
 
 ---
 
-### 2. Underlying SpecKit Commands (Keep Vanilla Namespace)
+### 2. Underlying SpecKit Commands
 
-**Format:** `speckit.*` (unchanged; distinct namespace)  
-**Pattern:** `speckit.command`
+**Format:** `speckit.*` (distinct namespace)  
+**Prefix:** `speckit.` (always)  
+**Pattern:** Action-noun
 
-| Skill | Command | Purpose | Used By |
-|-------|---------|---------|---------|
-| Constitution | `/speckit.constitution` | Define project principles | upstream/manual |
-| Specification | `/speckit.specify` | Create feature spec | `/spek.automate` |
+| Command | Purpose | Used By | Example |
+|---------|---------|---------|---------|
+| `/speckit.constitution` | Define project principles, success criteria | Manual or `/spek.automate` | `/speckit.constitution` |
+| `/speckit.specify` | Create feature spec with enrichments | `/spek.automate` | `/speckit.specify --feature="auth"` |
 | Clarification | `/speckit.clarify` | Resolve spec ambiguities | `/spek.automate` |
 | Planning | `/speckit.plan` | Create implementation plan | `/spek.automate` |
 | Task generation | `/speckit.tasks` | Generate task list | `/spek.automate` |

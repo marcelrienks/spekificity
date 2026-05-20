@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Context Layer (C3.1)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Integration Layer 1 — Context Loading and Injection  
 **Depends On:** memory-architecture.md  
 **Used By:** All enrichment layers (enrichment-layer.md)  
@@ -27,6 +27,16 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 **Use together:**
 - For *what to load, injection patterns, access*: Start here (context-layer.md)
 - For *memory model, timing, costs, caching strategy*: See memory-architecture.md
+
+## Success Criteria
+
+- ✅ Context loads at session start (decisions, patterns, lessons, code graph all available)
+- ✅ Context accessible to enrichment layers (decisions/patterns queryable from session memory)
+- ✅ Session memory persists throughout feature work (context doesn't reset mid-feature)
+- ✅ Vault queries work without errors (no missing files, permission issues, or parse errors)
+- ✅ Code graph context injected correctly (modules, hotspots, recent changes available)
+- ✅ Manual context refresh works (user can refresh if context becomes stale)
+- ✅ Fallback behavior graceful (if context missing, enrichments continue with partial context)
 
 ---
 

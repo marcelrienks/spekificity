@@ -1,6 +1,6 @@
 # [ARCHIVED] Graphify Setup Specification — LEGACY
 
-**Status:** ARCHIVED (Superseded 2026-05-20)  
+**Status:** ARCHIVED (Superseded 2026-05-20)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Replacement:** [CodeGraph Setup Complete](codegraph-setup-complete.md)  
 
 **⚠️ DEPRECATION NOTICE:**
@@ -10,6 +10,18 @@ This specification is **ARCHIVED as LEGACY**. Graphify is no longer the recommen
 **Why:** CodeGraph is 20x faster for agent queries, has built-in MCP integration, and requires less manual refresh logic.
 
 **Migration:** Existing Graphify users should rebuild their code graphs with CodeGraph. See [codegraph-setup-complete.md](codegraph-setup-complete.md) Step 1-4 for setup.
+
+---
+
+## Success Criteria (Legacy — See CodeGraph Setup Complete)
+
+- ⚠️ Graphify installation documented (superseded by CodeGraph)
+- ⚠️ Graph storage structure defined (superseded by CodeGraph)
+- ⚠️ Integration patterns shown (superseded by CodeGraph)
+- ⚠️ Performance scoping done (CodeGraph is 20x faster)
+- ⚠️ Token efficiency measured (CodeGraph adds MCP support)
+- ⚠️ Configuration templates provided (CodeGraph config simplified)
+- ❌ Active support ended (use CodeGraph Setup Complete instead)
 
 ---
 

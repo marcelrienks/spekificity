@@ -1,6 +1,6 @@
 # C.3.2 Auto-Tagging + Auto-Wikilink Insertion for Lessons
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** MUST (Phase 1)  
 **Effort:** 4-6 hours  
 **Adoption Source:** B.9 (claude-code-memory-setup, chat import pipeline pattern)  
@@ -37,7 +37,22 @@ Automate the process of:
 - Graph queries (see B.11 Codegraph Setup)
 - Manual linking workflows (assume auto-linking handles 70%)
 
-**Related specs:**
+---
+
+## Success Criteria
+
+- ✅ Keyword extraction achieves 70%+ automation (manual linking drops significantly)
+- ✅ Keyword-to-vault mapping detects relevant decisions/patterns with >75% accuracy
+- ✅ Auto-wikilinks inserted without manual intervention (links appear in generated lessons)
+- ✅ Auto-tags generated for domain, tech stack, methodology (frontmatter enriched)
+- ✅ Redundancy detection alerts when lesson duplicates vault pattern (prevents duplication)
+- ✅ Missing pattern detection flags lessons that should reference vault items
+- ✅ Tag + keyword mapping configurable per project (customizable in config.yaml)
+
+---
+
+## Related Specs
+
 - C.3.1: Zettelkasten conventions (MUST exist first; defines frontmatter)
 - B.8.4: Post Command (Step 3 lesson generation; where auto-linking is integrated)
 - B.8.2: Persistent Memories (vault structure; source of linking targets)

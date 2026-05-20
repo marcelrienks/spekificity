@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Graph Refresh Strategy (C5.4)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Performance — Caching & Incremental Sync Strategy  
 **Depends On:** graph-storage-structure.md, spek-map-command.md  
 **Used By:** /spek.map  
@@ -141,7 +141,32 @@ graphify:
 **Benefit:** Reduces unnecessary syncs
 
 ---
+### Cache Expiry
 
+**Config:**
+```yaml
+graphify:
+  caching:
+    cache_expiry_hours: 24
+```
+
+**Process:**
+- If cache > 24 hours old: force full rebuild
+- Reason: file system cache might be stale
+
+**Benefit:** Fresh cache, prevent stale nodes
+
+## Success Criteria
+
+- ✅ Incremental sync detects changed files (SHA256 hashing works correctly)
+- ✅ Cache validates correctly (no corruption, valid JSON)
+- ✅ Expiry triggers rebuild when stale (>24 hours old)
+- ✅ Parallel processing speeds up indexing (4 workers functional)
+- ✅ Debouncing prevents excessive syncs (batches changes within 1s window)
+- ✅ Performance improvement measurable (incremental <5s vs full 30-60s)
+- ✅ Cache validation comprehensive (file exists, checksum valid, timestamp recent)
+
+---
 ## Cache Validation
 
 ### Check 1: File Exists

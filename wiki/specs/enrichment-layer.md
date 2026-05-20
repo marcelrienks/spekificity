@@ -1,6 +1,6 @@
 # Enrichment Layer: Context Injection Into SpecKit Workflow
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Integration Layer — Context injection across all enrichment phases  
 **Replaces:** specify-enrichment.md, plan-enrichment.md, implement-enrichment.md  
 **Used By:** `/spek.automate` (all phases)
@@ -81,6 +81,18 @@ Specifies what to build, guided by project decisions and patterns.
 - Recent patterns (top 3, active only)
 
 **Goal:** Guide spec toward existing constraints without over-constraining
+
+## Success Criteria
+
+- ✅ Context injection adds decisions + patterns without overwhelming LLM (context <10K tokens)
+- ✅ Generated artifacts are more context-aware than vanilla SpecKit (improvement visible in review)
+- ✅ Specify phase generates specs aligned with architectural decisions
+- ✅ Plan phase generates plans that consider existing code structure
+- ✅ Implementation phase generates code that follows established patterns
+- ✅ Output quality measurable (specs complete, plans coherent, tasks achievable)
+- ✅ Fallback behavior works (if context missing, enrichments skip injection and continue)
+
+---
 
 ### Core Execution
 
@@ -400,10 +412,7 @@ enrichment:
 - [memory-architecture.md](memory-architecture.md) — Session memory containing loaded context
 - [speckit-integration-contract.md](speckit-integration-contract.md) — Integration contract with SpecKit
 
-**Merged Specs:**
-- [specify-enrichment.md](specify-enrichment.md) (merged into this spec)
-- [plan-enrichment.md](plan-enrichment.md) (merged into this spec)
-- [implement-enrichment.md](implement-enrichment.md) (merged into this spec)
+*Note: This spec replaces specify-enrichment.md, plan-enrichment.md, and implement-enrichment.md (merged here)*
 
 **External:**
 - [SpecKit documentation](https://github.com/github/spec-kit)

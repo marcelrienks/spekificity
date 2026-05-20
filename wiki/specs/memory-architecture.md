@@ -1,6 +1,6 @@
 # Memory Architecture: Persistent Memories, Session Context, and Load Lifecycle
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Memory Layer — Three-layer model with lifecycle  
 **Replaces:** context-load-lifecycle.md, session-memory.md, persistent-memories-and-lessons.md  
 **Used By:** /spek.context, /spek.prepare, /spek.post (all enrichment layers read context)  
@@ -16,6 +16,18 @@ Spekificity defines a coherent memory architecture with three layers: persisted 
 - **How much** each operation costs (tokens, latency)
 - **Caching** strategy to minimize token usage
 - **Fallback** behavior when parts fail
+
+---
+
+## Success Criteria
+
+- ✅ Vault layer persists (decisions, patterns, lessons survive sessions)
+- ✅ Repo layer caches efficiently (compressed memory reduces load time)
+- ✅ Session layer manages context (ephemeral state available during feature)
+- ✅ Layers integrate seamlessly (no manual sync between layers)
+- ✅ Memory atomicity maintained (one concept per file)
+- ✅ Cross-layer discovery enabled (grep + queries work across all layers)
+- ✅ Archival working (session → vault transition automatic + correct)
 
 ---
 
@@ -703,10 +715,9 @@ context_loading:
 **Related Specs:**
 - [context-layer.md](context-layer.md) — Context composition and injection
 - [decorator-wrapper-pattern.md](decorator-wrapper-pattern.md) — How enrichment wraps SpecKit
-- [session-memory.md](session-memory.md) — (merged into this spec)
-- [persistent-memories-and-lessons.md](persistent-memories-and-lessons.md) — (merged into this spec)
-- [context-load-lifecycle.md](context-load-lifecycle.md) — (merged into this spec)
+- [caveman-integration.md](caveman-integration.md) — Compression format for context summaries
+
+*Note: This spec replaces context-load-lifecycle.md, session-memory.md, and persistent-memories-and-lessons.md (merged here)*
 
 **External:**
-- [Copilot docs](/memories/ scope definitions and retention policies
-- [Caveman](caveman-integration.md) — Compression format for context summaries
+- [Copilot docs](/memories/) scope definitions and retention policies

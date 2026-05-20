@@ -1,8 +1,8 @@
 # extracted spec — SpecKit Integration Contract
 
-**Status:** SPECIFICATION (2026-05-18)  
+**Status:** SPECIFICATION (2026-05-18) | **Version:** 1.0.0-alpha.1 (2026-05-20)  
 **Feature:** spekificity feature 003 — Full Workflow CLI  
-**Related:** [SpecKit Workflow](../wiki/speckit-workflow.md), [Memory Architecture](memory-architecture.md)
+**Related:** [SpecKit Workflow](../speckit-workflow.md), [Memory Architecture](memory-architecture.md)
 
 ---
 
@@ -25,7 +25,7 @@ The contract clarifies:
 
 ## SpecKit Canonical Workflow
 
-From [wiki/speckit-workflow.md](../wiki/speckit-workflow.md), SpecKit's global flow is:
+From [speckit-workflow.md](../speckit-workflow.md), SpecKit's global flow is:
 
 ```
 constitution
@@ -48,6 +48,19 @@ implement
 **Key SpecKit Principles:**
 - **Declarative input** — Human writes in natural language
 - **Progressive refinement** — Each step builds on prior outputs
+- **Optional gates** — clarify, analyze, remediate are non-blocking
+- **File-based artifacts** — spec.md, plan.md, tasks.md, constitutional constraints, traceable task IDs
+- **Remediation in-place** — No re-entry loop; fixes are direct edits
+
+## Success Criteria
+
+- ✅ SpecKit responsibilities clear (spec generation, model selection, constitution precedence)
+- ✅ Spekificity responsibilities clear (context injection, validation, memory update)
+- ✅ Integration seamless (user doesn't know workflows are enriched)
+- ✅ Data flow correct (context flows in, artifacts flow out, memory updated)
+- ✅ Error handling consistent (validation errors caught, fallbacks work)
+- ✅ Configuration clear (settings location, precedence rules documented)
+- ✅ Contract testable (success conditions measurable)
 - **Optional gates** — clarify, analyze, remediate are non-blocking
 - **File-based artifacts** — spec.md, plan.md, tasks.md, constitution.md
 - **Remediation in-place** — No re-entry loop; fixes are direct edits
@@ -651,13 +664,13 @@ vault/
 ## References
 
 **Related specs:**
-- [SpecKit Workflow](../wiki/speckit-workflow.md)
+- [SpecKit Workflow](../speckit-workflow.md)
 - [extracted spec Code and Document Maps](code-and-document-maps.md)
 - [extracted spec Memory Architecture](memory-architecture.md)
 
 **SpecKit canonical documentation:**
 - [SpecKit GitHub](https://github.com/github/spec-kit)
-- [Canonical workflow](../wiki/speckit-workflow.md#canonical-workflow)
+- [Canonical workflow](../speckit-workflow.md#canonical-workflow)
 
 **Spekificity skill definitions:**
 - [/spek.context spec](context-layer.md)

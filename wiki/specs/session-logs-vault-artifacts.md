@@ -1,6 +1,6 @@
 # C.3.5 Session Logs as Explicit Vault Artifacts
 
-**Status:** Specification  
+**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** MUST (Phase 1)  
 **Effort:** 2-3 hours  
 **Adoption Source:** B.9 (claude-code-memory-setup)  
@@ -41,6 +41,18 @@ Convert session logs (ephemeral `/memories/session/current-feature.md`) into per
 - B.8.4: Post Command Step 9 (archive session memory, current implementation)
 - C.3.1: Zettelkasten Conventions (format for archived sessions)
 - C.3.2: Auto-tagging + Auto-wikilinks (wikilink insertion)
+
+---
+
+## Success Criteria
+
+- ✅ Session logs archived to vault (ephemeral → permanent)
+- ✅ Zettelkasten format applied (YAML frontmatter, wikilinks, atomicity)
+- ✅ Structured sections extracted (What/How/Decisions/Patterns/Lessons)
+- ✅ Wikilinks inserted (minimum 2-3 cross-references per session)
+- ✅ Session logs queryable (grep + Obsidian search working)
+- ✅ Audit trail maintained (cross-feature discovery enabled)
+- ✅ Integration seamless (Step 9 of `/spek.post` transparent to user)
 
 ---
 

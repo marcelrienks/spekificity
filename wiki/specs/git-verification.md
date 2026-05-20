@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Git Verification (C4.3)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Skill Component — Git State Validation  
 **Depends On:** None  
 **Used By:** /spek.prepare (Step 1), /spek.implement (precondition)  

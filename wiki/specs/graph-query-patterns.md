@@ -1,6 +1,6 @@
 # ATOMIC SPECIFICATION: Graph Query Patterns (C5.5)
 
-**Status:** ATOMIC SPECIFICATION  
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Usage — Querying vault/graph/ for Code Context  
 **Depends On:** graph-storage-structure.md  
 **Used By:** /spek.context, `/spek.automate` plan phase, enrichment layers  
@@ -98,7 +98,31 @@ while read NODE_ID; do
 done
 ```
 
+**Output:** All functions/methods that call query_user
+
+### Query 6: Find all dependencies of a module
+
+```bash
+# All edges FROM nodes in src/services/
+grep '"file": "src/services/' vault/graph/nodes.jsonl | jq -r '.id' | \\
+while read NODE_ID; do
+  grep "\"from_node\": \"$NODE_ID\"" vault/graph/edges.jsonl
+done
+```
+
 **Output:** All symbols that module depends on
+
+## Success Criteria
+
+- ✅ Direct grep queries complete in <100ms (no LLM overhead)
+- ✅ Composed queries complete in <500ms (shell scripting + jq)
+- ✅ Complex reasoning queries complete in <15s (LLM synthesis when needed)
+- ✅ All queries return accurate results (no false positives/negatives)
+- ✅ Layer 1-2 covers 90%+ of use cases (LLM synthesis rarely needed)
+- ✅ Query examples match real workflows (practical not theoretical)
+- ✅ Token cost visible (users understand cost of each query layer)
+
+---
 
 ### Query 7: Find recently changed code
 

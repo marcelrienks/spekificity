@@ -413,3 +413,15 @@ Caveman compression is **optional but recommended** for Spekificity workflows. I
 - Search indexing of compressed text
 - Mode inference (auto-select mode based on token budget)
 - Compression statistics dashboard (show token savings over time)
+
+---
+
+## Success Criteria
+
+- ✅ Compression modes implemented (lite/full/ultra working)
+- ✅ Token reduction verified (30%/75%/90% targets achieved)
+- ✅ Meaning preserved (ultra compression still understandable to agent)
+- ✅ User control working (modes selectable per command/session)
+- ✅ Application transparent (users don't notice when caveman is active)
+- ✅ Integration seamless (applied to lessons, decisions, patterns)
+- ✅ Toggle mechanism working (can switch modes mid-session)

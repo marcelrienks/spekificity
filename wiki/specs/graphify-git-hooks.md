@@ -1,6 +1,6 @@
 # [ARCHIVED] C.3.4 Graphify Git Hooks Integration — LEGACY
 
-**Status:** ARCHIVED (Superseded 2026-05-20)  
+**Status:** ARCHIVED (Superseded 2026-05-20)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Replacement:** [CodeGraph Setup Complete — Part 5](codegraph-setup-complete.md#part-5-configure-git-hook-optional-auto-sync)  
 **Priority:** DEPRECATED  
 
@@ -19,6 +19,24 @@ This specification is **ARCHIVED as LEGACY**. Graphify is no longer supported fo
 - Simpler setup and maintenance
 
 CodeGraph git hook setup is optional and covered in [codegraph-setup-complete.md Part 5](codegraph-setup-complete.md#part-5-configure-git-hook-optional-auto-sync).
+
+---
+
+## ⚠️ DEPRECATION NOTICE (Status: ARCHIVED as LEGACY)
+
+This specification is **ARCHIVED as LEGACY**. Graphify is no longer supported for new Spekificity projects.
+
+**Use CodeGraph instead:** [codegraph-setup-complete.md](codegraph-setup-complete.md)
+
+## Success Criteria (Legacy — Archived)
+
+- ⚠️ Git hooks installed post-commit (auto-sync functional)
+- ⚠️ Incremental graphify update triggered on commit (changed files re-indexed)
+- ⚠️ Hook configuration enabled/disabled (user control via flag)
+- ⚠️ Performance optimization working (caching, worker threads functional)
+- ⚠️ Hook removal/troubleshooting documented (cleanup process clear)
+- ❌ Active support ended (graphify succeeded by CodeGraph)
+- ❌ New projects should not use (CodeGraph is recommended)
 
 ---
 
