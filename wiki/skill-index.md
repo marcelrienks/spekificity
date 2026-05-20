@@ -151,10 +151,68 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 
 ---
 
-### `/spek.map`
+### `/spek.post`
+
+**Purpose:** Archive feature outcomes, extract lessons, update vault + refresh CodeGraph  
+**Usage:** `/spek.post [--caveman-mode=full|lite|ultra] [--dry-run]`
+
+**What it does:**
+1. Collect implementation artifacts (spec, plan, tasks, execution trace, code changes)
+2. Generate lessons document from artifacts
+3. Document architectural decisions and rationale
+4. Update vault/patterns.md with new patterns
+5. Sync repo memory (architectural decisions, pattern index)
+6. Refresh CodeGraph via /spek.map (incremental)
+7. Archive current feature session state
+8. Report completion
+
+**Output:**
+- Lessons document (vault/lessons/YYYY-MM-DD-feature-name.md)
+- Decisions and patterns documented
+- Synced repo memory + graph refreshed
+- Completion report
+
+**Spec Reference:** [post-command.md](../specs/102-post-command.md)
+
+---
+
+## Optional Enhancements: Context & Analysis
+
+The following commands are **first-class and fully documented**, but **not required** for basic feature development. Use them to enhance context loading, verify dependencies, or analyze impact.
+
+### `/spek.context` — Load Project Context
+
+**Purpose:** Load vault context (decisions, patterns, lessons) into current session  
+**Usage:** `/spek.context [--scope user|session|repo]`
+
+**When to use:**
+- Before starting implementation to review past decisions
+- During planning to find related patterns
+- At any point to inject project knowledge
+
+**What it does:**
+1. Read memory files from specified scope
+2. Parse YAML frontmatter (if present)
+3. Index into CodeGraph for quick querying
+4. Make context available to all downstream commands
+
+**Output:**
+- Context loaded summary (# decisions, # lessons, # patterns available)
+- Context refresh timestamp
+
+**Spec Reference:** [context-layer.md](../specs/context-layer.md)
+
+---
+
+### `/spek.map` — Analyze Dependencies & Impact
 
 **Purpose:** Generate impact analysis + dependency map  
 **Usage:** `/spek.map [spec-file] [--show-impact|--show-deps|--show-all]`
+
+**When to use:**
+- To verify what code/specs are affected by a change
+- To identify blockers or dependencies before starting
+- To understand critical paths in feature dependencies
 
 **Flags:**
 - `--show-impact`: What code + specs are affected by changes to this spec?
@@ -177,33 +235,9 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 
 ---
 
-## Context Skills: `/context.*` Namespace
+## Context Injection: `/context.*` Namespace
 
-### `/context.load`
-
-**Purpose:** Load vault context for current session  
-**Usage:** `/context.load [--scope user|session|repo]`
-
-**Scopes:**
-- `user`: Personal preferences + patterns (persistent across projects)
-- `session`: Task-specific context (cleared at session end)
-- `repo`: Project-specific vault (decisions + lessons from this project)
-
-**What it does:**
-1. Read memory files from specified scope
-2. Parse YAML frontmatter (if present)
-3. Index into CodeGraph for quick querying
-4. Make context available to all downstream commands
-5. Track token usage (context loading cost amortized over session)
-
-**Output:**
-- Context loaded summary (# decisions, # lessons, # patterns available)
-- Token cost (one-time per session)
-- Context refresh timestamp
-
-**Spec Reference:** [context-layer.md](../specs/context-layer.md)
-
----
+For fine-grained context control at specific workflow points:
 
 ### `/context.inject`
 
@@ -357,49 +391,61 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 
 ---
 
-## Command Chains: Typical Workflows
+## Core Workflow: Minimal Path
 
-### Workflow 1: Start New Feature (15 min)
+**Essential only.** These commands form the required backbone:
 
 ```
 /spek.prepare [feature-name]
-  → CodeGraph loads code state
-  → Vault context injected
+  → Workspace ready, git clean, CodeGraph fresh
   ↓
-/spek.plan [spec-file]
-  → Plan generated from spec
+/spek.automate --phase=specify
+  → Feature specification generated
+  ↓
+/spek.automate --phase=plan
+  → Implementation plan + task breakdown
   ↓
 /spek.implement [feature-name]
-  → Start implementation (step-by-step)
-```
-
-### Workflow 2: Verify Spec Completeness (5 min)
-
-```
-/spek.automate --mode validate [spec-file]
-  → Checks format + cross-references
+  → Execute tasks
   ↓
-/context.load --scope repo
-  → Load project decisions + lessons
-  ↓
-/cg.query impact [affected-code]
-  → What else does this spec touch?
+/spek.post
+  → Archive outcomes, refresh vault, sync graph
 ```
 
-### Workflow 3: End of Feature (20 min)
+## Enhanced Workflows: Optional Additions
+
+### Workflow A: Decision-Aware Implementation
 
 ```
-/spek.implement --status check
-  → Verify all steps complete
+/spek.context --scope repo
+  → Load project decisions + patterns (OPTIONAL)
   ↓
-/cg.sync
-  → Update code graph
+[run core workflow above]
   ↓
 /spek.lessons [feature-complete]
-  → Archive lessons + new patterns
+  → Explicit lesson extraction + vault update (OPTIONAL)
+```
+
+### Workflow B: Dependency Verification
+
+```
+/spek.map [spec-file] --show-all
+  → Identify blockers + dependencies (OPTIONAL)
   ↓
-/context.inject --at lessons --focus [feature-name]
-  → Load context for post-mortem notes
+[run core workflow above]
+```
+
+### Workflow C: Impact Analysis During Planning
+
+```
+/spek.automate --phase=plan
+  → Generate implementation plan (REQUIRED)
+  ↓
+/cg.query impact [affected-code]
+  → Verify impact on other systems (OPTIONAL)
+  ↓
+/spek.implement [feature-name]
+  → Execute with full awareness
 ```
 
 ---
@@ -410,17 +456,17 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 
 **Pattern:** `/spek.oneword` — action-oriented, imperative verbs
 
-| Skill | Command | Purpose |
-|-------|---------|---------|
-| Preparation | `/spek.prepare` | Initialize workspace, git state, CodeGraph, context |
-| Context loading | `/spek.context` | Load vault, repo memory, and graph context |
-| Code mapping | `/spek.map` | Build or refresh code/document graph |
-| Automation | `/spek.automate` | Orchestrate spec → plan → tasks → analyze |
-| Implementation | `/spek.implement` | Execute approved tasks with context |
-| Post-processing | `/spek.post` | Archive outcomes, extract lessons, refresh state |
-| Lessons capture | `/spek.lessons` | Explicit, detailed lesson extraction |
+| Tier | Command | Purpose |
+|------|---------|----------|
+| **REQUIRED** | `/spek.prepare` | Initialize workspace, git state, CodeGraph |
+| **REQUIRED** | `/spek.automate` | Generate specs, plans, task breakdown |
+| **REQUIRED** | `/spek.implement` | Execute tasks with context |
+| **REQUIRED** | `/spek.post` | Archive outcomes, update vault, sync graph |
+| *Optional* | `/spek.context` | Load vault decisions, patterns, lessons |
+| *Optional* | `/spek.map` | Analyze dependencies + impact |
+| *Optional* | `/spek.lessons` | Explicit retrospective + pattern extraction |
 
-**Design:** All commands keep `spek.` prefix for namespace consistency. Command portions are single words where possible (`context`, `map`, `lessons`, `prepare`, `post`, `automate`) for ergonomics and easy memorization.
+**Design:** All commands keep `spek.` prefix for namespace consistency. Single-word command portions for ergonomics. Required commands form minimal viable path; optional commands enhance without blocking workflow.
 
 ---
 
@@ -432,10 +478,10 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 |---------|---------|-----------|
 | `/speckit.constitution` | Define project principles | Manual or `/spek.automate` |
 | `/speckit.specify` | Create feature spec | `/spek.automate --phase=specify` |
-| `/speckit.clarify` | Resolve spec ambiguities (optional) | `/spek.automate --phase=clarify` |
-| `/speckit.plan` | Create implementation plan | `/spek.automate --phase=plan` (Step 1) |
-| `/speckit.tasks` | Generate task list | `/spek.automate --phase=plan` (Step 2) |
-| `/speckit.analyze` | Cross-artifact consistency check (optional) | `/spek.automate --phase=analyze` |
+| `/speckit.clarify` | Resolve spec ambiguities | `/spek.automate --phase=clarify` (optional) |
+| `/speckit.plan` | Create implementation plan | `/spek.automate --phase=plan` |
+| `/speckit.tasks` | Generate task list | `/spek.automate --phase=plan` |
+| `/speckit.analyze` | Cross-artifact consistency check | `/spek.automate --phase=analyze` (optional) |
 
 **Design:** Vanilla SpecKit commands use `speckit.*` namespace. Spekificity wraps these (decorator pattern) to inject enrichment layers (vault decisions, CodeGraph context, pattern references) without modifying SpecKit internals.
 
@@ -463,15 +509,20 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 
 ### Invocation Quick Reference
 
-**Primary Workflow:**
+**Core Workflow (Required):**
 ```
-/spek.prepare         # Pre-feature setup
-/spek.context         # Load project context
-/spek.map             # Build or refresh graph
+/spek.prepare         # Workspace ready
 /spek.automate        # Spec → plan → tasks
-/spek.implement       # Execute approved tasks
-/spek.post            # Archive outcomes + lessons
-/spek.lessons         # Explicit lesson extraction
+/spek.implement       # Execute tasks
+/spek.post            # Archive + sync
+```
+
+**Enhancements (Optional):**
+```
+/spek.context         # Load project knowledge
+/spek.map             # Analyze dependencies
+/spek.lessons         # Extract retrospective
+/context.inject       # Stage-specific context
 ```
 
 **Underlying SpecKit (via /spek.automate):**
@@ -517,12 +568,11 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 
 ---
 
-## Skill Availability
+## Skill Status
 
-- **Installed:** All skills above (alpha.1 baseline)
-- **In Development (Phase 3):** Extended CLI integration
-- **Future (Phase 4):** Custom skill registration
-- **Future (Phase 5):** Automated skill discovery from codebase
+- **Required Core (alpha.1):** `/spek.prepare`, `/spek.automate`, `/spek.implement`, `/spek.post`
+- **Optional Enhancements (alpha.1):** `/spek.context`, `/spek.map`, `/spek.lessons`, `/context.inject`
+- **Status:** All documented skills are available. Implementation proceeds per wiki/specs documentation.
 
 ---
 
@@ -531,9 +581,9 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 - **Full Skill Specifications:** [wiki/specs/](../specs/)
 - **Workflow Guide:** [wiki/workflow.md](../workflow.md)
 - **Quick Start:** [wiki/quickstart.md](../quickstart.md)
-- **Pattern Library:** [wiki/patterns.md](../patterns.md)
-- **Decision Tree:** [wiki/decision.md](../decision.md)
 
 ---
 
-**Status:** ATOMIC SPECIFICATION | **Version:** 1.0.0-alpha.1 (2026-05-20)
+## Completeness Note
+
+Spekificity is complete when all skills and specifications in `/wiki/specs/` are fully implemented. There is no MVP or partial delivery—the tool is dictated entirely by the wiki documentation. Development is driven by spec completion.

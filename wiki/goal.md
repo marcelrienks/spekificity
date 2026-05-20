@@ -29,10 +29,9 @@ Spekificity is a **specification-driven agent development framework** built arou
 ### 1. Token Efficiency
 **Every token counts. Agent queries should be pre-indexed, not re-scanned.**
 
-- **CodeGraph MCP:** Real-time indexed code analysis (20x faster than file scanning)
-  - Queries run in < 100ms (vs 2-5s for grep + file reads)
+- **CodeGraph MCP:** Real-time indexed code analysis (pre-indexed, no file scanning)
   - Pre-indexed SQLite database auto-syncs when files change
-  - Supports 20+ languages via AST parsing
+  - Supports multiple languages via AST parsing
   - Tools: `codegraph_symbols()`, `codegraph_references()`, `codegraph_impact()`, `codegraph_definition()`
 
 - **Scoped Context Loading:** Vault loaded once per session, not per query
@@ -51,12 +50,12 @@ Spekificity is a **specification-driven agent development framework** built arou
   - Success Criteria, Assumptions, Risk Assessment documented upfront
   - No code without a spec
 
-- **SpecKit Pipeline:** Deterministic 5-phase sequence
-  - Phase 1: Prepare (workspace ready, git clean, graph fresh)
-  - Phase 2: Specify (enriched spec generation)
-  - Phase 3: Plan (task breakdown with impact analysis)
-  - Phase 4: Implement (execute tasks with full context)
-  - Phase 5: Close (archive lessons, refresh state)
+- **SpecKit Pipeline:** Deterministic sequence
+  - Prepare (workspace ready, git clean, graph fresh)
+  - Specify (enriched spec generation)
+  - Plan (task breakdown with impact analysis)
+  - Implement (execute tasks with full context)
+  - Post (archive lessons, refresh state)
 
 - **Reusable Skills:** `/spek.*` commands are composable and opinionated
   - `/spek.prepare` — Pre-flight checks
@@ -82,7 +81,7 @@ Spekificity is a **specification-driven agent development framework** built arou
 
 - **CodeGraph Auto-Sync:** Never stale
   - File watches implemented
-  - < 500ms incremental updates
+  - Incremental updates on file change
   - Query results always current
 
 ### 4. Autonomy
@@ -119,16 +118,12 @@ project/
 │  └─ [DOCUMENTATION: docstrings, examples]
 │
 ├─ wiki/
-│  ├─ specs/
-│  │  └─ [FEATURE SPEC: NNN-feature-name.md]
-│  │
-│  ├─ decision.md (updated)
-│  │  └─ [NEW ARCHITECTURAL DECISIONS logged with rationale]
-│  │
-│  └─ patterns.md (updated)
-│     └─ [NEW PATTERNS discovered, indexed with usage frequency]
+│  └─ specs/
+│     └─ [FEATURE SPEC: NNN-feature-name.md]
 │
 └─ vault/
+   ├─ Architectural decisions recorded
+   ├─ Patterns discovered and indexed
    └─ lessons/
       └─ [LESSONS LEARNED: YYYY-MM-DD-feature-name-topic.md]
          └─ [What worked, what didn't, why, for future reference]
@@ -182,26 +177,26 @@ vault/
 
 ### Step-by-Step: Building a User Authentication Feature (Example)
 
-#### Phase 1: Prepare (5 min)
+#### Prepare Workspace
 
 **Command:** `/spek.prepare`
 
 ```
 ✓ Git working tree clean
 ✓ Vault synced from origin
-✓ CodeGraph refreshed (42 files indexed, < 500ms)
-✓ Session context loaded (4 existing patterns, 12 decisions)
+✓ CodeGraph refreshed
+✓ Session context loaded
 READY: Workspace prepared for feature development
 ```
 
 **What happened:**
 - Git verified clean (no uncommitted work)
 - Vault pulled (latest specs/decisions/lessons)
-- CodeGraph queried to find affected files
+├─ CodeGraph queried for affected files
 - Session memory loaded (decisions, patterns from vault)
 - Feature state file created
 
-#### Phase 2: Specify (15 min)
+#### Specify Feature
 
 **Command:** `/spek.automate --phase=specify --feature="user-auth-api"`
 
@@ -247,7 +242,7 @@ SPEC GENERATION
 - Risk assessment documented
 - Success criteria crystal clear
 
-#### Phase 3: Plan (10 min)
+#### Create Plan
 
 **Command:** `/spek.automate --phase=plan`
 
@@ -266,38 +261,31 @@ TASK BREAKDOWN
 │  ├─ Task 1: Add login route handler
 │  │  ├─ File: auth/routes.py
 │  │  ├─ Depends: User model, JWT utils
-│  │  ├─ Estimate: 20 min
 │  │  └─ Success: Handler accepts email + password, returns JWT or 401
 │  │
 │  ├─ Task 2: Add unit tests (login handler)
 │  │  ├─ File: tests/auth/test_routes.py
 │  │  ├─ Depends: Task 1
-│  │  ├─ Estimate: 15 min
-│  │  └─ Success: 95%+ coverage, all cases covered (valid, invalid, expired)
+│  │  └─ Success: Comprehensive coverage, all cases covered (valid, invalid, expired)
 │  │
 │  ├─ Task 3: Add integration tests (full auth flow)
 │  │  ├─ File: tests/integration/test_auth_flow.py
 │  │  ├─ Depends: Task 1, Task 2
-│  │  ├─ Estimate: 20 min
 │  │  └─ Success: End-to-end flow works (login → token → protected endpoint)
 │  │
 │  └─ Task 4: Update docs
 │     ├─ File: docs/API.md
 │     ├─ Depends: Task 1
-│     ├─ Estimate: 10 min
 │     └─ Success: Login endpoint documented with examples
-│
-└─ Total estimate: 65 min, ~3,000 tokens
 ```
 
 **What was produced:**
 - `/wiki/specs/151-user-auth-plan.md` — Detailed task breakdown
 - Dependencies validated (no blocking issues)
 - Sequence determined (tasks 2/3 depend on task 1, can parallelize after)
-- Resource estimate (time + tokens)
 - Ready to implement
 
-#### Phase 4: Implement (1-2 hours)
+#### Execute Implementation
 
 **Command:** `/spek.implement --task=1 --task=2 --task=3 --task=4`
 
@@ -328,7 +316,7 @@ EXECUTION:
 │  ├─ Generates JWT token
 │  └─ Returns token or 401
 │
-├─ Agent writes tests (95%+ coverage)
+├─ Agent writes comprehensive tests
 │  ├─ Valid credentials → token returned
 │  ├─ Invalid email → 401
 │  ├─ Invalid password → 401
@@ -354,7 +342,7 @@ Code changes committed to git.
 Ready for closing phase.
 ```
 
-#### Phase 5: Close (10 min)
+#### Archive & Close
 
 **Command:** `/spek.post --caveman-mode=full`
 
@@ -367,16 +355,16 @@ Step 1: Collect Artifacts
 ├─ Plan (151-user-auth-plan.md)
 ├─ Code changes (git diff)
 ├─ Execution trace (what was tried, what worked)
-└─ Test results (95%+ coverage achieved)
+└─ Test results
 
 Step 2: Activate Caveman Compression
 ├─ Active voice, concrete, no filler
-└─ Token budget: 3,500-4,000 tokens
+└─ Compress output
 
 Step 3: Generate Lessons
 ├─ What worked:
 │  - JWT token generation pattern applied cleanly
-│  - CodeGraph impact analysis saved 30 min of manual code review
+│  - CodeGraph impact analysis reduced manual code review effort
 │  - Unit test template from existing auth tests reused
 │
 ├─ What didn't:
@@ -406,8 +394,7 @@ Step 6-7: Sync Repo Memory
 Step 8: Refresh CodeGraph
 ├─ Scan new code (auth/routes.py, tests/)
 ├─ Update index with new functions/classes
-├─ Graph now includes login handler, tests
-└─ < 500ms incremental update
+└─ Graph now includes login handler, tests
 
 Step 9: Archive Feature State
 ├─ Move /memories/session/current-feature.md to vault/archive/
@@ -416,12 +403,10 @@ Step 9: Archive Feature State
 
 Step 10: Report Completion
 └─ FEATURE COMPLETE: user-auth-api
-   ├─ Time: 2 hours
-   ├─ Tokens: 3,200 (estimate vs actual)
-   ├─ Code added: auth/routes.py (80 lines)
-   ├─ Tests added: 25 test cases (95%+ coverage)
+   ├─ Code added: auth/routes.py
+   ├─ Tests added: Multiple test cases with comprehensive coverage
    ├─ Docs added: API.md updated
-   ├─ Lessons: 3 patterns refined, 2 decisions logged
+   ├─ Lessons: Patterns refined, decisions logged
    └─ Next feature can reuse patterns/decisions from vault
 ```
 
@@ -538,7 +523,7 @@ NEXT TIME: Developer reads vault, reuses pattern, saves 1.5 hours
 Spekificity is working when:
 
 ✅ **Specs exist before code** — Developers write spec first, not as documentation after  
-✅ **CodeGraph answers questions instantly** — "Where is X used?" answered in < 100ms, not 5 min of grep  
+✅ **CodeGraph answers code questions** — "Where is X used?" answered via pre-indexed queries, not manual scanning  
 ✅ **Decisions are documented** — Vault grows; decisions logged with rationale  
 ✅ **Patterns are reused** — Each feature references 2-3 patterns from vault  
 ✅ **Lessons are captured** — Each feature adds to lessons archive  
@@ -553,7 +538,7 @@ Spekificity is working when:
 **When Fully Implemented, Spekificity Provides:**
 
 - ✅ 5-phase workflow (Prepare → Specify → Plan → Implement → Close)
-- ✅ CodeGraph integration (< 100ms queries, 20+ languages)
+- ✅ CodeGraph integration (pre-indexed queries, multiple languages)
 - ✅ SpecKit orchestration (deterministic pipeline)
 - ✅ Obsidian vault (Git-backed knowledge store)
 - ✅ Memory architecture (3-layer persistence)

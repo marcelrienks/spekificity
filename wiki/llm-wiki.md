@@ -74,12 +74,10 @@ wiki/                              # LLM Wiki (root-level artifact)
 │   └── projects/                  # Project docs, proposals
 │
 ├── llm-wiki.md                    # This file (framework documentation)
-├── overview.md                    # Entry point to the wiki instance
 ├── architecture.md                # Single-word lowercase files (flat)
-├── decision.md
 ├── intention.md
-├── todo.md
-└── (subdirectories only if grouping needed)
+├── workflow.md
+└── specs/                         # Specification documents
 ```
 
 **Key Semantics:**

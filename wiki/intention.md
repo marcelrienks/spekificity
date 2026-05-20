@@ -90,7 +90,7 @@ No code without a specification.
 Real-time, pre-indexed code analysis via CodeGraph MCP. No file scanning.
 
 - CodeGraph automatically syncs on every file change
-- Queries are sub-100ms (impact analysis, caller chains, definitions)
+- Queries are deterministic (impact analysis, caller chains, definitions)
 - Agents use CodeGraph for code context, not file grep
 - Graphify (Markdown vault docs) is legacy; CodeGraph is the modern standard
 
@@ -211,5 +211,3 @@ Consistent naming makes the system intuitive:
 - **Architecture Details:** [architecture.md](architecture.md)
 - **Development Workflow:** [workflow.md](workflow.md)
 - **Naming & Conventions:** [naming-conventions.md](naming-conventions.md)
-- **Integration Checklist:** [integration-checklist.md](integration-checklist.md)
-- **Decision Log:** [decision.md](decision.md)

@@ -6,18 +6,18 @@
 
 ## Overview
 
-Spekificity feature development follows a deterministic 5-phase workflow:
-1. **Prepare** – Pre-flight checks and context loading
-2. **Specify** – Write feature spec with enrichment layers
-3. **Plan** – Break spec into tasks and validate dependencies
-4. **Implement** – Execute tasks with full context
-5. **Close** – Archive outcomes, extract lessons, refresh state
+Spekificity feature development follows a deterministic workflow with four required stages:
 
-Each phase has clear entry/exit criteria and produces durable artifacts stored in the Obsidian vault.
+1. **Prepare** – Pre-flight checks and workspace setup
+2. **Specify & Plan** – Write feature spec, generate implementation plan
+3. **Implement** – Execute tasks with full context
+4. **Post** – Archive outcomes, sync vault, update graph
+
+Optional enhancements (context loading, dependency analysis, retrospectives) can be applied at any stage. Each stage produces durable artifacts stored in the vault.
 
 ---
 
-## Phase 1: Feature Start & Preparation
+## Stage 1: Preparation & Workspace Setup
 
 ### Command
 ```
@@ -50,7 +50,7 @@ Pre-flight checks before feature development begins. Ensures workspace is ready,
 
 ---
 
-## Phase 2: Specification & Enrichment
+## Stage 2: Specification & Planning
 
 ### Commands
 ```
@@ -92,14 +92,14 @@ Each spec includes structured enrichment:
 | **Assumptions** | Preconditions and facts | "User model exists", "Database schema is migrated" |
 | **Risk Assessment** | Potential failures and mitigations | "Breaking change if existing clients depend on old field — need migration plan" |
 | **Dependencies** | Upstream/downstream linked tasks | "Requires PR #123 merged first" |
-| **Resource Estimate** | Time, tokens, complexity | "Est. 3–4 hours, ~10k tokens, Medium complexity" |
-| **Metrics** | How to measure quality | "Code coverage > 80%", "Response time < 100ms" |
+| **Resource Estimate** | Effort scope, complexity level | "Medium complexity, involves database schema changes" |
+| **Metrics** | How to measure quality | "Code coverage comprehensive", "API endpoints working" |
 
 ### Output Artifacts
 - Specification document (Markdown, vault-stored)
 - Enrichment layer details embedded in spec
 - Links to CodeGraph impact analysis
-- References to relevant decisions from [decision.md](decision.md)
+- Links to relevant architectural decisions
 
 ### Exit Criteria
 - ✅ Specification written and clear
@@ -110,7 +110,7 @@ Each spec includes structured enrichment:
 
 ---
 
-## Phase 3: Planning & Task Breakdown
+## Stage 3: Planning & Task Breakdown
 
 ### Commands
 ```
@@ -184,7 +184,7 @@ Task 1 (Auth Service)
 - `plan.md` — Architecture, tech choices, rationale, research (Markdown, vault-stored)
 - `tasks.md` — Dependency-ordered executable tasks with IDs, resource estimates, critical path (Markdown, vault-stored)
 - CodeGraph references for implementation
-- Links to existing decisions from [decision.md](decision.md)
+- Record architectural decisions and rationale
 
 ### Exit Criteria
 - ✅ Architecture documented in plan.md
@@ -197,7 +197,7 @@ Task 1 (Auth Service)
 
 ---
 
-## Phase 4: Implementation by Task
+## Stage 4: Implementation by Task
 
 ### Commands
 ```
@@ -280,7 +280,7 @@ Each task execution includes:
 
 ### Pre-Shipping Integration Checklist
 
-Before moving to Phase 5 Closeout, verify all quality gates:
+Before moving to the final stage, verify all quality gates:
 
 **Code Quality**
 - [ ] All functions have docstrings (purpose, args, return)
@@ -318,8 +318,8 @@ Before moving to Phase 5 Closeout, verify all quality gates:
 
 **Performance**
 - [ ] Token budget not exceeded (if one was set)
-- [ ] CodeGraph query performance acceptable (< 100ms per query)
-- [ ] API responses < 100ms for simple queries (if applicable)
+- [ ] CodeGraph queries working correctly
+- [ ] API responses working (if applicable)
 - [ ] No N+1 queries or unnecessary loops
 
 **Sign-Off**
@@ -329,7 +329,7 @@ Before moving to Phase 5 Closeout, verify all quality gates:
 
 ---
 
-## Phase 5: Post-Feature Closeout
+## Stage 5: Post-Feature Archival
 
 ### Commands
 ```
@@ -514,5 +514,5 @@ Next Feature Spec (pattern reference) + Next Feature Plan (estimate refinement)
 - **Architecture:** [architecture.md](architecture.md)
 - **Naming & Commands:** [naming-conventions.md](naming-conventions.md)
 - **Integration Checklist:** [integration-checklist.md](integration-checklist.md)
-- **Decision Log:** [decision.md](decision.md)
+- **Architecture Notes** — Key decisions and rationale
 - **Pattern Library:** [patterns/](patterns/)

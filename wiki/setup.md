@@ -198,7 +198,7 @@ See [wiki/specs/codegraph-setup-and-integration.md](../specs/codegraph-setup-and
 
 ### Alternative: Graphify (Transition Reference)
 
-Graphify is an alternative multi-language code indexing tool (legacy/transition reference). See [decision.md](../decision.md) in this wiki for the reasoning behind the CodeGraph recommendation.
+Graphify is an alternative multi-language code indexing tool (legacy/transition reference). The CodeGraph approach is recommended for Spekificity integration.
 
 #### Graphify Installation (If Chosen)
 
@@ -349,7 +349,7 @@ Once all tools are installed and verified:
 
 1. Run `/spek.prepare` to initialize workspace and load context
 2. Run `/spek.automate [feature description]` to begin a feature workflow
-3. See [wiki/speckit-workflow.md](../speckit-workflow.md) for complete workflow documentation
+3. See [wiki/workflow.md](../workflow.md) for complete workflow documentation
 
 ---
 
@@ -404,8 +404,4 @@ See individual tool sections above for tool-specific troubleshooting.
 
 ## See Also
 
-- [wiki/speckit-setup.md](../setup/speckit-setup.md) (legacy; see Tool 1 above)
-- [wiki/obsidian-setup.md](../setup/obsidian-setup.md) (legacy; see Tool 2 above)
-- [wiki/setup/graphify-setup.md](../setup/graphify-setup.md) (legacy; see Tool 3 above)
-- [wiki/specs/codegraph-setup-and-integration.md](../specs/codegraph-setup-and-integration.md) (recommended code analysis tool)
-- [wiki/decision.md](../decision.md) (tool selection rationale)
+- [wiki/specs/codegraph-setup-and-integration.md](../specs/050-codegraph-setup-and-integration.md) (recommended code analysis tool)

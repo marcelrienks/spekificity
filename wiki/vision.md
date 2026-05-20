@@ -385,8 +385,6 @@ The repository does **not** currently contain a complete shipped `spek` CLI, ins
 
 ## See Also
 
-- [wiki/decision.md](decision.md) — Architectural and tool selection decisions
 - [wiki/naming-conventions.md](naming-conventions.md) — Naming conventions for skills and workflows
-- [wiki/speckit-workflow.md](speckit-workflow.md) — Canonical SpecKit flow and Spekificity integration points
 - [wiki/setup.md](setup.md) — Prerequisites and tool installation
-- [wiki/todo.md](todo.md) — Roadmap and implementation status
+- [wiki/workflow.md](workflow.md) — Complete feature development workflow

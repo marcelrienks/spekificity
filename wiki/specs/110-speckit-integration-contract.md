@@ -2,7 +2,7 @@
 
 **Status:** SPECIFICATION (2026-05-18) | **Version:** 1.0.0-alpha.1 (2026-05-20)  
 **Feature:** spekificity feature 003 — Full Workflow CLI  
-**Related:** [SpecKit Workflow](../speckit-workflow.md), [Memory Architecture](memory-architecture.md)
+**Related:** [Spekificity Workflow](../workflow.md), [Memory Architecture](030-memory-architecture.md)
 
 ---
 
@@ -25,7 +25,7 @@ The contract clarifies:
 
 ## SpecKit Canonical Workflow
 
-From [speckit-workflow.md](../speckit-workflow.md), SpecKit's global flow is:
+From [workflow.md](../workflow.md), the canonical feature development flow is:
 
 ```
 constitution
@@ -664,13 +664,13 @@ vault/
 ## References
 
 **Related specs:**
-- [SpecKit Workflow](../speckit-workflow.md)
+- [Spekificity Workflow](../workflow.md)
 - [extracted spec Code and Document Maps](code-and-document-maps.md)
 - [extracted spec Memory Architecture](memory-architecture.md)
 
 **SpecKit canonical documentation:**
 - [SpecKit GitHub](https://github.com/github/spec-kit)
-- [Canonical workflow](../speckit-workflow.md#canonical-workflow)
+- [Workflow](../workflow.md#canonical-workflow)
 
 **Spekificity skill definitions:**
 - [/spek.context spec](context-layer.md)

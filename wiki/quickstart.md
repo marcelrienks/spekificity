@@ -1,6 +1,6 @@
 # Spekificity Quick Start Guide
 
-> **Reading Time:** ~30 minutes  
+> 
 > **Skill Level:** Beginner  
 > **Outcome:** Complete your first feature using the Spekificity workflow
 
@@ -28,7 +28,7 @@ See [setup.md](setup.md) for detailed prerequisite verification.
 
 ---
 
-## Phase 1: Prepare Your Workspace (5 min)
+## Prepare Your Workspace
 
 ### Purpose
 
@@ -76,7 +76,7 @@ READY: Workspace prepared for feature development
 
 ---
 
-## Phase 2: Specify Your Feature (15 min)
+## Phase 2: Specify Your Feature
 
 ### Purpose
 
@@ -167,8 +167,7 @@ POST /auth/login endpoint with JWT token generation
 - Downstream: Protect other endpoints with @auth decorator
 
 ## Estimate
-- Time: 2–3 hours
-- Tokens: ~8k (with context)
+- Scope: Medium complexity
 - Complexity: Medium
 
 ## Implementation Tasks
@@ -204,7 +203,7 @@ Spec is saved in your vault (typically `wiki/specs/user-auth-api.md`). It's vers
 
 ---
 
-## Phase 3: Plan Your Implementation (10 min)
+## Phase 3: Plan Your Implementation
 
 ### Purpose
 
@@ -240,7 +239,7 @@ Spekificity creates a detailed plan by:
 ### Task 1: Prepare environment
 - Description: Install JWT library, add configuration
 - Files affected: requirements.txt, config/auth.py
-- Est. time: 15 min
+- Scope: Straightforward
 - Depends on: (none)
 - Blocks: Tasks 2–5
 
@@ -486,8 +485,8 @@ Task Completion Check:
 
 Summary Statistics:
 ─────────────────────────────────────────
-Time spent: 2h 15min (est. 2h) ✓
-Actual tokens: 9,200 (est. 10k) ✓
+Time spent: Within expectations ✓
+Token usage: Acceptable ✓
 Files changed: 7
 Commits: 5
 Tests added: 8
@@ -509,9 +508,9 @@ Session Review:
 
 Updated Vault:
 ─────────────────────────────────────────
-✓ wiki/decision.md: Added Decision 12 (JWT vs session tokens)
-✓ wiki/patterns.md: Added reference to auth pattern
-✓ wiki/todo.md: Updated feature status
+✓ Architectural decisions recorded
+✓ Patterns documented
+✓ Lessons captured
 
 Refreshing CodeGraph:
 ✓ CodeGraph rebuilt (47 files indexed, 23 functions added)
@@ -544,7 +543,7 @@ git commit -m "Feature: Add user authentication API endpoint
 - Error handling pattern from vault proved reusable
 
 ## Metrics
-- Time: 2h 15min (2% over estimate)
+- Time: Completed as planned
 - Tokens: 9,200 (8% under budget)
 - Tests: 8/8 passing"
 
@@ -660,7 +659,7 @@ git commit -m "WIP: tasks 1-3 complete"
 
 - [wiki/workflow.md](workflow.md) — Detailed phases and workflows
 - [wiki/intention.md](intention.md) — Project philosophy
-- [wiki/decision.md](decision.md) — Architectural decisions
+- [wiki/architecture.md](architecture.md) — Technical architecture
 - [.spekificity/skill-index.md](../.spekificity/skill-index.md) — Complete command reference
 
 ### Tips for Success

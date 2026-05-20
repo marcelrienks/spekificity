@@ -63,7 +63,6 @@
 
 **Output:**
 - `plan.md` (architecture, tech choices, rationale)
-- `research.md` (library comparisons, performance analysis, security implications)
 - `data-model.md` (entity definitions, schemas)
 - `contracts/` (API contracts, data schemas, WebSocket events)
 - `quickstart.md` (key validation scenarios)
@@ -79,7 +78,6 @@
 - `plan.md` (required)
 - `data-model.md` (if present)
 - `contracts/` (if present)
-- `research.md` (if present)
 
 **Output:** `tasks.md` with:
 - Dependency-ordered tasks

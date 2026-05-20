@@ -19,7 +19,7 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 
 ---
 
-## Quick Start (5 minutes)
+## Quick Start
 
 ### Prerequisites
 
@@ -47,7 +47,7 @@ specify init .
 /spek.prepare
 ```
 
-**Next:** Read [wiki/quickstart.md](wiki/quickstart.md) for full walkthrough (30 min).
+**Next:** Read [wiki/quickstart.md](wiki/quickstart.md) for full walkthrough.
 
 ---
 
@@ -90,13 +90,13 @@ Spekificity defines how these tools work together—it doesn't replace them.
 ```
 FEATURE START
     ↓
-/spek.prepare (git clean, vault fresh, CodeGraph synced)
+/spek.prepare (workspace ready)
     ↓
-/spek.automate --phase=specify (enriched spec generation)
+/spek.automate --phase=specify (spec generation)
     ↓
-/spek.automate --phase=plan (task breakdown with impact analysis)
+/spek.automate --phase=plan (planning + task breakdown)
     ↓
-/spek.implement (execute with full context)
+/spek.implement (execute)
     ↓
 /spek.post (archive lessons, refresh state)
     ↓
@@ -107,13 +107,13 @@ FEATURE COMPLETE
 
 ## Documentation Roadmap
 
-### **For First-Time Users (45 minutes)**
+### **For First-Time Users**
 
 Start with this reading order—each doc builds on the previous:
 
-1. **[wiki/intention.md](wiki/intention.md)** (10 min) — Why Spekificity exists and core philosophy (vision, principles, tenets)
-2. **[wiki/architecture.md](wiki/architecture.md)** (10 min) — How components fit together (technical architecture and data flow)
-3. **[wiki/quickstart.md](wiki/quickstart.md)** (25 min) — Hands-on walkthrough of your first feature
+1. **[wiki/intention.md](wiki/intention.md)** — Why Spekificity exists and core philosophy (vision, principles, tenets)
+2. **[wiki/architecture.md](wiki/architecture.md)** — How components fit together (technical architecture and data flow)
+3. **[wiki/quickstart.md](wiki/quickstart.md)** — Hands-on walkthrough of your first feature
 
 ### **For Daily Work (Reference)**
 
@@ -123,12 +123,6 @@ Start with this reading order—each doc builds on the previous:
 | [wiki/naming-conventions.md](wiki/naming-conventions.md) | Command naming and skill invocation |
 | [.spekificity/skill-index.md](.spekificity/skill-index.md) | Complete `/spek.*` command reference |
 
-### **For Deep Dives (Optional)**
-
-| Document | Purpose |
-|----------|---------|
-| [wiki/decision.md](wiki/decision.md) | Architectural decisions and trade-offs |
-| [wiki/faq.md](wiki/faq.md) | Common questions & troubleshooting |
 
 ### **Documentation Structure**
 
@@ -144,10 +138,10 @@ Start with this reading order—each doc builds on the previous:
 | **intention.md** | Philosophy, core principles, project tenets, constraints, target users | Understand Spekificity *philosophy* and design intent |
 | **architecture.md** | Technical components, data flow, responsibilities (Vault, CodeGraph, SpecKit, Skills), integration | Understand *how* components fit together technically |
 | **workflow.md** | 5-phase feature development workflow with entry/exit criteria, artifacts, detailed steps | Reference during *active development* |
-| **quickstart.md** | Hands-on walkthrough for first feature (30 min tutorial) | *Get started* with your first feature |
+| **quickstart.md** | Hands-on walkthrough for first feature | *Get started* with your first feature |
 | **naming-conventions.md** | `/spek.*` and `/speckit.*` command naming patterns and invocation | Know *which command to use* |
-| **decision.md** | Architectural decisions (CodeGraph vs Graphify, toolset rationale, etc.) | Understand *why* specific choices were made |
-| **faq.md** | Common questions, troubleshooting, setup issues | *Answer specific questions* about usage |
+
+
 
 ### **Terminology Guide**
 
@@ -180,8 +174,7 @@ Contributions welcome! Please:
 
 1. Create a feature branch from `main`
 2. Submit specs and documentation following [wiki/naming-conventions.md](wiki/naming-conventions.md)
-3. Link decisions to [wiki/decision.md](wiki/decision.md)
-4. Include test cases and lessons learned
+3. Include test cases and lessons learned
 
 ---
 
@@ -246,22 +239,19 @@ If you are evaluating the project today, treat this repository as the source for
 Use these documents first:
 
 - [wiki/vision.md](wiki/vision.md) — project vision, philosophy, architecture, and lifecycle framing
-- [wiki/decision.md](wiki/decision.md) — major tool and architecture decisions
 - [wiki/naming-conventions.md](wiki/naming-conventions.md) — current command names and directory conventions
-- [wiki/speckit-workflow.md](wiki/speckit-workflow.md) — canonical SpecKit flow and Spekificity integration points
-- [wiki/todo.md](wiki/todo.md) — roadmap and implementation status
+- [wiki/workflow.md](wiki/workflow.md) — canonical workflow and Spekificity integration points
 
 ## Documentation Map
 
 ### Core docs
 
 - [wiki/vision.md](wiki/vision.md)
-- [wiki/decision.md](wiki/decision.md)
+- [wiki/intention.md](wiki/intention.md)
+- [wiki/architecture.md](wiki/architecture.md)
+- [wiki/workflow.md](wiki/workflow.md)
 - [wiki/llm-wiki.md](wiki/llm-wiki.md)
-- [wiki/research.md](wiki/research.md)
 - [wiki/naming-conventions.md](wiki/naming-conventions.md)
-- [wiki/speckit-workflow.md](wiki/speckit-workflow.md)
-- [wiki/todo.md](wiki/todo.md)
 
 ### Setup notes
 
@@ -289,30 +279,32 @@ Current top-level layout:
 ```text
 spekificity/
 ├── README.md
+├── LICENSE
 ├── wiki/
 │   ├── architecture.md
-│   ├── decision.md
+│   ├── conventions.md
+│   ├── goal.md
 │   ├── intention.md
 │   ├── llm-wiki.md
-│   ├── naming-conventions.md
-│   ├── research.md
-│   ├── speckit-workflow.md
-│   ├── todo.md
-│   ├── setup/
+│   ├── quickstart.md
+│   ├── setup.md
+│   ├── skill-index.md
+│   ├── speckit.md
+│   ├── vision.md
+│   ├── workflow.md
 │   ├── specs/
 │   └── raw/
-├── .github/
-├── .specify/
-└── .cel/
+├── .git/
+└── .gitignore
 ```
 
 Practical reading order:
 
 1. README
 2. `wiki/intention.md`
-3. `wiki/decision.md`
-4. `wiki/naming-conventions.md`
-5. `wiki/speckit-workflow.md`
+3. `wiki/architecture.md`
+4. `wiki/quickstart.md`
+5. `wiki/naming-conventions.md`
 6. relevant files in `wiki/specs/`
 
 ## Working Assumptions
