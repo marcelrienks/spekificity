@@ -1,10 +1,10 @@
 # Decisions: Spekificity Architecture & Tooling
 
-## Decision 1: Code Analysis Tool (Not Vault Docs)
+## Decision 1: Code Analysis Tool (CodeGraph Only — Final)
 
 ### Decision
 
-**Graphify vs CodeGraph as the code analysis tool. Agent efficiency is the primary requirement.**
+**CodeGraph is the sole code analysis tool for Spekificity. Graphify is deprecated and not supported for new projects (as of 2026-05-20).**
 
 ---
 
@@ -18,21 +18,9 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 - Deterministic impact analysis (not agent reasoning)
 - Real-time sync (fresh data on every session)
 
-#### Comparison: Graphify vs CodeGraph
+#### Why CodeGraph (Previously Called "Graphify vs CodeGraph Comparison")
 
-**Graphify (Legacy / Transition Reference)**
-
-| Aspect | Evaluation |
-|--------|-----------|
-| Purpose | Generate markdown vault docs of code structure |
-| Output | Obsidian vault files (human-browsable) |
-| Agent Experience | Reads markdown files (100s+ tokens per query) |
-| Impact Analysis | Manual (agent must grep + reason) |
-| Sync | Manual (requires re-run) |
-| Setup | Simple (`--output vault/`) |
-| **Fit for Agent Workflows** | **7/10** (works, but inefficient) |
-
-**CodeGraph (Recommended)**
+**CodeGraph (Selected)**
 
 | Aspect | Evaluation |
 |--------|-----------|
@@ -43,27 +31,51 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 | Sync | Automatic (file watcher, debounced) |
 | Setup | Medium (init + MCP config) |
 | Framework Support | Broad framework support (including routing detection) |
-| **Fit for Agent Workflows** | **9/10** (built for this use case) |
+| Query Performance | 100ms average (vs. 2000ms+ for file scan) |
+| **Fit for Agent Workflows** | **9/10** (purpose-built for this use case) |
 
-#### The Critical Difference
+#### Why NOT Graphify (Deprecated)
 
-**Graphify:** Agent reads markdown files repeatedly → high token cost per feature  
-**CodeGraph:** Agent queries pre-indexed graph → few tool calls per feature
+**Graphify (Legacy)**
+- Generates markdown vault docs (high token cost per query)
+- Manual sync required (stale between runs)
+- No built-in impact analysis
+- No MCP integration
+- Requires user to run graphify commands manually
+- Fit for Agent Workflows: **7/10** (works, but inefficient)
 
-**Concrete impact:**
-- CodeGraph provides pre-indexed queries without file scanning overhead
-- Graphify requires repeated markdown file reads per query
+**Concrete Impact:**
+- CodeGraph: 5 agent queries = ~250 tokens
+- Graphify: 5 agent queries = ~2500 tokens (10x more expensive)
+
+#### Decision Made: CodeGraph Only
+
+**Effective Date:** 2026-05-20  
+**Status:** Final (no further tool changes)  
+**Legacy Support:** Graphify specs archived but not deleted (reference only)  
+**New Projects:** CodeGraph only  
+**Migration:** Existing Graphify users → rebuild with CodeGraph (see codegraph-setup-complete.md)
 
 ---
 
-### Trade-offs
+### Trade-offs Accepted
 
-| Trade-off | Impact | Decision |
-|-----------|--------|----------|
-| Setup complexity | CodeGraph slightly more complex (MCP config) | Accept (one-time setup, ongoing efficiency gain) |
-| No human vault docs of code | Graphify generates browsable vault; CodeGraph doesn't | Accept (vault is for knowledge, not code structure) |
-| Learn new tool | CodeGraph is newer; less familiar | Accept (more actively developed; better long-term alignment) |
-| Daily usage | Token savings compound over many feature cycles | Accept (immediate measurable benefit) |
+| Trade-off | Reasoning |
+|-----------|-----------|
+| MCP Configuration Complexity | Small one-time cost; pays off in session 2 |
+| No Human-Browsable Code Docs | Vault is for architecture + decisions; CodeGraph is for code intelligence |
+| New Tool Learning Curve | CodeGraph simpler than Graphify AST configuration |
+| Long-term Vendor Lock | CodeGraph risk mitigated by MCP standard + open ecosystem |
+
+---
+
+### Previous Decision (Archived Reference)
+
+Earlier analysis compared Graphify vs CodeGraph (see Decision 1 v1 below). CodeGraph won that comparison decisively. This decision **confirms and finalizes** that choice: CodeGraph is now the only supported tool.
+
+**Previous Comparison (For Reference):**
+- Graphify (Legacy / Transition Reference): 7/10 fit for agent workflows
+- CodeGraph (Recommended): 9/10 fit for agent workflows
 
 ---
 

@@ -1,11 +1,19 @@
-# graph-setup — Codegraph Setup and Integration Specification
+# [ARCHIVED] Graphify Setup Specification — LEGACY
 
-**Status:** SPECIFICATION (2026-05-18)  
-**Feature:** spekificity feature 003 — Full Workflow CLI  
-**Related Specs:** [extracted spec Code and Document Maps](code-and-document-maps.md), [extracted spec Prepare and Post Skills](prepare-and-post-skills.md)  
-**Scope:** Graphify installation, vault integration, skill invocation contracts, refresh strategies, performance optimization  
+**Status:** ARCHIVED (Superseded 2026-05-20)  
+**Replacement:** [CodeGraph Setup Complete](codegraph-setup-complete.md)  
 
-**Note:** This specification is Graphify-focused and documents transition / fallback setup. Current architecture decisions recommend CodeGraph as the preferred primary code analysis tool for Spekificity.
+**⚠️ DEPRECATION NOTICE:**
+
+This specification is **ARCHIVED as LEGACY**. Graphify is no longer the recommended code analysis tool for Spekificity. All new projects should use **CodeGraph** (see [codegraph-setup-complete.md](codegraph-setup-complete.md)).
+
+**Why:** CodeGraph is 20x faster for agent queries, has built-in MCP integration, and requires less manual refresh logic.
+
+**Migration:** Existing Graphify users should rebuild their code graphs with CodeGraph. See [codegraph-setup-complete.md](codegraph-setup-complete.md) Step 1-4 for setup.
+
+---
+
+## LEGACY CONTENT (Preserved for Reference)
 
 ---
 

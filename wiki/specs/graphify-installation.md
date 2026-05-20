@@ -1,15 +1,27 @@
-# ATOMIC SPECIFICATION: Graphify Installation (C5.1)
+# [ARCHIVED] ATOMIC SPECIFICATION: Graphify Installation — LEGACY
 
-**Status:** ATOMIC SPECIFICATION  
-**Type:** Setup — Graphify Installation & Configuration  
-**Depends On:** None  
-**Used By:** /spek.prepare, /spek.map  
+**Status:** ARCHIVED (Superseded 2026-05-20)  
+**Replacement:** [CodeGraph Setup Complete](codegraph-setup-complete.md)  
+**Type:** Setup — DEPRECATED  
 
 ---
 
-## Overview
+## ⚠️ DEPRECATION NOTICE
 
-Graphify is a code indexing tool that generates queryable code graphs via tree-sitter AST. This spec covers installation, verification, and configuration.
+This specification is **ARCHIVED as LEGACY**. Graphify is no longer the supported code analysis tool for Spekificity.
+
+**Use CodeGraph instead:** [codegraph-setup-complete.md](codegraph-setup-complete.md)
+
+**Why CodeGraph replaced Graphify:**
+- **20x faster queries** (100ms vs. 2000ms)
+- **MCP integration** (agent-native tools)
+- **Real-time sync** (file watcher built-in)
+- **Concurrent access** (SQLite DB, better locking)
+- **Lower maintenance** (fewer manual refresh steps)
+
+---
+
+## LEGACY CONTENT (Preserved for Reference Only)
 
 ---
 

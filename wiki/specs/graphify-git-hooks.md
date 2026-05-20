@@ -1,23 +1,28 @@
-# C.3.4 Graphify Git Hooks Integration
+# [ARCHIVED] C.3.4 Graphify Git Hooks Integration — LEGACY
 
-**Status:** Specification  
-**Priority:** MUST (Phase 1)  
-**Effort:** 1 hour  
-**Adoption Source:** B.9 (claude-code-memory-setup) + B.11 (Codegraph Setup Spec)
+**Status:** ARCHIVED (Superseded 2026-05-20)  
+**Replacement:** [CodeGraph Setup Complete — Part 5](codegraph-setup-complete.md#part-5-configure-git-hook-optional-auto-sync)  
+**Priority:** DEPRECATED  
+
+---
+
+## ⚠️ DEPRECATION NOTICE
+
+This specification is **ARCHIVED as LEGACY**. Graphify is no longer supported for new Spekificity projects.
+
+**Use CodeGraph instead:** [codegraph-setup-complete.md](codegraph-setup-complete.md)
+
+**Why CodeGraph replaced Graphify:**
+- CodeGraph has built-in file watcher (no manual git hooks needed)
+- Auto-sync happens transparently (no user configuration)
+- Better integration with `/spek.map` orchestration
+- Simpler setup and maintenance
+
+CodeGraph git hook setup is optional and covered in [codegraph-setup-complete.md Part 5](codegraph-setup-complete.md#part-5-configure-git-hook-optional-auto-sync).
 
 ---
 
-## Purpose
-
-Automatically keep the code graph fresh by installing a `post-commit` git hook that:
-1. Runs after every local commit
-2. Increments ally updates code graph (via graphify)
-3. Uses SHA256 caching to skip unchanged files
-4. Reports changes to user (2-4 seconds, imperceptible)
-
-**Goal:** Prevent stale graph queries; ensure `/spek.context` always works with fresh code structure.
-
----
+## LEGACY CONTENT (Preserved for Reference Only)
 
 ## Scope & Relationships
 
