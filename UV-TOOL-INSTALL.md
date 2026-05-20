@@ -73,24 +73,15 @@ spek init
 ```
 
 This automatically:
-1. Installs SpecKit (specify-cli) if not available
-2. Checks for Obsidian installation
-3. Creates `.cel/` directory (project metadata)
-4. Creates `.memories/session/` directory (session storage)
-5. Creates `wiki/` directory structure
-6. Initializes CodeGraph SQLite database
-7. Runs `specify init .` to initialize SpecKit
+1. Creates `.cel/` directory (project metadata)
+2. Creates `.memories/session/` directory (session storage)
+3. Creates `wiki/` directory structure
+4. Initializes CodeGraph SQLite database
+5. Runs `specify init .` to initialize SpecKit
 
 **Installation Progress:**
 ```
 🚀 Initializing Spekificity project...
-
-Verifying SpecKit installation...
-✓ specify-cli installed successfully     (or already installed)
-
-Checking for Obsidian vault support...
-✓ Obsidian is installed
-(or provides installation instructions if not found)
 
 Setting up directory structures...
 ✓ Created memory structure

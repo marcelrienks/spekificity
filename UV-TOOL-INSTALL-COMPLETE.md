@@ -35,43 +35,52 @@ spek-init = "spekificity.cli.init:execute"
 
 ### 2. Init Command (src/spekificity/cli/init.py)
 
-New command that automates:
+New command that automates project infrastructure setup:
 - ✅ Creates `.cel/` directory (metadata)
 - ✅ Creates `.memories/session/` (session storage)
 - ✅ Creates `wiki/specs/` and `wiki/lessons/` (documentation)
 - ✅ Initializes CodeGraph SQLite database
-- ✅ Installs SpecKit (specify-cli) if not available
 - ✅ Runs `specify init .` to initialize SpecKit
-- ✅ Checks for Obsidian and provides installation guidance
 
 **Options:**
 ```bash
-spek init --skip-speckit      # Skip SpecKit installation/initialization
+spek init --skip-speckit      # Skip SpecKit initialization
 spek init --skip-codegraph    # Skip CodeGraph initialization
 spek init --verbose           # Verbose output
 spek init --cwd /path         # Initialize specific directory
 ```
 
-**Features:**
-- ✅ Automatic SpecKit installation if missing
-- ✅ Obsidian compatibility check
-- ✅ Clear guidance for missing tools
+**Note:** All dependencies including SpecKit are pre-installed via `uv tool install spekificity`
 
 ### 3. Enhanced pyproject.toml
 
-**Added:**
-- Homepage and repository URLs
-- Keywords for discoverability
-- Optional dependencies for integrations
-- Tool configuration section
+**Main Dependencies (all installed via `uv tool install`):**
+```toml
+dependencies = [
+    "click>=8.1.0",
+    "pydantic>=2.0.0",
+    "sqlalchemy>=2.0.0",
+    "gitpython>=3.1.0",
+    "pygments>=2.15.0",
+    "loguru>=0.7.0",
+    "pyyaml>=6.0.0",
+    "tomli>=2.0.0",
+    "jinja2>=3.1.0",
+    "specify-cli>=0.1.0",  # SpecKit included
+]
+```
 
 **Optional Dependencies:**
 ```toml
 [project.optional-dependencies]
-speckit = ["specify-cli>=0.1.0"]
-codegraph = ["sqlalchemy>=2.0.0"]
-integrations = ["specify-cli>=0.1.0"]
-dev = [...]  # Existing dev tools
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+    "ruff>=0.0.280",
+    "mypy>=1.4.0",
+    "pytest-mock>=3.11.0",
+]
 ```
 
 ### 4. Documentation

@@ -18,56 +18,6 @@ from loguru import logger
 from spekificity.utils.config import CEL_DIR
 
 
-def is_tool_available(tool_name: str) -> bool:
-    """Check if a tool is available in PATH."""
-    result = subprocess.run(
-        ["which", tool_name],
-        capture_output=True,
-        text=True,
-    )
-    return result.returncode == 0
-
-
-def install_tool_via_uv(tool_name: str, package_url: Optional[str] = None) -> bool:
-    """
-    Install a tool via uv tool install.
-    
-    Args:
-        tool_name: Name of the tool to install
-        package_url: Optional URL/git repo for the tool
-    
-    Returns:
-        True if installation succeeded or tool already installed, False otherwise
-    """
-    # Check if already installed
-    if is_tool_available(tool_name):
-        logger.info(f"✓ {tool_name} already installed")
-        return True
-    
-    try:
-        logger.info(f"Installing {tool_name}...")
-        
-        if package_url:
-            cmd = ["uv", "tool", "install", tool_name, "--from", package_url]
-        else:
-            cmd = ["uv", "tool", "install", tool_name]
-        
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-        
-        if result.returncode == 0:
-            logger.info(f"✓ {tool_name} installed successfully")
-            return True
-        else:
-            logger.warning(f"Failed to install {tool_name}: {result.stderr}")
-            return False
-    except subprocess.TimeoutExpired:
-        logger.warning(f"Timeout installing {tool_name}")
-        return False
-    except Exception as e:
-        logger.warning(f"Error installing {tool_name}: {e}")
-        return False
-
-
 def ensure_celdir() -> None:
     """Ensure .cel directory exists."""
     CEL_DIR.mkdir(parents=True, exist_ok=True)
@@ -79,19 +29,13 @@ def initialize_speckit(cwd: Optional[Path] = None) -> bool:
     Initialize SpecKit in current directory.
     
     Runs 'specify init .' to set up SpecKit in the project.
+    SpecKit is expected to be pre-installed via 'uv tool install spekificity'.
     """
     try:
-        logger.info("Initializing SpecKit...")
+        logger.info("Running specify init...")
         
         if cwd is None:
             cwd = Path.cwd()
-        
-        # Verify specify is available (should be installed by uv tool install)
-        if not is_tool_available("specify"):
-            logger.warning("SpecKit (specify) not found in PATH")
-            logger.warning("This should have been installed automatically.")
-            logger.warning("Try installing manually: uv tool install specify-cli --from git+https://github.com/github/spec-kit.git")
-            return False
         
         # Run specify init
         result = subprocess.run(
@@ -109,6 +53,11 @@ def initialize_speckit(cwd: Optional[Path] = None) -> bool:
             logger.warning(f"SpecKit initialization had issues: {result.stderr}")
             # Don't fail entirely - SpecKit init might have partial success
             return True
+    except FileNotFoundError:
+        logger.error("SpecKit (specify) not found in PATH")
+        logger.error("Make sure to install spekificity with: uv tool install spekificity --from [url]")
+        logger.error("This installs all dependencies including SpecKit")
+        return False
     except subprocess.TimeoutExpired:
         logger.warning("SpecKit initialization timed out")
         return False
@@ -135,41 +84,6 @@ def initialize_codegraph() -> bool:
     except Exception as e:
         logger.warning(f"Error initializing CodeGraph: {e}")
         return False
-
-
-def check_obsidian() -> bool:
-    """
-    Check if Obsidian is installed.
-    
-    Returns True if found, False otherwise with installation instructions.
-    """
-    # Try to find Obsidian executable
-    if is_tool_available("obsidian"):
-        logger.info("✓ Obsidian is installed")
-        return True
-    
-    # Check common installation paths
-    obsidian_paths = [
-        Path.home() / "Applications" / "Obsidian.app",  # macOS
-        Path("/Applications/Obsidian.app"),  # macOS global
-        Path(f"{Path.home()}/.local/bin/obsidian"),  # Linux
-        Path("C:\\Program Files\\Obsidian\\Obsidian.exe"),  # Windows
-        Path("C:\\Program Files (x86)\\Obsidian\\Obsidian.exe"),  # Windows alt
-    ]
-    
-    for path in obsidian_paths:
-        if path.exists():
-            logger.info("✓ Obsidian is installed")
-            return True
-    
-    # Not found - provide instructions
-    logger.info("ℹ Obsidian not found. To enable Obsidian vault integration, install from:")
-    logger.info("  macOS:   brew install obsidian")
-    logger.info("  Windows: choco install obsidian")
-    logger.info("  Linux:   See https://obsidian.md/download")
-    logger.info("  Or download from: https://obsidian.md/download")
-    
-    return False
 
 
 def create_memory_structure() -> None:
@@ -227,18 +141,19 @@ def execute(
     verbose: bool,
 ) -> None:
     """
-    Initialize Spekificity project structure.
+    Initialize Spekificity project structure and infrastructure.
     
     This command sets up all necessary components for Spekificity:
-    - Installs SpecKit (specify-cli) if not available
-    - Checks for Obsidian and provides installation instructions if needed
     - Creates .cel directory for project-specific data
     - Creates .memories directory for memory persistence
     - Creates wiki directory for documentation
     - Initializes CodeGraph database
     - Runs 'specify init .' to initialize SpecKit
     
-    This is typically run once after: uv tool install spekificity --from [github-url]
+    All dependencies including SpecKit are pre-installed via:
+    'uv tool install spekificity --from [github-url]'
+    
+    This command is typically run once after installation to set up project infrastructure.
     """
     work_dir = Path(cwd) if cwd else Path.cwd()
     
@@ -249,17 +164,8 @@ def execute(
     click.echo("🚀 Initializing Spekificity project...\n")
     
     try:
-        # Step 0: Ensure SpecKit is installed
-        if not skip_speckit:
-            logger.info("Verifying SpecKit installation...")
-            install_tool_via_uv("specify-cli", "git+https://github.com/github/spec-kit.git")
-        
-        # Step 0b: Check Obsidian
-        logger.info("\nChecking for Obsidian vault support...")
-        check_obsidian()
-        
         # Step 1: Create directory structures
-        logger.info("\nSetting up directory structures...")
+        logger.info("Setting up directory structures...")
         original_cwd = Path.cwd()
         
         try:

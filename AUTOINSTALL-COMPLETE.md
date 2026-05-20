@@ -1,8 +1,8 @@
-# Spekificity Auto-Install Complete ✅
+# Spekificity Installation Complete ✅
 
-## Installation Flow (Fully Automated)
+## Installation Flow (Simplified)
 
-### Step 1: Install Spekificity Tool
+### Step 1: Install Spekificity Tool (with all dependencies)
 
 ```bash
 uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
@@ -10,10 +10,10 @@ uv tool install spekificity --from git+https://github.com/marcelrienks/spekifici
 
 **Result:**
 - ✅ Spekificity CLI installed (`spek` command)
-- ✅ All Python dependencies installed
+- ✅ All dependencies installed (SpecKit, CodeGraph, click, pydantic, etc.)
 - ✅ Ready to initialize projects
 
-### Step 2: Initialize Project (Auto-Installs All Tools)
+### Step 2: Initialize Project (sets up infrastructure)
 
 ```bash
 spek init
@@ -21,29 +21,18 @@ spek init
 
 **What happens automatically:**
 
-1. **Verifies SpecKit Installation**
-   - Checks if `specify-cli` is available
-   - Installs it automatically if missing via `uv tool install`
-   
-2. **Checks for Obsidian**
-   - Verifies Obsidian is installed
-   - Provides installation instructions if missing
-   - macOS: `brew install obsidian`
-   - Windows: `choco install obsidian`
-   - Linux: Manual download from https://obsidian.md
-
-3. **Creates Project Structure**
+1. **Creates Project Structure**
    - `.cel/` - Project metadata and CodeGraph database
    - `.memories/session/` - Session-specific data
    - `wiki/specs/` - Specification storage
    - `wiki/lessons/` - Lessons learned storage
 
-4. **Initializes CodeGraph**
+2. **Initializes CodeGraph**
    - Creates SQLite database at `.cel/codegraph.db`
    - Indexes Python symbols via AST analysis
    - Ready for code analysis queries
 
-5. **Initializes SpecKit**
+3. **Initializes SpecKit**
    - Runs `specify init .` in project directory
    - Sets up SpecKit configuration
    - Project ready for specification workflow
@@ -67,17 +56,6 @@ spek lessons          # Extract lessons
 ```
 🚀 Initializing Spekificity project...
 
-Verifying SpecKit installation...
-✓ specify-cli installed successfully
-(or: Installing specify-cli... ✓ specify-cli installed successfully)
-
-Checking for Obsidian vault support...
-✓ Obsidian is installed
-(or: ℹ Obsidian not found. To enable Obsidian integration:
-     macOS: brew install obsidian
-     Windows: choco install obsidian
-     Linux: https://obsidian.md/download)
-
 Setting up directory structures...
 ✓ Created memory structure in ./.memories
 ✓ Created wiki structure in ./wiki
@@ -86,7 +64,7 @@ Setting up directory structures...
 Initializing CodeGraph database...
 ✓ CodeGraph initialized at ./.cel/codegraph.db
 
-Initializing SpecKit...
+Running specify init...
 ✓ SpecKit initialized successfully
 
 ✅ Spekificity initialization complete!
@@ -103,18 +81,27 @@ For help, run: spek --help
 
 ## Key Features
 
-### ✅ Automatic Installation
+### ✅ All Dependencies Pre-Installed
 
-During `spek init`:
-- SpecKit (specify-cli) auto-installed if missing
-- Obsidian status checked with installation guidance
-- CodeGraph initialized automatically
-- All dependencies verified
+During `uv tool install spekificity`:
+- Spekificity package
+- SpecKit (specify-cli)
+- CodeGraph (SQLAlchemy)
+- All other dependencies
+- Ready to use immediately
+
+### ✅ Simple Initialization
+
+`spek init` sets up infrastructure only:
+- Directory structure
+- CodeGraph database
+- SpecKit initialization
+- No additional tool installations
 
 ### ✅ Optional Skipping
 
 ```bash
-# Skip SpecKit if you don't need it
+# Skip SpecKit initialization if you don't need it
 spek init --skip-speckit
 
 # Skip CodeGraph if you have your own code analysis
@@ -127,19 +114,11 @@ spek init --verbose
 spek init --cwd /path/to/project
 ```
 
-### ✅ Tool Detection
-
-The system checks for:
-- **SpecKit:** Via `which specify` command
-- **Obsidian:** Via `which obsidian` or common install paths
-
-If not found, clear instructions are provided for each platform.
-
 ---
 
 ## Installation States
 
-### Scenario 1: Fresh Installation (No Tools Installed)
+### Scenario 1: Fresh Installation
 
 ```bash
 uv tool install spekificity --from ...
@@ -147,44 +126,34 @@ spek init
 ```
 
 **Result:**
-- All tools automatically installed
+- All dependencies installed upfront
 - Project structure created
 - Everything ready to go
 
-### Scenario 2: SpecKit Already Installed
+### Scenario 2: Skip Optional Components
 
 ```bash
+# Install with all dependencies
 uv tool install spekificity --from ...
-spek init
-```
 
-**Result:**
-- Detects existing SpecKit installation
-- Skips redundant installation
-- Proceeds with project initialization
-
-### Scenario 3: Custom Setup
-
-```bash
-# Skip optional tools during init if you only want core features
+# Initialize without SpecKit if not needed
 spek init --skip-speckit --skip-codegraph
 ```
 
 **Result:**
 - Only creates directory structure
 - Project ready for custom setup
-- Can add tools later with flags
 
 ---
 
-## What Gets Auto-Installed
+## What Gets Installed
 
-| Component | Source | Method | Status |
-|-----------|--------|--------|--------|
-| Spekificity | PyPI | `uv tool install` | ✅ Installed |
-| SpecKit | GitHub | `uv tool install` (during init) | ✅ Auto-installed |
-| CodeGraph | Included | Database initialization | ✅ Built-in |
-| Obsidian | External | Status check only | ℹ️ Manual install |
+| Component | Where | Status |
+|-----------|-------|--------|
+| Spekificity | uv tool install | ✅ Installed |
+| SpecKit | uv tool install | ✅ Included |
+| CodeGraph | uv tool install | ✅ Included |
+| All dependencies | uv tool install | ✅ Included |
 
 ---
 
@@ -243,13 +212,13 @@ Tests verify:
 
 ## One-Command Installation
 
-Users can now get a complete Spekificity setup with just two commands:
+Users can now get a complete Spekificity setup with just two simple commands:
 
 ```bash
-# Install tool
+# Install all dependencies
 uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
 
-# Auto-initialize project
+# Set up project infrastructure
 spek init
 ```
 
@@ -261,15 +230,19 @@ That's it! Everything is configured and ready to use.
 
 | Aspect | Status |
 |--------|--------|
-| **Auto-Install SpecKit** | ✅ Implemented |
-| **Obsidian Detection** | ✅ Implemented |
-| **CodeGraph Auto-Init** | ✅ Implemented |
-| **Directory Structure** | ✅ Automatic |
-| **specify init Execution** | ✅ Automatic |
+| **All Dependencies in uv install** | ✅ Implemented |
+| **SpecKit Pre-Installed** | ✅ Yes |
+| **Directory Auto-Creation** | ✅ Yes |
+| **CodeGraph Auto-Init** | ✅ Yes |
+| **specify init Execution** | ✅ Yes |
 | **Documentation** | ✅ Updated |
 | **Test Coverage** | ✅ 36/36 Passing |
 | **Production Ready** | ✅ Yes |
 
 ---
 
-**Spekificity is now fully automated for installation and initialization! 🚀**
+**Spekificity installation is now simple and complete! 🚀**
+
+Two commands and you're ready to go:
+1. `uv tool install spekificity --from [url]` - Install everything
+2. `spek init` - Set up your project
