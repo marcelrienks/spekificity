@@ -1,120 +1,188 @@
 ---
-last_deep_read: 2026-05-20T21:30:00Z
-version: 5.3
-scan_status: full refresh (post-consolidation)
-changes_detected: ✅ Wiki consolidation complete (56→47 files); 4 new consolidated specs (vision.md, setup.md, memory-architecture.md, enrichment-layer.md); 11 files merged and deleted; all cross-references fixed
-tracked_files: 58
-tracked_wiki_files: 49
+last_deep_read: 2026-05-20T16:45:00Z
+version: 5.4
+scan_status: full refresh (implementation scaffolding complete)
+changes_detected: ✅ Major update (design → implementation phase); implementation roadmap, goal, todo, skill-index added; Python CLI scaffolding with 7 commands; pyproject.toml configured; File count 49→54 (5 new docs)
+tracked_files: 62
+tracked_wiki_files: 54
+python_src_files: 12
 ---
 
-# spekificity technical brief (post-consolidation)
+# spekificity technical brief (implementation scaffolding phase)
 
 ## project purpose
 
-Spekificity = agentic consolidation platform solving four recurring LLM agent failures:
+Spekificity = specification-driven AI agent development framework solving four critical problems:
 
 | problem | mechanism |
 |---|---|
-| token bloat | code graph queries + aggressive compression instead of file scans |
-| shallow planning | canonical SpecKit workflow `spec → plan → tasks → implement` enforced |
-| context loss | persistent markdown vault for decisions, patterns, lessons across sessions |
-| low autonomy | reusable project memory + graph-grounded context injection; agent works independently |
+| token bloat | CodeGraph (indexed queries) + aggressive caveman compression (output reduced 75-90%) |
+| shallow planning | canonical spec→plan→tasks→implement workflow enforced; SpecKit integration |
+| context loss | 3-layer memory model (user/session/repo) + git-backed vault for specs, patterns, lessons |
+| low autonomy | pre-indexed code analysis + reusable skills allow agents to work independently overnight |
 
-Core promise: from code + docs → feature idea → spec → implementation → lessons, all with AI agent as copilot, all tracked in vault, minimal token waste, minimal tool-switching.
+Core promise: raw code + docs → feature idea → spec → implementation → lessons, all with AI agent as copilot, all tracked in vault, minimal token waste.
 
-Repository is **design-first, not shipped product**. Contains architectural specs, implementation contracts, setup guides. CLI and skill bundle planned for future release.
-
-**Recent Change (May 20, 2026):** Wiki restructured via consolidation:
-- 3 memory-related specs merged into **memory-architecture.md**
-- 3 enrichment specs merged into **enrichment-layer.md**
-- 3 setup guides merged into unified **setup.md**
-- 2 vision docs merged into comprehensive **vision.md**
-- Result: 56 files → 47 files (11 deletions), zero duplication, cleaner ontology
+**MAJOR MILESTONE (May 20, 2026):** Transitioned from design-only to **implementation scaffolding complete**. Python CLI structure deployed with 7 commands (prepare, context, plan, map, implement, post, lessons). All dependencies configured (pyproject.toml). Ready for skill development and CodeGraph integration.
 
 ---
 
 ## architecture and tech stack
 
-### core stack
+### implementation status
 
-- **SpecKit/Specify**: spec-driven workflow engine (global install, unmodified)
-- **Spekificity layer**: enrichment wrappers around SpecKit commands (decorator pattern)
-- **Code Graph**: preferred backend for code intelligence (SQLite + MCP tools)
-- **Obsidian vault**: markdown knowledge store for decisions, patterns, lessons
-- **Caveman**: compression mode for token efficiency at each stage
-- **CLI**: planned `spek` command surface for setup, context load, automation, post-processing
+**Phase:** 1–3 of 5 COMPLETE ✓
+
+| Phase | Component | Status |
+|-------|-----------|--------|
+| 1 | Implementation readiness documented | ✓ Complete |
+| 2 | Python 3.11+ environment + scaffolding | ✓ Complete |
+| 3 | CLI structure (7 commands, placeholders) | ✓ Complete |
+| 4 | Core skills full implementation | ⧖ In Progress |
+| 5 | CodeGraph MCP integration | ⧖ Queued |
+
+### core stack (NOW IN PYTHON)
+
+- **SpecKit/Specify:** spec-driven workflow engine (global install, wrapped by spekificity CLI)
+- **Spekificity Python CLI:** 7 commands decorating SpecKit
+  - Entry point: `spek` (via pyproject.toml `[project.scripts]`)
+  - Module: `spekificity.cli.main:cli` (Click-based)
+  - 7 skills: prepare, context, plan, map, implement, post, lessons
+- **CodeGraph:** Planned indexed code analysis (SQLAlchemy + Pygments backend)
+  - Storage: SQLite database (incremental updates)
+  - Languages: Python (via AST), with extensibility for others
+  - Tools: `codegraph_symbols()`, `codegraph_references()`, `codegraph_impact()`, `codegraph_definition()`
+- **Vault:** Git-backed Obsidian vault for knowledge
+  - Specs, decisions, patterns, lessons, session memory
+  - Format: plain markdown, human-readable, version-controlled
+- **Caveman Mode:** Token compression (75-90% reduction)
+  - Active throughout all phases
+- **Session Memory:** 3-layer model
+  - User memory (`/memories/`) — permanent across projects
+  - Session memory (`/memories/session/`) — current conversation
+  - Repo memory (`/memories/repo/`) — project-scoped
+
+### project structure (NEW)
+
+```
+spekificity/
+├── src/spekificity/
+│   ├── __init__.py
+│   ├── cli/
+│   │   ├── __init__.py
+│   │   ├── main.py              # CLI entry point (Click)
+│   │   ├── prepare.py           # /spek.prepare skill
+│   │   ├── context.py           # /spek.context skill
+│   │   ├── plan.py              # /spek.plan skill
+│   │   ├── map_.py              # /spek.map skill (CodeGraph refresh)
+│   │   ├── implement.py         # /spek.implement skill
+│   │   ├── post.py              # /spek.post skill (archival)
+│   │   └── lessons.py           # /spek.lessons skill
+│   ├── graph/
+│   │   ├── __init__.py
+│   │   ├── codegraph.py         # (placeholder)
+│   │   ├── indexer.py           # (placeholder)
+│   │   ├── query.py             # (placeholder)
+│   │   └── schema.py            # (placeholder)
+│   ├── memory/
+│   │   ├── __init__.py
+│   │   ├── context.py           # (placeholder)
+│   │   └── enrichment.py        # (placeholder)
+│   ├── vault/
+│   │   └── __init__.py          # (placeholder)
+│   ├── orchestration/
+│   │   └── __init__.py          # (placeholder)
+│   └── utils/
+│       └── __init__.py          # (placeholder)
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── unit/
+│   │   ├── __init__.py
+│   │   └── test_cli.py
+│   ├── integration/
+│   │   └── __init__.py
+│   └── e2e/
+│       └── __init__.py
+├── wiki/                        # Documentation + specifications
+│   ├── [8 root docs]            # vision, workflow, architecture, conventions, intention, llm-wiki, quickstart, speckit
+│   ├── setup.md                 # Unified setup guide
+│   ├── goal.md                  # NEW: Complete goal statement
+│   ├── todo.md                  # NEW: Implementation status report
+│   ├── skill-index.md           # NEW: CLI skills reference
+│   └── specs/                   # 41 atomic specifications
+│       ├── [memory]             # 030-memory-architecture, 031-context-layer, 032-enrichment-layer
+│       ├── [graph]              # 050-codegraph-*, 051-graph-storage, 052-node-schema, etc.
+│       ├── [skills]             # 100-prepare, 102-post, 104-lessons, etc.
+│       ├── [workflow]           # 120-spek-automate, 121-cli-orchestration
+│       ├── [patterns]           # 170-backprop-reflex, 171-rarv-reflection, 172-anti-sycophancy, etc.
+│       └── [validation]         # 140-integration-validation, 141-test-suite
+├── pyproject.toml               # NEW: Hatchling build, 7 core dependencies, dev optional deps
+└── .cel/context.md              # THIS FILE (cache + state)
+```
 
 ### design principles
 
-- Decorate, not fork, upstream tools
-- Keep components independently updateable
-- Token efficiency first-class (not cleanup task)
+- Decorate, not fork; integrate SpecKit without replacement
+- Token efficiency is first-class (not cleanup)
+- Components remain independently updateable
+- Deterministic, repeatable workflows
 - AI-executable step-by-step guides where CLI impractical
 - Modular independence across all layers
-
-### four pillars
-
-| Pillar | Token Efficiency | Determinism | Persistence | Autonomy |
-|--------|---|---|---|---|
-| Code Graph | Indexed queries vs file scans (10x reduction) | Exact ground-truth context | Auto-syncs on changes | Answers code questions independently |
-| Vault | Pre-synthesized loads once/session | Consistent structure | Lessons + decisions persist across sessions | Agent recalls patterns; no redundant search |
-| SpecKit | Canonical steps, no exploration | Spec→plan→tasks→implement enforced | Specs + plans captured in vault | Deterministic workflow = less clarification |
-| Caveman | Substantial output reduction | Terse notation cuts noise | — | Reads faster; processes more in same tokens |
 
 ---
 
 ## key workflows
 
-### workflow stages
+### workflow stages (deterministic 4-phase model)
 
-**Stage 0: Init**
-- One-command setup: `spekificity init`
-- Auto-detect tools, install missing, deploy skills, initialize vault, set up code mapping
+**Stage 0: Init (one-time)**
+- `spekificity init` → auto-detect tools, install missing, deploy skills, initialize vault, set up code mapping
 - Output: `.spekificity/` config, `.agents/skills/` local skills, Obsidian vault ready
 
-**Stage 1: Ingest**
-- Load codebase into code graph (indexed structure map)
-- Process raw materials into vault (decisions, patterns, lessons)
-- Output: `vault/graph/index.md` (topology), vault/ (knowledge base)
+**Stage 1: Prepare** (`/spek.prepare`)
+- Load vault context (3-layer memory)
+- Index code state via CodeGraph (incremental refresh)
+- List available specs for feature selection
+- Load prior decisions + patterns relevant to feature
+- Output: Feature context + related specs, dependency map, related patterns
 
-**Stage 2: Feature Development**
-- `/spek.automate [feature]` → orchestrate spec-first flow:
-  - Load project context (vault + code graph)
-  - Call `/speckit.specify` with injected context
-  - Clarify (if needed)
-  - Call `/speckit.plan` with code graph context
-  - Generate tasks
-  - Analyze (impact check)
-  - Remediate (if needed)
-- Review artifacts (spec, plan, tasks)
-- `/spek.implement` → execute with context
-  - Code changes applied
-  - Execution trace captured
-  - Auto-sync code graph
-- Output: code changes, execution trace
+**Stage 2: Specify & Plan** (`/spek.plan --phase=specify`, then `/speckit.specify`, then `/speckit.plan`)
+- Generate feature spec with enrichment layers (Success Criteria, Assumptions, Risk Assessment)
+- Parse spec; generate task list (granular, implementable)
+- Identify code sections to modify (CodeGraph impact analysis)
+- Estimate token budget per task
+- Suggest related patterns + decision references
+- Output: Detailed implementation plan with code sections, line ranges, token estimates
 
-**Stage 3: Refinement (The Loop)**
-- `/spek.post` → post-processing:
-  - Analyze execution trace
-  - Extract lessons learned
-  - Update vault with insights
-  - Refresh code graph (incremental)
-  - Archive feature state
-- Next feature starts at Stage 2 with richer context
+**Stage 3: Implement** (`/spek.implement`)
+- Execute tasks with full context (vault + CodeGraph)
+- Apply code changes
+- Capture execution trace
+- Auto-sync CodeGraph
+- Output: Code changes, execution trace
 
-### enrichment pattern (consolidated)
+**Stage 4: Post** (`/spek.post`)
+- Analyze execution trace
+- Extract lessons learned
+- Update vault with insights
+- Refresh CodeGraph (incremental)
+- Archive feature state
+- Output: Lesson artifacts, updated vault
 
-All three enrichment phases follow PRE → CORE → POST:
+Next feature starts at Stage 1 (Prepare) with richer context.
 
-1. **PRE**: Load context (decisions, patterns, code graph state)
+### enrichment pattern (PRE → CORE → POST)
+
+All three enrichment phases follow same pattern:
+
+1. **PRE**: Load context (vault decisions, patterns, code graph state)
 2. **CORE**: Call SpecKit command with enriched input
 3. **POST**: Validate output, update memory, check alignment
 
-Consolidated into single **enrichment-layer.md** spec describing all three phases (specify, plan, implement).
+Consolidated into single spec: **enrichment-layer.md** (covering specify, plan, implement).
 
----
-
-## memory architecture (3-layer model)
+### 3-layer memory model
 
 **Layer 1: Vault** (permanent, authoritative)
 - `vault/decision.md` — architectural decisions
@@ -123,7 +191,7 @@ Consolidated into single **enrichment-layer.md** spec describing all three phase
 - Format: plain markdown, git-backed, human-readable
 
 **Layer 2: Repo Memory** (compressed cache)
-- `.memories/repo/architectural-decisions.md` — compressed decision index
+- `.memories/repo/architectural-decisions.md` — decision index
 - `.memories/repo/patterns-index.md` — pattern index for fast lookup
 
 **Layer 3: Session Memory** (ephemeral)
@@ -132,160 +200,250 @@ Consolidated into single **enrichment-layer.md** spec describing all three phase
 
 ---
 
-## documentation map
+## documentation map (54 wiki files)
 
-### root docs
+### root docs (8 files)
 
-- **README.md** — project overview, platform model, workflow description
-- **vision.md** (NEW, consolidated) — vision statement, philosophy, design principles, architecture
-- **decision.md** — architectural + tool selection decisions with rationale
-- **naming-conventions.md** — command names, directory conventions, file naming rules
-- **speckit-workflow.md** — canonical SpecKit flow, Spekificity integration points
+- **README.md** — Project overview, platform model, quick start
+- **vision.md** — Vision statement, philosophy, design principles (NEW core doc)
+- **intention.md** — Principles and intent (kept)
+- **architecture.md** — Technical architecture (kept)
+- **workflow.md** — Feature development workflow, 4-stage model
+- **conventions.md** — Naming conventions, command prefixes, style guide
 - **llm-wiki.md** — LLM wiki pattern reference (Andrej Karpathy approach)
-- **research.md** — adoption guidance, tool evaluation, research notes
-- **todo.md** — roadmap, implementation status
+- **speckit.md** — SpecKit integration points
 
-### setup
+### setup and goals (3 files)
 
-- **setup.md** (NEW, consolidated) — unified tool setup workflow (SpecKit, Vault, CodeGraph, Graphify)
+- **setup.md** — Unified tool installation guide (SpecKit, Vault, CodeGraph)
+- **goal.md** — NEW: Complete goal statement; problems solved and end state
+- **todo.md** — NEW: Implementation status report (phases 1-5 progress)
+
+### reference and indexing (2 files)
+
+- **quickstart.md** — Step-by-step getting-started guide
+- **skill-index.md** — NEW: CLI skills reference; `/spek.*` command catalog
 
 ### atomic specifications (41 files in wiki/specs/)
 
-**Memory + Context (consolidated):**
-- **memory-architecture.md** (NEW) — 3-layer model, load lifecycle, success criteria
-- **context-layer.md** — context composition, injection patterns, access patterns
-- **feature-state-tracking.md** — feature state storage, session memory format
+**Memory & Context (3 specs):**
+- **030-memory-architecture.md** — 3-layer model, load lifecycle
+- **031-context-layer.md** — Context composition, injection patterns
+- **032-enrichment-layer.md** — PRE→CORE→POST pattern for enrichment
 
-**Enrichment + Orchestration (consolidated):**
-- **enrichment-layer.md** (NEW) — PRE→CORE→POST pattern for specify/plan/implement phases
-- **decorator-wrapper-pattern.md** — wrapper implementation pattern
-- **cli-orchestration.md** — command orchestration, workflow entry points
-- **speckit-integration-contract.md** — integration contract with SpecKit
+**CodeGraph & Indexing (8 specs):**
+- **050-codegraph-setup-and-integration.md** — CodeGraph integration contract
+- **051-graph-storage-structure.md** — SQLite storage design
+- **052-node-schema-design.md** — Node structure, metadata, ID format
+- **053-graph-refresh-strategy.md** — Incremental refresh on file changes
+- **054-graph-query-patterns.md** — Query patterns for context retrieval
+- **055-3layer-query-rule.md** — Query rule for 3-layer retrieval
+- **056-code-and-document-maps.md** — Cross-file linking strategy
+- **057-graph-merge-integration.md** — Merging multiple graph sources
 
-**Code Graph + Indexing:**
-- **code-and-document-maps.md** — node schema, cross-file linking
-- **node-schema-design.md** — node structure, metadata, ID format
-- **obsidian-graph-export.md** — graph export format from Obsidian
-- **graph-query-patterns.md** — query patterns for context retrieval
-- **graph-storage-structure.md** — storage backend design
-- **graph-refresh-strategy.md** — incremental refresh on file changes
-- **graph-merge-integration.md** — merging multiple graph sources
+**Core Skills (7 specs):**
+- **100-prepare-command.md** — `/spek.prepare` specification
+- **102-post-command.md** — `/spek.post` specification
+- **101-post-processing.md** — Detailed post-feature workflow
+- **103-spek-map-command.md** — `/spek.map` (CodeGraph refresh)
+- **104-spek-lessons-command.md** — `/spek.lessons` (lesson archival)
+- **105-spek-implement-workflow.md** — `/spek.implement` workflow
+- **110-speckit-integration-contract.md** — Integration contract with SpecKit
 
-**Patterns + Lessons + Decisions:**
-- **patterns-library.md** — proven patterns, tagging, discovery
-- **lessons-format.md** — lesson document template, archival structure
-- **architectural-decisions.md** — decision tracking, archival
+**Automation & Orchestration (4 specs):**
+- **120-spek-automate-workflow.md** — `/spek.automate` orchestration (optional)
+- **121-cli-orchestration.md** — Command orchestration, entry points
+- **200-implementation-roadmap.md** — NEW: Implementation readiness + technology stack + timeline
+- **130-token-budget.md** — Token budget tracking and optimization
 
-**Skills + Workflow:**
-- **prepare-command.md** — `/spek.prepare` specification
-- **post-command.md** — `/spek.post` specification
-- **prepare-and-post-skills.md** — unified prepare + post lifecycle
-- **spek-automate-workflow.md** — `/spek.automate` orchestration
-- **spek-map-command.md** — `/spek.map` code graph refresh
+**Patterns & Lessons (4 specs):**
+- **020-zettelkasten-conventions.md** — Zettelkasten markdown format
+- **021-lessons-format.md** — Lesson document template, archival
+- **022-architectural-decisions.md** — Decision tracking, archival
+- **023-patterns-library.md** — Proven patterns, tagging, discovery
 
-**Integration + Error Handling:**
-- **error-handling-and-recovery.md** — error scenarios, recovery procedures
-- **integration-validation-and-testing.md** — integration test patterns
-- **post-processing.md** — detailed post-feature workflow
+**Error Handling & Validation (6 specs):**
+- **010-error-handling-and-recovery.md** — Error scenarios, recovery procedures
+- **011-decorator-wrapper-pattern.md** — Decorator implementation pattern
+- **012-git-verification.md** — Git state validation
+- **140-integration-validation-and-testing.md** — Integration test patterns
+- **141-test-suite-specification.md** — Test structure and coverage
+- **142-validation-patterns-archive.md** — Validation patterns reference
 
-**Advanced Topics:**
-- 10+ other specs: caveman-integration, blind-code-review, anti-sycophancy, auto-tagging-wikilinks, zettelkasten-conventions, git-verification, etc.
-
----
-
-## consolidation summary (May 20, 2026)
-
-**High-impact consolidations completed:**
-
-1. **Memory specs** (3→1)
-   - Merged: context-load-lifecycle + session-memory + persistent-memories
-   - New: memory-architecture.md (650+ lines)
-
-2. **Enrichment specs** (3→1)
-   - Merged: specify-enrichment + plan-enrichment + implement-enrichment
-   - New: enrichment-layer.md (520+ lines)
-
-3. **Setup guides** (3→1)
-   - Merged: speckit/obsidian/graphify setup guides
-   - New: setup.md (550+ lines)
-
-4. **Vision docs** (2→1)
-   - Merged: intention + architecture
-   - New: vision.md (19.9 KB)
-
-**Results:**
-- Files: 56 → 47 (11 deleted, 4 created)
-- Duplication: ~500 KB eliminated
-- Technical substance: 100% preserved
-- Cross-references: 0 broken links
-- Cleaner ontology: Single authoritative source per major concept
+**Advanced Topics (9 specs):**
+- **060-auto-tagging-wikilinks.md** — Auto-tagging and wikilink generation
+- **061-obsidian-graph-export.md** — Graph export format from Obsidian
+- **131-session-continuation-strategy.md** — Session state recovery
+- **160-multi-developer-coordination.md** — Team coordination patterns
+- **170-backprop-reflex.md** — Backprop reflex agent pattern
+- **171-rarv-reflection.md** — RARV reflection agent pattern
+- **172-anti-sycophancy.md** — Anti-sycophancy measures
+- **173-blind-code-review.md** — Blind review process
+- **174-caveman-integration.md** — Caveman compression integration
 
 ---
 
-## current project state
+## current project state (implementation phase)
 
-Repository active design + implementation-planning surface. Wiki consolidation complete (May 20, 2026).
+**Repository Status:** Active implementation scaffolding (May 20, 2026)  
+**Phase:** 1–3 of 5 COMPLETE ✓
 
-**Recent consolidation (completed May 20, 2026):**
-- **Phase 1**: Identified 8 consolidation targets across 56 files
-- **Phase 2**: Executed high-impact (Tier A) consolidations: 4 new consolidated specs, 11 obsolete files deleted
-- **Phase 3**: Fixed all cross-references; verified 0 broken links
+### Completed (May 20, 2026)
 
-**Wiki structure now:**
-- 8 root docs (consolidated vision.md, 7 others)
-- 1 setup guide (unified setup.md)
-- 41 atomic specifications (including 4 consolidated specs)
-- Total: 47 tracked wiki files + 9 raw articles (wiki/raw/) = 58 total tracked files
+**Phase 1: Implementation Readiness** ✓
+- Comprehensive readiness checklist (all components passing)
+- Technology stack decision: Python 3.11+ with Click, Pydantic, SQLAlchemy
+- Detailed breakdown of 7 core skills
+- CodeGraph MCP specification
+- Testing & validation phases
+- Timeline estimate (~63h, 2-3 weeks)
 
-Next work streams:
+**Phase 2: Language & Environment Setup** ✓
+- Python 3.11+ selected and configured
+- `pyproject.toml` created with all dependencies
+- Hatchling build system configured
+- 7 core dependencies installed: click, pydantic, sqlalchemy, gitpython, pygments, loguru, pyyaml
+- Dev optional dependencies: pytest, pytest-cov, black, ruff, mypy, pytest-mock
 
-1. README.md updates (point to new consolidated filenames) — secondary
-2. CLI implementation (skill bundle scaffolding) — primary
-3. End-to-end validation — primary
+**Phase 3: CLI Scaffolding** ✓
+- Full directory structure created: `src/spekificity/` with 7 modules
+- CLI entry point: `spek` command (Click-based)
+- Placeholder implementations for all 7 skills
+- Test structure established (unit, integration, e2e)
+
+### In Progress
+
+**Phase 4: Core Skills Full Implementation** ⧖
+- `/spek.prepare` — Loading vault context, CodeGraph integration
+- `/spek.context` — Context management and injection
+- `/spek.plan` — SpecKit orchestration with enrichment
+- `/spek.map` — CodeGraph refresh and indexing
+- `/spek.implement` — Task execution and code change application
+- `/spek.post` — Vault update and lesson archival
+- `/spek.lessons` — Lesson discovery and review
+
+**Phase 5: CodeGraph MCP Integration** ⧖
+- SQLAlchemy schema implementation
+- AST-based Python code indexing
+- Graph query engine
+- File watch automation
+
+### New Documentation (This Session)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| goal.md | Complete goal statement; problems + solutions | ✓ Complete |
+| todo.md | Implementation status report (5-phase roadmap) | ✓ Complete |
+| skill-index.md | CLI skills reference with command catalog | ✓ Complete |
+| 200-implementation-roadmap.md | Detailed implementation plan + technology stack | ✓ Complete |
+| pyproject.toml | Build config + all dependencies | ✓ Complete |
 
 ---
 
-## scan scope
+## file inventory and hashes
 
-**Scanned:**
-- Root `README.md`
-- Top-level authored docs in `wiki/` (excluding `wiki/raw/`)
-- Setup guides in `wiki/` (consolidated from `wiki/setup/`)
-- Implementation specs in `wiki/specs/`
-- Workflow + todo docs
+**Scan Timestamp:** 2026-05-20T16:45:00Z  
+**Total Files Tracked:** 54 wiki + 12 source + 2 config + 9 raw = 77 files
 
-**Excluded:**
-- `.cel/`, `.github/`, `.specify/`, `wiki/raw/`
-- Deleted files (11 obsolete specs removed during consolidation)
+### wiki files (54) — current state
+
+**Root docs (8):**
+- wiki/README.md (linkage: wiki/README.md → wiki/ subdocs)
+- wiki/vision.md
+- wiki/intention.md
+- wiki/architecture.md
+- wiki/workflow.md
+- wiki/conventions.md
+- wiki/llm-wiki.md
+- wiki/speckit.md
+
+**Setup & Goals (3):**
+- wiki/setup.md
+- wiki/goal.md — NEW
+- wiki/todo.md — NEW
+
+**Reference (2):**
+- wiki/quickstart.md
+- wiki/skill-index.md — NEW
+
+**Specs (41):**
+- [All 41 spec files listed above in "documentation map"]
+
+### source files (12)
+
+- src/spekificity/__init__.py
+- src/spekificity/cli/main.py
+- src/spekificity/cli/prepare.py
+- src/spekificity/cli/context.py
+- src/spekificity/cli/plan.py
+- src/spekificity/cli/map_.py
+- src/spekificity/cli/implement.py
+- src/spekificity/cli/post.py
+- src/spekificity/cli/lessons.py
+- src/spekificity/graph/__init__.py
+- src/spekificity/memory/__init__.py
+- src/spekificity/vault/__init__.py
+- [+ 6 placeholder modules: graph/codegraph.py, graph/indexer.py, graph/query.py, graph/schema.py, memory/context.py, memory/enrichment.py, orchestration/*, utils/*]
+
+### config files (2)
+
+- pyproject.toml — NEW: Build config, 7 core + 6 dev dependencies
+- README.md — Updated links to wiki structure
+
+### changes from previous scan
+
+**Added (5 new files):**
+- wiki/goal.md
+- wiki/todo.md
+- wiki/skill-index.md
+- wiki/specs/200-implementation-roadmap.md
+- pyproject.toml
+
+**Modified (cross-reference updates):**
+- wiki/setup.md — Updated references
+- wiki/workflow.md — Updated references
+- README.md — Updated quick start links
+
+**Unchanged (49 files):**
+- All other wiki files; all content preserved
+- 41 atomic specs in wiki/specs/ — content unchanged (cross-references verified)
 
 ---
 
-## next steps for caching
+## next steps
 
-1. **README.md documentation map needs update** — Still lists old file paths (context-load-lifecycle.md, session-memory.md, persistent-memories-and-lessons.md, speckit/obsidian/graphify-setup.md, specify/plan/implement-enrichment.md)
-2. **Optional: Clean up research.md** — Remove duplication with decision.md
-3. **Optional: Run `/cel.wiki.read refresh`** — After README updates to regenerate hashes
+**Immediate (Next Session):**
+1. Phase 4 Implementation: Start with `/spek.prepare` (load vault context)
+2. CodeGraph schema and storage layer
+3. Unit tests for CLI commands
+
+**Within 1 Week:**
+1. `/spek.map` CodeGraph refresh command
+2. `/spek.context` context injection
+3. Integration tests for prepare→plan→implement flow
+
+**Within 2 Weeks:**
+1. `/spek.implement` code execution
+2. `/spek.post` vault archival
+3. Full end-to-end workflow validation
+
+**Optional Enhancements:**
+1. README.md updates (point to new docs)
+2. Wiki simplification (remove duplication if any)
+3. Advanced agent patterns (backprop-reflex, rarv-reflection)
 
 ---
 
-## file hash inventory (post-consolidation)
+## cache validation method
 
-Hash inventory updated 2026-05-20T21:30:00Z after wiki consolidation. Hashes for all 49 current wiki files (excluding wiki/raw/) have been computed and validated. 
+When running `/cel.wiki.read` next time:
 
-**Files with NEW hashes** (consolidated or updated):
-- wiki/vision.md — merged from intention + architecture  
-- wiki/setup.md — merged from speckit/obsidian/graphify setup guides
-- wiki/specs/memory-architecture.md — merged from context-load, session-memory, persistent-memories
-- wiki/specs/enrichment-layer.md — merged from specify, plan, implement enrichment specs
-- 14+ specs with updated cross-references
+1. Count wiki files: expect 54 (if different → rescan required)
+2. Spot-check modification times:
+   - wiki/goal.md — should be 2026-05-20 14:45 or later
+   - wiki/todo.md — should be 2026-05-20 14:45 or later
+   - wiki/specs/200-implementation-roadmap.md — should be 2026-05-20 14:45 or later
+3. If all match: return cache-hit (project context loaded from cache)
+4. If any differ: proceed to full rescan
 
-**Files DELETED** (11 total; hashes no longer needed):
-- wiki/intention.md, wiki/architecture.md
-- wiki/setup/*.md (3 files)
-- wiki/specs/context-load-lifecycle.md, wiki/specs/session-memory.md, wiki/specs/persistent-memories-and-lessons.md
-- wiki/specs/specify-enrichment.md, wiki/specs/plan-enrichment.md, wiki/specs/implement-enrichment.md
-
-**Hashes computed for validation in future runs:**
-All 49 current wiki files (root + specs) have MD5 hashes computed and stored. Cache hit/miss validation via `cel.wiki.read` checks if any of these 49 files have changed since last read (2026-05-20T21:30:00Z).
-
-**To regenerate:** Run `/cel.wiki.read refresh` to force full rescan and update hashes for all current files.
+To force rescan: `/cel.wiki.read refresh`
