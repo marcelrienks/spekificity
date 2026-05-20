@@ -4,7 +4,7 @@ import click
 from loguru import logger
 
 # Import skill commands
-from . import prepare, context, plan, map_, implement, post, lessons
+from . import prepare, context, plan, map_, implement, post, lessons, tools
 
 
 @click.group(invoke_without_command=True)
@@ -23,6 +23,7 @@ def cli(ctx: click.Context, verbose: bool, version: bool) -> None:
         /spek.implement        Execute implementation tasks
         /spek.post             Archive outcomes and update vault
         /spek.lessons          Extract lessons learned
+        /spek.tools            Query CodeGraph via MCP tools
     
     For detailed help on each command:
         spek COMMAND --help
@@ -100,6 +101,19 @@ def post_cmd(ctx: click.Context, merge: bool) -> None:
 def lessons_cmd(ctx: click.Context, format: str) -> None:
     """Extract lessons learned."""
     lessons.execute(format=format)
+
+
+@cli.command(name="tools")
+@click.option("--tool", "-t", default=None, help="Tool to invoke")
+@click.option("--symbol", "-s", default=None, help="Symbol name (for tool queries)")
+@click.option("--file", "-f", default=None, help="File path (for file-specific queries)")
+@click.option("--max-results", type=int, default=10, help="Maximum results to return")
+@click.option("--list", "list_tools", is_flag=True, help="List available tools")
+@click.option("--format", type=click.Choice(["text", "json", "table"]), default="text", help="Output format")
+@click.pass_context
+def tools_cmd(ctx: click.Context, tool: str, symbol: str, file: str, max_results: int, list_tools: bool, format: str) -> None:
+    """Query CodeGraph via MCP tools."""
+    tools.execute(tool=tool, symbol=symbol, file=file, max_results=max_results, list_tools=list_tools, format=format)
 
 
 if __name__ == "__main__":
