@@ -410,6 +410,90 @@ def update_intention_obsidian(intention_content: str) -> bool:
         return False
 
 
+# ============================================================================
+# Wikilink Support: Extract and Validate [[...]] References
+# ============================================================================
+
+def extract_wikilinks(content: str) -> List[str]:
+    """Extract [[wikilink]] style references from markdown content."""
+    wikilinks = []
+    # Find all [[...]] style links
+    matches = re.findall(r'\[\[([^\]]+)\]\]', content)
+    for match in matches:
+        # Extract just the link target (before |)
+        target = match.split("|")[0].strip()
+        wikilinks.append(target)
+    return wikilinks
+
+
+def get_wikilinks_from_vault() -> Dict[str, List[str]]:
+    """Get all wikilinks found in vault files."""
+    wikilinks = {}
+    
+    try:
+        vault_dir = get_obsidian_vault_dir()
+        if not vault_dir.exists():
+            return wikilinks
+        
+        # Check all vault markdown files
+        for md_file in vault_dir.rglob("*.md"):
+            try:
+                content = md_file.read_text()
+                links = extract_wikilinks(content)
+                if links:
+                    rel_path = md_file.relative_to(vault_dir)
+                    wikilinks[str(rel_path)] = links
+            except Exception as e:
+                logger.warning(f"Error extracting wikilinks from {md_file}: {e}")
+        
+        logger.info(f"Extracted wikilinks from {len(wikilinks)} vault files")
+        return wikilinks
+    
+    except Exception as e:
+        logger.error(f"Error getting wikilinks from vault: {e}")
+        return {}
+
+
+def validate_wikilinks(wikilinks: Dict[str, List[str]]) -> Dict[str, List[str]]:
+    """Validate wikilinks - identify broken references."""
+    broken = {}
+    vault_dir = get_obsidian_vault_dir()
+    
+    try:
+        # Build map of available files in vault
+        available_files = set()
+        for md_file in vault_dir.rglob("*.md"):
+            # Store file names without extensions
+            available_files.add(md_file.stem)
+            # Also store relative paths
+            available_files.add(str(md_file.relative_to(vault_dir)).replace("\\", "/"))
+        
+        # Check each wikilink
+        for source_file, links in wikilinks.items():
+            broken_links = []
+            for link in links:
+                # Remove file extension from link if present
+                link_target = link.rsplit(".", 1)[0]
+                
+                # Check if target exists (as filename or path)
+                if link_target not in available_files and link not in available_files:
+                    broken_links.append(link)
+            
+            if broken_links:
+                broken[source_file] = broken_links
+        
+        if broken:
+            logger.warning(f"Found {sum(len(v) for v in broken.values())} broken wikilinks")
+        else:
+            logger.info("All wikilinks validated successfully")
+        
+        return broken
+    
+    except Exception as e:
+        logger.error(f"Error validating wikilinks: {e}")
+        return {}
+
+
 def load_obsidian_vault_summary() -> Dict[str, int]:
     """Get summary of Obsidian vault contents."""
     return {

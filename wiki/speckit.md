@@ -190,10 +190,15 @@
 **Canonical sequencing (B.1 resolved):**
 
 1. **Pre-flight:** Clean working tree, create feature branch
-2. **Plan:** `/spek.plan` loads context and runs `/speckit.specify` → `/speckit.clarify` (optional) → `/speckit.plan` → `/speckit.tasks` → `/speckit.analyze` (optional) → remediation loop
+2. **Plan:** `/spek.plan` loads context (vault + doc index + code graph) and runs `/speckit.specify` → `/speckit.clarify` (optional) → `/speckit.plan` → `/speckit.tasks` → `/speckit.analyze` (optional) → remediation loop
 3. **Review & Fix:** Developer reviews analyze report and generated artifacts, edits in-place if needed (manual step)
 4. **Implement:** `/spek.implement` with code map context
-5. **Post-flight:** `/spek.conclude` or lessons flow, graph refresh, optional: `cel.wiki.simplify`
+5. **Post-flight:** `/spek.conclude` writes outcomes to vault, graph refresh
+
+**Context Loading:** `/spek.context` loads three independent indices:
+- Obsidian vault (Layer 1 persistent memory)
+- Documentation index (independent graph of all project docs)
+- CodeGraph (independent index of source code)
 
 **Decision:** Analyze is **optional and non-blocking**. If findings are minor, skip remediation and proceed to implement. High-severity issues should be addressed before implement.
 

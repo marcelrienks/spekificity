@@ -427,23 +427,8 @@ Consolidated into single spec: **enrichment-layer.md** (covering specify, plan, 
 2. `/spek.post` vault archival
 3. Full end-to-end workflow validation
 
-**Optional Enhancements:**
-1. README.md updates (point to new docs)
-2. Wiki simplification (remove duplication if any)
-3. Advanced agent patterns (backprop-reflex, rarv-reflection)
-
----
-
-## cache validation method
-
-When running `/cel.wiki.read` next time:
-
-1. Count wiki files: expect 54 (if different → rescan required)
-2. Spot-check modification times:
-   - wiki/goal.md — should be 2026-05-20 14:45 or later
-   - wiki/todo.md — should be 2026-05-20 14:45 or later
-   - wiki/specs/200-implementation-roadmap.md — should be 2026-05-20 14:45 or later
-3. If all match: return cache-hit (project context loaded from cache)
-4. If any differ: proceed to full rescan
-
-To force rescan: `/cel.wiki.read refresh`
+**Context Loading:**
+- Loads from Obsidian vault (vault/ - persistent memory)
+- Loads from CodeGraph (code index - independent of vault)
+- Loads from documentation index (doc graph - separate from code)
+- All three layers are atomic and refreshed independently

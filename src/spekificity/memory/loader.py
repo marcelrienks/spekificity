@@ -97,7 +97,7 @@ def load_session_memory(feature_name: Optional[str] = None) -> Optional[SessionM
 
 
 def load_repo_memory() -> Optional[RepoMemory]:
-    """Load repository-scoped memory from .cel/ and vault/."""
+    """Load repository-scoped memory from vault/, .cel/, and documentation index."""
     try:
         repo_mem = RepoMemory(
             source_path=get_repo_memories_dir(),
@@ -120,7 +120,7 @@ def load_repo_memory() -> Optional[RepoMemory]:
             if patterns_file.exists():
                 repo_mem.patterns_index = {"source": patterns_file.read_text()[:500]}
         
-        # Load from Obsidian vault (persistent memory)
+        # Load from Obsidian vault (persistent memory - Layer 1)
         from ..vault.loader import (
             load_obsidian_lessons,
             load_obsidian_patterns,
@@ -136,7 +136,19 @@ def load_repo_memory() -> Optional[RepoMemory]:
             repo_mem.metadata["decisions_count"] = len(load_obsidian_decisions())
             repo_mem.metadata["has_intention"] = bool(load_obsidian_intention())
         
-        # Load wiki specs metadata
+        # Load documentation index (separate from code graph)
+        try:
+            from ..graph.doc_index import build_documentation_index, get_documentation_summary
+            doc_index = build_documentation_index()
+            doc_summary = get_documentation_summary(doc_index)
+            
+            repo_mem.metadata["documentation_index"] = doc_summary
+            repo_mem.metadata["doc_index_total"] = doc_summary.get("total_files", 0)
+        except Exception as e:
+            logger.warning(f"Could not load documentation index: {e}")
+            repo_mem.metadata["documentation_index"] = {}
+        
+        # Load wiki specs metadata (deprecated - superseded by documentation index)
         wiki_dir = get_wiki_dir()
         specs_dir = wiki_dir / "specs"
         if specs_dir.exists():

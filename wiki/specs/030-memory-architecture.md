@@ -48,6 +48,35 @@ Layer 2: Repo Memory (Copilot) — Persistent, Project-Scoped
 Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 ├── /memories/session/context-loaded.md    [what was loaded at session start]
 ├── /memories/session/current-feature.md   [current feature state + progress]
+```
+
+---
+
+## Documentation Index (Separate from Code Graph)
+
+**Purpose:** Index all project documentation (vault/ + wiki/) independently, enabling discovery and wikilink traversal.
+
+**What It Does:**
+- Indexes all files in vault/ (lessons, patterns, decisions, intention) and wiki/ (specs, guides)
+- Extracts [[wikilink]] references within each document
+- Builds a graph of document relationships (wikilinks + backlinks)
+- Validates that all wikilinks are resolvable (identifies broken links)
+
+**Use Cases:**
+1. **Document Discovery:** Agent queries "what docs are related to [topic]?"
+2. **Wikilink Navigation:** Follow [[reference]] chains to find related knowledge
+3. **Validation:** Identify broken wikilinks before committing vault
+
+**Load Location:** `/spek.context` → Includes in repo memory metadata:
+```
+📚 Documentation Index:
+  ✓ Total Files: 62
+  ✓ Specs: 41
+  ✓ Lessons: 12
+  ✓ Guides: 9
+```
+
+**Note:** Documentation index is independent of CodeGraph, which indexes source code. These are two separate, complementary indices.
 └── /memories/session/scratchpad.md        [notes for current session]
 ```
 

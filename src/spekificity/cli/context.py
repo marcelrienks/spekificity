@@ -62,24 +62,36 @@ def execute(layer: str = "all", feature_name: Optional[str] = None, cached: bool
             
             # Display Obsidian vault stats
             if context.repo_memory.metadata.get("obsidian_vault"):
-                click.echo(f"\n  📓 Obsidian Vault (Persistent Memory):")
+                click.echo(f"\n  📓 Obsidian Vault (Persistent Memory - Layer 1):")
                 click.echo(f"    ✓ Lessons: {context.repo_memory.metadata.get('lessons_count', 0)} learned")
                 click.echo(f"    ✓ Decisions: {context.repo_memory.metadata.get('decisions_count', 0)} recorded")
                 click.echo(f"    ✓ Patterns: {context.repo_memory.metadata.get('patterns_count', 0)} indexed")
                 if context.repo_memory.metadata.get("has_intention"):
                     click.echo(f"    ✓ Intention: Project vision documented")
             
-            # Get vault summary
-            vault_summary = get_vault_summary()
-            click.echo(f"\n  📋 Wiki Specs:")
-            click.echo(f"    ✓ Specs: {vault_summary['specs']} documents")
-            click.echo(f"    ✓ Patterns: {vault_summary['patterns']} indexed")
+            # Display documentation index stats
+            doc_index = context.repo_memory.metadata.get("documentation_index", {})
+            if doc_index:
+                click.echo(f"\n  📚 Documentation Index (All Project Docs):")
+                click.echo(f"    ✓ Total Files: {doc_index.get('total_files', 0)}")
+                by_type = doc_index.get('by_type', {})
+                if by_type.get('spec'):
+                    click.echo(f"    ✓ Specs: {by_type['spec']}")
+                if by_type.get('lesson'):
+                    click.echo(f"    ✓ Lessons: {by_type['lesson']}")
+                if by_type.get('guide'):
+                    click.echo(f"    ✓ Guides: {by_type['guide']}")
             
-            # Check CodeGraph
+            # Get vault summary (deprecated, kept for backward compatibility)
+            vault_summary = get_vault_summary()
+            click.echo(f"\n  📋 Wiki Specs (Legacy):")
+            click.echo(f"    ✓ Specs: {vault_summary['specs']} documents")
+            
+            # Check CodeGraph (separate index for code, not docs)
             graph = CodeGraph()
             stats = graph.get_stats()
             if stats:
-                click.echo(f"\n  🔗 CodeGraph:")
+                click.echo(f"\n  🔗 CodeGraph (Code Index - Layer 2):")
                 click.echo(f"    ✓ Symbols indexed: {stats.get('node_count', 0)}")
             click.echo()
         
