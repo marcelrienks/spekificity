@@ -1,6 +1,6 @@
 # Spekificity: Vision, Philosophy & Tenets
 
-**See also:** [architecture.md](architecture.md), [workflow.md](workflow.md), [naming-conventions.md](naming-conventions.md)
+**See also:** [vision.md](vision.md) (overview) → [architecture.md](architecture.md) (technical) → [workflow.md](workflow.md) (process)
 
 ---
 

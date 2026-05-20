@@ -349,7 +349,7 @@ echo "caveman_mode: true" >> .specify/config.yml
 
 **Migration:** Existing Graphify users should rebuild with CodeGraph.
 
-**See also:** [decision.md#decision-1](decision.md#decision-1-code-analysis-tool-codegraph-only--final)
+**See also:** [decision.md: CodeGraph Decision](decision.md#decision-1-code-analysis-tool-codegraph-only--final)
 
 ---
 
@@ -375,7 +375,7 @@ echo "caveman_mode: true" >> .specify/config.yml
 
 **All vault content is Git-backed** (version-controlled, Obsidian-compatible)
 
-**See also:** [intention.md#context-lives-in-the-vault](intention.md#project-tenets)
+**See also:** [intention.md: Project Tenets](intention.md#project-tenets)
 
 ---
 

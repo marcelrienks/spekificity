@@ -1,8 +1,8 @@
-# Spekificity: Vision and Architecture
+# Spekificity: Vision and Philosophy
 
 **Date Documented:** May 13-20, 2026  
 **Status:** Active Development  
-**Replaces:** intention.md, architecture.md
+**See also:** [intention.md](intention.md) (principles) → [architecture.md](architecture.md) (technical) → [workflow.md](workflow.md) (process)
 
 ---
 

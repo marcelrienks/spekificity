@@ -1,6 +1,8 @@
 # Spekificity
 
 > **Status:** Active development. Full documentation and specifications in `/wiki` and `/specs`.
+>
+> **Documentation Structure:** `/wiki/` contains philosophy, architecture, and workflow guidance. `/specs/` contains detailed specifications and implementation contracts.
 
 ## What is Spekificity?
 
@@ -13,7 +15,7 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 | **Context loss** | Persistent knowledge vault (Git-backed Obsidian) |
 | **Low autonomy** | Reusable agent skills with deterministic sequencing |
 
-**Value Proposition:** Build features **10x faster** with deterministic specs, persistent memory, and zero context loss between sessions.
+**Value Proposition:** Build features **faster** with deterministic specs, persistent memory, and zero context loss between sessions.
 
 ---
 
@@ -75,7 +77,7 @@ Spekificity is built around four pillars:
 ## Target Tool Stack
 
 - **SpecKit / Specify** — Spec-driven workflow engine
-- **CodeGraph** — Code intelligence & impact analysis (replaces Graphify)
+- **CodeGraph** — Code intelligence & impact analysis
 - **Obsidian Vault** — Knowledge store for specs, decisions, patterns, lessons
 - **Caveman Mode** — Response compression for token control
 
@@ -103,16 +105,60 @@ FEATURE COMPLETE
 
 ---
 
-## Documentation
+## Documentation Roadmap
 
-| Document | Purpose | Read Time |
-|----------|---------|-----------|
-| [wiki/quickstart.md](wiki/quickstart.md) | Step-by-step guide for first feature | 30 min |
-| [wiki/workflow.md](wiki/workflow.md) | Detailed 5-phase workflow | 15 min |
-| [wiki/intention.md](wiki/intention.md) | Project vision & philosophy | 10 min |
-| [wiki/decision.md](wiki/decision.md) | Architectural decisions (why CodeGraph, etc.) | 10 min |
-| [wiki/faq.md](wiki/faq.md) | Common questions & troubleshooting | 20 min |
-| [.spekificity/skill-index.md](.spekificity/skill-index.md) | Complete command reference | 15 min |
+### **For First-Time Users (45 minutes)**
+
+Start with this reading order—each doc builds on the previous:
+
+1. **[wiki/intention.md](wiki/intention.md)** (10 min) — Why Spekificity exists and core philosophy (vision, principles, tenets)
+2. **[wiki/architecture.md](wiki/architecture.md)** (10 min) — How components fit together (technical architecture and data flow)
+3. **[wiki/quickstart.md](wiki/quickstart.md)** (25 min) — Hands-on walkthrough of your first feature
+
+### **For Daily Work (Reference)**
+
+| Document | Purpose |
+|----------|---------|
+| [wiki/workflow.md](wiki/workflow.md) | 5-phase workflow details (reference during development) |
+| [wiki/naming-conventions.md](wiki/naming-conventions.md) | Command naming and skill invocation |
+| [.spekificity/skill-index.md](.spekificity/skill-index.md) | Complete `/spek.*` command reference |
+
+### **For Deep Dives (Optional)**
+
+| Document | Purpose |
+|----------|---------|
+| [wiki/decision.md](wiki/decision.md) | Architectural decisions and trade-offs |
+| [wiki/faq.md](wiki/faq.md) | Common questions & troubleshooting |
+
+### **Documentation Structure**
+
+- **`/wiki/`** — Conceptual guidance (vision, philosophy, architecture, workflow, naming)
+- **`/specs/`** — Detailed specifications and implementation contracts
+- **`/vault/`** — Project memory (decisions, patterns, lessons captured during development)
+
+### **Wiki File Scope Guide**
+
+| File | Scope | When to Read |
+|------|-------|--------------|
+| **vision.md** | Vision statement, problem/solution, four pillars, design principles | Understand *why* Spekificity exists |
+| **intention.md** | Philosophy, core principles, project tenets, constraints, target users | Understand Spekificity *philosophy* and design intent |
+| **architecture.md** | Technical components, data flow, responsibilities (Vault, CodeGraph, SpecKit, Skills), integration | Understand *how* components fit together technically |
+| **workflow.md** | 5-phase feature development workflow with entry/exit criteria, artifacts, detailed steps | Reference during *active development* |
+| **quickstart.md** | Hands-on walkthrough for first feature (30 min tutorial) | *Get started* with your first feature |
+| **naming-conventions.md** | `/spek.*` and `/speckit.*` command naming patterns and invocation | Know *which command to use* |
+| **decision.md** | Architectural decisions (CodeGraph vs Graphify, toolset rationale, etc.) | Understand *why* specific choices were made |
+| **faq.md** | Common questions, troubleshooting, setup issues | *Answer specific questions* about usage |
+
+### **Terminology Guide**
+
+| Term | Canonical Usage | Aliases | Definition |
+|------|-----------------|---------|-----------|
+| **Phase** | "Phase 1: Prepare", "Phase 2: Specify", etc. (5 total) | "stage", "step" | One of five deterministic workflow stages in feature development |
+| **Closeout** | "Phase 5: Post-Feature Closeout" | "Close", "post-processing", "archive phase" | Final phase where artifacts are archived and lessons extracted |
+| **Lessons Learned** | "lessons learned", "lessons" (in context of `/spek.post` output) | "reflection", "retrospective", "what we learned" | Structured insights captured at feature end (what worked, what didn't, patterns) |
+| **CodeGraph** | "CodeGraph" (always capitalized, never "code graph") | "code intelligence tool", "code analysis" | Pre-indexed SQLite code analysis tool; primary source of code intelligence |
+| **Enrichment Layer** | "enrichment layers" (plural when multiple) | "context layers", "structured context" | Context-specific information added to specs/plans (Success Criteria, Assumptions, Risk Assessment, etc.) |
+| **SpecKit** | "SpecKit" or "/speckit.*" commands | "spec framework", "specification tool" | Underlying spec-driven workflow engine (upstream tool, not Spekificity-specific) |
 
 ---
 

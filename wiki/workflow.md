@@ -1,6 +1,6 @@
 # Feature Development Workflow
 
-**See also:** [architecture.md](architecture.md), [intention.md](intention.md), [integration-checklist.md](integration-checklist.md)
+**See also:** [intention.md](intention.md) (principles) → [architecture.md](architecture.md) (technical) → [quickstart.md](quickstart.md) (howto)
 
 ---
 
@@ -33,7 +33,7 @@ Pre-flight checks before feature development begins. Ensures workspace is ready,
 |------|--------|-----------|--------|
 | Git Status | Check for uncommitted changes | No stale work left | Clean working tree |
 | Vault Fresh | Pull latest from Obsidian git sync | No vault conflicts | Current specs/decisions |
-| CodeGraph Sync | Refresh CodeGraph from latest code | Code index is current | Fresh `codegraph.db` |
+| CodeGraph Sync | Refresh CodeGraph from latest code (incremental update) | Code index reflects current state | Fresh `codegraph.db` |
 | Session State | Initialize context (vault, repo memory, graph) | All context ready | Session context loaded |
 | Feature Readiness | Verify no blocking issues | Prerequisites met | Ready to start |
 
@@ -115,32 +115,34 @@ Each spec includes structured enrichment:
 ### Commands
 ```
 /spek.automate --phase=plan
-# or directly:
+# or directly (two-step):
 /speckit.plan --spec="feature-spec-id"
+/speckit.tasks --plan="feature-plan-id"
 ```
 
 ### Purpose
-Convert specification into a detailed execution plan with task breakdown, dependencies, and resource allocation.
+Convert specification into detailed execution plan (architecture + tech choices) and task list (dependency-ordered executable tasks).
 
 ### Workflow
 
 ```
 SPEC DOCUMENT
     ↓
-/speckit.plan
-    ├─ Analyze spec for task boundaries
-    ├─ Identify dependencies (task A blocks B)
-    ├─ Estimate per-task resources
-    ├─ Query CodeGraph for change locations
-    │
-    └─ Apply Enrichment Layers:
-       ├─ Task Breakdown (1-2 sentence per task)
-       ├─ Dependency Graph (which tasks block others)
-       ├─ Execution Order (critical path)
-       ├─ Resource Breakdown (tokens per task)
-       └─ Risk/Mitigation (task-level risks)
+/speckit.plan (Step 1: Architecture)
+    ├─ Analyze spec requirements
+    ├─ Design architecture + tech choices
+    ├─ Query CodeGraph for affected areas
+    └─ Produce: plan.md (rationale, architecture decisions)
     ↓
-PLAN DOCUMENT (vault + git commit)
+/speckit.tasks (Step 2: Task Breakdown)
+    ├─ Read plan.md
+    ├─ Identify task boundaries
+    ├─ Determine dependencies (task A blocks B)
+    ├─ Estimate per-task resources
+    ├─ Query CodeGraph for file locations
+    └─ Produce: tasks.md (ordered, IDs, dependencies, risk mitigation)
+    ↓
+PLAN + TASKS DOCUMENTS (vault + git commit)
 ```
 
 ### Plan Structure
@@ -179,18 +181,19 @@ Task 1 (Auth Service)
 ```
 
 ### Output Artifacts
-- Plan document (Markdown, vault-stored)
-- Task breakdown with dependencies
-- Resource estimates per task
-- Execution order (critical path)
+- `plan.md` — Architecture, tech choices, rationale, research (Markdown, vault-stored)
+- `tasks.md` — Dependency-ordered executable tasks with IDs, resource estimates, critical path (Markdown, vault-stored)
 - CodeGraph references for implementation
+- Links to existing decisions from [decision.md](decision.md)
 
 ### Exit Criteria
-- ✅ All tasks identified and documented
-- ✅ Dependencies clearly mapped
-- ✅ Resource estimates provided
-- ✅ Execution order defined
-- ✅ Plan committed to vault
+- ✅ Architecture documented in plan.md
+- ✅ Tech choices justified in plan.md
+- ✅ All tasks identified and documented in tasks.md
+- ✅ Dependencies clearly mapped in tasks.md
+- ✅ Resource estimates provided per task
+- ✅ Execution order (critical path) defined
+- ✅ Both plan.md and tasks.md committed to vault
 
 ---
 
@@ -282,12 +285,15 @@ Each task execution includes:
 ### Commands
 ```
 /spek.post
-# or explicitly:
-/spek.lessons
+# Includes: archive, lessons extraction (automatic), state refresh
+
+# Optional (for deeper analysis):
+/spek.lessons --deep
+# Explicit, detailed lesson extraction (runs separately from /spek.post)
 ```
 
 ### Purpose
-Archive outcomes, extract lessons learned, refresh state for future features.
+Archive outcomes, extract lessons learned (automatic), refresh state for future features. `/spek.lessons --deep` available for explicit, detailed reflection.
 
 ### Workflow
 
@@ -301,7 +307,7 @@ IMPLEMENTATION COMPLETE
     │  ├─ Outcomes → Session memory
     │  └─ Task commits → Summarized
     │
-    ├─ Extract Lessons Learned
+    ├─ Extract Lessons Learned (Automatic)
     │  ├─ What worked well?
     │  ├─ What was difficult?
     │  ├─ Patterns discovered?
@@ -309,7 +315,7 @@ IMPLEMENTATION COMPLETE
     │  └─ Link to specs/decisions (why/how)
     │
     ├─ Refresh State
-    │  ├─ Rebuild CodeGraph (fresh index)
+    │  ├─ Rebuild CodeGraph (full index incorporating feature changes)
     │  ├─ Update repo memory (project facts)
     │  ├─ Clean session context
     │  └─ Prepare for next feature
@@ -371,6 +377,26 @@ Status: Complete
 - ✅ Session context cleaned
 
 ---
+
+### Lesson Extraction Details
+
+**Automatic (via `/spek.post`):**
+- Lightweight, structured format
+- Runs as part of standard closeout workflow
+- Suitable for most features
+- Captured: what worked, what was difficult, patterns, recommendations
+
+**Explicit/Deep (via `/spek.lessons --deep`):**
+- Detailed reflection and analysis
+- Cross-references specs, plans, code, and decisions
+- Optional, for complex features or research projects
+- Runs independently after `/spek.post`
+- Produces: comprehensive feature retrospective with architectural insights
+
+**When to use:**
+- Standard feature: `/spek.post` (automatic lessons)
+- Complex refactor or architectural change: `/spek.post` + `/spek.lessons --deep`
+- Research/experimental work: `/spek.lessons --deep` for thorough analysis
 
 ## Timeline Diagram
 

@@ -1,6 +1,8 @@
 # Spekificity Architecture
 
-**See also:** [intention.md](intention.md), [workflow.md](workflow.md), [naming-conventions.md](naming-conventions.md)
+**See also:** [vision.md](vision.md) (philosophy) → [intention.md](intention.md) (principles) → [workflow.md](workflow.md) (process)
+
+**Note:** This document covers technical architecture only. For philosophical foundations and design principles, see [vision.md](vision.md) and [intention.md](intention.md).
 
 ---
 
