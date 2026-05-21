@@ -16,15 +16,19 @@ This guide walks you through building a **complete feature** using Spekificity's
 - How to execute with full context
 - How to capture lessons learned
 
-**Prerequisites:**
 
-Before starting, complete the setup in [setup.md](setup.md):
-- ✅ Python 3.11+
-- ✅ Git initialized
-- ✅ SpecKit installed globally
-- ✅ Spekificity initialized in project
+**One-Stop Setup:**
 
-See [setup.md](setup.md) for detailed prerequisite verification.
+Before starting, run the one-stop setup script:
+
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+This will check for and install all requirements (Python, uv, Git, Obsidian, Obsidian CLI, Spekificity, SpecKit) and initialize your project automatically.
+
+See [install.md](install.md) for details.
 
 ---
 

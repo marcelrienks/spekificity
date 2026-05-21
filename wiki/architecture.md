@@ -1,3 +1,40 @@
+# Architectural Principles: Token Efficiency, Determinism, Persistence, Autonomy
+
+**Date:** 2026-05-21
+
+## 1. Token Efficiency
+- All source code and wiki documents are pre-indexed using CodeGraph.
+- Context injection is performed by querying CodeGraph for only the most relevant nodes (functions, patterns, lessons, decisions, etc.).
+- Caveman skill is used to compress context (lessons, vault, session) for minimal token usage during agent operations.
+- This approach ensures that only the most essential information is loaded into the agent’s context window, optimizing for both speed and cost.
+
+## 2. Determinism
+- SpecKit’s workflow (specify, clarify, plan, implement) is the backbone for all feature and skill orchestration.
+- All agent actions are driven by explicit, spec-driven processes, ensuring repeatability and traceability.
+- Skillsets are extended as needed, but always within the deterministic SpecKit orchestration model.
+- This guarantees that outcomes are reproducible and auditable.
+
+## 3. Persistence
+- Obsidian CLI is the mandatory runtime dependency for all persistent memory and vault operations.
+- All session states, decisions, patterns, lessons, and architectural context (from CodeGraph source and wiki indexing) are managed and stored in the Obsidian vault.
+- The vault serves as the single source of truth for all project knowledge, ensuring long-term durability and accessibility.
+
+## 4. Autonomy
+- CodeGraph enables autonomous extraction of context, impact analysis, and knowledge mapping.
+- Agents can operate with minimal manual intervention, leveraging the indexed knowledge base for decision-making and workflow execution.
+- This supports agentic workflows and continuous improvement.
+
+---
+
+## Architectural Viability
+- The above principles are enforced in the project’s specifications, implementation roadmap, and workflow documentation.
+- All critical dependencies (CodeGraph, SpecKit, Obsidian CLI, Caveman skill) are required and integrated at the architectural level.
+- This structure ensures the project’s goals of efficiency, determinism, persistence, and autonomy are met.
+
+---
+
+**This section should be referenced in architectural reviews and onboarding.**
+
 # Spekificity Architecture
 
 **See also:** [vision.md](vision.md) (philosophy) → [intention.md](intention.md) (principles) → [workflow.md](workflow.md) (process)

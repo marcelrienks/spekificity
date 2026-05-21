@@ -1,48 +1,33 @@
-# Spekificity Installation & Setup Guide
 
-This guide covers installing Spekificity and configuring it for AI-driven development workflows.
+# Spekificity Installation & One-Stop Setup Guide
 
-## Quick Start (Recommended)
+This guide covers fully automated setup for Spekificity, including all system and Python dependencies.
 
-### 1. Install via `uv tool install`
+## One-Stop Setup (Recommended)
 
-```bash
-uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
-```
+### 1. Run the Bootstrap Script
 
-This installs Spekificity as a standalone tool with:
-- ✅ Main CLI (`spek` command)
-- ✅ Initialization utility (`spek-init` command)
-- ✅ All dependencies pre-configured
-- ✅ Ready for immediate use
-
-### 2. Initialize Your Project
-
-After installation, initialize your project:
+Use the provided `setup.sh` script to check for and install all requirements:
 
 ```bash
-# Using spek init command
-spek init
-
-# Or as standalone command
-spek-init
-
-# Verbose output for debugging
-spek init --verbose
+chmod +x setup.sh
+./setup.sh
 ```
 
-This automatically creates:
-- ✅ `vault/` - Obsidian vault for ALL persistent memory (Git-backed)
-  - `vault/user/` - User preferences
-  - `vault/session/` - Session and feature state
-  - `vault/repo/` - Repository decisions and patterns
-  - `vault/lessons/` - Per-feature lessons learned
-- ✅ `.spek/` - Project metadata and CodeGraph database
-- ✅ `wiki/` - Documentation structure
+This script will:
+- Check for Python 3.11+ (install if missing)
+- Check for `uv` (install via pipx if missing)
+- Check for Git (install if missing)
+- Check for Obsidian (install via Homebrew, Chocolatey, or prompt manual install)
+- Check for Obsidian CLI (install via npm if missing)
+- Install Spekificity and all Python dependencies via `uv tool install`
+- Initialize your project with `spek init`
 
-Then runs `specify init .` to initialize SpecKit in your project.
+**No manual steps required.**
 
-**Optional:** Open the `vault/` directory in Obsidian for graph visualization and knowledge browsing:
+### 2. Open the Vault in Obsidian (Optional)
+
+After setup, open the `vault/` directory in Obsidian for graph visualization and knowledge browsing:
 1. Open Obsidian
 2. Click "Open folder as vault"
 3. Select your project's `vault/` directory
@@ -51,14 +36,15 @@ Then runs `specify init .` to initialize SpecKit in your project.
 ### 3. Verify Installation
 
 ```bash
-# Check CLI is available
 spek --version
 spek --help
-
-# Verify all commands
 spek prepare --help
 spek context --help
-spek plan --help
+```
+
+---
+
+**Note:** The `setup.sh` script is cross-platform (macOS, Linux, Windows) and will prompt for any manual steps if a dependency cannot be installed automatically.
 spek map --help
 spek implement --help
 spek post --help

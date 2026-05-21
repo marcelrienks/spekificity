@@ -17,6 +17,7 @@ Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All arch
 | **Workflow Definition** | ✓ Complete | [workflow.md](../workflow.md) |
 | **Integration Contracts** | ✓ Complete | [110-speckit-integration-contract.md](110-speckit-integration-contract.md) |
 | **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) |
+| **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) — **Obsidian CLI is a mandatory runtime dependency for all persistent memory and vault operations** |
 | **CodeGraph Specification** | ✓ Complete | [050-codegraph-setup-and-integration.md](050-codegraph-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md) |
 | **Skill Specifications** | ✓ Complete | [100-prepare-command.md](100-prepare-command.md) through [105-spek-implement-workflow.md](105-spek-implement-workflow.md) |
 | **Automation Workflow** | ✓ Complete | [120-spek-automate-workflow.md](120-spek-automate-workflow.md), [121-cli-orchestration.md](121-cli-orchestration.md) |
@@ -28,10 +29,12 @@ Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All arch
 
 ### Language: Python 3.11+
 
+
 **Rationale:**
 - **SpecKit Ecosystem:** SpecKit CLI is Python-native; deep integration with `uv` package manager
 - **Code Analysis:** AST-based parsing for CodeGraph support (ast, Pygments libraries mature)
 - **CLI Framework:** Click or Typer for deterministic SpecKit orchestration
+- **Obsidian CLI:** **Required for all persistent memory and vault operations (not optional)**
 - **Performance:** Fast startup, acceptable for 2-5s target (prepare command)
 - **Dependency Management:** `uv` provides fast, reproducible environments
 - **Observability:** Structured logging (loguru/structlog) for debugging agent handoffs

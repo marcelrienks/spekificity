@@ -9,7 +9,8 @@
 
 ## Overview
 
-Spekificity defines a coherent memory architecture with three layers: Obsidian vault (persistent), repo-scoped memories (Copilot), and session-scoped context (ephemeral). Each layer has explicit granularity, ownership, persistence, and lifecycle. This spec covers:
+
+Spekificity defines a coherent memory architecture with three layers: Obsidian vault (persistent, managed via Obsidian CLI), repo-scoped memories (Copilot), and session-scoped context (ephemeral). **Obsidian CLI is a mandatory runtime dependency for all persistent memory and vault operations.** Each layer has explicit granularity, ownership, persistence, and lifecycle. This spec covers:
 
 - **What** each memory layer stores and why
 - **When** memory is read (load lifecycle) and written (write lifecycle)
@@ -21,7 +22,7 @@ Spekificity defines a coherent memory architecture with three layers: Obsidian v
 
 ## Success Criteria
 
-- ✅ **Obsidian vault persists** (decisions, patterns, lessons survive sessions, synced to Git)
+- ✅ **Obsidian vault persists** (decisions, patterns, lessons survive sessions, synced to Git, all access via Obsidian CLI)
 - ✅ Repo layer caches efficiently (compressed memory reduces load time)
 - ✅ Session layer manages context (ephemeral state available during feature)
 - ✅ Layers integrate seamlessly (no manual sync between layers)
@@ -34,7 +35,7 @@ Spekificity defines a coherent memory architecture with three layers: Obsidian v
 ## Three-Layer Memory Model
 
 ```
-Layer 1: Vault (Obsidian) — Persistent, Authoritative
+Layer 1: Vault (Obsidian, managed via Obsidian CLI) — Persistent, Authoritative
 ├── vault/decision.md          [decisions, ranked by recency + importance]
 ├── vault/intention.md         [project vision, tenets, constraints]
 ├── vault/patterns.md          [reusable patterns from prior features]
@@ -54,7 +55,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 
 ## Documentation Index (Separate from Code Graph)
 
-**Purpose:** Index all project documentation (vault/ + wiki/) independently, enabling discovery and wikilink traversal.
+**Purpose:** Index all project documentation (vault/ + wiki/) independently, enabling discovery and wikilink traversal. **All persistent memory and vault operations are performed via Obsidian CLI.**
 
 **What It Does:**
 - Indexes all files in vault/ (lessons, patterns, decisions, intention) and wiki/ (specs, guides)

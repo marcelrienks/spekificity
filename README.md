@@ -21,14 +21,18 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 
 ## Quick Start
 
+
 ### Prerequisites
 
 - Python 3.11+
 - `uv` package manager ([install](https://docs.astral.sh/uv/))
-- **Obsidian** (optional but recommended) - for vault visualization and browsing
-  - [Download Obsidian](https://obsidian.md/download)
-  - macOS: `brew install obsidian`
-  - Windows: `choco install obsidian`
+- **Obsidian** (required) — for persistent memory management and vault operations
+    - [Download Obsidian](https://obsidian.md/download)
+    - macOS: `brew install obsidian`
+    - Windows: `choco install obsidian`
+- **Obsidian CLI** (required) — all vault operations and persistent memory management are performed via the Obsidian CLI
+    - Install: `npm install -g @obsidianmd/obsidian-cli`
+    - See [Obsidian CLI documentation](https://github.com/obsidianmd/obsidian-cli) for usage
 
 ### Installation & Setup (Recommended)
 
@@ -45,12 +49,14 @@ spek --version
 spek tools --list
 ```
 
+
 This automatically:
 - ✅ Installs Spekificity CLI
 - ✅ Installs all dependencies (SpecKit, CodeGraph, etc.)
 - ✅ Creates project directories (`.spek/`, `vault/`, `wiki/`)
 - ✅ Initializes CodeGraph database
 - ✅ Runs `specify init .` to initialize SpecKit
+- ✅ **Requires Obsidian CLI for all persistent memory and vault operations**
 
 ### Alternative: Manual Installation
 
@@ -93,14 +99,15 @@ Spekificity is built around four pillars:
 
 ---
 
+
 ## Target Tool Stack
 
 - **SpecKit / Specify** — Spec-driven workflow engine
 - **CodeGraph** — Code intelligence & impact analysis
-- **Obsidian Vault** — Knowledge store for specs, decisions, patterns, lessons
+- **Obsidian Vault (with Obsidian CLI)** — Mandatory knowledge store and runtime interface for specs, decisions, patterns, lessons. **All persistent memory operations require Obsidian CLI.**
 - **Caveman Mode** — Response compression for token control
 
-Spekificity defines how these tools work together—it doesn't replace them.
+Spekificity defines how these tools work together—it doesn't replace them. **Obsidian CLI is a required runtime dependency for all vault and persistent memory management.**
 
 ---
 
@@ -326,6 +333,7 @@ Practical reading order:
 5. `wiki/naming-conventions.md`
 6. relevant files in `wiki/specs/`
 
+
 ## Working Assumptions
 
 The docs in this repository consistently assume:
@@ -333,6 +341,7 @@ The docs in this repository consistently assume:
 - the enriched command surface uses `spek.*`
 - Spekificity wraps SpecKit rather than forking it
 - durable knowledge lives in markdown, not opaque runtime state
+- **all persistent memory and vault operations are performed via Obsidian CLI (required, not optional)**
 - code intelligence should come from indexed graph tooling rather than repeated file scans
 - post-feature lessons are part of the system, not optional afterthoughts
 

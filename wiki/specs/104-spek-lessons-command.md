@@ -3,6 +3,7 @@
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Skill — /spek.lessons (manual lesson extraction + query interface)  
 **Depends On:** lessons-format.md, memory-architecture.md, post-processing.md  
+**Requires:** Obsidian CLI (mandatory) for all vault/lessons/ operations and persistent memory management
 **Used By:** `/spek.post` (automatic), CLI entry point (manual queries)  
 
 ---
@@ -26,7 +27,7 @@
   ├─ Call /spek.lessons (internally, no user visibility)
   │  ├─ Generate 8-section lesson document
   │  ├─ Compress with caveman mode
-  │  ├─ Write to vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md
+   │  ├─ Write to vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md (via Obsidian CLI)
   │  └─ Return: lesson file path + validation
   └─ Continue to Step 4 (vault update)
 ```
@@ -68,7 +69,7 @@ spek lessons --pattern=<pattern-name> [--format=markdown]
 ```
 
 **Behavior:**
-1. Query vault/lessons/ for all files
+1. Query vault/lessons/ for all files (via Obsidian CLI)
 2. Parse each lesson file (YAML frontmatter + content)
 3. Search for pattern references (in "Patterns Identified" section + elsewhere)
 4. Return: List of matching lessons (filename + excerpt)
@@ -79,10 +80,10 @@ $ spek lessons --pattern="dependency-injection"
 
 === Lessons Matching Pattern: dependency-injection ===
 
-1. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md
+1. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md (managed via Obsidian CLI)
    Excerpt: "... reused dependency injection pattern from auth service, adapted for graph queries ..."
 
-2. vault/lessons/2026-05-12-001-persistent-memories.md
+2. vault/lessons/2026-05-12-001-persistent-memories.md (managed via Obsidian CLI)
    Excerpt: "... introduced dependency injection for vault access layer ..."
 
 Total: 2 lessons
@@ -108,7 +109,7 @@ spek lessons --search=<keyword> [--limit=10] [--format=markdown]
 ```
 
 **Behavior:**
-1. Query vault/lessons/ for all files
+1. Query vault/lessons/ for all files (via Obsidian CLI)
 2. Parse each lesson file (all sections)
 3. Search for keyword (case-insensitive, substring match)
 4. Rank by relevance (section weight: "Lessons for Next Feature" > "Decisions Made" > others)
@@ -120,11 +121,11 @@ $ spek lessons --search="cache" --limit=5
 
 === Lessons Matching "cache" ===
 
-1. vault/lessons/2026-05-15-002-code-graph-indexing.md (relevance: 0.92)
+1. vault/lessons/2026-05-15-002-code-graph-indexing.md (managed via Obsidian CLI, relevance: 0.92)
    Section: How We Built It
    Excerpt: "... implemented SHA256 caching for incremental graph refresh ..."
 
-2. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md (relevance: 0.67)
+2. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md (managed via Obsidian CLI, relevance: 0.67)
    Section: Lessons for Next Feature
    Excerpt: "... beware: graph cache can become stale if git hooks fail ..."
 
@@ -323,12 +324,12 @@ Total: 2 lessons found
 ```markdown
 === Lessons Matching "cache" ===
 
-1. vault/lessons/2026-05-15-002-code-graph-indexing.md (Relevance: 0.92)
+1. vault/lessons/2026-05-15-002-code-graph-indexing.md (managed via Obsidian CLI, Relevance: 0.92)
    Section: How We Built It
    Excerpt: "... implemented SHA256 caching for incremental graph refresh, reducing rebuild time from 60s to 3s ..."
    [View full](file:///vault/lessons/2026-05-15-002-code-graph-indexing.md)
 
-2. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md (Relevance: 0.67)
+2. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md (managed via Obsidian CLI, Relevance: 0.67)
    Section: Lessons for Next Feature
    Excerpt: "... beware: graph cache can become stale if git hooks fail to run after commit ..."
    [View full](file:///vault/lessons/2026-05-18-003-spek-full-workflow-cli.md)
@@ -341,7 +342,7 @@ Total: 5 lessons found (showing top 2)
 ## Storage & Lifecycle
 
 **Lesson Files:**
-- Location: `vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md`
+- Location: `vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md` (managed via Obsidian CLI)
 - Created by: `/spek.post` Step 3 (automatic)
 - Immutable after creation (no updates)
 - Retention: Permanent (archived if marked status=archived in frontmatter)
@@ -388,7 +389,7 @@ commit_range: abc123..def456
 - Immutability enforced afterward
 
 **With Memory Architecture:**
-- Writes to vault/lessons/ (permanent storage)
+- Writes to vault/lessons/ (permanent storage, via Obsidian CLI)
 - Read by `/spek.context` at session start (recent 3-5 lessons loaded)
 - Indexed by code graph during `/spek.map` refresh
 

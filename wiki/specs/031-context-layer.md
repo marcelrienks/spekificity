@@ -44,10 +44,12 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 
 ### What Is Loaded (at session start)
 
-**From vault (permanent archive):**
+**From vault (permanent archive, via Obsidian CLI):**
 - Active decisions (vault/decision.md)
 - Active patterns (vault/patterns.md)
 - Recent lessons (vault/lessons/ — top 3-5)
+
+**NOTE:** All vault context loads (decisions, patterns, lessons) are performed via Obsidian CLI. Obsidian CLI is a mandatory runtime dependency for all persistent memory and vault operations.
 
 **From repo memory (compressed cache):**
 - Recent decisions (if already synced)

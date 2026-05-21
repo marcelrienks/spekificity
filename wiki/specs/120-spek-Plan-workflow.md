@@ -10,19 +10,25 @@
 
 ## Overview
 
-`spek.plan` is a single entry point that autonomously orchestrates the pre-implementation SpecKit workflow without requiring the user to manually invoke individual SpecKit skills.
 
-**Key Design Principle:** `spek.plan` uses a concrete SpecKit integration contract to determine available skills and workflow. It:
-1. **Scans** `.specify/README` or local SpecKit installation for available skills (if present)
-2. **Detects** any new skills added beyond the canonical defaults
-3. **Falls back** to hardcoded canonical SpecKit workflow if auto-detection unavailable
-4. **Orchestrates** skills in order, handling user input, remediation, and error recovery
+`spek.plan` is a single entry point that autonomously orchestrates the pre-implementation SpecKit workflow. The user never needs to specify a phase or call individual SpecKit skills directly. The plan skill is fully stateful: it determines whether a spec exists, whether a plan is in progress, or if a feature is ready for implementation, and orchestrates the correct workflow accordingly. All user queries and clarifications are surfaced interactively as needed.
+
+
+**Key Design Principle:** `spek.plan` is stateful and user-friendly. It:
+1. **Determines current state**: Checks if a spec exists, if a plan is in progress, or if a feature is ready for implementation.
+2. **Scans** `.specify/README` or local SpecKit installation for available skills (if present)
+3. **Detects** any new skills added beyond the canonical defaults
+4. **Falls back** to hardcoded canonical SpecKit workflow if auto-detection unavailable
+5. **Orchestrates** skills in order, handling user input, remediation, and error recovery
+6. **Never requires phase flags or direct specify calls**: The user simply runs `spek.plan` and the workflow adapts automatically.
+
 
 **Purpose:**
-- Enable hands-off feature preparation using SpecKit
+- Enable hands-off, state-aware feature preparation using SpecKit
 - Surface user decisions at natural points (spec clarifications, plan validations)
 - Handle remediation automatically (re-run skills if issues detected)
 - Work seamlessly with any SpecKit version (past, present, future)
+- Eliminate the need for phase flags or manual phase selection
 
 ---
 

@@ -112,15 +112,15 @@ FROM ""
 
 ---
 
-### Method 3: Obsidian CLI Tool
+### Obsidian CLI Tool (Mandatory)
 
 **What it is:**
-- Obsidian provides CLI tools for vault operations
-- Can export vault structure, metadata, graph via CLI
+- Obsidian CLI is the only supported and required tool for all vault operations, export, and graph extraction in Spekificity.
+- All persistent memory and vault management must be performed via Obsidian CLI at runtime.
 
 **Setup:**
 ```bash
-# Install obsidian CLI (if available)
+# Install obsidian CLI (required)
 npm install -g @obsidianmd/obsidian-cli
 
 # Export vault structure
@@ -150,30 +150,12 @@ obsidian export-graph /path/to/vault --format=json
 - Supports multiple formats (JSON, GraphML, SVG)
 
 **Cons:**
-- CLI tool may not be officially released yet
 - Requires npm installation
 - Dependency on external tool maintenance
 
 **Best for:**
-- Projects with complex vault structures requiring full export
+- All projects using Spekificity (mandatory)
 - Integration with external graph visualization tools
-
----
-
-## Recommended Export Strategy: Hybrid
-
-**Phase 1 (Now):** Use Obsidian cache.json (Method 2)
-- Zero setup, always available
-- Sufficient for initial graph creation
-- Monitor cache.json for real-time updates
-
-**Phase 2 (Future):** Add Dataview plugin (Method 1) if needed
-- For richer queries (filter by status, tags, etc.)
-- For semantic queries (e.g., "all decisions affecting [feature]")
-
-**Phase 3 (Future):** Evaluate CLI tool (Method 3)
-- If Obsidian CLI becomes stable and official
-- For automated vault exports in CI/CD
 
 ---
 
