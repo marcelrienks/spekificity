@@ -32,13 +32,12 @@ spek init --verbose
 ```
 
 This automatically creates:
-- ✅ `vault/` - Obsidian vault for persistent memory (Git-backed)
+- ✅ `vault/` - Obsidian vault for ALL persistent memory (Git-backed)
+  - `vault/user/` - User preferences
+  - `vault/session/` - Session and feature state
+  - `vault/repo/` - Repository decisions and patterns
   - `vault/lessons/` - Per-feature lessons learned
-  - `vault/patterns.md` - Reusable patterns library
-  - `vault/decision.md` - Architectural decisions
-  - `vault/intention.md` - Project vision & tenets
-- ✅ `.memories/session/` - Session-scoped memory
-- ✅ `.cel/` - Project metadata and CodeGraph database
+- ✅ `.spek/` - Project metadata and CodeGraph database
 - ✅ `wiki/` - Documentation structure
 
 Then runs `specify init .` to initialize SpecKit in your project.
@@ -165,7 +164,7 @@ If you prefer manual control:
 
 ```bash
 # Create directories
-mkdir -p .cel .memories/session wiki/lessons wiki/specs
+mkdir -p .spek vault/{user,session,repo,lessons} wiki/{specs,lessons}
 
 # Initialize CodeGraph
 python -c "from spekificity.graph.codegraph import CodeGraph; CodeGraph()"
@@ -189,7 +188,7 @@ Or let `spek init` handle it automatically.
 #### CodeGraph
 
 CodeGraph is included by default. It automatically:
-- Creates SQLite database at `.cel/codegraph.db`
+- Creates SQLite database at `.spek/codegraph.db`
 - Indexes Python symbols via AST analysis
 - Provides query interface for agents
 
@@ -229,11 +228,11 @@ specify init .
 
 **Solution:**
 ```bash
-# Ensure .cel directory exists
-mkdir -p .cel
+# Ensure .spek directory exists
+mkdir -p .spek
 
 # Check permissions
-ls -la .cel/
+ls -la .spek/
 
 # Reinitialize CodeGraph
 spek init --skip-speckit
@@ -266,16 +265,16 @@ export SPEKIFICITY_VERBOSE=1
 # Set custom project root
 export SPEKIFICITY_ROOT=/path/to/project
 
-# Set custom .cel directory
-export CEL_DIR=/path/to/.cel
+# Set custom .spek directory
+export SPEK_DIR=/path/to/.spek
 ```
 
 ### Project Configuration
 
-Configuration files (created automatically):
-- `.cel/config.toml` - Project-specific settings
-- `.memories/user.yaml` - User preferences
-- `.memories/session/*.yaml` - Session data
+Configuration files (stored in vault/):
+- `vault/user/preferences.md` - User preferences
+- `vault/session/*.yaml` - Session and feature state
+- `vault/repo/*.md` - Repository decisions and patterns
 - `wiki/specs/` - Specification files
 - `wiki/lessons/` - Lesson extraction outputs
 
@@ -354,8 +353,8 @@ uv tool uninstall spekificity
 ### Clean up local files
 
 ```bash
-# Remove project metadata (optional)
-rm -rf .cel .memories
+# Remove project metadata and vault memory
+rm -rf .spek vault
 
 # Remove documentation (optional)
 rm -rf wiki/lessons
@@ -388,7 +387,7 @@ Run: spek init
         ↓
 ┌───────────────────────────────────────┐
 │  Post-Installation Setup              │
-│  - Create .cel directory              │
+│  - Create .spek directory             │
 │  - Initialize CodeGraph               │
 │  - Install SpecKit (if available)     │
 │  - Run specify init .                 │
@@ -432,7 +431,7 @@ uv tool upgrade spekificity
 
 ### Q: Can multiple projects use the same Spekificity installation?
 
-**A:** Yes! Each project has its own `.cel/` and `.memories/` directories, so they work independently.
+**A:** Yes! Each project has its own `.spek/` and `vault/` directories, so they work independently.
 
 ### Q: Is Spekificity compatible with Windows?
 

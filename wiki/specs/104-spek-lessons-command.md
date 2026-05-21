@@ -45,7 +45,7 @@ spek lessons --regenerate [--dry-run]
 ```
 
 **Behavior:**
-1. Check current feature state (`/memories/session/current-feature.md`)
+1. Check current feature state (`vault/session/`)
 2. Verify feature is NOT yet completed (phase < completing)
 3. Read current artifacts (spec, plan, tasks, execution trace if exists)
 4. Generate lesson document (same 8-section format as auto mode)

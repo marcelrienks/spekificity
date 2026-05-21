@@ -39,10 +39,10 @@
 ├─ Step 3: Generate lessons document (wiki/vault/lessons/<date>-<feature>-<name>.md)
 ├─ Step 4: Update wiki/vault/decision.md (append new decisions)
 ├─ Step 5: Update wiki/vault/patterns.md (add/refine patterns)
-├─ Step 6: Sync to /memories/repo/architectural-decisions.md
-├─ Step 7: Sync to /memories/repo/patterns-index.md
+├─ Step 6: Sync to vault/repo/architectural-decisions.md
+├─ Step 7: Sync to vault/repo/patterns-index.md
 ├─ Step 8: Refresh code graph via /spek.map (incremental)
-├─ Step 9: Archive /memories/session/current-feature.md
+├─ Step 9: Archive vault/session/current-feature.md
 └─ Step 10: Report completion
 ```
 
@@ -51,7 +51,7 @@
 ## Step Details
 
 ### Step 1: Collect Artifacts
-- Read /memories/session/current-feature.md (feature state)
+- Read vault/session/current-feature.md (feature state)
 - Read spec.md, plan.md, tasks.md (if exist)
 - Collect execution trace (from /spek.implement)
 - Collect code changes (git diff)
@@ -78,9 +78,9 @@
 
 ### Steps 6-7: Sync Repo Memory
 - Compress recent decisions (last 3 features)
-- Write /memories/repo/architectural-decisions.md
+- Write vault/repo/architectural-decisions.md
 - Create patterns index
-- Write /memories/repo/patterns-index.md
+- Write vault/repo/patterns-index.md
 
 ### Step 8: Refresh Code Graph
 - Call `/spek.map` (incremental mode)
@@ -88,9 +88,9 @@
 - Update edges (new calls, dependencies)
 
 ### Step 9: Archive Session Memory
-- Copy /memories/session/current-feature.md to archive/
+- Copy vault/session/current-feature.md to archive/
 - Mark complete
-- Delete from /memories/session/
+- Delete from vault/session/
 
 ### Step 10: Report
 - Display completion summary

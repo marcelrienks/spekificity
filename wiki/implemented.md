@@ -197,12 +197,12 @@ CLI Commands (7)
 └─ tools (NEW)
 
 Memory Layers (3)
-├─ User (~/.memories/)
-├─ Session (.memories/session/)
-└─ Repo (.cel/)
+├─ User (vault/user/)
+├─ Session (vault/session/)
+└─ Repo (vault/repo/ + wiki/)
 
 CodeGraph
-├─ SQLite backend (.cel/codegraph.db)
+├─ SQLite backend (.spek/codegraph.db)
 ├─ Symbol indexing (AST-based)
 ├─ Query engine
 └─ MCP tools interface

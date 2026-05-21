@@ -239,7 +239,7 @@ Total: ~1600 tokens (9x savings vs bad approach)
   3. Read recent lessons
   4. Query code graph
   5. Summarize + compress
-  6. Write to /memories/session/context-loaded.md
+  6. Write to vault/session/context-loaded.md
 ```
 
 ### Enhanced with 3-Layer Rule (C.3.3)
@@ -271,7 +271,7 @@ Total: ~1600 tokens (9x savings vs bad approach)
      - Cost: ~500 tokens
   
   5. Write session context
-     - Store at /memories/session/context-loaded.md
+     - Store at vault/session/context-loaded.md
      - Timestamped
      - Include which layers were queried
      - Cost: ~0 tokens (write only)
@@ -363,7 +363,7 @@ Compression:
   • Savings: 68%
 
 Total Context Load: ~2300 tokens
-Stored at: /memories/session/context-loaded.md
+Stored at: vault/session/context-loaded.md
 ```
 
 ---

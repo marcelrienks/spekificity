@@ -263,7 +263,7 @@ Step 6: Extract patterns → refine vault/patterns.md
 
 ---
 
-## Repo Memory Pattern Index (/memories/repo/patterns-index.md)
+## Repo Memory Pattern Index (vault/repo/patterns-index.md)
 
 ### Purpose
 Compressed, recent-only index of top patterns. Used for quick lookup during planning.
@@ -312,7 +312,7 @@ See vault/patterns.md (permanent archive with all patterns)
 2. Extract patterns used in last 3 features
 3. Count frequency for each pattern
 4. Create summary index
-5. Write to /memories/repo/patterns-index.md
+5. Write to vault/repo/patterns-index.md
 
 **Keep:** Top 10-15 recent patterns
 
@@ -325,7 +325,7 @@ See vault/patterns.md (permanent archive with all patterns)
 **"What patterns exist for [domain]?"**
 ```bash
 # Query repo memory (fast):
-grep "#[domain]" /memories/repo/patterns-index.md
+grep "#[domain]" vault/repo/patterns-index.md
 
 # Query vault (complete):
 grep -l "#[domain]" vault/patterns.md
@@ -334,7 +334,7 @@ grep -l "#[domain]" vault/patterns.md
 **"Which patterns are used most?"**
 ```bash
 # Query repo memory:
-grep "| .*| " /memories/repo/patterns-index.md | sort -t'|' -k2 -rn
+grep "| .*| " vault/repo/patterns-index.md | sort -t'|' -k2 -rn
 ```
 
 **"What was learned from pattern X?"**
@@ -356,18 +356,18 @@ grep "Patterns Applied" vault/lessons/2026-05-18-003-*.md
 ### Write Triggers
 
 **During feature work:**
-- When a pattern is discovered/applied → Note in `/memories/session/current-feature.md`
+- When a pattern is discovered/applied → Note in `vault/session/`
 
 **At feature end (`/spek.conclude` step 4):****
 - Extract patterns from lessons
 - Add new patterns to vault/patterns.md (with "First Used" = current feature)
 - Update existing patterns (increment frequency, update "Last Used")
-- Sync recent patterns to /memories/repo/patterns-index.md
+- Sync recent patterns to vault/repo/patterns-index.md
 
 ### Read Triggers
 
 **Session start (`/spek.context`):**
-- Load pattern index from /memories/repo/patterns-index.md
+- Load pattern index from vault/repo/patterns-index.md
 - Include recent patterns in context briefing
 
 **During planning (`/spek.plan` plan phase):**
@@ -383,7 +383,7 @@ grep "Patterns Applied" vault/lessons/2026-05-18-003-*.md
 **Vault (vault/patterns.md):**
 - Keep all patterns indefinitely (even archived ones, for historical context)
 
-**Repo Memory (/memories/repo/patterns-index.md):**
+**Repo Memory (vault/repo/patterns-index.md):**
 - Sync after each feature
 - Keep top 10-15 recent patterns (used in last 3 features)
 - Prune older patterns to keep file size <5KB
@@ -422,7 +422,7 @@ Recent patterns are injected into `/spek.plan` plan prompts to guide architectur
 
 - [ ] Create vault/patterns.md template
 - [ ] Implement pattern extraction in /spek.conclude
-- [ ] Implement pattern index sync to /memories/repo/
+- [ ] Implement pattern index sync to vault/repo/
 - [ ] Update /spek.context to load recent patterns
 - [ ] Add pattern query patterns to wiki guide
 - [ ] Inject patterns into `/spek.plan` plan prompts

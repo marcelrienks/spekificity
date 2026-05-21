@@ -41,13 +41,13 @@ Layer 1: Vault (Obsidian) — Persistent, Authoritative
 └── vault/lessons/<YYYY-MM-DD>-<feature>-*.md  [one file per completed feature]
 
 Layer 2: Repo Memory (Copilot) — Persistent, Project-Scoped
-├── /memories/repo/codebase-map.md         [high-level codebase structure]
-├── /memories/repo/architectural-decisions.md  [decisions with rationale + impact]
-└── /memories/repo/patterns-index.md       [index of reusable patterns]
+├── vault/repo/codebase-map.md         [high-level codebase structure]
+├── vault/repo/architectural-decisions.md  [decisions with rationale + impact]
+└── vault/repo/patterns-index.md       [index of reusable patterns]
 
 Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
-├── /memories/session/context-loaded.md    [what was loaded at session start]
-├── /memories/session/current-feature.md   [current feature state + progress]
+├── vault/session/context-loaded.md    [what was loaded at session start]
+├── vault/session/current-feature.md   [current feature state + progress]
 ```
 
 ---
@@ -77,7 +77,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 ```
 
 **Note:** Documentation index is independent of CodeGraph, which indexes source code. These are two separate, complementary indices.
-└── /memories/session/scratchpad.md        [notes for current session]
+└── vault/session/scratchpad.md        [notes for current session]
 ```
 
 ---
@@ -142,7 +142,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 ### Type 2: Architectural Decisions (Vault + Repo Memory)
 
 **File (Vault):** `vault/decision.md`  
-**File (Repo Memory):** `/memories/repo/architectural-decisions.md`  
+**File (Repo Memory):** `vault/repo/architectural-decisions.md`  
 **Scope:** Persists across all sessions  
 **Granularity:** One entry per decision (heading per decision)  
 **Ownership:** Written by `/spek.post` when decisions emerge; read by `/spek.context` at session start
@@ -191,7 +191,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 
 **Retention Policy:**
 - Vault: Keep all decisions (mark deprecated, don't delete)
-- Repo Memory: Keep only top N recent decisions (e.g., last 3 features) to keep /memories/repo/ lean
+- Repo Memory: Keep only top N recent decisions (e.g., last 3 features) to keep vault/repo/ lean
 
 ---
 
@@ -280,9 +280,9 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
    - List files, sort by date
    - Read 3-5 most recent files
    - Extract: What We Built, How We Built It, Key Patterns, Key Lessons
-4. Read /memories/repo/ (if exists)
-   - Read /memories/repo/architectural-decisions.md
-   - Read /memories/repo/patterns-index.md
+4. Read vault/repo/ (if exists)
+   - Read vault/repo/architectural-decisions.md
+   - Read vault/repo/patterns-index.md
 
 **Error Handling:**
 - If vault/decision.md missing → Log warning, continue without decisions
@@ -361,7 +361,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 **Duration:** < 1 second | **Tokens:** 0
 
 **Process:**
-1. Create /memories/session/context-loaded.md
+1. Create vault/session/context-loaded.md
    - YAML frontmatter (session_date, timestamp, token usage)
    - Context summary (from Phase 3)
    - Decisions + patterns + code structure + lessons (raw)
@@ -387,7 +387,7 @@ User: /spek.context
   │  ├─ Read vault/decision.md
   │  ├─ Read vault/patterns.md
   │  ├─ Read vault/lessons/ (top 3-5)
-  │  └─ Read /memories/repo/ (if exists)
+  │  └─ Read vault/repo/ (if exists)
   ├─ Phase 2: Code Graph Query (1-2s, 0 tokens)
   │  ├─ Validate graph freshness
   │  ├─ Read vault/graph/config.json
@@ -398,7 +398,7 @@ User: /spek.context
   │  ├─ Call LLM (Claude Haiku)
   │  └─ Compress with caveman mode
   ├─ Phase 4: Session Write (< 1s, 0 tokens)
-  │  ├─ Create /memories/session/context-loaded.md
+  │  ├─ Create vault/session/context-loaded.md
   │  └─ Validate creation
   └─ Output: Context loaded summary (user visible)
      Total: ~10-20 seconds, ~3.5K tokens
@@ -415,7 +415,7 @@ User: /spek.context
 
 **Process:**
 1. First `/spek.context` call → Read all vault files
-2. Store hashes in /memories/session/context-cache.json
+2. Store hashes in vault/session/context-cache.json
 3. On next `/spek.context` call → Check current hashes
 4. If hashes match → Reuse previous read (skip Phase 1)
 5. If hashes differ → Re-read changed files
@@ -442,7 +442,7 @@ User: /spek.context
 
 ## Session Memory Files
 
-### /memories/session/context-loaded.md
+### vault/session/context-loaded.md
 
 **Purpose:** Summary of what was loaded into context at session start (decisions, patterns, lessons, code structure).
 
@@ -518,11 +518,11 @@ cache_hit: boolean
 
 **Retention Policy:**
 - Delete at session end (ephemeral)
-- Or: Compress and archive to /memories/session/archive/ if valuable
+- Or: Compress and archive to vault/session/archive/ if valuable
 
 ---
 
-### /memories/session/current-feature.md
+### vault/session/current-feature.md
 
 **Purpose:** Progress tracking for the feature currently being worked on (spans multiple sessions if feature is long).
 
@@ -619,7 +619,7 @@ completion: 0
 
 **Retention Policy:**
 - Keep during feature work (spans multiple sessions)
-- Archive to /memories/session/archive/ after feature completes
+- Archive to vault/session/archive/ after feature completes
 - Delete after N days (default: 30 days after feature ends)
 
 ---
@@ -668,7 +668,7 @@ Timeline: Feature End
 
 ```bash
 # Query repo memory (fast):
-grep -A5 "^| .* | active |" /memories/repo/architectural-decisions.md
+grep -A5 "^| .* | active |" vault/repo/architectural-decisions.md
 
 # Or query vault (complete):
 grep -B2 "status.*active" vault/decision.md
@@ -681,7 +681,7 @@ grep -B2 "status.*active" vault/decision.md
 grep -l "[topic-tag]" vault/patterns.md
 
 # Or query repo memory (recent only):
-grep "[topic]" /memories/repo/patterns-index.md
+grep "[topic]" vault/repo/patterns-index.md
 ```
 
 ### "What was learned from similar features?"

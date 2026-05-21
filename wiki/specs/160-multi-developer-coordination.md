@@ -21,17 +21,17 @@
 1. /spek.prepare
    ├─ Git: create feature branch (spek-<feature>)
    ├─ Vault: load vault context (decisions, patterns)
-   └─ Memory: create /memories/session/current-feature.md
+   └─ Memory: create vault/session/
 
 2. /spek.plan
    ├─ Feature work (specify → plan → implement)
-   └─ Memory: update /memories/session/current-feature.md
+   └─ Memory: update vault/session/
 
 3. /spek.post
    ├─ Lessons: generate vault/lessons/<date>-<feature>.md
    ├─ Vault: append decisions + patterns to vault/decision.md + vault/patterns.md
    ├─ Git: commit "Feature: <name>" to feature branch
-   └─ Memory: archive /memories/session/ → vault/sessions/
+   └─ Memory: archive vault/session/ → vault/sessions/
 
 4. Git: merge feature branch → main (or squash)
 ```
@@ -67,13 +67,13 @@ Feature Start (Developer A):
    ├─ Git: create feature branch (spek-<feature>-<dev-initials>)
    ├─ Git: pull latest main (ensure fresh vault context)
    ├─ Vault: load vault context (from main)
-   ├─ Memory: create /memories/session/current-feature-a.md
+   ├─ Memory: create vault/session/current-feature-a.md
    └─ Notification: Post feature start in vault/coordination/checkins.md
 
 Feature Work (Developer A):
 2. /spek.plan → /spek.implement
    ├─ Work on feature branch (isolated from other devs)
-   ├─ Memory: update /memories/session/current-feature-a.md
+   ├─ Memory: update vault/session/current-feature-a.md
    └─ Vault: NO writes during feature (avoid conflicts)
 
 Feature End (Developer A):
@@ -94,7 +94,7 @@ Feature Review + Merge (Team Lead or Async):
    - Vault: append new decisions/patterns (with conflict annotations if any)
 
 Feature Archive:
-5. /memories/session/current-feature-a.md archived → vault/sessions/<date>-<feature>-a.md
+5. vault/session/current-feature-a.md archived → vault/sessions/<date>-<feature>-a.md
 ```
 
 **State Per Developer:**
@@ -104,13 +104,13 @@ Repo (main):
 ├─ vault/patterns.md (shared, grows per feature)
 ├─ vault/lessons/<feature>.md (per feature, merged after approval)
 ├─ vault/coordination/checkins.md (async team log)
-└─ /memories/repo/ (compressed summaries, updated post-feature)
+└─ vault/repo/ (compressed summaries, updated post-feature)
 
 Feature Branch (spek-<feature>-<initials>):
 ├─ Code changes (feature implementation)
 ├─ vault/lessons/<date>-<feature>-<initials>.md (generated during /spek.post)
 ├─ vault-update-draft.md (proposed decisions + patterns)
-└─ /memories/session/current-feature-<initials>.md (local, deleted post-merge)
+└─ vault/session/current-feature-<initials>.md (local, deleted post-merge)
 ```
 
 ---
@@ -372,7 +372,7 @@ Examples:
 git branch -d spek-<feature>-<initials>
 git push origin --delete spek-<feature>-<initials>
 
-# Vault: Move /memories/session/ → vault/sessions/<date>-<feature>.md
+# Vault: Move vault/session/ → vault/sessions/<date>-<feature>.md
 # (Happens during /spek.post; confirmed during merge review)
 ```
 
@@ -610,7 +610,7 @@ Check: spek check-conflicts main..
     ↓
 Merged to main + vault updated
     ↓
-/memories/session/ → vault/sessions/
+vault/session/ → vault/sessions/
 ```
 
 ### 9.2 Team Success Criteria
@@ -704,7 +704,7 @@ Step 4: Vault Update Strategy (CHANGED)
     → Let merge process handle conflicts + annotations
 
 Step 9: Archive + Notify (NEW)
-  → /memories/session/ → vault/sessions/
+  → vault/session/ → vault/sessions/
   → Post to vault/coordination/checkins.md "Feature Complete: ..."
   → Create git PR (if team mode) or direct merge (if solo)
 ```

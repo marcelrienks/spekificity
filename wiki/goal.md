@@ -75,9 +75,9 @@ Spekificity is a **specification-driven agent development framework** built arou
   - Architecture decisions (rationale)
 
 - **Session Memory:** Three-layer architecture persists context
-  - **User memory** (`/memories/`) — Permanent across all projects
-  - **Session memory** (`/memories/session/`) — Scoped to current conversation
-  - **Repo memory** (`/memories/repo/`) — Scoped to this project
+  - **User memory** (`vault/user/`) — Persistent user preferences in vault
+  - **Session memory** (`vault/session/`) — Scoped to current session
+  - **Repo memory** (`vault/repo/`) — Scoped to this project
 
 - **CodeGraph Auto-Sync:** Never stale
   - File watches implemented
@@ -239,23 +239,37 @@ project/
             └─ [What worked, what didn't, why, for future reference]
 ```
 
-### In Session Memory
+### In Obsidian Vault (All Persistent Memory)
 
 ```
-.memories/
+vault/
+├─ user/
+│  └─ preferences.md
+│     └─ User preferences, projects, tools
+│
 ├─ session/
-│  ├─ current-feature.md (archived after completion)
+│  ├─ [feature-name]-state.yaml
 │  │  └─ Feature state, progress, decisions made
 │  │
-│  └─ context-loaded.md
-│     └─ Vault state, graph status at session start
+│  └─ decisions.yaml
+│     └─ Current session decisions
 │
-└─ repo/
-   ├─ architectural-decisions.md (synced)
-   │  └─ Compressed version for reuse across projects
-   │
-   └─ patterns-index.md (synced)
-      └─ Reusable patterns indexed by feature/tool
+├─ repo/
+│  ├─ intention.md
+│  │  └─ Project vision, tenets, constraints
+│  │
+│  ├─ patterns.md
+│  │  └─ Reusable patterns indexed by feature/tool
+│  │
+│  ├─ decision.md
+│  │  └─ Architectural decisions recorded
+│  │
+│  └─ architectural-decisions.md
+│     └─ Compressed version for reuse across projects
+│
+└─ lessons/
+   └─ [YYYY-MM-DD-feature-name-topic.md]
+      └─ Lessons learned for future reference
 ```
 
 ### In CodeGraph
@@ -497,8 +511,8 @@ Step 4-5: Update Vault
 └─ Feature marked as COMPLETED
 
 Step 6-7: Sync Repo Memory
-├─ /memories/repo/architectural-decisions.md (updated)
-├─ /memories/repo/patterns-index.md (updated)
+├─ vault/repo/architectural-decisions.md (updated)
+├─ vault/repo/patterns-index.md (updated)
 └─ Ready for next project to use
 
 Step 8: Refresh CodeGraph
@@ -507,7 +521,7 @@ Step 8: Refresh CodeGraph
 └─ Graph now includes login handler, tests
 
 Step 9: Archive Feature State
-├─ Move /memories/session/current-feature.md to wiki/vault/archive/
+├─ Move vault/session/current-feature.md to wiki/vault/archive/
 ├─ Clean up session temporary files
 └─ Ready for next feature
 

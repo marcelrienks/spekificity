@@ -326,7 +326,7 @@ System action:
 
 ### Tracking Overrides
 
-Store in `/memories/session/current-feature.md`:
+Store in `vault/session/`:
 
 ```markdown
 ## Validation Rule Overrides

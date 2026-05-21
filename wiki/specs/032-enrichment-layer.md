@@ -63,7 +63,7 @@ Specifies what to build, guided by project decisions and patterns.
 ### Pre-Execution: Context Injection
 
 **Process:**
-1. Load decisions + patterns from /memories/session/context-loaded.md
+1. Load decisions + patterns from vault/session/
 2. Format as prompt injection:
    ```
    IMPORTANT: Adhere to these project decisions:
@@ -120,7 +120,7 @@ Specifies what to build, guided by project decisions and patterns.
 4. Spec doesn't contradict recent decisions (warn if it does)
 
 **Update Memory:**
-- Mark /memories/session/current-feature.md phase as "specifying"
+- Mark vault/session/ phase as "specifying"
 - Set completion to 25%
 - Add session log entry: "[SPECIFIED] spec.md created"
 
@@ -206,7 +206,7 @@ Creates technical implementation plan, guided by spec, decisions, patterns, and 
 5. Plan doesn't duplicate existing code (warn if it does)
 
 **Update Memory:**
-- Mark /memories/session/current-feature.md phase as "planning"
+- Mark vault/session/ phase as "planning"
 - Set completion to 50%
 - Log: "[PLANNED] plan.md created"
 
@@ -281,7 +281,7 @@ Executes tasks and collects artifacts for post-processing.
 - Error summary: what went wrong?
 
 **Update Memory:**
-- Mark /memories/session/current-feature.md phase as "implementing"
+- Mark vault/session/ phase as "implementing"
 - Set completion % based on task success
 - Log session entry: "[IMPLEMENTED] X/Y tasks complete"
 - Note blockers (failed tasks)
@@ -335,7 +335,7 @@ Executes tasks and collects artifacts for post-processing.
 
 ## Integration with Context Layer
 
-Each enrichment phase reads from `/memories/session/context-loaded.md` (created by `/spek.context` at session start). This ensures:
+Each enrichment phase reads from `vault/session/` (created by `/spek.context` at session start). This ensures:
 
 - **Once per session:** Context is loaded once, cached for all phases
 - **Consistent:** All phases use the same context

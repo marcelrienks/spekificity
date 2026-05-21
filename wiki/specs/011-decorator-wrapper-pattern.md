@@ -119,7 +119,7 @@ def spek_enriched_command(command_name, *args, **kwargs):
 5. Report status to user
 
 **Output:**
-- Updated /memories/session/current-feature.md
+- Updated vault/session/
 - User-visible completion report
 
 **Error Handling:**

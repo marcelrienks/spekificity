@@ -131,8 +131,8 @@ tests/
 
 **Fixtures:**
 - `mock_vault_dir`: Temporary Obsidian vault (3 docs + 2 patterns)
-- `mock_repo_memory`: Temporary /memories/repo/ files
-- `mock_session_memory`: Temporary /memories/session/ files
+- `mock_repo_memory`: Temporary vault/repo/ files
+- `mock_session_memory`: Temporary vault/session/ files
 
 **Test Cases:**
 
@@ -141,10 +141,10 @@ tests/
 | U-M1 | Write vault decision | Empty vault | decision.md created w/ correct format |
 | U-M2 | Read vault decision | Vault w/ 2 decisions | returns both, parsed correctly |
 | U-M3 | Write vault lesson | Feature complete | lessons/<date>-<id>-<name>.md created |
-| U-M4 | Read repo memory | /memories/repo/ w/ 3 files | returns all 3 compressed summaries |
+| U-M4 | Read repo memory | vault/repo/ w/ 3 files | returns all 3 compressed summaries |
 | U-M5 | Write repo memory | New compressed summary | overwrites old if exists |
-| U-M6 | Read session memory | /memories/session/ w/ 2 files | returns session-scoped files only |
-| U-M7 | Clear session on exit | End of session | /memories/session/ files deleted |
+| U-M6 | Read session memory | vault/session/ w/ 2 files | returns session-scoped files only |
+| U-M7 | Clear session on exit | End of session | vault/session/ files deleted |
 | U-M8 | Conflict: vault duplicate pattern | Try write duplicate pattern name | raise NameConflictError w/ suggestion |
 | U-M9 | Conflict: repo memory overwrite | Try overwrite different summary | prompt for overwrite vs. keep old |
 | U-M10 | Token estimate vault read | Read 100-item decision.md | tokens ~= 300 (3x for JSON parse overhead) |

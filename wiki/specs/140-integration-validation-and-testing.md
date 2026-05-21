@@ -39,7 +39,7 @@ This spec defines acceptance criteria, validation strategies, and testing approa
 | Atomicity | Each spec is independent and non-duplicating | ✓ VALIDATED (Phase 1 consolidation complete) |
 | Foundation specs critical | error-handling-and-recovery.md exists and all others reference it | ✓ DONE (Phase 3.2 complete) |
 
-**Validation:** Manual audit of all specs (completed, documented in `.cel/spec-audit.md`)
+**Validation:** Manual audit of all specs (completed, documented in `.spek/spec-audit.md`)
 
 **Status:** ✓ PHASE 0 COMPLETE (pending final consolidation of 5 remaining specs)
 
@@ -161,7 +161,7 @@ pytest tests/performance/test_enrichment_overhead.py
 |-----------|-----------|------------------|
 | CLI usability | All commands work as documented | `spek --help` accurate, all flags functional |
 | Workflow sequencing | Feature workflow forced in correct order | Cannot run `specify` before `prepare` |
-| Feature state tracking | Feature progress persisted | `/memories/session/current-feature.md` created + updated |
+| Feature state tracking | Feature progress persisted | `vault/session/` created + updated |
 | Exit codes | Commands return correct exit codes | 0=success, 1=error, 2=validation, 3=user action |
 | Error messages | All errors actionable | Every error includes "Fix:" section |
 | Integration with SpecKit | CLI commands call SpecKit transparently | User doesn't see SpecKit abstraction |
@@ -205,7 +205,7 @@ pytest tests/error_handling/test_error_messages.py
 - Lesson document format and storage
 - Architectural decisions storage and sync
 - Patterns library with reuse indexing
-- Repo memory caching (`/memories/repo/`)
+- Repo memory caching (`vault/repo/`)
 
 **Acceptance Criteria:**
 
@@ -215,7 +215,7 @@ pytest tests/error_handling/test_error_messages.py
 | Lesson persistence | Lessons stored and retrievable | Lessons readable 1+ days later, searchable |
 | Decision archival | Architectural decisions captured + indexed | Future features can reference past decisions |
 | Pattern reuse | Patterns indexed and recommended | New specs can reference established patterns |
-| Repo memory sync | Compressed cache synced with vault | `/memories/repo/` stays <5 decisions + patterns |
+| Repo memory sync | Compressed cache synced with vault | `vault/repo/` stays <5 decisions + patterns |
 | Graph integration | Code graph nodes stored in vault | `wiki/vault/graph/nodes.jsonl` contains ≥100 symbols |
 | Cross-session context | Context available across sessions | Start new session, old context accessible |
 
@@ -353,7 +353,7 @@ spek post
 - [ ] Feature state progresses: IDLE → PREPARED → SPECIFIED → PLANNED → TASKED → IMPLEMENTED → ARCHIVED
 - [ ] Lessons generated and stored in vault
 - [ ] Context available for next feature (richer than first feature)
-- [ ] All errors logged to `.cel/error-log.md`
+- [ ] All errors logged to `.spek/error-log.md`
 
 ---
 
@@ -366,7 +366,7 @@ spek post
 | `/spek.conclude` | <30s | Time full execution | <30s wall time |
 | `/spek.map` | <60s | Time graph refresh | <60s wall time |
 | Context size | <10K tokens | Measure loaded context | <10K tokens |
-| Session memory | <100MB | Monitor /memories/session/ | <100MB disk |
+| Session memory | <100MB | Monitor vault/session/ | <100MB disk |
 | Vault size | <50MB | Monitor vault/ directory | <50MB disk (after post cleanup) |
 | Graph load | <5s | Time nodes.jsonl parsing | <5s |
 | Graph query | <100ms | Time symbol lookups | <100ms per query |
@@ -374,7 +374,7 @@ spek post
 **Monitoring:**
 - Token usage logged in feature state
 - Latency measured per operation (in execution trace)
-- Resource usage logged to `.cel/metrics.md`
+- Resource usage logged to `.spek/metrics.md`
 
 ---
 
@@ -501,7 +501,7 @@ spek post
   - [ ] Graph incremental sync faster than full rebuild
 
 - [ ] **Error handling**
-  - [ ] All errors logged to `.cel/error-log.md`
+- [ ] All errors logged to `.spek/error-log.md`
   - [ ] All errors have actionable guidance
   - [ ] Transient errors retry with backoff
   - [ ] Fatal errors fail gracefully with guidance
@@ -567,4 +567,4 @@ This spec defines **acceptance criteria and testing approach** for Spekificity v
 5. Document all known limitations
 6. Get sign-off on release criteria
 
-For implementation progress, see `.cel/release-progress.md`.
+For implementation progress, see `.spek/release-progress.md`.

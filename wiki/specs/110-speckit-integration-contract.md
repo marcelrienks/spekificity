@@ -83,10 +83,10 @@ implement
 2. Read repo memory (compressed context)
 3. Query code graph (vault/graph/nodes.jsonl)
 4. Summarize in caveman format
-5. Write to /memories/session/context-loaded.md
+5. Write to vault/session/
 
 **Output:**
-- /memories/session/context-loaded.md (3-5K tokens)
+- vault/session/ (3-5K tokens)
 - Context loaded into agent context
 - User-visible summary of relevant lessons/decisions/patterns
 
@@ -96,7 +96,7 @@ implement
 
 **Dependencies:**
 - Vault (vault/decision.md, vault/patterns.md, vault/lessons/)
-- Repo memory (/memories/repo/*)
+- Repo memory (vault/repo/*)
 - Code graph (vault/graph/nodes.jsonl)
 
 ---
@@ -119,7 +119,7 @@ implement
 5. Report ready state
 
 **Output:**
-- /memories/session/current-feature.md (created)
+- vault/session/ (created)
 - Confirmed working directory state
 - Verified code graph freshness
 - User-visible readiness report
@@ -133,7 +133,7 @@ implement
 ```
 /spek.plan
     └── specify phase
-├── Load current context (/memories/session/context-loaded.md)
+├── Load current context (vault/session/)
 ├── Inject context into speckit prompt (decisions, patterns, lessons)
 ├── Run /speckit.specify
 │   ├── Read feature description
@@ -141,7 +141,7 @@ implement
 │   ├── Generate spec.md (claude models configured in .specify/)
 │   └── Output: spec.md
 ├── Validate output consistency
-└── Update /memories/session/current-feature.md
+└── Update vault/session/
 ```
 
 **Responsibility Division:**
@@ -154,7 +154,7 @@ implement
 
 **Output:**
 - spec.md (created or updated)
-- /memories/session/current-feature.md (updated)
+- vault/session/ (updated)
 
 **Error Handling:**
 - If spec is empty or malformed → Retry with clarification
@@ -170,7 +170,7 @@ implement
 ```
 /spek.plan
     └── plan phase
-├── Load current context (/memories/session/context-loaded.md)
+├── Load current context (vault/session/)
 ├── Read spec.md (validate freshness)
 ├── Inject context into speckit prompt
 │   ├── Recent decisions (vault/decision.md)
@@ -182,7 +182,7 @@ implement
 │   ├── Generate plan.md (with design, architecture, key components)
 │   └── Output: plan.md
 ├── Validate output (design clarity, task granularity, feasibility)
-└── Update /memories/session/current-feature.md
+└── Update vault/session/
 ```
 
 **Responsibility Division:**
@@ -195,7 +195,7 @@ implement
 
 **Output:**
 - plan.md (created or updated)
-- /memories/session/current-feature.md (updated)
+- vault/session/ (updated)
 
 **Error Handling:**
 - If plan is too vague → Suggest more detailed design
@@ -253,7 +253,7 @@ implement
 
 ```
 /spek.implement
-├── Load current context (/memories/session/context-loaded.md)
+├── Load current context (vault/session/)
 ├── Read tasks.md (validate completeness)
 ├── Run /speckit.implement
 │   ├── Execute all tasks (task 1, 2, 3, ...)
@@ -264,7 +264,7 @@ implement
 │   ├── execution trace
 │   ├── errors/warnings
 │   └── completion status
-└── Update /memories/session/current-feature.md
+└── Update vault/session/
 ```
 
 **Responsibility Division:**
@@ -278,7 +278,7 @@ implement
 **Output:**
 - Code changes (files modified in workspace)
 - Execution trace (log of what ran, what succeeded/failed)
-- /memories/session/current-feature.md (marked as completed or partially completed)
+- vault/session/ (marked as completed or partially completed)
 
 **Error Handling:**
 - If task fails → Log error, continue (partial completion is valid)
@@ -314,8 +314,8 @@ implement
 - vault/lessons/<date>-<feature>-<name>.md (archived)
 - vault/decision.md (updated)
 - vault/patterns.md (updated)
-- /memories/repo/architectural-decisions.md (synced)
-- /memories/repo/patterns-index.md (synced)
+- vault/repo/architectural-decisions.md (synced)
+- vault/repo/patterns-index.md (synced)
 - Code graph updated (vault/graph/nodes.jsonl)
 
 **Dependencies:**
@@ -413,10 +413,10 @@ Spekificity uses an orchestration pattern for `/spek.plan` and a targeted execut
 ```
 User invokes: /spek.context
 ├── Reads vault/decision.md, vault/patterns.md, vault/lessons/ (last 3-5)
-├── Reads /memories/repo/architectural-decisions.md, /memories/repo/patterns-index.md
+├── Reads vault/repo/architectural-decisions.md, vault/repo/patterns-index.md
 ├── Queries vault/graph/nodes.jsonl
 ├── Compresses with caveman (lite)
-└── Writes /memories/session/context-loaded.md
+└── Writes vault/session/
 ```
 
 ### Feature Start
@@ -426,7 +426,7 @@ User invokes: /spek.prepare
 ├── Activates caveman mode
 ├── Calls /spek.context (if not already done)
 ├── Verifies code graph freshness
-├── Creates /memories/session/current-feature.md
+├── Creates vault/session/
 └── Reports ready state
 ```
 
@@ -434,14 +434,14 @@ User invokes: /spek.prepare
 ```
 User invokes: /spek.plan [feature description]
 ├── Enter specify phase
-├── Reads /memories/session/context-loaded.md
+├── Reads vault/session/
 ├── Injects context into speckit prompt
 ├── Calls /speckit.specify
 │   ├── Reads constitution.md (if exists)
 │   ├── Calls claude-model (via .specify/config)
 │   └── Generates spec.md
 ├── Validates spec consistency
-├── Updates /memories/session/current-feature.md
+├── Updates vault/session/
 └── Reports spec created
 ```
 
@@ -449,7 +449,7 @@ User invokes: /spek.plan [feature description]
 ```
 User remains inside /spek.plan
 ├── Enter plan phase
-├── Reads /memories/session/context-loaded.md
+├── Reads vault/session/
 ├── Reads spec.md (validates recency)
 ├── Queries vault/graph/nodes.jsonl (affected code)
 ├── Injects context + code graph into speckit prompt
@@ -458,7 +458,7 @@ User remains inside /spek.plan
 │   ├── Calls claude-model (via .specify/config)
 │   └── Generates plan.md
 ├── Validates plan vs. recent decisions
-├── Updates /memories/session/current-feature.md
+├── Updates vault/session/
 └── Reports plan created
 ```
 
@@ -477,14 +477,14 @@ User invokes: /speckit.tasks
 ### Implementation
 ```
 User invokes: /spek.implement
-├── Reads /memories/session/context-loaded.md
+├── Reads vault/session/
 ├── Reads tasks.md (validates completeness)
 ├── Calls /speckit.implement
 │   ├── Executes each task (sequentially or parallel)
 │   ├── Generates code changes
 │   └── Captures execution trace
 ├── Collects artifacts (changes, trace, errors)
-├── Updates /memories/session/current-feature.md (mark as done/partial)
+├── Updates vault/session/ (mark as done/partial)
 └── Reports implementation status
 ```
 
@@ -494,17 +494,17 @@ User invokes: /spek.conclude
 ├── Collects all artifacts
 │   ├── spec.md, plan.md, tasks.md
 │   ├── execution trace, code changes
-│   └── /memories/session/current-feature.md
+│   └── vault/session/
 ├── Activates caveman mode (full or ultra)
 ├── Generates vault/lessons/<date>-<feature>-<name>.md
 ├── Updates vault
 │   ├── Appends decisions → vault/decision.md
 │   ├── Refines patterns → vault/patterns.md
 ├── Syncs repo memory
-│   ├── Compress recent decisions → /memories/repo/architectural-decisions.md
-│   ├── Update patterns index → /memories/repo/patterns-index.md
+│   ├── Compress recent decisions → vault/repo/architectural-decisions.md
+│   ├── Update patterns index → vault/repo/patterns-index.md
 ├── Runs /spek.map (incremental code graph sync)
-├── Archives /memories/session/current-feature.md
+├── Archives vault/session/
 └── Reports feature complete
 ```
 

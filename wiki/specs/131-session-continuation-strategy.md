@@ -21,7 +21,7 @@
 Session Start (Day 1, 14:00)
   ├─ /spek.context (load vault context)
   ├─ /spek.prepare (create feature branch)
-  └─ /memories/session/current-feature.md (create session state)
+  └─ vault/session/ (create session state)
 
 Feature Work (Day 1, 14:00-15:30)
   ├─ /spek.plan (specify → plan)
@@ -30,7 +30,7 @@ Feature Work (Day 1, 14:00-15:30)
   └─ Feature COMPLETE
 
 Session End (Day 1, 15:30)
-  ├─ Archive: /memories/session/ → vault/
+  ├─ Archive: vault/session/ → vault/
   ├─ Git: merge feature branch to main
   └─ Session finished
 
@@ -67,11 +67,11 @@ Session End (Day 2, 10:30)
 
 ---
 
-## 2. State Preservation: /memories/session/
+## 2. State Preservation: vault/session/
 
 ### 2.1 Session State File: `current-feature.md`
 
-**Location:** `/memories/session/current-feature.md` (created by `/spek.prepare`)
+**Location:** `vault/session/` (created by `/spek.prepare`)
 
 **Contents:**
 
@@ -176,7 +176,7 @@ Checkpoint created: 2026-05-21T10:00:00Z
 **When user runs `/spek.prepare --resume` or `/spek.prepare` (no feature name):**
 
 ```
-Step 1: Check for existing /memories/session/current-feature.md
+Step 1: Check for existing vault/session/
   ├─ Not found: New feature workflow (normal prepare)
   ├─ Found: Resume workflow (steps 2-5 below)
 
@@ -191,7 +191,7 @@ Step 3a: Valid State → Resume Detected
   │  ├─ Reload vault decisions + patterns from disk
   │  ├─ Load spec + plan from vault/specs/ and vault/plans/
   │  ├─ Query code graph for current code state (no cache; fresh)
-  │  └─ Update /memories/session/current-feature.md with "resumed" timestamp
+  │  └─ Update vault/session/ with "resumed" timestamp
   ├─ Report: "Feature resumed: add-logging (phase: implementing, task 2 of 3)"
   └─ Ready: Return to caller for next step (/spek.implement --resume)
 
@@ -246,7 +246,7 @@ Task 2: Add logging calls (INTERRUPTED)
 ├─ Interrupted: Ctrl+C at 60% through task
 └─ Checkpoint: task_2_status = in_progress, tokens_used = 50, last_line = "# TODO: finish main.py"
 
-Session Interrupted → state saved to /memories/session/current-feature.md
+Session Interrupted → state saved to vault/session/
 ```
 
 ### 4.2 Resume From Last Task
@@ -255,7 +255,7 @@ Session Interrupted → state saved to /memories/session/current-feature.md
 
 ```
 Step 1: Load Feature State
-  ├─ Parse /memories/session/current-feature.md
+  ├─ Parse vault/session/
   ├─ Extract: last_completed_task = 1, current_task = 2 (in_progress)
   └─ Status: Ready to resume task 2
 
@@ -430,7 +430,7 @@ Option 1: Continue Gracefully (Default)
 Option 2: Save & Resume (User Initiated)
   ├─ At any phase, user can press Ctrl+C
   ├─ State saved: phase, last_completed_task, all artifacts
-  ├─ Session closed: /memories/session/ ready for resume next day
+  ├─ Session closed: vault/session/ ready for resume next day
   ├─ User resumes: /spek.prepare --resume (next session)
   └─ Feature completes second session (split across days)
 
@@ -458,7 +458,7 @@ Step 1: Catch Interrupt Signal
   └─ Stop execution (no partial writes)
 
 Step 2: Save Checkpoint
-  ├─ Update /memories/session/current-feature.md:
+  ├─ Update vault/session/:
   │  ├─ last-checkpoint = NOW
   │  ├─ phase = current phase (specify|plan|implement|post)
   │  ├─ progress = best estimate based on completed steps
@@ -507,7 +507,7 @@ Step 2: Attempt Recovery
   └─ Status: Failure confirmed
 
 Step 3: Save Error State
-  ├─ Update /memories/session/current-feature.md:
+  ├─ Update vault/session/:
   │  ├─ task_2_error = "Code conflict detected; ...",
   │  ├─ task_2_retry_count = 2,
   │  └─ phase = "error_recovery"
@@ -538,7 +538,7 @@ Step 5: Continue Based on User Choice
 ```
 Validation Checklist (/spek.prepare --resume):
 
-✓ /memories/session/current-feature.md exists?
+✓ vault/session/ exists?
   └─ No: New feature workflow
 
 ✓ YAML frontmatter valid?
@@ -641,7 +641,7 @@ created-at: 2026-05-21T10:30:00Z
 ✅ State file updated to phase="completing" + progress=90%  
 ✅ Lessons generated (with multi-session metadata if applicable)  
 ✅ Vault updated (decisions + patterns)  
-✅ /memories/session/ prepared for archival  
+✅ vault/session/ prepared for archival  
 ✅ Feature branch ready to merge  
 ✅ User confirmed feature is ready for /spek.conclude  
 
@@ -649,7 +649,7 @@ created-at: 2026-05-21T10:30:00Z
 
 **For resume to work reliably:**
 
-✅ /memories/session/current-feature.md created during /spek.prepare  
+✅ vault/session/ created during /spek.prepare  
 ✅ State file updated after each phase + each task  
 ✅ Checkpoint saved on interrupt (Ctrl+C)  
 ✅ State validation passes pre-resume  
@@ -748,7 +748,7 @@ resume:
 /spek.prepare [--resume] [--reset] [feature-name]
 
 Changes from prior spec:
-  ├─ New: Auto-detect existing feature (if no args + /memories/session/ exists)
+  ├─ New: Auto-detect existing feature (if no args + vault/session/ exists)
   ├─ New: --resume flag (explicit resume request)
   ├─ New: --reset flag (dangerous: clear state, start fresh)
   ├─ New: Resume validation (check branch, artifacts, state)

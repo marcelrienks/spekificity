@@ -48,7 +48,7 @@ spek tools --list
 This automatically:
 - ✅ Installs Spekificity CLI
 - ✅ Installs all dependencies (SpecKit, CodeGraph, etc.)
-- ✅ Creates project directories (`.cel/`, `.memories/`, `wiki/`)
+- ✅ Creates project directories (`.spek/`, `vault/`, `wiki/`)
 - ✅ Initializes CodeGraph database
 - ✅ Runs `specify init .` to initialize SpecKit
 

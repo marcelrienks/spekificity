@@ -249,7 +249,7 @@ status: "active"
 
 1. **Frontmatter Generation** (automatically in `/spek.post` Step 3)
    ```
-   1. Extract feature name from `/memories/session/current-feature.md`
+   1. Extract feature name from `vault/session/`
    2. Generate title: "Lessons from [feature]"
    3. Populate frontmatter:
       - type: "lesson"

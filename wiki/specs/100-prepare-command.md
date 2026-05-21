@@ -21,7 +21,7 @@
 ├─ Step 3: Check code graph freshness (optional, unless forced)
 ├─ Step 4: Refresh code graph (conditional, if stale)
 ├─ Step 5: Load context via /spek.context
-├─ Step 6: Create feature state tracker (/memories/session/current-feature.md)
+├─ Step 6: Create feature state tracker (vault/session/)
 └─ Step 7: Report ready status
 ```
 
@@ -55,10 +55,10 @@
 ### Step 5: Load Context
 - If `--skip-context`: reuse existing
 - Else call `/spek.context` (load vault + code graph + summarize)
-- **Output:** /memories/session/context-loaded.md
+- **Output:** vault/session/
 
 ### Step 6: Create Feature State
-- Create /memories/session/current-feature.md
+- Create vault/session/
 - Write: feature name, status=initialized, phase=prepared
 - Add first session log entry
 - **Output:** Feature state file

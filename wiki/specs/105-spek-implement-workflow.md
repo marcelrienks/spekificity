@@ -35,7 +35,7 @@
 ### Step 1: Validate Feature State & Artifacts
 
 **Checks:**
-- Feature state file exists (`/memories/session/current-feature.md`)
+- Feature state file exists (`vault/session/`)
 - Current phase is `implementing` (or permit transition from `planning`)
 - `specs/<feature>/spec.md` exists
 - `specs/<feature>/plan.md` exists
@@ -50,8 +50,8 @@
 ### Step 2: Load Enrichment Context
 
 **Load from vault:**
-- Recent decisions (top 5, active only) → `/memories/session/context-loaded.md`
-- Recent patterns (top 3, active only) → `/memories/session/context-loaded.md`
+- Recent decisions (top 5, active only) → `vault/session/`
+- Recent patterns (top 3, active only) → `vault/session/`
 
 **Load from code graph:**
 - Recently modified files (git log --oneline -20, extract file paths)
@@ -158,7 +158,7 @@ Execution Trace:
 
 **Storage:**
 - Write to `.spekificity/artifacts/execution-trace.json`
-- Also write human-readable summary to `/memories/session/current-feature.md` (append section)
+- Also write human-readable summary to `vault/session/` (append section)
 
 **Git State:**
 - All code changes staged (git add) but NOT committed
@@ -169,7 +169,7 @@ Execution Trace:
 
 ### Step 5: Update Feature State + Report
 
-**Update `/memories/session/current-feature.md`:**
+**Update `vault/session/`:**
 - Phase: `implementing` → `completing`
 - Completion %: `75%` → `90%`
 - Append session log entry: "Implement: N/M tasks complete, M failed"

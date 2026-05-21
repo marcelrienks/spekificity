@@ -109,7 +109,7 @@ your-project/
 │   ├── patterns.md           ← reusable patterns discovered
 │   ├── decision.md           ← architectural decisions and rationale
 │   └── intention.md          ← project vision and guiding principles
-├── .memories/                ← Session and repo-scoped memory (Copilot layer)
+├── vault/                  ← Persistent memory (Obsidian vault: user, session, repo, lessons)
 └── wiki/                     ← Documentation specs and guides
 ```
 

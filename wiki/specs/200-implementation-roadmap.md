@@ -87,8 +87,8 @@ spekificity/
 │   ├── unit/
 │   ├── integration/
 │   └── e2e/
-├── .cel/
-│   └── context.md
+├── .spek/
+│   └── codegraph.db
 ├── wiki/
 └── pyproject.toml
 ```
@@ -166,7 +166,7 @@ spekificity/
 - Implement CodeGraph freshness check
 - Implement conditional CodeGraph refresh (async call placeholder)
 - Implement context loading via `/spek.context`
-- Implement feature state tracking (create `.cel/current-feature.md`)
+- Implement feature state tracking (create `.spek/current-feature.md`)
 - Report ready status
 
 **Success Criteria:**
@@ -181,9 +181,9 @@ spekificity/
 **Deliverable:** 3-layer context loading (user, session, repo)
 
 **Tasks:**
-- Load user memory from `/memories/` (if exists)
-- Load session memory from `/memories/session/` (if exists)
-- Load repo memory from `/memories/repo/` + `.cel/context.md`
+- Load user memory from `vault/user/` (if exists)
+- Load session memory from `vault/session/` (if exists)
+- Load repo memory from `vault/repo/` + `vault/` + `wiki/`
 - Load vault specs, decisions, lessons from `wiki/`
 - Construct 3-layer context object (user → session → repo, precedence)
 - Cache context for session (avoid re-reading)
@@ -265,7 +265,7 @@ spekificity/
 - Commit lessons to vault (`wiki/lessons/`)
 - Update CodeGraph (final refresh)
 - Merge feature branch to main (or prompt user)
-- Archive feature state to repo memory (`.cel/features/[feature-name]/`)
+- Archive feature state to repo memory (`.spek/features/[feature-name]/`)
 - Sync vault to origin (Obsidian git plugin)
 
 **Success Criteria:**
@@ -280,7 +280,7 @@ spekificity/
 **Deliverable:** Pattern extraction + recommendation system
 
 **Tasks:**
-- Scan completed features in `.cel/features/` + `wiki/lessons/`
+- Scan completed features in `.spek/features/` + `wiki/lessons/`
 - Extract patterns (common decisions, libraries, anti-patterns)
 - Identify reusable skill opportunities
 - Generate recommendations for future features

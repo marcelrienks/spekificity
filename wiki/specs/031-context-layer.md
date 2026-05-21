@@ -72,8 +72,8 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 - Size: ~1-2K tokens (compressed)
 
 **In Session Files (persistent within session):**
-- /memories/session/context-loaded.md — What was loaded
-- /memories/session/current-feature.md — Feature state
+- vault/session/ — What was loaded
+- vault/session/ — Feature state
 
 **In Vault (permanent):**
 - vault/decision.md, vault/patterns.md, vault/lessons/ — Authoritative
@@ -131,7 +131,7 @@ lessons = search_context("lessons from similar feature", limit=3)
 1. Call /spek.context with refresh flag
 2. Re-read vault (bypass cache if needed)
 3. Re-summarize (fresh LLM call)
-4. Update /memories/session/context-loaded.md
+4. Update vault/session/
 5. Inject new context into agent memory
 
 ---
@@ -219,7 +219,7 @@ Session Start
   │     ├─ Read vault (decisions, patterns, lessons)
   │     ├─ Read code graph
   │     ├─ Summarize (caveman mode)
-  │     └─ Write /memories/session/context-loaded.md
+  │     └─ Write vault/session/
   │     └─ Inject into agent memory
   │
   ├─ /spek.plan (specify phase uses injected context)
@@ -301,7 +301,7 @@ context_layer:
 - [ ] Implement context injection in wrapper functions
 - [ ] Implement context refresh mechanism
 - [ ] Add fallback handling for missing sources
-- [ ] Write /memories/session/context-loaded.md format
+- [ ] Write vault/session/ format
 - [ ] Add context query patterns
 - [ ] Test with vault missing / code graph stale / LLM failure
 

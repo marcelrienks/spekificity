@@ -50,13 +50,13 @@
 │  ├─ Refine patterns → vault/patterns.md
 │  └─ Mark lessons complete
 ├─ Step 5: Sync repo memory
-│  ├─ Compress recent decisions → /memories/repo/architectural-decisions.md
-│  ├─ Update patterns index → /memories/repo/patterns-index.md
-│  └─ Update codebase map → /memories/repo/codebase-map.md
+│  ├─ Compress recent decisions → vault/repo/architectural-decisions.md
+│  ├─ Update patterns index → vault/repo/patterns-index.md
+│  └─ Update codebase map → vault/repo/codebase-map.md
 ├─ Step 6: Refresh code graph
 │  └─ /spek.map (incremental sync of changed files)
 ├─ Step 7: Archive session memory
-│  └─ Archive /memories/session/current-feature.md
+│  └─ Archive vault/session/
 └─ Step 8: Report completion
    └─ "Feature complete. Lessons written. Vault updated."
 ```
@@ -90,18 +90,18 @@ See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-co
 2. Filter to last 3 features
 3. Compress each decision (1-2 sentences)
 4. Create summary table
-5. Write /memories/repo/architectural-decisions.md
+5. Write vault/repo/architectural-decisions.md
 
 **Patterns Sync:**
 1. Read vault/patterns.md
 2. Sort by frequency (most used first)
 3. Keep top 10-15 recent patterns
-4. Write /memories/repo/patterns-index.md
+4. Write vault/repo/patterns-index.md
 
 **Codebase Map:**
 1. If code structure changed significantly
 2. Run `git diff --stat` (identify affected files)
-3. Update /memories/repo/codebase-map.md
+3. Update vault/repo/codebase-map.md
 4. Mark changes + timestamp
 
 ### Step 6: Refresh Code Graph
@@ -116,9 +116,9 @@ See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-co
 
 ### Step 7: Archive Session Memory
 
-**Archive /memories/session/current-feature.md:**
-1. Copy to /memories/session/archive/<date>-<feature>.md (for reference)
-2. Delete from /memories/session/ (ephemeral cleanup)
+**Archive vault/session/:**
+1. Copy to vault/session/archive/<date>-<feature>.md (for reference)
+2. Delete from vault/session/ (ephemeral cleanup)
 3. Note: vault/lessons/ contains permanent record
 
 ### Step 8: Report Completion
@@ -130,8 +130,8 @@ See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-co
 ├─ Decisions: 2 new, appended to vault/decision.md
 ├─ Patterns: 3 updated, 1 new in vault/patterns.md
 ├─ Code graph: refreshed (vault/graph/nodes.jsonl)
-├─ Repo memory: synced (/memories/repo/)
-└─ Session archived: /memories/session/archive/
+├─ Repo memory: synced (vault/repo/)
+└─ Session archived: vault/session/archive/
 ```
 
 ---
@@ -180,9 +180,9 @@ See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-co
 - [ ] Generate lessons using lessons-format
 - [ ] Extract + append decisions to vault/decision.md
 - [ ] Update patterns in vault/patterns.md
-- [ ] Sync to /memories/repo/ (decisions + patterns)
+- [ ] Sync to vault/repo/ (decisions + patterns)
 - [ ] Call /spek.map (incremental sync)
-- [ ] Archive /memories/session/current-feature.md
+- [ ] Archive vault/session/
 - [ ] Report completion
 
 ---

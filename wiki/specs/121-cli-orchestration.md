@@ -65,7 +65,7 @@ spek prepare [options]
 2. Determine feature name (interactive or from `--feature-name`)
 3. Check code graph freshness (refresh if stale, unless `--skip-context`)
 4. Load context via `/spek.context`
-5. Create feature state file (`/memories/session/current-feature.md`)
+5. Create feature state file (`vault/session/`)
 6. Write ready status to feature state
 
 **Output:**
@@ -169,7 +169,7 @@ spek post [options]
 1. Validate feature state complete (all prior steps done)
 2. Extract lessons from artifacts (spec, plan, tasks, code, trace)
 3. Update vault (decisions, patterns)
-4. Sync repo memory (`/memories/repo/`)
+4. Sync repo memory (`vault/repo/`)
 5. Refresh code graph via `/spek.map`
 6. Archive feature state
 7. Report completion
@@ -178,7 +178,7 @@ spek post [options]
 - `wiki/vault/lessons/<date>-<feature>.md` created
 - `wiki/vault/decision.md` updated
 - `wiki/vault/patterns.md` updated
-- `/memories/repo/` synced
+- `vault/repo/` synced
 - Code graph refreshed
 - Session memory archived
 - Ready for next feature
@@ -233,10 +233,10 @@ spek context [options]
 2. Load patterns from `wiki/vault/patterns.md` (or cache)
 3. Load recent lessons (top 3-5) from `wiki/vault/lessons/`
 4. Load code graph from `wiki/vault/graph/nodes.jsonl`
-5. Compose into session context (`/memories/session/context-loaded.md`)
+5. Compose into session context (`vault/session/`)
 
 **Output:**
-- `/memories/session/context-loaded.md` created
+- `vault/session/` created
 - Full context available for skills
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
@@ -247,7 +247,7 @@ spek context [options]
 
 ## Feature State Machine
 
-**State tracking via `/memories/session/current-feature.md`:**
+**State tracking via `vault/session/`:**
 
 ```
 [IDLE] → /spek.prepare → [PREPARED]
@@ -260,7 +260,7 @@ Or: [ANY_STATE] --skip-context--> [ANY_STATE] (reuse context within session)
 Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
 ```
 
-**State File Format (`/memories/session/current-feature.md`):**
+**State File Format (`vault/session/`):**
 
 ```markdown
 # Current Feature State
@@ -417,8 +417,8 @@ workspace:
   specs: specs/
   
 memory:
-  repo: /memories/repo/
-  session: /memories/session/
+  repo: vault/repo/
+  session: vault/session/
   
 graph:
   cache_dir: wiki/vault/graph/
@@ -434,7 +434,7 @@ caveman:
   enabled: true
   
 error:
-  log_file: .cel/error-log.md
+  log_file: .spek/error-log.md
   retry_transient_errors: true
   retry_backoff_seconds: [10, 30, 60]
 ```

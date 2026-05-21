@@ -40,7 +40,7 @@ Spekificity operates in autonomous mode with limited user intervention. This spe
   2. Show guidance: "Required fix: {action}" (e.g., "git add .", "git stash", "git checkout feature-branch")
   3. Offer: "Run `/spek.prepare` again after fixing"
   4. **No retry** — Requires user action
-- **Logging:** Log full git output + recommended fix to `.cel/error-log.md`
+- **Logging:** Log full git output + recommended fix to `.spek/error-log.md`
 
 **Example:**
 ```
@@ -68,18 +68,18 @@ Then: /spek.prepare
 - **Severity:** MEDIUM-HIGH (blocks context loading and persistence)
 - **Default Action:** WARN + FALLBACK (continue with stale context or empty vault)
 - **Recovery Flow:**
-  1. Attempt read from cache (`/memories/repo/` or `.cel/context.md`)
+  1. Attempt read from cache (`vault/repo/` or `vault/`)
   2. If cache exists: Use cached context, log warning
   3. If cache missing: Continue with **minimal context** (code graph only)
   4. Async retry: Attempt vault access every 30 seconds (max 3 retries)
   5. On retry success: Reload context, log recovery
   6. On retry exhaustion: Continue, log error, alert user at feature end
-- **Logging:** Log vault error + fallback action to `.cel/error-log.md`
+- **Logging:** Log vault error + fallback action to `.spek/error-log.md`
 
 **Example:**
 ```
 Warning: Vault inaccessible (permission denied: wiki/vault/decision.md)
-Fallback: Using cached decisions from /memories/repo/architectural-decisions.md (age: 2 days)
+Fallback: Using cached decisions from vault/repo/architectural-decisions.md (age: 2 days)
 Retry: Vault access will be attempted every 30s for 3 retries
 Action: Check vault permissions: `chmod -R 755 vault/`
 ```
@@ -114,7 +114,7 @@ Action: Check vault permissions: `chmod -R 755 vault/`
   3. Offer async refresh: `/spek.map --force` (background job)
   4. Log warning: "Graph index stale, some code references may be incomplete"
   5. At feature end: Attempt graph rebuild before archival
-- **Logging:** Log graph error, fallback action, and retry status to `.cel/error-log.md`
+- **Logging:** Log graph error, fallback action, and retry status to `.spek/error-log.md`
 
 **Example:**
 ```
@@ -134,7 +134,7 @@ Continue: Proceeding with stale graph; some code references may be incomplete
 - Context file too large (>100K tokens for current session)
 - Session memory write fails (disk full, permission denied)
 - Context variable injection fails (env var limit exceeded)
-- `/memories/session/` directory not writable
+- `vault/session/` directory not writable
 
 **Handling:**
 - **Severity:** MEDIUM (blocks enrichment, requires manual context injection)
@@ -145,7 +145,7 @@ Continue: Proceeding with stale graph; some code references may be incomplete
   3. If still failing: Continue with code graph only (no memory)
   4. Offer fix: "Increase context token budget or simplify vault"
   5. Log warning + offered fix
-- **Logging:** Log context size, budget used, and fallback action to `.cel/error-log.md`
+- **Logging:** Log context size, budget used, and fallback action to `.spek/error-log.md`
 
 **Example:**
 ```
@@ -178,7 +178,7 @@ Continue: Full context available after cleanup
   4. If locked: Offer retry: "Close any open editors, then retry"
   5. If parent missing: Create directory and retry
   6. If path too long: Use alternate naming scheme (shorten feature name)
-- **Logging:** Log full error + offered fix to `.cel/error-log.md`
+- **Logging:** Log full error + offered fix to `.spek/error-log.md`
 
 **Example:**
 ```
@@ -212,7 +212,7 @@ Action: Choose fix, then run `/spek.conclude` again
      - Offer: Check SpecKit install: `speckit --version`
      - Offer: Run in verbose: `speckit.specify --verbose`
      - Offer: Manual fallback: Create spec/plan/tasks manually
-- **Logging:** Log speckit error + full output to `.cel/error-log.md`
+- **Logging:** Log speckit error + full output to `.spek/error-log.md`
 
 **Example:**
 ```
@@ -245,7 +245,7 @@ Manual fallback: Create specs/plan.md manually, then run `/spek.tasks`
   3. At 90% usage: Auto-compress recent lessons (caveman mode)
   4. At 95% usage: ABORT current operation, ask user to restart with fresh context
   5. Logging: Log resource usage + compression/abort action
-- **Logging:** Log memory/token usage metrics to `.cel/error-log.md`
+- **Logging:** Log memory/token usage metrics to `.spek/error-log.md`
 
 **Example:**
 ```
@@ -270,7 +270,7 @@ Info: Compressed lessons 2026-05-19 (80% reduction via caveman mode)
 - Context injection fails → Log error, continue with fallback context (not silent)
 
 **Implementation:**
-- Every error path logs to `.cel/error-log.md` with timestamp, category, and action taken
+- Every error path logs to `.spek/error-log.md` with timestamp, category, and action taken
 - User-facing errors shown in CLI output (red/warning color)
 - Logged errors are summarized in feature end report
 
@@ -330,7 +330,7 @@ while attempt <= 3:
 **Implementation:**
 - Define **fallback hierarchy** for each data source:
   1. Primary: Fresh data from wiki/vault/graph
-  2. Secondary: Cached data from `/memories/repo/` or `.cel/`
+  2. Secondary: Cached data from `vault/repo/` or `.spek/`
   3. Tertiary: Empty/minimal data (continue with no context)
 - Always log which fallback was used
 
@@ -355,13 +355,13 @@ while attempt <= 3:
 **Lessons:** {if applicable: how to prevent this in future}  
 ```
 
-**Log Location:** `.cel/error-log.md` (persistent across sessions)
+**Log Location:** `.spek/error-log.md` (persistent across sessions)
 
 ---
 
 ## Logging Structure
 
-### `.cel/error-log.md` (Persistent Error Log)
+### `.spek/error-log.md` (Persistent Error Log)
 
 **Purpose:** Audit trail of all errors across all sessions
 
@@ -442,7 +442,7 @@ while attempt <= 3:
 
 - [ ] **Full error recovery flow:** Trigger Category 2 error, verify fallback, verify retry succeeds
 - [ ] **Multi-error scenario:** Trigger git + vault errors simultaneously, verify both handled
-- [ ] **Error log creation:** Trigger error, verify logged to `.cel/error-log.md` with full context
+- [ ] **Error log creation:** Trigger error, verify logged to `.spek/error-log.md` with full context
 - [ ] **User guidance:** Trigger error, verify error message includes actionable fix
 
 ---
@@ -450,7 +450,7 @@ while attempt <= 3:
 ## Implementation Checklist
 
 - [ ] All skills include error handling per this spec (don't add new error handling logic; reference this spec)
-- [ ] All error paths log to `.cel/error-log.md`
+- [ ] All error paths log to `.spek/error-log.md`
 - [ ] All errors include actionable guidance (not just error codes)
 - [ ] Transient errors retry with exponential backoff
 - [ ] Fallback hierarchies defined for optional data sources

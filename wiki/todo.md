@@ -226,8 +226,8 @@ Each command executes and returns a placeholder status (✓) with expected outpu
 
 2. **[/spek.context](031-context-layer.md)** — 3-layer context loading
    - Load user memory (/memories/)
-   - Load session memory (/memories/session/)
-   - Load repo memory (.cel/, wiki/)
+   - Load session memory (vault/session/)
+   - Load repo memory (vault/, wiki/)
    - Construct precedence layers (user → session → repo)
    - Cache context for session
    - Expose to downstream commands

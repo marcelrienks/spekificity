@@ -11,7 +11,7 @@
 
 Architectural decisions are explicit, documented choices about system design, constraints, and rationale. They persist in two places:
 1. **Vault (authoritative):** `wiki/vault/decision.md` — Full, permanent archive
-2. **Repo Memory (cached):** `/memories/repo/architectural-decisions.md` — Recent, compressed summary
+2. **Repo Memory (cached):** `vault/repo/architectural-decisions.md` — Recent, compressed summary
 
 This spec defines the structure, lifecycle, and sync strategy for both.
 
@@ -126,7 +126,7 @@ grep -B5 "spec-003" wiki/vault/decision.md | grep "##"
 
 ---
 
-## Repo Memory Decisions (/memories/repo/architectural-decisions.md)
+## Repo Memory Decisions (vault/repo/architectural-decisions.md)
 
 ### Purpose
 Compressed, recent-only summary of active decisions. Used for session startup context and quick lookup.
@@ -199,7 +199,7 @@ See wiki/vault/decision.md for full history. Recent supersessions:
 2. Filter to active decisions from last 3 features
 3. Compress each decision to 1-2 sentences (caveman mode)
 4. Create table of recent decisions
-5. Write to /memories/repo/architectural-decisions.md
+5. Write to vault/repo/architectural-decisions.md
 
 **Compression Rules (Caveman Format):**
 - Active voice: "We chose X because Y" not "X was considered and ultimately selected"
@@ -218,19 +218,19 @@ See wiki/vault/decision.md for full history. Recent supersessions:
 ### Write Triggers
 
 **During feature work:**
-- When major architectural choice needs documentation → Add to `/memories/session/current-feature.md` (decisions made this feature)
+- When major architectural choice needs documentation → Add to `vault/session/` (decisions made this feature)
 - Mark for inclusion in lessons when feature completes
 
 **At feature end (`/spek.post` step 4):**
 - Extract decisions from lessons → Append to wiki/vault/decision.md
 - De-duplicate (check if decision already exists)
 - Mark status and feature source
-- Sync recent decisions to /memories/repo/architectural-decisions.md
+- Sync recent decisions to vault/repo/architectural-decisions.md
 
 ### Read Triggers
 
 **Session start (`/spek.context`):**
-- Read /memories/repo/architectural-decisions.md (compressed, fast)
+- Read vault/repo/architectural-decisions.md (compressed, fast)
 - Include recent decisions in context briefing
 - Load into agent context
 
@@ -249,7 +249,7 @@ See wiki/vault/decision.md for full history. Recent supersessions:
 - Keep all decisions indefinitely (permanent archive)
 - Mark old ones as `deprecated` but don't delete
 
-**Repo Memory (/memories/repo/architectural-decisions.md):**
+**Repo Memory (vault/repo/architectural-decisions.md):**
 - Sync after each feature
 - Keep only recent active decisions (last 3 features)
 - Prune older decisions to keep file size <10KB
@@ -264,7 +264,7 @@ Decisions made during a feature are extracted in the "Decisions Made" section of
 
 ### Context Loading (memory-architecture.md)
 
-Decision context is loaded at session start via `/spek.context`, compressed, and added to /memories/session/context-loaded.md for agent awareness.
+Decision context is loaded at session start via `/spek.context`, compressed, and added to vault/session/ for agent awareness.
 
 ### SpecKit Integration (enrichment-layer.md)
 
@@ -288,7 +288,7 @@ Recent decisions are injected into `/spek.plan` specify and plan prompts to guid
 
 - [ ] Create wiki/vault/decision.md template
 - [ ] Implement decision extraction in /spek.post
-- [ ] Implement decision sync to /memories/repo/
+- [ ] Implement decision sync to vault/repo/
 - [ ] Update /spek.context to load recent decisions
 - [ ] Add decision query patterns to wiki guide
 - [ ] Document decision-making process in project wiki

@@ -255,7 +255,7 @@ For each skill in workflow:
 
 ```bash
 # Call SpecKit skill with full context
-/speckit.<skill> <args> [--context-file=/memories/session/context-loaded.md]
+/speckit.<skill> <args> [--context-file=vault/session/]
 
 # Capture output
   ├─ stdout/stderr
@@ -264,7 +264,7 @@ For each skill in workflow:
   └─ Errors/warnings from skill
 
 # Log execution
-  └─ Add to /memories/session/execution-trace.md
+  └─ Add to vault/session/execution-trace.md
 ```
 
 ### 3.3 Post-Execution Validation
@@ -571,7 +571,7 @@ spek.plan "Implement user auth" --verbose
 
 ## Output & Logging
 
-### Feature State File (`/memories/session/orchestration-state.md`)
+### Feature State File (`vault/session/orchestration-state.md`)
 
 ```markdown
 # Orchestration State: user-auth feature
@@ -603,10 +603,10 @@ spek.plan "Implement user auth" --verbose
 
 ## Logs
 
-For detailed execution logs, see: `/memories/session/orchestration-trace.md`
+For detailed execution logs, see: `vault/session/orchestration-trace.md`
 ```
 
-### Execution Trace (`/memories/session/orchestration-trace.md`)
+### Execution Trace (`vault/session/orchestration-trace.md`)
 
 ```markdown
 ## Execution Trace: user-auth feature

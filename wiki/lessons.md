@@ -1,23 +1,27 @@
-# Lessons Learned: Obsidian Vault Integration (May 2026)
+# Lessons Learned from previous Implementations
+Below is a list of lessons learnt from previous failed implementations, ensure these lessons are properly specced out in either existing specs, or create new, to ensure that future implementations do not make the same mistakes.
 
-**Session:** Obsidian vault as persistent data store implementation  
-**Scope:** Memory architecture refactor from scattered .memories/ to unified vault/  
-**Impact:** 4 major design oversights identified and corrected  
+## Lesson 1: various
 
----
-
-## Executive Summary
-
-The transition from a scattered, hidden directory structure (.memories/) to a centralized Obsidian vault revealed four critical architectural oversights that, if addressed in the initial specs, would have avoided substantial rework:
-
-1. **Hardcoded directory paths and scattered constants** — Led to rigid global state
-2. **Tight coupling of feature state to legacy paths** — Made migration difficult and error-prone
-3. **Underestimated documentation/specification debt** — 145+ manual reference updates required
-4. **Overcomplicating storage segregation** — Hidden directories reduced visibility and debuggability
+* Remove all references to, or implementations of old cel. skills, they have been deprecated by this project itself, they should not be a part of this implementation
+* Ensure that all skills for this project are prefixed with spek.* and any cli commands use spek as the app name. spek is the official abbreviation of this spekification project.
+* I want to use uv as installation tool from my github repo. The act of running this installation will install any dependencies that are not already installed (e.g. Obsidian CLI, codeGraph, Caveman skill, and speckit skills through specify).
+* Once I run spek init, this is the function that will provision all infra required for this project to function, as well as call specify init.
 
 ---
 
-## Lesson 1: Hardcoded Directory Paths and Scattered Constants
+## Lesson 2: Ensure dependencies
+
+This project initially contained statements that it should be tool agnostic, that was the initial stance. Since then due to research the decisions have been taken to ensure these dependencies are required, and implemented.
+* CodeGraph
+  * source indexing
+  * wiki document indexing
+* obsidian for permanent memory store
+* Caveman for token reduction 
+
+---
+
+## Lesson 3: Hardcoded Directory Paths and Scattered Constants
 
 ### What Went Wrong
 
@@ -84,7 +88,7 @@ def get_user_vault_dir() -> Path:
 
 ---
 
-## Lesson 2: Tight Coupling of Feature States to Legacy Paths
+## Lesson 4: Tight Coupling of Feature States to Legacy Paths
 
 ### What Went Wrong
 
@@ -144,7 +148,7 @@ def get_feature_state_path(feature_name: str) -> Path:
 
 ---
 
-## Lesson 3: Underestimating Documentation and Specification Debt
+## Lesson 5: Underestimating Documentation and Specification Debt
 
 ### What Went Wrong
 
@@ -207,7 +211,7 @@ Validation Checklist:
 
 ---
 
-## Lesson 4: Overcomplicating Storage Segregation
+## Lesson 6: Overcomplicating Storage Segregation
 
 ### What Went Wrong
 
@@ -279,104 +283,3 @@ Rationale: Visibility enables debugging, manual recovery, and agent transparency
 
 ---
 
-## Summary: Issues and Corrective Actions
-
-| Architectural Issue | Initial Oversight | Consequences | Corrective Action | Spec Improvement |
-|---|---|---|---|---|
-| **Path Constants** | Scattered global constants (6+) | Rigid global state, hard to migrate | Centralized to `get_vault_dir()` | Single source of truth for all paths |
-| **Coupling** | `get_feature_state_path()` hardcoded to `.memories/` | Broken after migration, silent failures | Abstracted to use config-provided paths | Separate path construction from business logic |
-| **Documentation Debt** | Assumed docs don't change with code | 145+ manual updates needed | Systematic audit of all references | Docs debt = 3-5x code debt; estimate upfront |
-| **Storage Design** | Hidden Unix directories (`.memories/`) | Low visibility, hard to debug, low interop | Visible Obsidian vault format | Favor transparency and standard formats |
-
----
-
-## Recommendations for Spec Revisions
-
-### Specs to Update
-
-1. **030-memory-architecture.md** ✅
-   - Add section: "Storage Location Design Principles"
-   - Add section: "Path Resolution Abstraction Layer"
-   - Add validation rule: "All paths must derive from single root"
-   - Add storage format requirements
-
-2. **New Spec: 035-storage-abstraction.md** (Create)
-   - Define path provider pattern
-   - Specify storage backend interface
-   - Document how to add new storage backends (S3, Git, etc.)
-
-3. **New Spec: 140-documentation-structure.md** (Create)
-   - Define internal documentation path conventions
-   - Specify documentation-to-code traceability requirements
-   - Define documentation debt estimation method
-
-4. **New Spec: 132-storage-format-requirements.md** (Create)
-   - Require human-readable formats (markdown, YAML, JSON)
-   - Require Obsidian vault compatibility
-   - Require Git-friendly structure
-   - Forbid hidden directories and opaque formats
-
-### Validation Additions to All Specs
-
-Add this checklist to **every architectural spec:**
-
-```
-PRE-APPROVAL CHECKLIST (Storage & Configuration)
-- [ ] All paths defined relative to single root
-- [ ] No hardcoded absolute paths outside config module
-- [ ] Storage format is human-readable (no binary)
-- [ ] Examples are verifiable (can be grep'd and found in real code)
-- [ ] Documentation debt estimated (is it 1x, 3x, 5x code changes?)
-- [ ] Cross-references audited (dead links checked)
-- [ ] Storage is visible (no hidden directories)
-- [ ] Format is Git-friendly (diffs are readable)
-```
-
----
-
-## Key Takeaways for Spec Writers
-
-### Do's ✅
-
-- Define path resolution **once and centrally**
-- Separate **what data does** from **where data lives**
-- Estimate documentation debt as **3-5x code debt** for architectural changes
-- Use **human-readable, standard formats** (markdown, YAML, Obsidian)
-- Make data **visible and editable** by users and agents
-- Use **relative paths and abstractions** in examples, not hardcoded values
-- Assume **specs are code** (changes to specs = changes to code)
-
-### Don'ts ❌
-
-- Don't scatter path definitions across multiple modules
-- Don't couple business logic to storage backends
-- Don't ignore documentation in architectural planning
-- Don't use hidden directories or proprietary formats
-- Don't hardcode absolute paths
-- Don't assume "users won't look at system files"
-- Don't treat documentation as an afterthought
-
----
-
-## Impact Summary
-
-**Session Metrics:**
-- Code files modified: 4
-- Functions updated: ~10
-- Documentation files updated: 50+
-- Path references updated: 145+
-- Architecture clarity gained: Significant
-
-**Rework Avoided in Future:**
-- If these lessons are applied to new specs, future path/storage migrations will require changes in **1 location** (config) instead of **50+**
-- Documentation will stay in sync with code automatically
-- Agent debugging will be faster due to visible, readable data
-- Future backends (Git, S3, etc.) can be swapped in config.py
-
----
-
-## References
-
-- Spec: [030-memory-architecture.md](specs/030-memory-architecture.md)
-- Implementation: src/spekificity/vault/loader.py, src/spekificity/memory/loader.py
-- Related Lesson: [Architectural Decisions](vault/decision.md)

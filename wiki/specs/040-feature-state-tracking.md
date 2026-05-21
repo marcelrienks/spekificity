@@ -13,7 +13,7 @@ Feature state tracks progress through feature lifecycle (initialized → specify
 
 ---
 
-## State File: /memories/session/current-feature.md
+## State File: vault/session/
 
 ### YAML Frontmatter
 
@@ -94,7 +94,7 @@ post: completing (100%)
 - /spek.conclude → completing (100%)
 
 **Archive:** /spek.conclude (Step 9)
-- Move to /memories/session/archive/
+- Move to vault/session/archive/
 - Keep for post-mortem reference
 
 ---

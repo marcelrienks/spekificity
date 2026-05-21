@@ -158,7 +158,7 @@ spek post --caveman-mode=ultra --dry-run
 
 **Compression Rule:**
 - Primary storage (`wiki/vault/decision.md`): `lite` (preserve full reasoning)
-- Repo cache (`/memories/repo/architectural-decisions.md`): `full` (compressed index)
+- Repo cache (`vault/repo/architectural-decisions.md`): `full` (compressed index)
 - Inline references: `ultra` (single-line summary)
 
 **Example:**
@@ -168,7 +168,7 @@ spek post --caveman-mode=ultra --dry-run
 Reasoning: Token usage was critical constraint in autonomous workflows...
 [Full explanation, rationale, alternatives considered]
 
-# /memories/repo/architectural-decisions.md (FULL)
+# vault/repo/architectural-decisions.md (FULL)
 ## Decision: Caveman for Token Efficiency
 Why: Token constraint in autonomous workflows.
 Trade: Readability vs. efficiency (configurable).
@@ -198,7 +198,7 @@ Description: Wrapper functions that inject context before calling external tools
 Example: Specify enrichment wraps /speckit.specify to load architectural decisions.
 When: Used when adding contextual intelligence to stateless tools.
 
-# /memories/repo/patterns-index.md (FULL)
+# vault/repo/patterns-index.md (FULL)
 ## Pattern: Decorator for Enrichment
 Def: Wrapper injects context before calling tool.
 Ex: Specify enrichment → /speckit.specify with decisions.
@@ -215,13 +215,13 @@ Patterns: Use decorator-enrichment pattern for new tool.
 **When:** Feature complete, session memory archived
 
 **Compression Rule:**
-- Archive feature state (`/memories/session/<feature>.archive`): `full`
+- Archive feature state (`vault/session/<feature>.archive`): `full`
 - Retention for next session: `ultra` (summary only)
 
 **Workflow:**
 1. Archive current feature state (compressed via `full` mode)
 2. Keep ultra-compressed summary in session history
-3. Purge session memory (`/memories/session/current-feature.md` deleted)
+3. Purge session memory (`vault/session/` deleted)
 4. Ready for next feature with fresh context (but access to archived summary)
 
 ---

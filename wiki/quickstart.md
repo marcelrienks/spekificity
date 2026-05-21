@@ -72,7 +72,7 @@ READY: Workspace prepared for feature development
 | `git status` shows uncommitted changes | Run `git add .` and `git commit -m "..."`, or `git stash` to save work |
 | Vault sync fails | Ensure Obsidian is open and git plugin is enabled; pull manually: `git pull origin vault` |
 | CodeGraph refresh fails | Reinstall CodeGraph MCP config; see [setup.md](setup.md) |
-| Session memory not loading | Check `.cel/context.md` and `.specify/memory/` for syntax errors |
+| Session memory not loading | Check `vault/session/` and `.specify/memory/` for syntax errors |
 
 ---
 
