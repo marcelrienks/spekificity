@@ -260,23 +260,23 @@ During implementation, if uncertain:
 
 ---
 
-## Integration: /spek.post Enhancement
+## Integration: /spek.conclude Enhancement
 
 ### Current Workflow (B.8.4)
 
 ```
-/spek.post Step 7: [optional] Reflection
+/spek.conclude Step 7: [optional] Reflection
   (Currently skipped or manual)
 
-/spek.post Step 8: Simplify Docs
-/spek.post Step 9: Archive Session
-/spek.post Step 10: Report Complete
+/spek.conclude Step 8: Simplify Docs
+/spek.conclude Step 9: Archive Session
+/spek.conclude Step 10: Report Complete
 ```
 
 ### Enhanced with RARV (C.3.7)
 
 ```
-/spek.post Step 7: RARV Reflection Cycle (Enhanced)
+/spek.conclude Step 7: RARV Reflection Cycle (Enhanced)
 
   7.1. REASON: Compare code vs. spec
        - Analyze scope coverage (spec requirements met?)
@@ -401,7 +401,7 @@ Question: "Should we defer pattern to v2? Or finish implementation?"
 ### Happy Path: Spec → Code Perfect Alignment
 
 ```
-1. /spek.post Step 7: RARV starts
+1. /spek.conclude Step 7: RARV starts
 2. REASON phase: "Alignment: 98%; 1 minor deviation found"
 3. ACT phase: User accepts deviation (added logging for debugging)
 4. REFLECT phase: Vault updated (no decision changes)
@@ -412,7 +412,7 @@ Question: "Should we defer pattern to v2? Or finish implementation?"
 ### Spec Drift Caught & Fixed
 
 ```
-1. /spek.post Step 7: RARV starts
+1. /spek.conclude Step 7: RARV starts
 2. REASON phase: "Alignment: 72%; 4 major deviations found"
    - Missed: Audit logging
    - Added: Batch refresh endpoint
@@ -444,7 +444,7 @@ Output: "Alignment so far: 85%; factory emerging as better choice"
 
 User: "I'll continue with factory; update plan when done"
 
-Later: /spek.post RARV confirms alignment, auto-updates decisions
+Later: /spek.conclude RARV confirms alignment, auto-updates decisions
 ```
 
 ---
@@ -485,7 +485,7 @@ rarv:
 - ✅ REFLECT phase auto-updates vault decisions + patterns
 - ✅ VERIFY phase confirms alignment > 90%
 - ✅ Multi-pass loops supported (re-plan + re-implement if needed)
-- ✅ Integrated into `/spek.post` Step 7
+- ✅ Integrated into `/spek.conclude` Step 7
 - ✅ Mid-feature `/spek.rarv` command available (optional)
 - ✅ Alignment reports generated for every feature
 - ✅ Decision drift prevented across features

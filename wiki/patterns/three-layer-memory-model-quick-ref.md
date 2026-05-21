@@ -75,7 +75,7 @@ During Feature Work:
   Layer 3 available (kept in context)
   ↓
 Feature End:
-  Layer 3 → archived to Layer 1 (via /spek.post)
+  Layer 3 → archived to Layer 1 (via /spek.conclude)
 ```
 
 ---
@@ -83,7 +83,10 @@ Feature End:
 ## Write Lifecycle
 
 ```
-Feature Complete (/spek.post):
+  Layer 3 → archived to Layer 1 (via /spek.conclude)
+  1. Extract decisions from artifacts
+  2. Write to Layer 1 (vault/decision.md) — AUTHORITATIVE
+  3. Compress + write to Layer 2 (/memories/repo/) — CACHE
   1. Extract decisions from artifacts
   2. Write to Layer 1 (vault/decision.md) — AUTHORITATIVE
   3. Compress + write to Layer 2 (/memories/repo/) — CACHE
@@ -94,7 +97,7 @@ Next Session Start:
   2. Layer 3 fresh (start new session)
 ```
 
----
+ [ ] Archival process automated (Layer 3 → Layer 1 at /spek.conclude)?
 
 ## Example: Loading Context
 
@@ -159,7 +162,7 @@ def load_context():
 - [ ] Load order correct (Layer 3 → Layer 2 → Layer 1)?
 - [ ] Write hierarchy correct (Layer 1 authoritative)?
 - [ ] Fallback working (Layer 2 used if Layer 1 fails)?
-- [ ] Archival process automated (Layer 3 → Layer 1 at /spek.post)?
+- [ ] Archival process automated (Layer 3 → Layer 1 at /spek.conclude)?
 
 ---
 

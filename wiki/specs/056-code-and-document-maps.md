@@ -357,7 +357,7 @@ grep '"status":"active"' wiki/vault/graph/nodes.jsonl
     "fullRefresh": "on-demand or after-obsidian-rebuild",
     "incrementalRefresh": "after-feature (spek.conclude)",
     "obsidianCacheMonitor": "watch .obsidian/cache.json for
-    "incrementalRefresh": "after-feature (spek.post)",
+    "incrementalRefresh": "after-feature (spek.conclude)",
     "cacheInvalidation": "when source file hash changes"
   }
 }
@@ -488,5 +488,5 @@ When loading vault context:
 - **Decision:** Heading-level for docs with variable granularity; separate parsing passes
 - **Node schema:** Unified structure for code and doc nodes with references
 - **Storage:** JSONL in `wiki/vault/graph/nodes.jsonl` for simplicity and streaming
-- **Integration:** `/spek.map`, `/spek.prepare`, `/spek.post`, `/spek.context`
+- **Integration:** `/spek.map`, `/spek.prepare`, `/spek.conclude`, `/spek.context`
 - **Config:** `wiki/vault/graph/config.json` defines indexing rules and refresh policy

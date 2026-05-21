@@ -333,12 +333,12 @@ Before writing to wiki/vault/lessons/, validate:
 
 ---
 
-## Integration with /spek.post
+## Integration with /spek.conclude
 
-**In `/spek.post` workflow (Step 3):**
+**In `/spek.conclude` workflow (Step 3):**
 
 ```
-/spek.post
+/spek.conclude
 ├── Collect artifacts (spec.md, plan.md, tasks.md, execution trace)
 ├── Activate caveman mode (lite for drafting, full for final compression)
 ├── Generate lessons document

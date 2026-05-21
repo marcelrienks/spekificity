@@ -24,7 +24,7 @@
 **Contents:**
 - Comprehensive readiness checklist (all components passing ✓)
 - Technology stack justification (Python 3.11+, SpecKit ecosystem integration)
-- Detailed breakdown of 7 core skills (prepare, context, plan, map, implement, post, lessons)
+- Detailed breakdown of 7 core skills (prepare, context, plan, map, implement, conclude, lessons)
 - CodeGraph MCP specification (storage, indexing, querying)
 - Testing & validation phases
 - Timeline estimate (~63h, 2-3 weeks)
@@ -109,7 +109,7 @@ spekificity/
 │       │   ├── plan.py                    # /spek.plan skill
 │       │   ├── map_.py                    # /spek.map skill
 │       │   ├── implement.py               # /spek.implement skill
-│       │   ├── post.py                    # /spek.post skill
+│       │   ├── post.py                    # /spek.conclude skill
 │       │   └── lessons.py                 # /spek.lessons skill
 │       ├── graph/                         # CodeGraph module (placeholder)
 │       │   └── __init__.py
@@ -153,7 +153,7 @@ spekificity/
 | `spek plan` | SpecKit orchestration | ✓ Placeholder |
 | `spek map` | Code graph analysis | ✓ Placeholder |
 | `spek implement` | Execute implementation | ✓ Placeholder |
-| `spek post` | Archive outcomes | ✓ Placeholder |
+| `spek conclude` | Archive outcomes | ✓ Placeholder |
 | `spek lessons` | Extract lessons learned | ✓ Placeholder |
 
 ### CLI Testing: `tests/unit/test_cli.py`
@@ -202,7 +202,7 @@ spek context --help
 spek plan --help
 spek map --help
 spek implement --help
-spek post --help
+spek conclude --help
 spek lessons --help
 ```
 
@@ -257,7 +257,7 @@ Each command executes and returns a placeholder status (✓) with expected outpu
    - Capture implementation outputs
    - Summary report
 
-6. **[/spek.post](102-post-command.md)** — Outcome archival
+6. **[/spek.conclude](102-post-command.md)** — Outcome archival
    - Verify feature complete
    - Extract lessons learned
    - Commit lessons to vault
@@ -331,7 +331,7 @@ Suggested order for full implementation (builds on prior skills):
 2. `/spek.context` (enables all downstream skills)
 3. `/spek.plan` (core workflow, SpecKit orchestration)
 4. `/spek.implement` (uses context + plan outputs)
-5. `/spek.post` (uses implement outputs)
+5. `/spek.conclude` (uses implement outputs)
 6. `/spek.map` (support tool, can be built in parallel)
 7. `/spek.lessons` (highest level, uses post outputs)
 

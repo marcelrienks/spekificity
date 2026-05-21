@@ -3,7 +3,7 @@
 **Category:** Architectural  
 **Problem:** Extend SpecKit functionality without modifying internals  
 **Solution:** Pre-Execution → Core → Post-Execution layers  
-**Used in:** `/spek.automate` (all phases), `/spek.implement`  
+**Used in:** `/spek.plan` (all phases), `/spek.implement`  
 
 ---
 

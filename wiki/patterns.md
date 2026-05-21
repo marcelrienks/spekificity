@@ -137,7 +137,7 @@ def spek_enriched_command(command_name, *args, **kwargs):
 - When performance is critical (decorator adds overhead)
 
 ### Example Code / Integration
-- **Used in:** `/spek.automate` (specify, plan, implement phases)
+- **Used in:** `/spek.plan` (specify, plan, implement phases)
 - **Enrichment layers:** context-layer.md (PRE), enrichment-layer.md (POST)
 - **Related specs:** speckit-integration-contract.md
 
@@ -198,7 +198,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 - Highly sensitive data (vault requires security review)
 
 ### Example Code / Integration
-- **Write Flow:** /spek.post (Step 4-7) writes to vault and repo memory
+- **Write Flow:** /spek.conclude (Step 4-7) writes to vault and repo memory
 - **Read Flow:** /spek.prepare (Step 5) → /spek.context loads all three layers
 - **Persistence:** Obsidian vault + Copilot memory filesystem
 
@@ -231,7 +231,7 @@ Wrap each SpecKit phase with enrichment:
 3. **Implement Enrichment:** Collect code diff + validate against decisions post-implementation
 
 ```
-/spek.automate [feature-description]
+/spek.plan [feature-description]
 ├─ specify phase
 │  ├─ PRE: Load decisions + patterns
 │  ├─ CORE: Call /speckit.specify
@@ -257,7 +257,7 @@ Wrap each SpecKit phase with enrichment:
 - One-off features (no long-term architecture)
 
 ### Example Code / Integration
-- **Used in:** `/spek.automate` (all three phases)
+- **Used in:** `/spek.plan` (all three phases)
 - **Context source:** Context Layer (loads vault + repo memory)
 - **Validation:** Anti-Sycophancy rules (Phase 2)
 
@@ -321,7 +321,7 @@ Each phase:
 
 ### Example Code / Integration
 - **State File:** /memories/session/current-feature.md (feature state)
-- **State Transitions:** Each skill (`/spek.prepare`, `/spek.post`, etc.) updates state
+- **State Transitions:** Each skill (`/spek.prepare`, `/spek.conclude`, etc.) updates state
 - **Validation:** Preconditions checked at skill start (e.g., spec must exist before plan)
 
 ### Related Patterns
@@ -373,7 +373,7 @@ Chain skills with explicit dependency management:
 - Tightly coupled systems (decoupling would be expensive)
 
 ### Example Code / Integration
-- **Orchestrator:** `/spek.automate` orchestrates specify/plan/implement skills
+- **Orchestrator:** `/spek.plan` orchestrates specify/plan/implement skills
 - **Skill Interface:** Each skill exposes (inputs, outputs, success criteria)
 - **Validation:** Skills validate outputs before proceeding
 
@@ -403,7 +403,7 @@ After feature implementation, artifacts (spec, plan, code changes) must be prese
 Automated 10-step post-processing:
 
 ```
-/spek.post
+/spek.conclude
 1. Collect artifacts (spec/plan/tasks/trace/diff)
 2. Activate caveman compression mode
 3. Generate lessons document (vault/lessons/)
@@ -426,7 +426,7 @@ Automated 10-step post-processing:
 - Single-use features (no pattern opportunity)
 
 ### Example Code / Integration
-- **Triggered by:** `/spek.post` command (called after implementation complete)
+- **Triggered by:** `/spek.conclude` command (called after implementation complete)
 - **Artifacts collected:** spec.md, plan.md, tasks.md, git diff
 - **Output:** vault/lessons/<date>-<feature>.md
 
@@ -675,7 +675,7 @@ auto_linking:
 - Small vault (overhead not worth savings)
 
 ### Example Code / Integration
-- **Integration Point:** `/spek.post` Step 3 (Generate Lessons)
+- **Integration Point:** `/spek.conclude` Step 3 (Generate Lessons)
 - **Output:** vault/lessons/<date>-<feature>.md with auto-inserted wikilinks
 - **Validation:** Redundancy detection (lesson duplicates vault pattern → alert)
 
@@ -704,7 +704,7 @@ Session memory (`/memories/session/current-feature.md`) is ephemeral. Once featu
 Archive session logs to vault with Zettelkasten format:
 
 ```
-/spek.post Step 9: Archive Session Memory
+/spek.conclude Step 9: Archive Session Memory
 ├─ Read /memories/session/current-feature.md
 ├─ Extract sections (What Built, How Built, Decisions, Patterns, Pending)
 ├─ Format as vault note with Zettelkasten structure
@@ -722,7 +722,7 @@ Archive session logs to vault with Zettelkasten format:
 - Sensitive context (requires vault security review)
 
 ### Example Code / Integration
-- **Trigger:** `/spek.post` Step 9
+- **Trigger:** `/spek.conclude` Step 9
 - **Source:** /memories/session/current-feature.md
 - **Destination:** vault/sessions/<YYYY-MM-DD>-<feature>.md
 - **Format:** Zettelkasten (frontmatter + wikilinks)
@@ -770,7 +770,7 @@ Ultra-compressed communication style (caveman mode) preserving technical accurac
 
 ### When to Use
 - Multi-feature sessions (token budget constraints)
-- Lessons generation (integration point: `/spek.post` Step 2)
+- Lessons generation (integration point: `/spek.conclude` Step 2)
 - Vault compression (repo memory cache)
 
 ### When NOT to Use
@@ -779,7 +779,7 @@ Ultra-compressed communication style (caveman mode) preserving technical accurac
 - User-facing docs (clarity required)
 
 ### Example Code / Integration
-- **Triggered by:** `/spek.post --caveman-mode=full` (default)
+- **Triggered by:** `/spek.conclude --caveman-mode=full` (default)
 - **Compression rules:** Active voice, concrete, short, specific
 - **Output:** Compressed lessons, tags, wikilinks preserved
 
@@ -837,7 +837,7 @@ token_budget:
 ### Example Code / Integration
 - **Tracking:** Each skill reports token usage
 - **Alerts:** Warnings at 60%, 80% thresholds
-- **Reporting:** `/spek.post` Step 10 (feature-end report)
+- **Reporting:** `/spek.conclude` Step 10 (feature-end report)
 
 ### Related Patterns
 - Caveman Compression Mode (reduces phase costs)
@@ -1170,7 +1170,7 @@ Implement explicit validation rules that flag deviations:
 - Exploration (constraints inhibit discovery)
 
 ### Example Code / Integration
-- **Integration Point:** `/spek.automate` specify and plan phases
+- **Integration Point:** `/spek.plan` specify and plan phases
 - **Validation:** Pre-submission, before calling SpecKit
 - **Action:** Flag conflicts, offer override with documentation
 
@@ -1228,7 +1228,7 @@ Phase 4: VERIFY
 - Rapid iteration (overhead slows velocity)
 
 ### Example Code / Integration
-- **Trigger:** `/spek.post` Step 7 (optional integration point)
+- **Trigger:** `/spek.conclude` Step 7 (optional integration point)
 - **Input:** spec.md, plan.md, git diff
 - **Output:** Deviation report + user choices + updated vault (if reflected)
 
@@ -1276,7 +1276,7 @@ End-of-Feature Test Failure Analysis:
 - Ad-hoc testing (not automated)
 
 ### Example Code / Integration
-- **Integration Point:** `/spek.post` Step 3 (Generate Lessons)
+- **Integration Point:** `/spek.conclude` Step 3 (Generate Lessons)
 - **Failure parser:** Extract from Jest/pytest/etc. output
 - **Vault update:** Append warnings to decision.md + lesson
 - **Future tagging:** Flag similar specs with warnings
@@ -1336,7 +1336,7 @@ Step 4: Remediation
 - Trusted AI output (review ritual, not practical)
 
 ### Example Code / Integration
-- **Trigger:** Post-implementation, before `/spek.post` archival
+- **Trigger:** Post-implementation, before `/spek.conclude` archival
 - **Anonymization:** Strip AI markers, feature context, author info
 - **Review checks:** Linters, tests, static analysis
 - **Output:** Issue report + remediation guidance
@@ -1376,7 +1376,7 @@ vault/graph/nodes.jsonl combines:
 ├─ Doc nodes (from Obsidian export)
 │  └─ Decisions, patterns, lessons, specs
 └─ Skill nodes (file-level)
-   └─ `/spek.prepare`, `/spek.post`, etc.
+  └─ `/spek.prepare`, `/spek.conclude`, etc.
 ```
 
 **Node Types:**
@@ -1524,7 +1524,7 @@ Incremental Sync Modes:
 - **Default behavior:** `/spek.map` uses incremental sync
 - **Full rebuild:** `/spek.map --full` (on corruption or when cache unreliable)
 - **Watch mode:** `/spek.map --watch` (continuous sync during development)
-- **Integration:** `/spek.prepare` Step 4, `/spek.post` Step 8
+- **Integration:** `/spek.prepare` Step 4, `/spek.conclude` Step 8
 
 ### Related Patterns
 - Hybrid Graph Pattern (data model)
@@ -1590,7 +1590,7 @@ completion: 0-100
 ### Example Code / Integration
 - **Create:** `/spek.prepare` Step 6 (initialized status)
 - **Update:** Each skill updates status (0% → 25% → 50% → 75% → 100%)
-- **Archive:** `/spek.post` Step 9 (move to /memories/session/archive/)
+- **Archive:** `/spek.conclude` Step 9 (move to /memories/session/archive/)
 
 ### Related Patterns
 - Feature Lifecycle Pattern (phases that state tracks)
@@ -1808,15 +1808,15 @@ Each pattern follows this verification checklist:
 
 ## Quick Reference: Top 10 Most-Used Patterns
 
-1. **Decorator Wrapper Pattern** — Used in: `/spek.automate` (all phases), `/spek.implement`
+1. **Decorator Wrapper Pattern** — Used in: `/spek.plan` (all phases), `/spek.implement`
 2. **Three-Layer Memory Model** — Used in: All skills (read/write context)
 3. **Feature Lifecycle Pattern** — Used in: All skills (phase sequencing)
 4. **Error Categorization Pattern** — Used in: All skills (error handling)
-5. **Enrichment Layer Pattern** — Used in: `/spek.automate` specify/plan phases
+5. **Enrichment Layer Pattern** — Used in: `/spek.plan` specify/plan phases
 6. **Context Injection Pattern** — Used in: Decorator wrapper PRE layer
 7. **Three-Layer Query Rule** — Used in: Context loading (optimize tokens)
-8. **Caveman Compression Mode** — Used in: `/spek.post` (lessons generation)
-9. **Skill Chaining Pattern** — Used in: `/spek.automate` orchestration
+8. **Caveman Compression Mode** — Used in: `/spek.conclude` (lessons generation)
+9. **Skill Chaining Pattern** — Used in: `/spek.plan` orchestration
 10. **Feature State Tracking Pattern** — Used in: All skills (progress visibility)
 
 ---

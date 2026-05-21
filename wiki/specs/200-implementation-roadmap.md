@@ -59,7 +59,7 @@ spekificity/
 │   │   │   ├── plan.py                 # /spek.plan skill
 │   │   │   ├── map.py                  # /spek.map skill
 │   │   │   ├── implement.py            # /spek.implement skill
-│   │   │   ├── post.py                 # /spek.post skill
+│   │   │   ├── post.py                 # /spek.conclude skill
 │   │   │   └── lessons.py              # /spek.lessons skill
 │   │   ├── graph/
 │   │   │   ├── __init__.py
@@ -259,7 +259,7 @@ spekificity/
 
 **Spec Reference:** [105-spek-implement-workflow.md](105-spek-implement-workflow.md)
 
-#### 4f. /spek.post (Outcome Archival)
+#### 4f. /spek.conclude (Outcome Archival)
 **Deliverable:** Feature completion + lesson extraction
 
 **Tasks:**
@@ -388,7 +388,7 @@ spekificity/
 | **Step 4c:** /spek.plan | 8h | 2 days |
 | **Step 4d:** /spek.map | 6h | 1-2 days |
 | **Step 4e:** /spek.implement | 8h | 2 days |
-| **Step 4f:** /spek.post | 4h | 1 day |
+| **Step 4f:** /spek.conclude | 4h | 1 day |
 | **Step 4g:** /spek.lessons | 3h | 1 day |
 | **Step 5:** CodeGraph MCP | 10h | 2-3 days |
 | **Testing & Validation** | 8h | 2 days |

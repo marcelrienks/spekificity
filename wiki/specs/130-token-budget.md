@@ -65,7 +65,7 @@ token_budget:
     
     post_phase:
       budget: 2000  # Lessons + vault updates + archival
-      tools: ["/spek.post", "session archival", "vault updates"]
+      tools: ["/spek.conclude", "session archival", "vault updates"]
   
   # Alert thresholds
   alert_threshold_percent: 80  # Alert when 80% used
@@ -140,7 +140,7 @@ enterprise_cost_sensitive:
 
 **During Conclude Phase:****
 ```
-/spek.post execution:
+/spek.conclude execution:
   Context reload:               ~300 tokens
   Test failure analysis:        ~200 tokens
   Lesson generation:            ~600 tokens
@@ -226,7 +226,7 @@ Efficiency:           Above target ✓
 
 ### Token Usage Report
 
-At feature end (`/spek.post` Step 10), show:
+At feature end (`/spek.conclude` Step 10), show:
 
 ```
 ╔════════════════════════════════════════════════════════════╗

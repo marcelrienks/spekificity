@@ -9,7 +9,7 @@
 
 ## Overview
 
-The CLI is the user-facing entry point to Spekificity. `spek plan` is the primary orchestration command for pre-implementation flow, `spek implement` is the primary execution command after review, and support commands such as `spek prepare`, `spek context`, `spek map`, `spek post`, and `spek lessons` remain user-facing while also being callable internally when needed.
+The CLI is the user-facing entry point to Spekificity. `spek plan` is the primary orchestration command for pre-implementation flow, `spek implement` is the primary execution command after review, and support commands such as `spek prepare`, `spek context`, `spek map`, `spek conclude`, and `spek lessons` remain user-facing while also being callable internally when needed.
 
 **Scope:**
 - Entry points and command routing
@@ -147,7 +147,7 @@ spek implement [options]
 - Execution trace logged
 - Code changes recorded
 - Feature state updated (implement complete)
-- Ready for `/spek.post`
+- Ready for `/spek.conclude`
 
 **Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
 
@@ -155,12 +155,12 @@ spek implement [options]
 
 ---
 
-### 4. `spek post` — Archive and Persist
+### 4. `spek conclude` — Archive and Persist
 
 **Purpose:** Extract lessons, update vault, archive feature state.
 
 ```bash
-spek post [options]
+spek conclude [options]
   --caveman-mode <mode>       # Compression level (lite|full|ultra)
   --dry-run                   # Preview changes, don't write
 ```
@@ -253,7 +253,7 @@ spek context [options]
 [IDLE] → /spek.prepare → [PREPARED]
 [PREPARED] → /spek.plan → [TASKED]
 [TASKED] → /spek.implement → [IMPLEMENTED]
-[IMPLEMENTED] → /spek.post → [ARCHIVED]
+[IMPLEMENTED] → /spek.conclude → [ARCHIVED]
 [ARCHIVED] → (ready for next feature)
 
 Or: [ANY_STATE] --skip-context--> [ANY_STATE] (reuse context within session)
@@ -277,7 +277,7 @@ Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
 | 1 | /spek.prepare | ✓ COMPLETE | 2026-05-19 10:00:15 | Context loaded |
 | 2 | /spek.plan | ✓ COMPLETE | 2026-05-19 10:18:30 | spec.md, plan.md, tasks.md |
 | 3 | /spek.implement | ✓ COMPLETE | 2026-05-19 15:30:22 | 24 files modified, 1200 lines added |
-| 4 | /spek.post | ⏳ PENDING | — | Ready to run |
+| 4 | /spek.conclude | ⏳ PENDING | — | Ready to run |
 
 ## Artifacts
 
@@ -395,7 +395,7 @@ Spekificity CLI:
 
 **On Warning (Recoverable):**
 ```
-⚠ /spek.post warning
+⚠ /spek.conclude warning
   Vault not accessible (permissions): Using cached decisions (2h old)
   
   Tip: Check vault permissions: chmod 755 wiki/vault/

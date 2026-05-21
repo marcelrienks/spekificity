@@ -194,22 +194,22 @@ User can:
 
 ---
 
-## Integration: /spek.post Step 8b
+## Integration: /spek.conclude Step 8b
 
 ### Current Workflow (B.8.4)
 
 ```
-/spek.post Step 8: Simplify Docs
-/spek.post Step 9: Archive Session
-/spek.post Step 10: Report Complete
+/spek.conclude Step 8: Simplify Docs
+/spek.conclude Step 9: Archive Session
+/spek.conclude Step 10: Report Complete
 ```
 
 ### Enhanced with Blind Review (C.3.9)
 
 ```
-/spek.post Step 8: Simplify Docs
+/spek.conclude Step 8: Simplify Docs
 
-/spek.post Step 8b [NEW]: Blind Code Review (Optional)
+/spek.conclude Step 8b [NEW]: Blind Code Review (Optional)
   IF enable_blind_review: true
     1. Anonymize code changes
     2. Run review checks (linters, tests, style)
@@ -217,8 +217,8 @@ User can:
     4. Surface issues (don't block post)
     5. User can: Fix / Accept / Defer
 
-/spek.post Step 9: Archive Session
-/spek.post Step 10: Report Complete
+/spek.conclude Step 9: Archive Session
+/spek.conclude Step 10: Report Complete
 ```
 
 ---

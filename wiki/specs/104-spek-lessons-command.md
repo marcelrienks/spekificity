@@ -4,25 +4,25 @@
 **Type:** Skill — /spek.lessons (manual lesson extraction + query interface)  
 **Depends On:** lessons-format.md, memory-architecture.md, post-processing.md  
 **Requires:** Obsidian CLI (mandatory) for all vault/lessons/ operations and persistent memory management
-**Used By:** `/spek.post` (automatic), CLI entry point (manual queries)  
+**Used By:** `/spek.conclude` (automatic), CLI entry point (manual queries)  
 
 ---
 
 ## Overview
 
-`/spek.lessons` serves dual purpose: (1) automatic lesson generation called by `/spek.post` at feature end, and (2) manual query interface for searching + discovering past lessons. Lessons are extracted once at feature completion; immutable afterward.
+`/spek.lessons` serves dual purpose: (1) automatic lesson generation called by `/spek.conclude` at feature end, and (2) manual query interface for searching + discovering past lessons. Lessons are extracted once at feature completion; immutable afterward.
 
 ---
 
 ## Execution Modes
 
-### Mode 1: Automatic (Called by `/spek.post` Step 3)
+### Mode 1: Automatic (Called by `/spek.conclude` Step 3)
 
-**Entry point:** `/spek.post` internally invokes lesson generation (no user flag needed)
+**Entry point:** `/spek.conclude` internally invokes lesson generation (no user flag needed)
 
 **Behavior:**
 ```
-/spek.post step 3
+/spek.conclude step 3
   ├─ Collect artifacts (spec, plan, tasks, execution trace)
   ├─ Call /spek.lessons (internally, no user visibility)
   │  ├─ Generate 8-section lesson document
@@ -32,7 +32,7 @@
   └─ Continue to Step 4 (vault update)
 ```
 
-**Not a separate command invocation; embedded in `/spek.post` flow.**
+**Not a separate command invocation; embedded in `/spek.conclude` flow.**
 
 ---
 
@@ -51,11 +51,11 @@ spek lessons --regenerate [--dry-run]
 3. Read current artifacts (spec, plan, tasks, execution trace if exists)
 4. Generate lesson document (same 8-section format as auto mode)
 5. Write to temporary file (e.g., `/tmp/spek-lesson-preview.md`)
-6. Output: Preview + "Lesson ready; run `/spek.post` to finalize"
+6. Output: Preview + "Lesson ready; run `/spek.conclude` to finalize"
 
-**Use case:** Mid-feature validation (verify lessons will be comprehensive before `/spek.post`)
+**Use case:** Mid-feature validation (verify lessons will be comprehensive before `/spek.conclude`)
 
-**Immutability rule:** Once `/spek.post` runs and feature moves to `completing`, `/spek.lessons --regenerate` is blocked (use error: "Feature already completed; lessons immutable").
+**Immutability rule:** Once `/spek.conclude` runs and feature moves to `completing`, `/spek.lessons --regenerate` is blocked (use error: "Feature already completed; lessons immutable").
 
 ---
 
@@ -93,7 +93,7 @@ Total: 2 lessons
 
 ## Success Criteria
 
-- ✅ Automatic mode generates lessons in <10s (embedded in `/spek.post` Step 3)
+- ✅ Automatic mode generates lessons in <10s (embedded in `/spek.conclude` Step 3)
 - ✅ Manual regenerate mode works (preview lessons during feature)
 - ✅ Pattern query discovers relevant lessons (search by pattern name)
 - ✅ Full-text search finds lessons by keyword (grep-based query)
@@ -144,7 +144,7 @@ Total: 5 lessons (showing top 5)
 spek lessons [mode] [options]
 
 Modes:
-  (automatic)           # No mode flag; called by /spek.post
+  (automatic)           # No mode flag; called by /spek.conclude
   --regenerate          # Manual generation for current feature only
   --pattern=<name>      # Query lessons by pattern
   --search=<keyword>    # Full-text search
@@ -160,9 +160,9 @@ Global Options:
 
 ## Step Details
 
-### Automatic Mode (Called by `/spek.post`)
+### Automatic Mode (Called by `/spek.conclude`)
 
-**Execution inside `/spek.post` Step 3:**
+**Execution inside `/spek.conclude` Step 3:**
 
 ```
 Step 3: Generate lessons
@@ -210,7 +210,7 @@ Step 3: Generate lessons
    ├─ If --dry-run: show preview, don't write
    ├─ Else: write to /tmp/spek-lesson-preview.md
    ├─ Display: "Preview saved. Review output above."
-   └─ Guidance: "Run /spek.post to finalize + archive."
+   └─ Guidance: "Run /spek.conclude to finalize + archive."
 
 4. Success
    └─ Exit 0 (preview generated)
@@ -234,7 +234,7 @@ Generated lesson preview (not yet saved):
   Prepare + implement commands + feature state tracking. 
   ... [full 8 sections follow] ...
 
-Action: Complete remaining tasks, then run /spek.post to finalize lessons.
+Action: Complete remaining tasks, then run /spek.conclude to finalize lessons.
 Exit: spek lessons --regenerate (saved to /tmp/spek-lesson-preview.md for review)
 ```
 
@@ -343,7 +343,7 @@ Total: 5 lessons found (showing top 2)
 
 **Lesson Files:**
 - Location: `vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md` (managed via Obsidian CLI)
-- Created by: `/spek.post` Step 3 (automatic)
+- Created by: `/spek.conclude` Step 3 (automatic)
 - Immutable after creation (no updates)
 - Retention: Permanent (archived if marked status=archived in frontmatter)
 
@@ -372,8 +372,8 @@ commit_range: abc123..def456
 
 ## Success Criteria
 
-✅ Automatic: Lessons generated at `/spek.post` Step 3  
-✅ Manual: User can preview lessons before `/spek.post` with `--regenerate`  
+✅ Automatic: Lessons generated at `/spek.conclude` Step 3  
+✅ Manual: User can preview lessons before `/spek.conclude` with `--regenerate`  
 ✅ Pattern query: Returns all lessons mentioning pattern  
 ✅ Text search: Returns ranked results by relevance  
 ✅ Output: Markdown format with links + excerpts  
@@ -383,7 +383,7 @@ commit_range: abc123..def456
 
 ## Integration Points
 
-**With `/spek.post`:**
+**With `/spek.conclude`:**
 - Called automatically at Step 3 (no manual invocation needed)
 - Captures feature artifacts + writes lesson file
 - Immutability enforced afterward

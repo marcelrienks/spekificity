@@ -117,23 +117,23 @@ Use: 3-layer memory (decisions, patterns archived).
 
 ## Integration Points
 
-### Integration Point 1: Post-Feature Lesson Generation (`/spek.post`)
+### Integration Point 1: Post-Feature Lesson Generation (`/spek.conclude`)
 
 **When:** Feature completed, lessons extracted
 
 **Usage:**
 ```bash
 # Default: Full compression
-spek post
+spek conclude
 
 # Explicit: Lite compression (preserve detail)
-spek post --caveman-mode=lite
+spek conclude --caveman-mode=lite
 
 # Aggressive: Ultra compression (token budget low)
-spek post --caveman-mode=ultra
+spek conclude --caveman-mode=ultra
 
 # Dry-run: Preview compression
-spek post --caveman-mode=ultra --dry-run
+spek conclude --caveman-mode=ultra --dry-run
 ```
 
 **Workflow:**
@@ -210,7 +210,7 @@ Patterns: Use decorator-enrichment pattern for new tool.
 
 ---
 
-### Integration Point 4: Session Cleanup (`/spek.post` finale)
+### Integration Point 4: Session Cleanup (`/spek.conclude` finale)
 
 **When:** Feature complete, session memory archived
 
@@ -250,7 +250,7 @@ Patterns: Use decorator-enrichment pattern for new tool.
 - `--caveman-mode=ultra` — Maximum compression (extreme efficiency)
 
 **Applied To:**
-- `/spek.post --caveman-mode=lite` (feature lesson generation)
+- `/spek.conclude --caveman-mode=lite` (feature lesson generation)
 - `/spek.context --caveman-mode=full` (context loading)
 - `/spek.map --caveman-mode=lite` (graph export/merge, typically not compressed)
 
@@ -329,7 +329,7 @@ Both capture the same decision information; compression just removes verbosity.
 - [ ] Implement caveman-lite renderer (light prose to minimal prose)
 - [ ] Implement caveman-full renderer (lite → caveman syntax)
 - [ ] Implement caveman-ultra renderer (full → extreme compression)
-- [ ] Integrate `--caveman-mode` flag into `/spek.post`
+- [ ] Integrate `--caveman-mode` flag into `/spek.conclude`
 - [ ] Integrate compression mode into lesson generation
 - [ ] Integrate compression into decision archival (vault vs cache)
 - [ ] Integrate compression into pattern library updates

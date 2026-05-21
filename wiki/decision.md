@@ -436,7 +436,7 @@ This approach is validated from:
 
 ### Decision
 
-**Automate 70%+ of wikilink insertion and tag generation by implementing keyword extraction → vault mapping → auto-insert pipeline, enabled by default in `/spek.post` lesson generation step.**
+**Automate 70%+ of wikilink insertion and tag generation by implementing keyword extraction → vault mapping → auto-insert pipeline, enabled by default in `/spek.conclude` lesson generation step.**
 
 ---
 
@@ -484,7 +484,7 @@ Without automation:
 
 ### When to Use
 
-- During `/spek.post` lesson generation (enabled by default)
+- During `/spek.conclude` lesson generation (enabled by default)
 - Any time vault notes are created programmatically
 - For reducing manual cross-reference work
 
@@ -555,7 +555,7 @@ Without hierarchy:
 ### When to Use
 
 - Every `/spek.context` load (query graph first)
-- Every `/spek.automate` phase (use layers in order)
+- Every `/spek.plan` phase (use layers in order)
 - Every `/spek.implement` debugging session
 - Large codebases (>100 files)
 
@@ -653,7 +653,7 @@ Without automation:
 #### Backprop Reflex Solution
 
 **Failure → Learning Loop:**
-1. `/spek.post` Step 3 runs automated test failure analysis
+1. `/spek.conclude` Step 3 runs automated test failure analysis
 2. Parses failure output (error messages, stack traces, assertions)
 3. Extracts failure patterns (race condition, timeout, assertion, etc.)
 4. Updates vault with failure warnings (appended to related decisions/patterns)
@@ -839,7 +839,7 @@ Without validation:
 - Prevent tool sprawl
 
 **Implementation:**
-- Checks run during `/spek.automate` phases
+- Checks run during `/spek.plan` phases
 - Violations logged to `/memories/session/violations.md`
 - User can override via flag (documented in session)
 - Configuration customizable per project
@@ -939,7 +939,7 @@ Without blind review:
 - Production code (quality gates strict)
 - Security-sensitive code (auth, payments, etc.)
 - Team code review enabled (feed issues into review)
-- Post-implementation before `/spek.post`
+- Post-implementation before `/spek.conclude`
 
 ### When NOT to Use
 
@@ -977,7 +977,7 @@ Without budgets:
 
 **Per-Phase Tracking:**
 ```
-/spek.automate Specify Phase:
+/spek.plan Specify Phase:
   Budget: 2000 tokens
   Layer 1 queries: 500 tokens
   Layer 2 queries: 1000 tokens
@@ -1143,13 +1143,13 @@ START: "Do you use AI agents for development?"
 | ID | Title | Related Specs | Phase | When Activated |
 |:--:|-------|---------------|-------|---|
 | 4 | Zettelkasten Architecture | `zettelkasten-conventions.md` `lessons-format.md` `session-logs-vault-artifacts.md` | Phase 1 | Vault setup; all note creation |
-| 5 | Auto-Tagging & Auto-Wikilinks | `auto-tagging-wikilinks.md` `zettelkasten-conventions.md` `session-logs-vault-artifacts.md` | Phase 1 | `/spek.post` Step 3 (lesson generation) |
-| 6 | 3-Layer Query Rule | `3layer-query-rule.md` `codegraph-setup-complete.md` `memory-architecture.md` | Phase 1 | `/spek.context` load; `/spek.automate` phases |
+| 5 | Auto-Tagging & Auto-Wikilinks | `auto-tagging-wikilinks.md` `zettelkasten-conventions.md` `session-logs-vault-artifacts.md` | Phase 1 | `/spek.conclude` Step 3 (lesson generation) |
+| 6 | 3-Layer Query Rule | `3layer-query-rule.md` `codegraph-setup-complete.md` `memory-architecture.md` | Phase 1 | `/spek.context` load; `/spek.plan` phases |
 | 7 | Git Hooks Integration | `codegraph-setup-complete.md` Part 5 (git hook config) | Phase 1 | `spek setup`; post-commit execution |
-| 8 | Backprop Reflex | `backprop-reflex.md` `spek-lessons-command.md` `integration-validation-and-testing.md` | Phase 2 | `/spek.post` Step 3 (lesson generation) |
-| 9 | RARV Reflection Cycles | `rarv-reflection.md` `architectural-decisions.md` `feature-state-tracking.md` | Phase 2 | `/spek.post` Step 7 (optional; code vs spec analysis) |
-| 10 | Anti-Sycophancy Validation | `anti-sycophancy.md` `error-handling-and-recovery.md` `lessons-format.md` | Phase 2 | `/spek.automate` (specify + plan phases) |
-| 11 | Blind Code Review | `blind-code-review.md` `integration-validation-and-testing.md` `error-handling-and-recovery.md` | Phase 2 | `/spek.post` Step 8 (optional; pre-archival) |
+| 8 | Backprop Reflex | `backprop-reflex.md` `spek-lessons-command.md` `integration-validation-and-testing.md` | Phase 2 | `/spek.conclude` Step 3 (lesson generation) |
+| 9 | RARV Reflection Cycles | `rarv-reflection.md` `architectural-decisions.md` `feature-state-tracking.md` | Phase 2 | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
+| 10 | Anti-Sycophancy Validation | `anti-sycophancy.md` `error-handling-and-recovery.md` `lessons-format.md` | Phase 2 | `/spek.plan` (specify + plan phases) |
+| 11 | Blind Code Review | `blind-code-review.md` `integration-validation-and-testing.md` `error-handling-and-recovery.md` | Phase 2 | `/spek.conclude` Step 8 (optional; pre-archival) |
 | 12 | Token Budget Model | `token-budget.md` `spek-automate-workflow.md` `spek-map-command.md` | Phase 2 | All phases; tracked throughout feature |
 
 ---

@@ -17,6 +17,8 @@ updated: 2026-05-15
 
 **Origin:** Andrej Karpathy's insight about building personal knowledge bases. The core shift is philosophical—**you rarely touch the wiki directly. It's the LLM's domain. Your job is to feed it sources and ask questions. The LLM organizes, cross-links, and maintains everything.**
 
+> **Note:** While the LLM can assist with organizing, cross-linking, and maintaining the wiki, human oversight and periodic review are still required to ensure accuracy, resolve ambiguities, and maintain quality. The LLM's capabilities are powerful but not fully autonomous; user intervention is essential for best results.
+
 ---
 
 ## Vision & Philosophy
@@ -40,7 +42,7 @@ In Spekificity, **the Obsidian vault (Layer 1 of memory architecture)** is the L
 - **vault/decision.md** - Architectural decisions and rationale
 - **vault/intention.md** - Project vision and guiding principles
 
-When you run `spek post` (outcome archival), lessons, decisions, and patterns are automatically written to the vault and committed to Git. The vault becomes your **persistent, compounding knowledge base that survives all sessions**.
+When you run `spek conclude` (outcome archival), lessons, decisions, and patterns are automatically written to the vault and committed to Git. The vault becomes your **persistent, compounding knowledge base that survives all sessions**.
 
 **Integration:** The vault is Git-backed, version-controlled, and optional to open in Obsidian for visualization. It works equally well in any markdown editor or command-line tools.
 

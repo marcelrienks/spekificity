@@ -237,17 +237,17 @@ status: "active"
 
 ---
 
-## Implementation: /spek.post Integration
+## Implementation: /spek.conclude Integration
 
 ### Where Zettelkasten Format Applies
 
-**Artifact:** Lesson generation (Step 3 of `/spek.post`)
+**Artifact:** Lesson generation (Step 3 of `/spek.conclude`)
 
 **Current Spec Reference:** B.8.4 Post Command (Step 3: Generate Lessons)
 
 **Enhancement Points:**
 
-1. **Frontmatter Generation** (automatically in `/spek.post` Step 3)
+1. **Frontmatter Generation** (automatically in `/spek.conclude` Step 3)
    ```
    1. Extract feature name from `vault/session/`
    2. Generate title: "Lessons from [feature]"

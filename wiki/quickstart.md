@@ -44,7 +44,7 @@ Use this quick checklist (detailed verification in [setup.md](setup.md)):
 
 ```bash
 python3 --version   # 3.11 or higher
-git status          # On main branch, working tree clean
+git status          # Working tree clean; on main or feature branch (create feature branch for new features)
 specify --version   # Global SpecKit installed
 ```
 
@@ -55,7 +55,7 @@ specify --version   # Global SpecKit installed
 ```
 
 This command:
-1. ✅ Checks git working tree (should be clean)
+1. ✅ Checks git working tree (should be clean; feature branch recommended for new work)
 2. ✅ Pulls latest vault updates (from Obsidian sync)
 3. ✅ Refreshes CodeGraph from current code
 4. ✅ Loads session memory (decisions, patterns, lessons)

@@ -47,7 +47,7 @@ spek context --help
 **Note:** The `setup.sh` script is cross-platform (macOS, Linux, Windows) and will prompt for any manual steps if a dependency cannot be installed automatically.
 spek map --help
 spek implement --help
-spek post --help
+spek conclude --help
 spek lessons --help
 spek tools --help
 spek init --help
@@ -72,7 +72,7 @@ spek map --symbol UserService
 spek implement
 
 # 6. Archive outcomes
-spek post
+spek conclude
 
 # 7. Extract lessons
 spek lessons

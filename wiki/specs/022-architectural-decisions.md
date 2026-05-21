@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Memory Layer 2 — Architectural Decisions  
 **Depends On:** lessons-format.md, memory-architecture.md  
-**Used By:** /spek.context (read at session start), /spek.post (write at feature end)  
+**Used By:** /spek.context (read at session start), /spek.conclude (write at feature end)  
 
 ---
 
@@ -192,7 +192,7 @@ See wiki/vault/decision.md for full history. Recent supersessions:
 
 ### Update Rules
 
-**Sync Trigger:** After each feature (`/spek.post` step 4)
+**Sync Trigger:** After each feature (`/spek.conclude` step 4)
 
 **Sync Process:**
 1. Read wiki/vault/decision.md
@@ -221,7 +221,7 @@ See wiki/vault/decision.md for full history. Recent supersessions:
 - When major architectural choice needs documentation → Add to `vault/session/` (decisions made this feature)
 - Mark for inclusion in lessons when feature completes
 
-**At feature end (`/spek.post` step 4):**
+**At feature end (`/spek.conclude` step 4):**
 - Extract decisions from lessons → Append to wiki/vault/decision.md
 - De-duplicate (check if decision already exists)
 - Mark status and feature source
@@ -287,7 +287,7 @@ Recent decisions are injected into `/spek.plan` specify and plan prompts to guid
 ## Implementation Checklist
 
 - [ ] Create wiki/vault/decision.md template
-- [ ] Implement decision extraction in /spek.post
+- [ ] Implement decision extraction in /spek.conclude
 - [ ] Implement decision sync to vault/repo/
 - [ ] Update /spek.context to load recent decisions
 - [ ] Add decision query patterns to wiki guide

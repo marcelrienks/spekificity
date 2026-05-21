@@ -21,12 +21,12 @@ START
   ├─ Load context
   └─ Create feature state file
   ↓
-/spek.automate (specify) → 25% (specifying)
+/spek.plan (specify) → 25% (specifying)
   ├─ Load decisions + patterns
   ├─ Call /speckit.specify
   └─ Validate spec aligns with decisions
   ↓
-/spek.automate (plan) → 50% (planning)
+/spek.plan (plan) → 50% (planning)
   ├─ Load decisions + patterns + code graph
   ├─ Call /speckit.plan
   └─ Validate plan follows architecture
@@ -36,35 +36,35 @@ START
   ├─ Execute implementation tasks
   └─ Collect code diff
   ↓
-/spek.post → 100% (completing)
+/spek.conclude → 100% (completing)
   ├─ Extract lessons
   ├─ Update vault
   └─ Archive session
   ↓
 COMPLETE
 ```
-
+  /spek.plan (specify) → 25% (specifying)
 ---
 
 ## Why Use It
 
 - ✅ Deterministic (same inputs → same outputs)
-- ✅ No skipped steps (validator prevents phase jumps)
+  /spek.plan (plan) → 50% (planning)
 - ✅ Progress visible (completion % tracked)
 - ✅ Resumable (feature state persists across sessions)
 - ✅ Auditable (session log records all transitions)
 
 ---
-
+  /spek.conclude → 100% (completing)
 ## When to Use
 
 ✅ Multi-phase workflows with dependencies  
 ✅ Process compliance (no skipping steps)  
 ✅ Multi-session features (resumable)  
-
-❌ Ad-hoc development (phases too rigid)  
-❌ Prototyping (overhead slows iteration)  
-❌ One-shot scripts (state overhead)  
+  /spek.conclude → 100% (completing)
+    ├─ Extract lessons
+    ├─ Update vault
+    └─ Archive session
 
 ---
 

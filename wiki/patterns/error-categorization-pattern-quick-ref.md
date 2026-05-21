@@ -172,7 +172,7 @@ Example:
   Error: /speckit.specify failed
   Details: Spec generation timed out after 60s
   Action: Increase timeout or simplify feature description
-  Then: /spek.automate [revised-description]
+  Then: /spek.plan [revised-description]
 ```
 
 ### Category 6: User Errors

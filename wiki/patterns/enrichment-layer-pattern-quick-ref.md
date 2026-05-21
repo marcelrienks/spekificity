@@ -3,7 +3,7 @@
 **Category:** Architectural  
 **Problem:** SpecKit commands run without context; specs diverge from decisions  
 **Solution:** Wrap phases with context injection: PRE (load context) → CORE (SpecKit) → POST (validate)  
-**Used in:** `/spek.automate` (all phases)  
+**Used in:** `/spek.plan` (all phases)  
 
 ---
 
@@ -14,7 +14,7 @@ Context injection for each SpecKit phase (specify, plan, implement):
 ```
 ENRICHMENT WORKFLOW
 
-/spek.automate [feature-description]
+/spek.plan [feature-description]
 ├─ SPECIFY PHASE
 │  ├─ PRE: Load decisions + patterns
 │  ├─ CORE: Call /speckit.specify (enriched)

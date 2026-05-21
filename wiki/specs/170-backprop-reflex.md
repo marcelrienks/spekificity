@@ -27,7 +27,7 @@ Automatically capture and learn from test failures by:
 - Test failure detection + parsing
 - Failure pattern extraction (semantic analysis)
 - Vault update strategy (append to decision/pattern)
-- Integration into `/spek.post` Step 3 (Generate Lessons)
+- Integration into `/spek.conclude` Step 3 (Generate Lessons)
 - Integration into `/spek.context` Step 3 (surface warnings for current feature)
 - Backward propagation logic
 
@@ -46,7 +46,7 @@ Automatically capture and learn from test failures by:
 - ✅ Future specs tagged with failure pattern warnings (prevents repeats)
 - ✅ Feedback loop: test failures → vault learnings → better specs → fewer failures
 - ✅ Failure notes captured with context (full stack trace + test name + severity)
-- ✅ Integration into `/spek.post` Step 3 seamless (user sees "Failure analysis complete")
+- ✅ Integration into `/spek.conclude` Step 3 seamless (user sees "Failure analysis complete")
 
 ---
 
@@ -62,10 +62,10 @@ Automatically capture and learn from test failures by:
 
 ### End-of-Feature Failure Analysis
 
-**When:** During `/spek.post` Step 3 (Generate Lessons)
+**When:** During `/spek.conclude` Step 3 (Generate Lessons)
 
 ```
-/spek.post Step 3: Generate Lessons
+/spek.conclude Step 3: Generate Lessons
   1. Collect artifacts (spec, plan, tasks, trace)
   2. Generate lesson content
   3. [NEW] Run test failure analysis
@@ -259,12 +259,12 @@ When using singleton pattern:
 
 ---
 
-## Integration: /spek.post Step 3 Enhancement
+## Integration: /spek.conclude Step 3 Enhancement
 
 ### Current Workflow
 
 ```
-/spek.post Step 3: Generate Lessons
+/spek.conclude Step 3: Generate Lessons
   → Generate lesson markdown
   → Auto-link + auto-tag
   → Save lesson
@@ -273,7 +273,7 @@ When using singleton pattern:
 ### Enhanced with Backprop
 
 ```
-/spek.post Step 3: Generate Lessons (Enhanced)
+/spek.conclude Step 3: Generate Lessons (Enhanced)
   1. Generate lesson markdown (existing)
   2. [NEW] Run test failure analysis
      a. Query last test run (CI/CD API or local)

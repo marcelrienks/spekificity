@@ -63,7 +63,7 @@ All commands follow:
 
 # Examples
 /spek.prepare                              # Prepare for feature
-/spek.automate --phase=specify             # Run spec phase
+/spek.plan --phase=specify             # Run spec phase
 /spek.implement feature-name --verbose     # Verbose output
 /cg.query symbol my_function               # Query code graph
 ```
@@ -103,11 +103,11 @@ All commands follow:
 ```markdownspek.*` prefix)
 Spekificity-owned skills for orchestration, context, and enhancement.
 - `/spek.prepare` — Pre-feature setup
-- `/spek.post` — Post-feature finalization
+- `/spek.conclude` — Post-feature finalization
 - `/spek.context` — Load vault context
 - `/spek.map` — Index source code
 - `/spek.lessons` — Extract lessons learned
-- `/spek.automate` — Full automation workflow
+- `/spek.plan` — Full automation workflow
 
 ### SpecKit Vanilla (`speckit.*` prefix)
 Spec-driven framework commands (unchanged; distinct namespace for clarity).
@@ -117,7 +117,7 @@ Spec-driven framework commands (unchanged; distinct namespace for clarity).
 
 ### Spekificity Workflow Commands (`spek.*` prefix)
 Spekificity exposes workflow-level commands rather than one wrapper per SpecKit phase.
-- `/spek.automate` — Orchestrates specify → clarify → plan → analyze → remediate → tasks
+- `/spek.plan` — Orchestrates specify → clarify → plan → analyze → remediate → tasks
 - `/spek.implement` — Runs implementation after workflow artifacts are approved
 
 **User mental model:** 
@@ -138,10 +138,10 @@ spek.context-load` | `spek.context` | Keep prefix; simplify command portion |
 | `spek.map-codebase` | `spek.map` | Keep prefix; simplify command portion |
 | `spek.lessons-learnt` | `spek.lessons` | Keep prefix; simplify command portion |
 | `spek.prepare` | `spek.prepare` | **UNCHANGED** (already simple) |
-| `spek.post` | `spek.post` | **UNCHANGED** (already simple) |
-| `spek.automate` | `spek.automate` | **UNCHANGED** (already simple) |
-| `speckit-enrich-specify` | `spek.automate` | Collapse wrapper into workflow orchestrator |
-| `speckit-enrich-plan` | `spek.automate` | Collapse wrapper into workflow orchestrator |
+| `spek.conclude` | `spek.conclude` | **UNCHANGED** (already simple) |
+| `spek.plan` | `spek.plan` | **UNCHANGED** (already simple) |
+| `speckit-enrich-specify` | `spek.plan` | Collapse wrapper into workflow orchestrator |
+| `speckit-enrich-plan` | `spek.plan` | Collapse wrapper into workflow orchestrator |
 | `speckit-enrich-implement` | `spek.implement` | Keep separate enriched execution command |
 | `/speckit.specify` | `/speckit.specify` | **UNCHANGED** (vanilla SpecKit, distinct namespace) |
 | `/speckit.plan` | `/speckit.plan` | **UNCHANGED** (vanilla SpecKit, distinct namespace) |
@@ -151,13 +151,13 @@ spek.context-load` | `spek.context` | Keep prefix; simplify command portion |
 | Simplify command portion? | **One word when possible** | Shorter to type; easier to remember |
 | Use hyphenation in commands? | **Only if one word insufficient** | Prefer single words (e.g., `context` not `load-context`); hyphens acceptable if needed |
 | Namespace prefix for SpecKit skills? | **Yes (`speckit.*`), unchanged** | Intentional distinction; SpecKit-owned tools |
-| Namespace prefix for workflow commands? | **Yes (`spek.*`)** | `spek.automate` and `spek.implement` remain distinct from upstream SpecKit commands |
+| Namespace prefix for workflow commands? | **Yes (`spek.*`)** | `spek.plan` and `spek.implement` remain distinct from upstream SpecKit commands |
 | Should skill directories use prefix? | **Yes (`spek-` prefix in directory name)** | Groups all Spekificity skills together in filesystem; easy to scan |
 | Should directory suffix match command? | **Yes, exactly** | Directory `spek-context/` → command `/spek.context` → remove ambiguity
 | Question | Decision | Rationale |
 |----------|----------|-----------|
 | One word or hyphenated? | **One word when possible, hyphenated when needed** | Shorter invocation; user preference |
-| Use dot notation? | **No** | User prefers hyphens; dots reserved for namespace distinction (speckit.*) |
+| Use dot notation? | **Yes** | Use dot notation for CLI command names (e.g., `/spek.prepare`, `/speckit.specify`). Use kebab-case for file and artifact names (e.g., `feature-name.md`). |
 | Namespace prefix for spekificity skills? | **No** | Global scope; namespace clarity via documentation |
 | Namespace prefix for SpecKit skills? | **Yes (`speckit.*`)** | Intentional distinction; SpecKit-owned tools |
 | Namespace prefix for enriched wrappers? | **No, but use `-enrich` suffix** | Suffix signals wrapper; no prefix needed |
@@ -168,7 +168,7 @@ spek.context-load` | `spek.context` | Keep prefix; simplify command portion |
 
 ## Success Criteria
 
-- [x] User-facing Spekificity workflow commands reduced to `/spek.automate` and `/spek.implement`
+- [x] User-facing Spekificity workflow commands reduced to `/spek.plan` and `/spek.implement`
 - [x] SpecKit vanilla commands use `speckit.*` namespace (unchanged, intentional distinction)
 - [x] Spekificity does not mirror every SpecKit phase as separate primary commands
 - [x] Directory names match command invocations
@@ -181,7 +181,7 @@ spek.context-load` | `spek.context` | Keep prefix; simplify command portion |
 /spek.context               # Load vault context independently
 
 # Workflow
-/spek.automate              # Orchestrate spec -> plan -> analyze -> remediate -> tasks
+/spek.plan              # Orchestrate spec -> plan -> analyze -> remediate -> tasks
 
 # Implement
 /spek.implement             # Execute implementation after workflow artifacts are approved
@@ -228,7 +228,7 @@ Consistent `spek.*` prefix** — All Spekificity commands start with `/spek.` (v
 - **Simplified command portions** — One-word commands easier to type and remember (`context`, `map`, `lessons`, `prepare`, `post`, `automate`)
 - **Namespace ownership visible** — Prefix immediately communicates who owns the command (Spekificity vs SpecKit)
 - **Filesystem organization** — Directory structure `spek-context/`, `spek-map/`, `spek-lessons/` groups all Spekificity skills together and clearly shows which commands exist
-- **Workflow-first experience** — `/spek.automate` owns spec-through-task orchestration; `/spek.implement` stays separate so execution does not happen automatically
+- **Workflow-first experience** — `/spek.plan` owns spec-through-task orchestration; `/spek.implement` stays separate so execution does not happen automatically
 
 Result: Commands are memorable, discoverable, namespace-awarfix immediately communicates "this wraps a SpecKit command"
 

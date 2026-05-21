@@ -371,12 +371,12 @@ When lesson auto-links to multiple patterns:
 
 ---
 
-## Integration: /spek.post Step 3 Enhancement
+## Integration: /spek.conclude Step 3 Enhancement
 
 ### Current Workflow (B.8.4)
 
 ```
-/spek.post Step 3: Generate Lessons
+/spek.conclude Step 3: Generate Lessons
   1. Collect artifacts (spec, plan, tasks, trace)
   2. Generate lesson content (What/How/Tasks/Decisions/Patterns/Next/Metrics)
   3. Save to wiki/vault/lessons/<date>-<feature>-*.md
@@ -385,7 +385,7 @@ When lesson auto-links to multiple patterns:
 ### Enhanced Workflow (with C.3.2)
 
 ```
-/spek.post Step 3: Generate Lessons (Enhanced)
+/spek.conclude Step 3: Generate Lessons (Enhanced)
   1. Collect artifacts (spec, plan, tasks, trace)
   2. Generate lesson content (What/How/Tasks/Decisions/Patterns/Next/Metrics)
   3. [NEW] Auto-extract keywords from generated lesson
@@ -398,7 +398,7 @@ When lesson auto-links to multiple patterns:
 
 ### Implementation Details
 
-**In `/spek.post` Step 3 code:**
+**In `/spek.conclude` Step 3 code:**
 
 ```python
 def generate_lesson_with_auto_linking(spec, plan, tasks, trace):
@@ -475,7 +475,7 @@ def generate_lesson_with_auto_linking(spec, plan, tasks, trace):
 ### Scenario A: Auto-Linking Succeeds (Happy Path)
 
 ```
-1. /spek.post generates lesson
+1. /spek.conclude generates lesson
 2. Auto-linking extracts keywords (dependency-injection, singleton, testing)
 3. All keywords match vault items with high confidence
 4. Wikilinks auto-inserted: [[dependency-injection-pattern]], etc.
@@ -489,7 +489,7 @@ Result: ✅ Fully interconnected lesson, zero manual work
 ### Scenario B: Partial Auto-Linking (Needs Review)
 
 ```
-1. /spek.post generates lesson
+1. /spek.conclude generates lesson
 2. Auto-linking extracts keywords (dependency-injection, custom-service-locator, testing)
 3. "dependency-injection" matches perfectly
 4. "custom-service-locator" has low confidence (0.65 < 0.75 threshold)

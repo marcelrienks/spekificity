@@ -157,7 +157,7 @@ spek.context-load` | `spek.context` | Keep prefix; simplify command portion |
 | Question | Decision | Rationale |
 |----------|----------|-----------|
 | One word or hyphenated? | **One word when possible, hyphenated when needed** | Shorter invocation; user preference |
-| Use dot notation? | **No** | User prefers hyphens; dots reserved for namespace distinction (speckit.*) |
+| Use dot notation? | **Yes** | Use dot notation for CLI command names (e.g., `/spek.prepare`, `/speckit.specify`). Use kebab-case for file and artifact names (e.g., `feature-name.md`). |
 | Namespace prefix for spekificity skills? | **No** | Global scope; namespace clarity via documentation |
 | Namespace prefix for SpecKit skills? | **Yes (`speckit.*`)** | Intentional distinction; SpecKit-owned tools |
 | Namespace prefix for enriched wrappers? | **No, but use `-enrich` suffix** | Suffix signals wrapper; no prefix needed |

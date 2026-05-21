@@ -178,7 +178,7 @@ Automatically capture and learn from test failures by:
 **When:** During `/spek.conclude` Step 3 (Generate Lessons)
 
 ```
-/spek.post Step 3: Generate Lessons (Enhanced)
+/spek.conclude Step 3: Generate Lessons (Enhanced)
   1. Generate lesson markdown
   2. [NEW] Run test failure analysis
      a. Get last test run results
@@ -455,10 +455,10 @@ User: "I'm uncertain about service pattern"
   → Full RARV at end confirms alignment
 ```
 
-### Integration: /spek.post Step 7
+### Integration: /spek.conclude Step 7
 
 ```
-/spek.post Step 7: RARV Reflection Cycle (Enhanced)
+/spek.conclude Step 7: RARV Reflection Cycle (Enhanced)
 
   7.1. REASON: Compare code vs. spec
   7.2. ACT: Fix deviations (if any)
@@ -498,7 +498,7 @@ rarv:
 - ✅ REFLECT phase auto-updates vault decisions + patterns
 - ✅ VERIFY phase confirms alignment > 90%
 - ✅ Multi-pass loops supported
-- ✅ Integrated into `/spek.post` Step 7
+- ✅ Integrated into `/spek.conclude` Step 7
 - ✅ Mid-feature `/spek.rarv` command available
 - ✅ Alignment reports generated for every feature
 - ✅ Decision drift prevented across features
@@ -609,12 +609,12 @@ User reviews report and:
 - **Option B:** Accept issues → Document rationale
 - **Option C:** Defer to next sprint → Create tech debt item
 
-### Integration: /spek.post Step 8b
+### Integration: /spek.conclude Step 8b
 
 ```
-/spek.post Step 8: Simplify Docs
+/spek.conclude Step 8: Simplify Docs
 
-/spek.post Step 8b [NEW]: Blind Code Review (Optional)
+/spek.conclude Step 8b [NEW]: Blind Code Review (Optional)
   IF enable_blind_review: true
     1. Anonymize code changes
     2. Run review checks (linters, tests, style)
@@ -622,7 +622,7 @@ User reviews report and:
     4. Surface issues (don't block post)
     5. User can: Fix / Accept / Defer
 
-/spek.post Step 9: Archive Session
+/spek.conclude Step 9: Archive Session
 ```
 
 ### Configuration
@@ -778,7 +778,7 @@ This file consolidates 4 validation pattern specifications (C.3.6, C.3.7, C.3.8,
 **Why consolidated?**
 - All 4 patterns serve similar purpose (validation + learning)
 - Related status (Phase 2 implementation, post-launch features)
-- Integration points overlap (/spek.post, /spek.plan, /spek.context)
+- Integration points overlap (/spek.conclude, /spek.plan, /spek.context)
 - Users benefit from seeing all options in one place
 
 **Original files (now archived):**

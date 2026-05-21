@@ -3,7 +3,7 @@
 **Category:** Compression  
 **Problem:** Lessons + vault updates cost 5-10K tokens; multi-feature sessions hit budget  
 **Solution:** Ultra-compressed communication (75-90% token reduction)  
-**Used in:** `/spek.post` lessons generation, vault compression  
+**Used in:** `/spek.conclude` lessons generation, vault compression  
 
 ---
 
@@ -41,7 +41,7 @@ Ultra (90% reduction):
 
 ## When to Use
 
-✅ Lessons generation (integration point at `/spek.post`)  
+✅ Lessons generation (integration point at `/spek.conclude`)  
 ✅ Vault compression (/memories/repo cache)  
 ✅ Multi-feature sessions (token budget tight)  
 

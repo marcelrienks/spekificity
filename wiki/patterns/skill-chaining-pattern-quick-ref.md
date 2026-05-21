@@ -3,7 +3,7 @@
 **Category:** Workflow  
 **Problem:** Workflow has dependent skills; sequential execution needs error handling  
 **Solution:** Chain skills with explicit dependency management  
-**Used in:** `/spek.automate` orchestration  
+**Used in:** `/spek.plan` orchestration  
 
 ---
 
@@ -14,7 +14,7 @@ Sequential execution of dependent skills with error resilience:
 ```
 SKILL CHAINING
 
-/spek.automate [feature-description]
+/spek.plan [feature-description]
 ├─ Orchestrator: Determine skill order
 │  └─ canonical or auto-detected workflow
 │

@@ -34,13 +34,13 @@ Lifecycle Transitions:
   initialized (0%)
     ↓ /spek.prepare
   prepared (0%)
-    ↓ /spek.automate (specify)
+    ↓ /spek.plan (specify)
   specifying (25%)
-    ↓ /spek.automate (plan)
+    ↓ /spek.plan (plan)
   planning (50%)
     ↓ /spek.implement
   implementing (75%)
-    ↓ /spek.post
+    ↓ /spek.conclude
   completing (100%)
 ```
 
@@ -120,14 +120,14 @@ INIT → PREPARED:
   → Set phase="prepared", completion=0%
 
 PREPARED → SPECIFYING:
-  ✓ /spek.automate (specify) invoked
+  ✓ /spek.plan (specify) invoked
   ✓ Feature state exists
   ✓ Context loaded
   → Set phase="specifying", completion=25%
 
 SPECIFYING → PLANNING:
   ✓ spec.md exists
-  ✓ /spek.automate (plan) invoked
+  ✓ /spek.plan (plan) invoked
   → Set phase="planning", completion=50%
 
 PLANNING → IMPLEMENTING:
@@ -138,7 +138,7 @@ PLANNING → IMPLEMENTING:
 
 IMPLEMENTING → COMPLETING:
   ✓ Implementation complete
-  ✓ /spek.post invoked
+  ✓ /spek.conclude invoked
   → Set phase="completing", completion=100%
 
 COMPLETING → DONE:

@@ -27,7 +27,7 @@
    ├─ Feature work (specify → plan → implement)
    └─ Memory: update vault/session/
 
-3. /spek.post
+3. /spek.conclude
    ├─ Lessons: generate vault/lessons/<date>-<feature>.md
    ├─ Vault: append decisions + patterns to vault/decision.md + vault/patterns.md
    ├─ Git: commit "Feature: <name>" to feature branch
@@ -77,7 +77,7 @@ Feature Work (Developer A):
    └─ Vault: NO writes during feature (avoid conflicts)
 
 Feature End (Developer A):
-3. /spek.post
+3. /spek.conclude
    ├─ Lessons: generate vault/lessons/<date>-<feature>-a.md (LOCAL only, not in vault yet)
    ├─ NEW: Draft decisions/patterns additions (vault-update-draft.md, LOCAL)
    └─ Git: commit everything to feature branch (branch contains: code + lessons + draft updates)
@@ -108,7 +108,7 @@ Repo (main):
 
 Feature Branch (spek-<feature>-<initials>):
 ├─ Code changes (feature implementation)
-├─ vault/lessons/<date>-<feature>-<initials>.md (generated during /spek.post)
+├─ vault/lessons/<date>-<feature>-<initials>.md (generated during /spek.conclude)
 ├─ vault-update-draft.md (proposed decisions + patterns)
 └─ vault/session/current-feature-<initials>.md (local, deleted post-merge)
 ```
@@ -373,7 +373,7 @@ git branch -d spek-<feature>-<initials>
 git push origin --delete spek-<feature>-<initials>
 
 # Vault: Move vault/session/ → vault/sessions/<date>-<feature>.md
-# (Happens during /spek.post; confirmed during merge review)
+# (Happens during /spek.conclude; confirmed during merge review)
 ```
 
 ---
@@ -569,7 +569,7 @@ attendees: [Developer A, B, C]
    → Work on branch
    → Update memory
 
-3. /spek.post
+3. /spek.conclude
    → Lessons generated
    → Decisions drafted
    → Git commit
@@ -598,7 +598,7 @@ Feature branch created
     ↓
 Work isolated on branch
     ↓
-/spek.post: generate lessons + draft decisions
+/spek.conclude: generate lessons + draft decisions
     ↓
 Git: PR to main
     ↓
@@ -691,7 +691,7 @@ Step 8: Notify (NEW)
     → Post to vault/coordination/checkins.md "Feature Start: ..."
 ```
 
-### 11.2 Updated `/spek.post` (Team Mode)
+### 11.2 Updated `/spek.conclude` (Team Mode)
 
 ```
 Step 1-3: [same as before]

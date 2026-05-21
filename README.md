@@ -118,13 +118,13 @@ FEATURE START
     ↓
 /spek.prepare (workspace ready)
     ↓
-/spek.automate --phase=specify (spec generation)
+/spek.plan --phase=specify (spec generation)
     ↓
-/spek.automate --phase=plan (planning + task breakdown)
+/spek.plan --phase=plan (planning + task breakdown)
     ↓
 /spek.implement (execute)
     ↓
-/spek.post (archive lessons, refresh state)
+/spek.conclude (archive lessons, refresh state)
     ↓
 FEATURE COMPLETE
 ```
@@ -175,7 +175,7 @@ Start with this reading order—each doc builds on the previous:
 |------|-----------------|---------|-----------|
 | **Phase** | "Phase 1: Prepare", "Phase 2: Specify", etc. (5 total) | "stage", "step" | One of five deterministic workflow stages in feature development |
 | **Closeout** | "Phase 5: Post-Feature Closeout" | "Close", "post-processing", "archive phase" | Final phase where artifacts are archived and lessons extracted |
-| **Lessons Learned** | "lessons learned", "lessons" (in context of `/spek.post` output) | "reflection", "retrospective", "what we learned" | Structured insights captured at feature end (what worked, what didn't, patterns) |
+| **Lessons Learned** | "lessons learned", "lessons" (in context of `/spek.conclude` output) | "reflection", "retrospective", "what we learned" | Structured insights captured at feature end (what worked, what didn't, patterns) |
 | **CodeGraph** | "CodeGraph" (always capitalized, never "code graph") | "code intelligence tool", "code analysis" | Pre-indexed SQLite code analysis tool; primary source of code intelligence |
 | **Enrichment Layer** | "enrichment layers" (plural when multiple) | "context layers", "structured context" | Context-specific information added to specs/plans (Success Criteria, Assumptions, Risk Assessment, etc.) |
 | **SpecKit** | "SpecKit" or "/speckit.*" commands | "spec framework", "specification tool" | Underlying spec-driven workflow engine (upstream tool, not Spekificity-specific) |
@@ -188,7 +188,7 @@ Start with this reading order—each doc builds on the previous:
 
 1. Read [wiki/quickstart.md](wiki/quickstart.md) (30 min)
 2. Run `/spek.prepare` to initialize your workspace
-3. Create your first feature spec with `/spek.automate --phase=specify`
+3. Create your first feature spec with `/spek.plan --phase=specify`
 
 **Questions?** See [wiki/faq.md](wiki/faq.md).
 
@@ -216,8 +216,8 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 The intended Spekificity workflow is:
 
-1. Run `/spek.automate` to load project context and orchestrate spec generation.
-2. Let `/spek.automate` drive the upstream SpecKit flow through specify, clarify (if needed), plan, tasks, analyze, and remediation.
+1. Run `/spek.plan` to load project context and orchestrate spec generation.
+2. Let `/spek.plan` drive the upstream SpecKit flow through specify, clarify (if needed), plan, tasks, analyze, and remediation.
 3. Review resulting artifacts.
 4. Run `/spek.implement` to execute against approved spec, plan, tasks, and code context.
 5. Capture lessons and refresh durable project memory.
@@ -227,12 +227,12 @@ Canonical user-facing command surface is:
 - `/spek.prepare` — initialize workspace, git state, graph freshness, and feature state
 - `/spek.context` — load or reload project context into session
 - `/spek.map` — build or refresh code/document graph
-- `/spek.automate` — orchestrate spec-first flow through task generation
+- `/spek.plan` — orchestrate spec-first flow through task generation
 - `/spek.implement` — execute implementation after automation has prepared artifacts
-- `/spek.post` — archive feature outcomes, lessons, vault updates, and graph refresh
+- `/spek.conclude` — archive feature outcomes, lessons, vault updates, and graph refresh
 - `/spek.lessons` — extract structured lessons explicitly when needed
 
-Primary workflow commands are `/spek.automate` and `/spek.implement`. Support commands remain user-facing and may also be called internally when orchestration needs them.
+Primary workflow commands are `/spek.plan` and `/spek.implement`. Support commands remain user-facing and may also be called internally when orchestration needs them.
 
 Vanilla SpecKit commands remain part of the underlying model:
 
@@ -243,7 +243,7 @@ Vanilla SpecKit commands remain part of the underlying model:
 - `/speckit.tasks`
 - `/speckit.implement`
 
-Use the `/spek.*` surface when following the Spekificity workflow. **Enrichment** means context injection: `/spek.automate` loads decisions and patterns from the knowledge vault before calling `/speckit.specify`, `/speckit.plan`, etc., so those commands operate with project-specific constraints already in scope. This guides spec and plan generation toward existing patterns without requiring manual context setup.
+Use the `/spek.*` surface when following the Spekificity workflow. **Enrichment** means context injection: `/spek.plan` loads decisions and patterns from the knowledge vault before calling `/speckit.specify`, `/speckit.plan`, etc., so those commands operate with project-specific constraints already in scope. This guides spec and plan generation toward existing patterns without requiring manual context setup.
 
 Vanilla SpecKit commands remain the execution layer; Spekificity adds context loading, orchestration, and post-processing around them.
 

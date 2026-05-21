@@ -105,7 +105,7 @@ The Obsidian vault is your persistent memory layer—lessons learned, decisions,
 ```
 your-project/
 ├── vault/                    ← Created automatically by spek init
-│   ├── lessons/              ← written by spek post (per-feature lessons)
+│   ├── lessons/              ← written by spek conclude (per-feature lessons)
 │   ├── patterns.md           ← reusable patterns discovered
 │   ├── decision.md           ← architectural decisions and rationale
 │   └── intention.md          ← project vision and guiding principles

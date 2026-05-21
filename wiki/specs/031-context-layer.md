@@ -234,7 +234,7 @@ Session Start
   ├─ /spek.implement (Use feature state context)
   │  └─ Current feature state guides task execution
   │
-  └─ /spek.post (Archive context)
+  └─ /spek.conclude (Archive context)
      └─ Extract decisions + patterns
      └─ Write to vault
      └─ Sync to repo memory

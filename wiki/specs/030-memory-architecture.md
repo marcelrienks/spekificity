@@ -3,7 +3,7 @@
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Memory Layer — Three-layer model with lifecycle  
 **Replaces:** context-load-lifecycle.md, session-memory.md, persistent-memories-and-lessons.md  
-**Used By:** /spek.context, /spek.prepare, /spek.post (all enrichment layers read context)  
+**Used By:** /spek.context, /spek.prepare, /spek.conclude (all enrichment layers read context)  
 
 ---
 
@@ -90,7 +90,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 **File:** `vault/lessons/<YYYY-MM-DD>-<feature-number>-<feature-name>.md`  
 **Scope:** Persists across all sessions  
 **Granularity:** One file per completed feature  
-**Ownership:** Written by `/spek.post` at feature end; read by `/spek.context` at session start
+**Ownership:** Written by `/spek.conclude` at feature end; read by `/spek.context` at session start
 
 **Content (Template from specifications):**
 ```markdown
@@ -121,7 +121,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 [Links to spec.md, plan.md, PR, decision.md entries]
 ```
 
-**Write Trigger:** Feature complete: `/spek.post` step 3 → generate lessons → write to vault/lessons/
+**Write Trigger:** Feature complete: `/spek.conclude` step 3 → generate lessons → write to vault/lessons/
 
 **Read Trigger:** 
 - Session start: `/spek.context` reads recent 3-5 lesson files → includes in context briefing
@@ -146,7 +146,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 **File (Repo Memory):** `vault/repo/architectural-decisions.md`  
 **Scope:** Persists across all sessions  
 **Granularity:** One entry per decision (heading per decision)  
-**Ownership:** Written by `/spek.post` when decisions emerge; read by `/spek.context` at session start
+**Ownership:** Written by `/spek.conclude` when decisions emerge; read by `/spek.context` at session start
 
 **Vault Format:**
 ```markdown
@@ -184,7 +184,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 [Most impactful 5-10 decisions with 1-line summary each]
 ```
 
-**Write Trigger:** Feature end: `/spek.post` step 4 → extract decisions from lessons → append to vault/decision.md and sync to repo memory
+**Write Trigger:** Feature end: `/spek.conclude` step 4 → extract decisions from lessons → append to vault/decision.md and sync to repo memory
 
 **Read Trigger:**
 - Session start: `/spek.context` reads recent decisions → includes in context
@@ -201,7 +201,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 **File:** `vault/patterns.md`  
 **Scope:** Persists across all sessions  
 **Granularity:** One entry per pattern (heading per pattern)  
-**Ownership:** Written by `/spek.post` when patterns emerge; read by `/spek.context` at session start and during planning
+**Ownership:** Written by `/spek.conclude` when patterns emerge; read by `/spek.context` at session start and during planning
 
 **Format:**
 ```markdown
@@ -236,7 +236,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 - [Edge cases]
 ```
 
-**Write Trigger:** Feature end: `/spek.post` step 4 → identify new/refined patterns from lessons → append to vault/patterns.md with "Last Used" updated
+**Write Trigger:** Feature end: `/spek.conclude` step 4 → identify new/refined patterns from lessons → append to vault/patterns.md with "Last Used" updated
 
 **Read Trigger:**
 - Spec writing: Agent queries "patterns for [domain]" → grep vault/patterns.md for tags
@@ -612,7 +612,7 @@ completion: 0
 **Write Triggers:**
 - Feature start: `/spek.prepare` creates with initialized status
 - End of each session: Updates progress
-- Feature end: `/spek.post` archives and converts to lessons
+- Feature end: `/spek.conclude` archives and converts to lessons
 
 **Read Triggers:**
 - Feature continuation: Agent reads at session start to resume work
@@ -644,7 +644,7 @@ Timeline: Session Start
 
 ---
 
-### Write Lifecycle: `/spek.post` (Feature End)
+### Write Lifecycle: `/spek.conclude` (Feature End)
 
 ```
 Timeline: Feature End

@@ -337,14 +337,14 @@ spek implement --dry-run
 # Expected: Preview of changes, no actual writes
 
 # 6. Post
-spek post --dry-run
+spek conclude --dry-run
 # Expected: Preview of lessons + vault updates
 
 # Manual code changes (skip automated implement for now)
 # (Edit files manually to simulate feature work)
 
 # 7. Final Post
-spek post
+spek conclude
 # Expected: Lessons archived, vault updated, context enriched
 ```
 

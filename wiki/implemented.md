@@ -14,7 +14,7 @@ All 5 implementation phases of Spekificity are complete and production-ready:
 - **Phase 5:** CodeGraph MCP ✅ (9 MCP tools for agent queries)
 
 **Total Implementation:**
-- ✅ 7 CLI commands (prepare, context, plan, map, implement, post, lessons)
+- ✅ 7 CLI commands (prepare, context, plan, map, implement, conclude, lessons)
 - ✅ 1 MCP tool interface (tools)
 - ✅ 9 MCP tools for CodeGraph queries
 - ✅ 32 passing unit tests
@@ -70,7 +70,7 @@ All 5 implementation phases of Spekificity are complete and production-ready:
    - Dry-run support
    - Progress tracking
 
-6. **`/spek.post`** - Outcome archival
+6. **`/spek.conclude`** - Outcome archival
    - Lesson extraction
    - Vault updates
    - Optional merge to main
@@ -285,7 +285,7 @@ spek context [--layer user|session|repo|all] # Load project context
 spek plan [FEATURE_INTENT] [--interactive]   # Create spec & plan
 spek map [--symbol NAME] [--impact] [...]    # Analyze code graph
 spek implement [--dry-run] [--task N]        # Execute tasks
-spek post [--merge]                          # Archive & vault update
+spek conclude [--merge]                          # Archive & vault update
 spek lessons [--format markdown|json]        # Extract lessons
 ```
 
