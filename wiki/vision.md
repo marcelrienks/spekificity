@@ -385,6 +385,6 @@ The repository does **not** currently contain a complete shipped `spek` CLI, ins
 
 ## See Also
 
-- [wiki/naming-conventions.md](naming-conventions.md) — Naming conventions for skills and workflows
+- [wiki/conventions.md](conventions.md) — Naming conventions for skills and workflows
 - [wiki/setup.md](setup.md) — Prerequisites and tool installation
 - [wiki/workflow.md](workflow.md) — Complete feature development workflow

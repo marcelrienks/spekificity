@@ -210,4 +210,4 @@ Consistent naming makes the system intuitive:
 
 - **Architecture Details:** [architecture.md](architecture.md)
 - **Development Workflow:** [workflow.md](workflow.md)
-- **Naming & Conventions:** [naming-conventions.md](naming-conventions.md)
+- **Naming & Conventions:** [conventions.md](conventions.md)

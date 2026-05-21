@@ -146,7 +146,7 @@ Start with this reading order—each doc builds on the previous:
 | Document | Purpose |
 |----------|---------|
 | [wiki/workflow.md](wiki/workflow.md) | 5-phase workflow details (reference during development) |
-| [wiki/naming-conventions.md](wiki/naming-conventions.md) | Command naming and skill invocation |
+| [wiki/conventions.md](wiki/conventions.md) | Command naming and skill invocation |
 | [.spekificity/skill-index.md](.spekificity/skill-index.md) | Complete `/spek.*` command reference |
 
 
@@ -165,7 +165,7 @@ Start with this reading order—each doc builds on the previous:
 | **architecture.md** | Technical components, data flow, responsibilities (Vault, CodeGraph, SpecKit, Skills), integration | Understand *how* components fit together technically |
 | **workflow.md** | 5-phase feature development workflow with entry/exit criteria, artifacts, detailed steps | Reference during *active development* |
 | **quickstart.md** | Hands-on walkthrough for first feature | *Get started* with your first feature |
-| **naming-conventions.md** | `/spek.*` and `/speckit.*` command naming patterns and invocation | Know *which command to use* |
+| **conventions.md** | `/spek.*` and `/speckit.*` command naming patterns and invocation | Know *which command to use* |
 
 
 
@@ -199,7 +199,7 @@ Start with this reading order—each doc builds on the previous:
 Contributions welcome! Please:
 
 1. Create a feature branch from `main`
-2. Submit specs and documentation following [wiki/naming-conventions.md](wiki/naming-conventions.md)
+2. Submit specs and documentation following [wiki/conventions.md](wiki/conventions.md)
 3. Include test cases and lessons learned
 
 ---
@@ -265,7 +265,7 @@ If you are evaluating the project today, treat this repository as the source for
 Use these documents first:
 
 - [wiki/vision.md](wiki/vision.md) — project vision, philosophy, architecture, and lifecycle framing
-- [wiki/naming-conventions.md](wiki/naming-conventions.md) — current command names and directory conventions
+- [wiki/conventions.md](wiki/conventions.md) — current command names and directory conventions
 - [wiki/workflow.md](wiki/workflow.md) — canonical workflow and Spekificity integration points
 
 ## Documentation Map
@@ -277,7 +277,7 @@ Use these documents first:
 - [wiki/architecture.md](wiki/architecture.md)
 - [wiki/workflow.md](wiki/workflow.md)
 - [wiki/llm-wiki.md](wiki/llm-wiki.md)
-- [wiki/naming-conventions.md](wiki/naming-conventions.md)
+- [wiki/conventions.md](wiki/conventions.md)
 
 ### Setup notes
 
@@ -330,7 +330,7 @@ Practical reading order:
 2. `wiki/intention.md`
 3. `wiki/architecture.md`
 4. `wiki/quickstart.md`
-5. `wiki/naming-conventions.md`
+5. `wiki/conventions.md`
 6. relevant files in `wiki/specs/`
 
 

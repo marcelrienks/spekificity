@@ -512,7 +512,7 @@ Next Feature Spec (pattern reference) + Next Feature Plan (estimate refinement)
 ## References
 
 - **Architecture:** [architecture.md](architecture.md)
-- **Naming & Commands:** [naming-conventions.md](naming-conventions.md)
+- **Naming & Commands:** [conventions.md](conventions.md)
 - **Integration Checklist:** [integration-checklist.md](integration-checklist.md)
 - **Architecture Notes** — Key decisions and rationale
 - **Pattern Library:** [patterns/](patterns/)

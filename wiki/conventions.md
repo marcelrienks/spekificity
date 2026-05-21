@@ -209,6 +209,19 @@ spek.context-load` | `spek.context` | Keep prefix; simplify command portion |
 
 ---
 
+## CLI Return-Code Policy (summary)
+
+To make automation and CI predictable, Spekificity commands follow a small, standardized exit-code policy. The full policy is documented in `wiki/specs/153-cli-return-code-policy.md`.
+
+- `0`: Success — all requested work completed with no errors.
+- `1`: Partial success — non-fatal errors occurred (e.g., some tasks failed but workflow continued); artifacts may be produced.
+- `2`: Missing artifact / precondition failure (e.g., `plan.json` missing); no destructive changes applied.
+- `3`: Usage / invalid arguments.
+- `4`: Unhandled runtime error (internal exception).
+- `5`: Configuration or environment error (missing dependencies, adapter unavailable).
+
+Tools and CI should interpret non-zero codes per this mapping; CLI callers may also request a machine-readable JSON outcome via `--output-file` which includes `exit_code`, `errors[]`, and `artifacts[]`.
+
 ## Implementation Checklist
 
 - [ ] Update all skill command names in `.github/agents/skills/` directories

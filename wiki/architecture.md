@@ -285,4 +285,4 @@ See [patterns](patterns/) directory for detailed deep-dives:
 
 - **Intention & Philosophy:** [intention.md](intention.md)
 - **Workflow Details:** [workflow.md](workflow.md)
-- **Naming & Namespacing:** [naming-conventions.md](naming-conventions.md)
+- **Naming & Namespacing:** [conventions.md](conventions.md)
