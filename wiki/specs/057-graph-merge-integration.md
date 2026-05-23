@@ -30,7 +30,7 @@ date: "2026-05-20"
 ### Step 1: Load Source Node Sets
 
 **Input:**
-- `vault/graph/nodes-code.jsonl` (from lat.md)
+- `vault/graph/nodes-code.jsonl` (from lat.md export or adapter)
 - `vault/graph/nodes-docs.jsonl` (from Obsidian export)
 - `vault/graph/config.json` (merge strategy config)
 
@@ -367,6 +367,9 @@ One node per line, no pretty-printing, in merge order:
 **Step 3 (merge):**
 ```bash
 # After lat.md + Obsidian export complete:
+# Export code nodes from lat.md (if available):
+# `lat export --format jsonl --output vault/graph/nodes-code.jsonl`
+# or use your adapter to produce `nodes-code.jsonl`.
 python3 .spekificity/bin/merge-graphs.py \
   --code-nodes "vault/graph/nodes-code.jsonl" \
   --doc-nodes "vault/graph/nodes-docs.jsonl" \

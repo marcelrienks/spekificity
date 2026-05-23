@@ -292,7 +292,7 @@ spekificity init
 ---
 
 #### **Use Case 3: Ecosystem-Focused (GitHub, Enterprise)**
-- **Token Efficiency:** Caveman (GitHub Copilot native)
+- **Token Efficiency:** Caveman (internal Spekificity compression skill)
 - **Determinism:** SpecKit/Specify (GitHub official; enterprise ready)
 - **Persistence:** Obsidian + git (enterprise-friendly)
 - **Autonomy:** lat.md (standard; good GitHub integration)

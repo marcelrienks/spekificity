@@ -109,7 +109,7 @@ Skill node (file-level): {
 
 1. **Custom markdown parser** — Write code to extract headings, frontmatter, and link structure from markdown files
 2. **Obsidian's built-in graph** — Query Obsidian's graph API or export feature to get links, backlinks, and structure
-3. **Obsidian CLI** — Use Obsidian CLI tools to export vault graph
+3. **Obsidian CLI (obsidian command)** — Use the Obsidian CLI (bundled `obsidian` command) or plugin-based exports to export the vault graph
 4. **Hybrid** — Obsidian for storage + structure, custom parser for agent queries
 
 **Decision: Use Obsidian's graph export directly**

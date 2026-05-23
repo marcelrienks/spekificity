@@ -14,8 +14,8 @@ Goal
 
 Tests (high-level)
 - `tests/integration/cli_contracts/test_speckit_contract.py`
-  - Run: `speckit --version` → assert exit `0` and human-readable version.
-  - Run: `speckit.specify --format=json --sample-input tests/fixtures/mock_specs/complete_spec.json` (or equivalent) → assert JSON parseable and contains `feature_name`, `requirements`, `tasks` keys.
+  - Run: `specify --version` → assert exit `0` and human-readable version.
+  - Run: `specify explain --format=json --input tests/fixtures/mock_specs/complete_spec.json` (or the real CLI command used) → assert JSON parseable and contains `feature_name`, `requirements`, `tasks` keys.
 
 - `tests/integration/cli_contracts/test_lat_contract.py`
   - Run: `lat --version` → assert exit `0`.

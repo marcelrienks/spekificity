@@ -16,7 +16,7 @@ date: "2026-05-21"
 
 ## Overview
 
-Query patterns for accessing lat.md via **MCP tools** (not shell grep/jq). lat.md exposes 7 primary MCP tools for agent queries with zero token cost and <500ms latency.
+Query patterns for accessing `lat.md` via its CLI or MCP server (not shell grep/jq). `lat.md` exposes exploration commands and an MCP server; the spec defines an adapter-facing set of tool names that map to lat.md commands. Use the adapter or `lat mcp` for low-latency, zero-token queries.
 
 ---
 
@@ -43,24 +43,24 @@ Layer 3: LLM Synthesis (1-2K tokens, 5-15s)
 
 ---
 
-## Layer 1: Direct MCP Tool Calls
+## Layer 1: Direct lat.md Calls (mapped via adapter)
 
-Agents call MCP tools directly. lat.md returns structured data (not text files).
+Use lat.md CLI/MCP commands for zero-token, low-latency queries. The spec exposes adapter tool names (e.g. `lat_symbols`) which are mapped to lat.md primitives as shown below.
 
-### Tool 1: `lat_symbols` — List All Symbols in File
+Mapping examples:
 
-**Agent call:**
+- `lat_symbols` → `lat section` / `lat locate` (list symbols or sections in a file/module)
+- `lat_definition` → `lat section` (fetch section content / definition)
+- `lat_references` → `lat refs` (find references/backlinks to a section or symbol)
+- `lat_callers` / `lat_callees` → derived by graph traversal over `lat refs` results
+- `lat_query` → `lat search` or `lat mcp` (free-form queries / semantic search)
+
+Example (adapter usage):
+
 ```python
-symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
-```
-
-**Response:**
-```json
-[
-  {"name": "AuthService", "type": "class", "line": 12},
-  {"name": "authenticate", "type": "method", "line": 25, "parent": "AuthService"},
-  {"name": "refresh_token", "type": "method", "line": 45, "parent": "AuthService"}
-]
+# Adapter maps spec call to lat command
+symbols = adapter.call("lat_symbols", file_path="src/services/auth.py")
+# adapter runs: `lat section src/services/auth.py` or queries the MCP server
 ```
 
 **Use:** Discover what's defined in a file (no file reading needed).
@@ -141,25 +141,15 @@ callees = call_mcp_tool("lat_callees", symbol="authenticate")
 
 ## Layer 2: Built-in Impact Analysis
 
-### Tool 6: `lat_impact` — Estimate Change Impact
+### Tool: Impact (derived)
 
-**Agent call:**
+`lat_impact` is specified as a derived/adapter tool: compute impact by combining `lat refs`/`lat section` responses and traversing the graph (count callers, transitive callers, referenced tests/files). Lat.md does not currently advertise a dedicated `lat_impact` command; implement it in the adapter by aggregating `lat refs` results and applying heuristic risk levels.
+
+Example (adapter call):
+
 ```python
-impact = call_mcp_tool("lat_impact", file="src/services/auth.py", symbol="authenticate")
-```
-
-**Response:**
-```json
-{
-  "direct_callers": 2,
-  "indirect_callers": 5,
-  "affected_files": 3,
-  "affected_tests": 8,
-  "risk_level": "medium",
-  "recommendation": "Run tests in tests/test_auth.py and tests/test_api.py before merge",
-  "affected_modules": ["src/api/handlers.py", "src/cli/commands.py"],
-  "estimated_scope": "Small change; affects auth+API layer"
-}
+impact = adapter.call("lat_impact", file="src/services/auth.py", symbol="authenticate")
+# adapter: calls lat refs / lat section, computes direct_callers, indirect_callers, affected_files, affected_tests, and a risk_level
 ```
 
 **Use:** Built-in change impact analysis (no manual scripting needed).

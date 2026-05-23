@@ -26,7 +26,7 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-This will check for and install all requirements (Python, uv, Git, Obsidian, Obsidian CLI, Spekificity, SpecKit) and initialize your project automatically.
+This will check for and install all requirements (Python, uv, Git, Obsidian, verify `obsidian` CLI availability, Spekificity, SpecKit) and initialize your project automatically.
 
 See [install.md](install.md) for details.
 

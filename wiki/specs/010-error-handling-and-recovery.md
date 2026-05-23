@@ -215,7 +215,7 @@ Action: Choose fix, then run `/spek.conclude` again
   2. **Retry 2:** Wait 30s, retry with `--verbose` flag (for debugging)
   3. On retry success: Continue, log recovery
   4. On retry failure: FAIL with guidance
-     - Offer: Check SpecKit install: `speckit --version`
+    - Offer: Check SpecKit install: `specify --version` (Spec Kit CLI is provided by the `specify` command; install via `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` or use `pipx`/`pip` alternatives per Spec Kit docs)
      - Offer: Run in verbose: `speckit.specify --verbose`
      - Offer: Manual fallback: Create spec/plan/tasks manually
 - **Logging:** Log speckit error + full output to `.spek/error-log.md`
@@ -226,7 +226,7 @@ Error: /speckit.plan timed out after 5 min
 Retry 1: Retrying (10s delay)...
 Retry 2: Retrying with --verbose (30s delay)...
 Error: /speckit.plan still failing (timeout)
-Fix: Check SpecKit: `speckit --version` or reinstall via `pip install speckit --upgrade`
+Fix: Check SpecKit: `specify --version` or reinstall via `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` (or `pipx install specify-cli` / follow https://github.com/github/spec-kit for alternatives)
 Manual fallback: Create specs/plan.md manually, then run `/spek.tasks`
 ```
 

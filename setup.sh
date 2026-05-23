@@ -64,24 +64,19 @@ else
     exit 1
 fi
 
-# 5. Check Obsidian CLI
-if ! command -v obsidian-cli &> /dev/null; then
-    echo "Obsidian CLI not found. Attempting to install via npm..."
-    if ! command -v npm &> /dev/null; then
-        echo "❌ npm not found. Unable to install Obsidian CLI automatically."
-        echo "Please install Node.js/npm and then run: npm install -g @obsidianmd/obsidian-cli"
-        echo "Obsidian CLI is required for automated vault sync, graph export, and metadata extraction used by Spekificity."
-        exit 1
-    fi
-    npm install -g @obsidianmd/obsidian-cli || true
-fi
-if command -v obsidian-cli &> /dev/null; then
-    echo "✓ Obsidian CLI found"
-else
-    echo "❌ Obsidian CLI still not available after attempted install."
-    echo "Please install it manually: npm install -g @obsidianmd/obsidian-cli"
-    echo "Spekificity requires Obsidian CLI for automated vault operations (sync, export, metadata)."
+# 5. Verify Obsidian CLI availability (bundled with Obsidian app)
+# The Obsidian CLI is provided by the Obsidian desktop app and registers
+# as the `obsidian` command in PATH when enabled via Settings → General → Command line interface.
+if ! command -v obsidian &> /dev/null; then
+    echo "❌ Obsidian CLI (obsidian) not found in PATH."
+    echo "Ensure the Obsidian desktop app is installed and the CLI is enabled:"
+    echo "  1. Open Obsidian → Settings → General → Command line interface"
+    echo "  2. Follow the on-screen prompt to register the CLI in your PATH"
+    echo "  3. Restart your terminal and retry this script"
+    echo "If you need CI/headless alternatives, see: https://obsidian.md/help/headless"
     exit 1
+else
+    echo "✓ Obsidian CLI (obsidian) available"
 fi
 
 # 6. Check Spekificity CLI

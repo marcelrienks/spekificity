@@ -60,10 +60,8 @@ version: "2026-05-23"
 Follow vendor installation docs. Typical verification steps:
 
 ```bash
-# Example verification (tool-dependent)
+# Example verification (standardized CLI name)
 lat --version
-# or
-lat.md --version
 ```
 
 If your environment requires a package manager, prefer installing lat.md globally or in a project-managed environment so `/spek.map` can invoke it.
@@ -124,6 +122,20 @@ agent_integration:
     - lat_references
     - lat_impact
     - lat_query
+
+# MCP / Adapter guidance
+# If your environment does not expose lat's MCP tools directly, implement a small adapter layer
+# that translates MCP tool calls into one of these invocation modes: local CLI wrapper (`lat`),
+# HTTP bridge (lat HTTP API), or a language-specific wrapper (Python package that shells out).
+# This adapter should enforce the `api_timeout_seconds` and a simple retry/backoff policy
+# (e.g., 2 retries with exponential backoff starting at 250ms) so agent callers can depend on
+# consistent timeout semantics.
+
+# Obsidian fallback
+# Automated vault exports rely on Obsidian tooling. If Obsidian CLI/plugins are not available,
+# provide an alternative export path (dataview plugin export, Obsidian cache.json, or a manual
+# JSONL export) and document CI behavior when Obsidian is absent (skip doc-merge or fail-fast
+# depending on policy).
 ```
 
 ### Step 3: Initialize Index

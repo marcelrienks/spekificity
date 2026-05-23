@@ -18,7 +18,7 @@ type: "memory"
 ## Overview
 
 
-Spekificity defines a coherent memory architecture with three layers: Obsidian vault (persistent, managed via Obsidian CLI), repo-scoped memories (Copilot), and session-scoped context (ephemeral). **Obsidian CLI is a mandatory runtime dependency for all persistent memory and vault operations.** Each layer has explicit granularity, ownership, persistence, and lifecycle. This spec covers:
+Spekificity defines a coherent memory architecture with three layers: Obsidian vault (persistent), repo-scoped memories (Copilot), and session-scoped context (ephemeral). The preferred automation path uses the Obsidian CLI (`obsidian` command bundled with the desktop app), but the spec supports fallback export methods (cache.json, Dataview/plugin exports, or custom JS via `obsidian eval`) when needed. Each layer has explicit granularity, ownership, persistence, and lifecycle. This spec covers:
 
 - **What** each memory layer stores and why
 - **When** memory is read (load lifecycle) and written (write lifecycle)
@@ -63,7 +63,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 
 ## Documentation Index (Separate from Code Graph)
 
-**Purpose:** Index all project documentation (vault/ + wiki/) independently, enabling discovery and wikilink traversal. **All persistent memory and vault operations are performed via Obsidian CLI.**
+**Purpose:** Index all project documentation (vault/ + wiki/) independently, enabling discovery and wikilink traversal. Indexing can be performed via the Obsidian CLI when available, or via `.obsidian/cache.json` or plugin exports (e.g., Dataview) as acceptable alternatives.
 
 **What It Does:**
 - Indexes all files in vault/ (lessons, patterns, decisions, intention) and wiki/ (specs, guides)

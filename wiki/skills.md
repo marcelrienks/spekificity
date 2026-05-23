@@ -325,18 +325,18 @@ For fine-grained context control at specific workflow points:
 
 ### `/caveman`
 
-**Purpose:** Activate caveman mode (terse, compressed output)  
+**Purpose:** Activate Caveman compression mode (terse, compressed output). Caveman is an internal skill/mode (no external install).
 **Usage:** `/caveman [--intensity lite|full|ultra]`
 
 **Modes:**
-- `lite`: 20% token reduction (remove explanations)
-- `full`: 50% token reduction (terse format, abbreviations)
-- `ultra`: 75% token reduction (caveman-speak, minimal prose)
+- `lite`: ~30% token reduction (remove explanations)
+- `full`: ~75% token reduction (terse format, abbreviations) — DEFAULT
+- `ultra`: ~90% token reduction (minimal prose, lossy)
 
 **What it does:**
 1. Enable terse output mode for current session
-2. Compress responses at each workflow stage
-3. Maintain technical accuracy (compress language, not substance)
+2. Compress responses at each workflow stage where configured
+3. Preserve technical accuracy and searchable keywords
 4. Switch back to normal mode with `/caveman off`
 
 **Output:** All subsequent commands respond in compressed format  

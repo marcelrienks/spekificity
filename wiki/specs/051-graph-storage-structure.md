@@ -39,7 +39,9 @@ vault/graph/
 └── refresh-log.md           # Refresh history + timestamps
 ```
 
-**Primary Interface:** Agents query `lat.md` via **MCP tools** (lat_symbols, lat_references, lat_callers, lat_callees, lat_impact, lat_definition, lat_query), not JSONL files.
+**Primary Interface:** Agents interact with `lat.md` via the `lat` CLI and the optional MCP server (`lat mcp`). `lat.md` exposes exploration and reference commands (e.g. `lat section`, `lat refs`, `lat locate`, `lat search`) and can run an MCP server for editor/agent integration. The spec-level MCP tool names (for example `lat_symbols`, `lat_references`, `lat_impact`) are an adapter-facing contract that should be implemented by a thin adapter translating those calls into `lat` CLI invocations or MCP server calls.
+
+_Note:_ `lat.md` manages its own internal index/store (implementation-specific). The spec's expectation of an on-disk SQLite index and JSONL exports is optional — prefer using `lat`'s native index and use `lat export` (or equivalent) to generate JSONL/SQLite exports when needed for downstream consumers.
 
 **Export Format:** JSONL exports available in `vault/graph/exports/` for compatibility with external systems (updated on each `/spek.map` run).
 
@@ -76,13 +78,13 @@ Metadata file created by lat.md init:
     }
   ],
   "mcp_tools": [
-    "lat_symbols",
-    "lat_definition",
-    "lat_references",
-    "lat_callers",
-    "lat_callees",
-    "lat_impact",
-    "lat_query"
+    "adapter:lat_symbols -> lat section/lat locate",
+    "adapter:lat_definition -> lat section/lat refs",
+    "adapter:lat_references -> lat refs",
+    "adapter:lat_callers -> derived via lat refs/graph traversal",
+    "adapter:lat_callees -> derived via lat refs/graph traversal",
+    "adapter:lat_impact -> derived (lat refs + traversal)",
+    "adapter:lat_query -> lat search / lat mcp"
   ],
   "performance": {
     "cache_enabled": true,

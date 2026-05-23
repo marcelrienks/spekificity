@@ -19,7 +19,7 @@ This script will:
 - Check for `uv` (install via pipx if missing)
 - Check for Git (install if missing)
 - Check for Obsidian (install via Homebrew, Chocolatey, or prompt manual install)
-- Check for Obsidian CLI (install via npm if missing)
+- Verify Obsidian CLI availability (bundled with the Obsidian app). The script checks that the `obsidian` command is registered in PATH and will print guidance to enable it if missing. For CI/headless alternatives see: https://obsidian.md/help/headless
 - Install Spekificity and all Python dependencies via `uv tool install`
 - Initialize your project with `spek init`
 

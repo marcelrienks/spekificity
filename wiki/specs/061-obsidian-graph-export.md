@@ -119,50 +119,36 @@ FROM ""
 
 ---
 
-### Obsidian CLI Tool (Recommended)
+### Obsidian CLI (Recommended)
 
 **What it is:**
-- Obsidian CLI is the recommended tool for automated vault operations, export, and graph extraction in Spekificity.
-- Automated persistent memory and vault management is best performed via the Obsidian CLI at runtime to enable scriptable CI workflows; however, manual markdown-based workflows and cache-based exports are supported when the CLI is unavailable.
+- The Obsidian CLI is the `obsidian` command bundled with the Obsidian desktop app. It provides programmatic access to a running Obsidian instance and can be used to script exports, run JS in-app, and invoke plugin commands when the app is running.
+- Spekificity recommends using the Obsidian CLI for automated vault operations where available; alternative export methods (Dataview plugin, `.obsidian/cache.json`, or plugin-based exporters) are supported as fallbacks.
 
-**Setup:**
+**Setup / How to use:**
+- Enable the CLI in Obsidian: Settings → General → Command line interface, then follow the on-screen prompt to register the `obsidian` command in your PATH. The Obsidian app must be running for many CLI commands to work. For CI/headless options, see: https://obsidian.md/help/headless
+- Example: run a small JS snippet inside the running Obsidian app to inspect files (returns JSON):
+
 ```bash
-# Install obsidian CLI (required)
-npm install -g @obsidianmd/obsidian-cli
-
-# Export vault structure
-obsidian export-graph /path/to/vault --format=json
+# list file paths (example; Obsidian must be running)
+obsidian eval code="JSON.stringify(app.vault.getFiles().map(f=>f.path))"
 ```
 
-**Output Format:**
-```json
-{
-  "nodes": [
-    {
-      "id": "vault/decision.md#api-versioning",
-      "label": "API Versioning Strategy",
-      "type": "document",
-      "frontmatter": { ... }
-    }
-  ],
-  "links": [
-    { "source": "vault/decision.md#api-versioning", "target": "vault/patterns.md#versioning-pattern", "type": "references" }
-  ]
-}
-```
+- For structured exports you can use one of these approaches:
+  - Dataview plugin queries (export query results to JSON/JSONL)
+  - Read and parse `.obsidian/cache.json` for an authoritative metadata snapshot
+  - Use `obsidian eval` or plugin commands to produce a JSON export (exact command depends on CLI version and installed plugins)
 
 **Pros:**
-- Dedicated tool for graph export
-- Structured JSON output (ready for processing)
-- Supports multiple formats (JSON, GraphML, SVG)
+- First-class automation path when Obsidian app + CLI are available
+- Allows running developer/plugin commands and JS in-app for flexible exports
 
 **Cons:**
-- Requires npm installation
-- Dependency on external tool maintenance
+- Requires the Obsidian desktop app and CLI registration (bundled; not an npm package)
+- Some export workflows require plugins (Dataview) or custom JS snippets
 
 **Best for:**
-- All projects using Spekificity (mandatory)
-- Integration with external graph visualization tools
+- Projects that want scripted, repeatable exports from the canonical vault. If CLI is unavailable in CI, prefer cache.json or plugin exports.
 
 ---
 

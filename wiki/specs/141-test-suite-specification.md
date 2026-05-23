@@ -103,9 +103,7 @@ tests/
 **Scope:** Load context from vault, merge patterns, inject into input
 
 **Fixtures:** 
--- `mock_vault`: MockVault with 3 pre-built decision.md + patterns.md
--- `mock_lat`: MockLat with 50 sample symbols
--- `mock_context`: Empty enrichment context
+-- `mock_lat_adapter`: MockLatAdapter (simulates adapter mapping spec tool names to lat.md commands) with 50 sample symbols
 
 **Test Cases:**
 
@@ -113,12 +111,12 @@ tests/
 |---------|-----------|-------|-----------|
 | U-E1 | Load vault decision | Mock vault with 2 decisions | context["decisions"] = 2 items |
 | U-E2 | Load vault patterns | Mock vault with 5 patterns | context["patterns"] = 5 items |
-| U-E3 | Query lat.md symbols | MockLat with 50 symbols | context["symbols"] returns 50 (unfiltered) |
-| U-E4 | Filter lat.md by type | MockLat, query by type "function" | returns only functions (~30 of 50) |
+| U-E3 | Query lat.md symbols | MockLatAdapter with 50 symbols | context["symbols"] returns 50 (unfiltered) |
+| U-E4 | Filter lat.md by type | MockLatAdapter, query by type "function" | returns only functions (~30 of 50) |
 | U-E5 | Merge context layers | 2 decisions + 3 patterns + 20 symbols | merged output = 25 items, no duplicates |
 | U-E6 | Handle vault not found | Mock vault missing patterns.md | raise FileNotFoundError w/ clear message |
-| U-E7 | Handle lat.md timeout | MockLat timeout (3s) | raise TimeoutError, continue without index |
-| U-E8 | Handle lat.md error | MockLat returns error | log warning, continue w/ vault only |
+| U-E7 | Handle lat.md timeout | MockLatAdapter timeout (3s) | raise TimeoutError, continue without index |
+| U-E8 | Handle lat.md error | MockLatAdapter returns error | log warning, continue w/ vault only |
 | U-E9 | Token estimate | Merge 100 items | tokens ~= 100 * 3 (conservative estimate) |
 | U-E10 | Compression flag | Inject context w/ compress=True | output compressed (caveman format, ~75% reduction) |
 
@@ -203,7 +201,7 @@ tests/
 **Scope:** Wrap SpecKit commands (prepare, specify, plan, implement) with pre/core/post enrichment
 
 **Fixtures:**
-- `mock_speckit`: MockSpecKit (5 command stubs)
+- `mock_speckit`: MockSpecKitAdapter (5 command stubs)
 - `mock_enrichment`: MockEnrichment context
 - `mock_wrapper`: Decorator wrapper instance
 
@@ -655,7 +653,7 @@ synthetic_project/
 **File:** `tests/fixtures/conftest.py` → `mock_speckit` fixture
 
 ```python
-class MockSpecKit:
+class MockSpecKitAdapter:
     """Simulates SpecKit command responses for testing."""
     
     def prepare(self, feature_name, config):
@@ -699,13 +697,13 @@ class MockSpecKit:
 
 ---
 
-### 5.2 Mock lat.md
+### 5.2 Mock lat.md (adapter)
 
-**File:** `tests/fixtures/conftest.py` → `mock_lat` fixture
+**File:** `tests/fixtures/conftest.py` → `mock_lat_adapter` fixture
 
 ```python
-class MockLat:
-    """Simulates lat.md MCP tool responses."""
+class MockLatAdapter:
+    """Simulates the lat.md adapter: maps spec tool names to lat.md CLI/MCP semantics."""
     
     def __init__(self):
         self.symbols = [

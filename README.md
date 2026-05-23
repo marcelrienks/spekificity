@@ -30,10 +30,10 @@ Spekificity is a **specification-driven framework for rapid AI agent development
     - [Download Obsidian](https://obsidian.md/download)
     - macOS: `brew install obsidian`
     - Windows: `choco install obsidian`
-- **Obsidian CLI** (required) — used to automate vault syncs, export vault structure/metadata, and run scripted exports that enable automated context loading, graph generation, and lesson extraction.
-    - Why required: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports) that are provided by the Obsidian CLI. These automated features require a scriptable CLI to run reliably in CI and developer workflows.
-    - Install CLI: `npm install -g @obsidianmd/obsidian-cli`
-    - See [Obsidian CLI documentation](https://github.com/obsidianmd/obsidian-cli) for usage
+- **Obsidian CLI** (recommended) — used to automate vault syncs, export vault structure/metadata, and run scripted exports that enable automated context loading, graph generation, and lesson extraction.
+    - Why recommended: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports). Having the Obsidian CLI available simplifies reliable automation in developer workflows and CI.
+    - Install / enable CLI: The Obsidian CLI is bundled with the Obsidian desktop app — enable it in Obsidian Settings → General → Command line interface, then follow the on-screen prompt to register the `obsidian` command in your PATH. See https://obsidian.md/help/cli for details.
+    - Note: The Obsidian app must be installed (https://obsidian.md/download) and running for many CLI commands to work. For CI/headless scenarios, see Obsidian Headless: https://obsidian.md/help/headless
 
 ### Installation & Setup (Recommended)
 
@@ -57,7 +57,7 @@ This automatically:
 - ✅ Creates project directories (`.spek/`, `vault/`, `wiki/`)
 - ✅ Initializes lat.md index
 - ✅ Runs `specify init .` to initialize SpecKit
-- ✅ **Obsidian CLI is required for automated vault and persistent memory operations** — the `setup.sh` script verifies the CLI is present and will abort with clear instructions if it is missing; manual install: `npm install -g @obsidianmd/obsidian-cli`.
+- ✅ **Obsidian CLI is recommended for automated vault and persistent memory operations** — the `setup.sh` script verifies the `obsidian` command is available in PATH and will abort with clear instructions if it is missing; follow Obsidian Help → CLI to register the CLI.
 
 ### Alternative: Manual Installation
 
@@ -344,7 +344,7 @@ The docs in this repository consistently assume:
 - the enriched command surface uses `spek.*`
 - Spekificity wraps SpecKit rather than forking it
 - durable knowledge lives in markdown, not opaque runtime state
-- **all persistent memory and vault operations are performed via Obsidian CLI (required, not optional)**
+- **preferred automation path:** Obsidian CLI (the `obsidian` command bundled with the desktop app) is recommended for persistent memory and vault operations; fallback options (cache.json, Dataview/plugin exports, or manual workflows) are supported when the CLI is not available.
 - code intelligence should come from indexed graph tooling rather than repeated file scans
 - post-feature lessons are part of the system, not optional afterthoughts
 
