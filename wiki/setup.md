@@ -229,7 +229,7 @@ Once all tools are installed and verified:
 
 ## Configuration Reference
 
-### .spekificity/config.yaml Template
+### .spek/config.yaml Template
 
 ```yaml
 tools:

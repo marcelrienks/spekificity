@@ -459,8 +459,8 @@ Without automation:
 - Prevents orphaned patterns (all notes interconnected)
 - Enables auto-discovery (wikilinks make patterns discoverable)
 
-**Configuration:**
-- `.spekificity/config.yaml` contains keyword-to-tag mappings
+- **Configuration:**
+- `.spek/config.yaml` contains keyword-to-tag mappings
 - Per-project customization (teams can add domain-specific keywords)
 - Scoring threshold configurable (match confidence 0-1)
 
@@ -596,8 +596,8 @@ Note: Spekificity's supported default, lat.md, provides a file-watcher-based aut
 - Optional (users can disable if conflicts with workflow)
 
 **Implementation:**
-- `/spekificity/bin/spek setup` installs hook automatically
-- User can disable via flag: `.spekificity/.disable-git-hooks`
+- `/spek/bin/spek setup` installs hook automatically
+- User can disable via flag: `.spek/.disable-git-hooks`
 - Works with CI/CD (hook runs locally only)
 
 ---
@@ -1216,4 +1216,4 @@ High-Value Combinations:
 | **Backprop (8) + RARV (9) find conflicting failure patterns** | Backprop logs failure; RARV compares to spec; RARV decision takes precedence (architectural); update failure notes accordingly |
 | **Blind Review (11) finds issues backprop missed (8)** | Blind review flags issues; if caught by backprop alert, document; if new issue, create tech debt item |
 | **Token Budget (12) exceeded during Phase 1** | Warning at 80% threshold; user can continue (soft limit) or optimize; review 3-layer rule usage for Phase 2 |
-| **Git Hooks (7) conflict with CI/CD** | Disable hooks via `.spekificity/.disable-git-hooks`; use CI/CD graph refresh instead |
+| **Git Hooks (7) conflict with CI/CD** | Disable hooks via `.spek/.disable-git-hooks`; use CI/CD graph refresh instead |

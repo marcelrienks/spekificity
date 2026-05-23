@@ -337,7 +337,7 @@ IF tokens < budget * 0.5:
 
 ## Configuration
 
-### `.spekificity/config.yaml`
+### `.spek/config.yaml`
 
 ```yaml
 token_budget:

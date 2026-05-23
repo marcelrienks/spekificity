@@ -28,3 +28,6 @@ __pycache__/
 .venv/
 venv/
 .python-version
+
+# Non-human-readable lat.md index storage (keep wiki/ human-readable)
+.spek/lat/

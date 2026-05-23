@@ -343,7 +343,7 @@ When loading context, verify:
 ## Implementation Timeline
 
 ### Week 1: Setup
-- [ ] Create Zettelkasten conventions guide (`.spekificity/guides/vault-conventions.md`)
+- [ ] Create Zettelkasten conventions guide (`.spek/guides/vault-conventions.md`)
 - [ ] Document frontmatter schema in copilot-instructions.md
 - [ ] Create template for each note type (decision, pattern, lesson, guide)
 

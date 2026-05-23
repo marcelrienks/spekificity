@@ -118,7 +118,7 @@ Alert: "Scope grew; confirm intended"
 
 ### Configuration
 
-Store per-project rules in `.spekificity/validation-rules.md`:
+Store per-project rules in `.spek/validation-rules.md`:
 
 ```yaml
 # Validation Rules (Anti-Sycophancy)
@@ -283,7 +283,7 @@ When loading context for next feature, surface failure warnings:
 
 ### Configuration
 
-Add to `.spekificity/config.yaml`:
+Add to `.spek/config.yaml`:
 
 ```yaml
 backprop:
@@ -471,7 +471,7 @@ User: "I'm uncertain about service pattern"
 
 ### Configuration
 
-Add to `.spekificity/config.yaml`:
+Add to `.spek/config.yaml`:
 
 ```yaml
 rarv:
@@ -627,7 +627,7 @@ User reviews report and:
 
 ### Configuration
 
-Enable in `.spekificity/config.yaml`:
+Enable in `.spek/config.yaml`:
 
 ```yaml
 review:
@@ -710,7 +710,7 @@ jobs:
 ### Configuration Template
 
 ```yaml
-# .spekificity/config.yaml
+# .spek/config.yaml
 
 validation_patterns:
   anti_sycophancy:

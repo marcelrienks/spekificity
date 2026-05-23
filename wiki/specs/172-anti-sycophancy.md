@@ -240,7 +240,7 @@ Mid-implementation:
 
 ## Configuration: Project Rules
 
-### `.spekificity/validation-rules.md`
+### `.spek/validation-rules.md`
 
 Create per-project rules (team + solo):
 
@@ -360,7 +360,7 @@ Store in `vault/session/`:
 - ✅ Tech stack drift prevented (Rule 4)
 - ✅ Scope creep detected (Rule 5)
 - ✅ Override mechanism tracks justifications
-- ✅ Project-specific rules in `.spekificity/validation-rules.md`
+- ✅ Project-specific rules in `.spek/validation-rules.md`
 - ✅ Solo devs protected from AI drift
 - ✅ All overrides reviewed in RARV (C.3.7)
 

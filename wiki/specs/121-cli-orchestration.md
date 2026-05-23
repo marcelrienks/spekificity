@@ -414,7 +414,7 @@ Spekificity CLI:
 
 ## Configuration
 
-**Config file:** `.spekificity/config.yaml`
+**Config file:** `.spek/config.yaml`
 
 ```yaml
 workspace:

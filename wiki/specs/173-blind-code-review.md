@@ -232,7 +232,7 @@ User can:
 
 ## Configuration
 
-### Enable in `.spekificity/config.yaml`
+### Enable in `.spek/config.yaml`
 
 ```yaml
 review:

@@ -148,7 +148,7 @@ Start with this reading order—each doc builds on the previous:
 |----------|---------|
 | [wiki/workflow.md](wiki/workflow.md) | 4-stage workflow details (reference during development) |
 | [wiki/conventions.md](wiki/conventions.md) | Command naming and skill invocation |
-| [.spekificity/skill-index.md](.spekificity/skill-index.md) | Complete `/spek.*` command reference |
+| [.spek/skill-index.md](.spek/skill-index.md) | Complete `/spek.*` command reference |
 
 
 ### **Documentation Structure**

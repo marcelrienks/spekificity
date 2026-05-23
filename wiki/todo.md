@@ -9,5 +9,5 @@ justification:
 `lat.md` is chosen because it is Markdown-native and designed to index and interlink Markdown documentation and project source artifacts. Using `lat.md` lets us build an intentional, navigable knowledge layer from our specs and wiki before and during implementation, and provides agents with clear, document-first context when generating or modifying code.
 
 notes:
-- Update configuration references (tool name in `.spekificity/config.yaml`) to `lat.md`.
+-- Update configuration references (tool name in `.spek/config.yaml`) to `lat.md`.
 - Ensure all workflows (`/spek.prepare`, `/spek.map`, `/spek.plan`, `/spek.conclude`) describe calling `lat.md` for indexing and queries.

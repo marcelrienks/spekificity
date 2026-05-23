@@ -370,7 +370,7 @@ One node per line, no pretty-printing, in merge order:
 # Export code nodes from lat.md (if available):
 # `lat export --format jsonl --output vault/graph/nodes-code.jsonl`
 # or use your adapter to produce `nodes-code.jsonl`.
-python3 .spekificity/bin/merge-graphs.py \
+python3 .spek/bin/merge-graphs.py \
   --code-nodes "vault/graph/nodes-code.jsonl" \
   --doc-nodes "vault/graph/nodes-docs.jsonl" \
   --config "vault/graph/config.json" \
@@ -401,7 +401,7 @@ echo "Merged $(jq .nodeCount vault/graph/metadata.json) nodes"
 
 ## Implementation Checklist
 
-- [ ] Create `merge-graphs.py` script in `.spekificity/bin/`
+- [ ] Create `merge-graphs.py` script in `.spek/bin/`
 - [ ] Implement deduplication logic
 - [ ] Implement link discovery patterns (code→doc, doc→code)
 - [ ] Implement backreference computation

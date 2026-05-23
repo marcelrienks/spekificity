@@ -379,7 +379,7 @@ SpecKit remains independently upgradable; enrichment layer is separate.
 
 ## Configuration
 
-### .spekificity/config.yaml
+### .spek/config.yaml
 
 ```yaml
 enrichment:

@@ -704,7 +704,7 @@ grep -l "[similar-domain]" vault/lessons/*.md | xargs cat
 
 ## Configuration
 
-### .spekificity/config.yaml
+### .spek/config.yaml
 
 ```yaml
 context_loading:

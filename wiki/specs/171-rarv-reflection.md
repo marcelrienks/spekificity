@@ -458,7 +458,7 @@ Later: /spek.conclude RARV confirms alignment, auto-updates decisions
 
 ## Configuration
 
-### RARV Settings (`.spekificity/config.yaml`)
+### RARV Settings (`.spek/config.yaml`)
 
 ```yaml
 rarv:

@@ -232,7 +232,7 @@ if result is None or result is Error:
 
 ## Configuration
 
-### .spekificity/config.yaml
+### .spek/config.yaml
 
 ```yaml
 decorator_wrapper:

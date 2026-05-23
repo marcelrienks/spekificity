@@ -258,7 +258,7 @@ Feature Complete / Next Session
 
 ## Configuration
 
-### .spekificity/config.yaml
+### .spek/config.yaml
 
 ```yaml
 context_layer:

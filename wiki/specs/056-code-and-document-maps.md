@@ -142,7 +142,7 @@ spek.map step 3: merge both → SQLite (permanent storage) + optional JSONL expo
 **For Code:**
 - `src/` — All user-written source code
 - `.github/agents/skills/` — All skill definitions
-- `.spekificity/` — Platform code and scripts
+- `.spek/` — Platform code and scripts
 
 **For Documentation:**
 - `specs/` — Feature specifications (heading-level)
@@ -351,7 +351,7 @@ active_docs = call_mcp_tool("lat_query", query="find all nodes with status=activ
     "includeBacklinks": true
   },
   "indexing": {
-    "codePaths": ["src/", ".github/agents/skills/", ".spekificity/"],
+  "codePaths": ["src/", ".github/agents/skills/", ".spek/"],
     "docPaths": ["specs/", "vault/decision.md", "vault/intention.md", "vault/patterns.md", "vault/lessons/", "wiki/", ".github/agents/skills/*/SKILL.md"],
     "exclude": [
       "node_modules/",
@@ -489,7 +489,7 @@ When loading vault context:
 - [x]Choose Obsidian export method** — Dataview plugin, native cache.json, or custom CLI tool
 2. **Implement Obsidian export integration** — Script or plugin that exports Obsidian graph to JSONL format
 3. **Update `/spek.map` skill** — Integrate lat.md + Obsidian export into unified command
-4. **Create config.json template** — Place in `.spekificity/config/graph-config.json`
+4. **Create config.json template** — Place in `.spek/config/graph-config.json`
 5. **Integrate with `/spek.prepare` and `/spek.conclude`** — Add graph refresh steps (watch Obsidian cache for changes)
 6. **Document query patterns** — Create a guide for agents on how to query the merged graph
 

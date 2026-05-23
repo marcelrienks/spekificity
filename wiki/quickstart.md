@@ -664,7 +664,7 @@ git commit -m "WIP: tasks 1-3 complete"
 - [wiki/workflow.md](workflow.md) — Detailed phases and workflows
 - [wiki/intention.md](intention.md) — Project philosophy
 - [wiki/architecture.md](architecture.md) — Technical architecture
-- [.spekificity/skill-index.md](../.spekificity/skill-index.md) — Complete command reference
+- [.spek/skill-index.md](../.spek/skill-index.md) — Complete command reference
 
 ### Tips for Success
 

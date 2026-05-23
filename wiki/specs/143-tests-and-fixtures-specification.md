@@ -24,7 +24,7 @@ Fixture Contracts
 - `mock_vault` should implement read/write methods for decisions, patterns, specs, plans, and lessons and operate on temporary directories.
 
 Synthetic Project
-- Small Python repo with 3 source files, 1 test file and a minimal `.spekificity/config.yaml`.
+- Small Python repo with 3 source files, 1 test file and a minimal `.spek/config.yaml`.
 - Used by E2E tests to validate lat.md integration and file-level diffs.
 
 Performance & Flakiness

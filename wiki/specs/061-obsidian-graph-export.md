@@ -339,7 +339,7 @@ for each node_id in nodes-docs.jsonl:
 method=$(jq -r .obsidian.exportMethod vault/graph/config.json)
 
 # If cache.json method:
-python3 .spekificity/bin/obsidian-export.py \
+python3 .spek/bin/obsidian-export.py \
   --cache-file ".obsidian/cache.json" \
   --output "vault/graph/nodes-docs.jsonl" \
   --config "vault/graph/config.json"
@@ -369,7 +369,7 @@ obsidian-dataview-export \
 
 ## Implementation Checklist
 
-- [ ] Create `obsidian-export.py` script in `.spekificity/bin/`
+- [ ] Create `obsidian-export.py` script in `.spek/bin/`
 - [ ] Test export on real vault (validate cache.json parsing)
 - [ ] Verify nodes-docs.jsonl format matches schema (node-schema-design)
 - [ ] Add config template to `vault/graph/config.json`

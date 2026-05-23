@@ -717,7 +717,7 @@ created-at: 2026-05-21T10:30:00Z
 
 ### 10.1 Token Budget (Configurable)
 
-**File:** `.spekificity/config.yaml`
+**File:** `.spek/config.yaml`
 
 ```yaml
 token-budget:

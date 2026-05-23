@@ -58,7 +58,7 @@ This spec defines acceptance criteria, validation strategies, and testing approa
 - `/spek.conclude` skill (10-step feature archival + vault sync)
 - `/spek.context` skill (context loading)
 - `/spek.map` skill (code graph generation/refresh)
-- `.spekificity/skills/` directory structure with all skill code
+- `.spek/skills/` directory structure with all skill code
 
 **Acceptance Criteria:**
 
@@ -159,7 +159,7 @@ pytest tests/performance/test_enrichment_overhead.py
 - CLI entry point (`spek` command)
 - Workflow orchestration (prepare → specify → plan → tasks → implement → post)
 - Feature state machine (tracking feature progress)
-- Configuration system (`.spekificity/config.yaml`)
+ - Configuration system (`.spek/config.yaml`)
 
 **Acceptance Criteria:**
 
@@ -456,7 +456,7 @@ spek conclude
 
 **Reason:** SpecKit is external and may update/change independently
 
-**Workaround:** Pin SpecKit version in `.spekificity/requirements.txt`; test upgrades before adoption
+**Workaround:** Pin SpecKit version in `.spek/requirements.txt`; test upgrades before adoption
 
 **Future Fix:** Implement spec/plan/tasks/implement natively if needed (Phase 3+)
 

@@ -68,7 +68,7 @@ Automate the process of:
 
 ## Configuration: Keyword-Tag Mapping
 
-### Setup File: `.spekificity/config.yaml`
+### Setup File: `.spek/config.yaml`
 
 Add new section to configure keyword extraction + mapping:
 
@@ -461,7 +461,7 @@ def generate_lesson_with_auto_linking(spec, plan, tasks, trace):
 
 ### How to Set Up
 
-1. **Initial Setup (.spekificity/config.yaml):**
+1. **Initial Setup (.spek/config.yaml):**
    - Include default keyword_tag_map (see earlier in this spec)
    - Enable auto-linking: `auto_linking.enabled: true`
 

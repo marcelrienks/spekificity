@@ -100,7 +100,7 @@ spekificity init
 5. Initialize code mapping/analysis
 6. Confirm setup complete + tool integrations verified
 
-**Output:** `.spekificity/` config, `.agents/skills/` skill routing, Obsidian vault ready
+**Output:** `.spek/` config, `.agents/skills/` skill routing, Obsidian vault ready
 
 **Setup required:** One-time initialization of tools and vault structure
 
@@ -186,7 +186,7 @@ Skills are markdown files that an AI agent reads and executes. Each skill file c
 ### 2. CLI Scripts
 
 - `bin/spek` — Globally-installable entry point (copy to `/usr/local/bin/spek`)
-- `.spekificity/bin/` — Per-project scripts:
+. `.spek/bin/` — Per-project scripts:
   - `_lib.sh` — Shared utilities
   - `prepare.sh` — Pre-execution setup
   - `automate.sh` — Workflow orchestration

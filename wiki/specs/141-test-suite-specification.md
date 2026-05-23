@@ -67,7 +67,7 @@ tests/
 │   │   │   └── config.py
 │   │   ├── tests/
 │   │   │   └── test_main.py
-│   │   └── .spekificity/
+│   │   └── .spek/
 │   │       └── config.yaml
 │   │
 │   ├── mock_specs/               # Pre-built spec JSONs for fixtures
@@ -316,7 +316,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, la
 |---------|-----------|-------|-----------|
 | I-PR1 | Prepare creates feature state | Run prepare on new feature | feature-state.json created, phase="not_started" |
 | I-PR2 | Prepare creates vault dir | Run prepare | wiki/vault/decisions/ created, wiki/vault/patterns/ created |
-| I-PR3 | Prepare initializes config | Run prepare | .spekificity/config.yaml created w/ defaults |
+| I-PR3 | Prepare initializes config | Run prepare | .spek/config.yaml created w/ defaults |
 | I-PR4 | Prepare initializes lat.md index | Run prepare w/ lat=true | lat init called, DB created |
 | I-PR5 | Prepare exits cleanly | All prep steps succeed | exit code 0, success message |
 
@@ -506,7 +506,7 @@ synthetic_project/
 ├── tests/
 │   └── test_main.py (20 lines)
 ├── README.md (short project description)
-└── .spekificity/
+└── .spek/
     └── config.yaml (minimal)
 ```
 

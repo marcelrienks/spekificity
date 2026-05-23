@@ -592,12 +592,12 @@ SpecKit's own config files:
 2. SpecKit defaults
 3. Copilot defaults (lowest)
 
-### Spekificity Configuration (in `.spekificity/`)
+### Spekificity Configuration (in `.spek/`)
 
 Spekificity-specific settings:
 
 ```
-.spekificity/
+.spek/
 ├── config.yaml           # Caveman mode settings, graph thresholds, vault paths
 ├── skills/               # Skill definitions (/spek.context, /spek.prepare, etc.)
 ├── guides/               # User guides, quickstart
@@ -607,7 +607,7 @@ Spekificity-specific settings:
 **Controlled by:** Spekificity; user can customize
 
 **Precedence:**
-1. `.spekificity/config.yaml` (highest priority)
+1. `.spek/config.yaml` (highest priority)
 2. Spekificity defaults
 3. Vault settings (if defined)
 

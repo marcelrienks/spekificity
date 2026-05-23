@@ -165,7 +165,7 @@ Execution Trace:
 ```
 
 **Storage:**
-- Write to `.spekificity/artifacts/execution-trace.json`
+- Write to `.spek/artifacts/execution-trace.json`
 - Also write human-readable summary to `vault/session/` (append section)
 
 **Git State:**

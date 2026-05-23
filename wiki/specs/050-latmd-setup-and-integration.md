@@ -16,7 +16,7 @@ version: "2026-05-23"
 ## Success Criteria
 
 - ✅ lat.md installed and verified
-- ✅ Configuration file updated (.spekificity/config.yaml references `lat.md`)
+- ✅ Configuration file updated (.spek/config.yaml references `lat.md`)
 - ✅ Indexing operational for Markdown + selected source languages
 - ✅ Incremental sync functional (file watcher detects changes, incremental updates)
 - ✅ Performance reasonable for development use (incremental updates in seconds)
@@ -68,7 +68,7 @@ If your environment requires a package manager, prefer installing lat.md globall
 
 ### Step 2: Create lat.md Configuration
 
-Update `.spekificity/config.yaml` to declare `lat.md` as the indexing tool and provide index settings. Example:
+Update `.spek/config.yaml` to declare `lat.md` as the indexing tool and provide index settings. Example:
 
 ```yaml
 # lat.md Configuration for Spekificity
@@ -102,7 +102,11 @@ lat:
 
 # Index Storage & Cache (format/tool-specific)
 lat_storage:
-  path: "wiki/vault/lat/"
+  # Non-human-readable index storage: keep machine data out of the human
+  # readable `wiki/` folder. Store lat.md on-disk index and caches under
+  # the hidden `.spek/` runtime folder by default so `wiki/` remains
+  # human-browseable and git-friendly.
+  path: ".spek/lat/"
   cache_ttl_seconds: 3600
 
 # Refresh strategy
@@ -140,11 +144,11 @@ agent_integration:
 
 ### Step 3: Initialize Index
 
-Run the lat.md initialization step as documented by the tool. The goal is to create an on-disk index under `wiki/vault/lat/` and ensure configuration validation passes.
+Run the lat.md initialization step as documented by the tool. The goal is to create an on-disk index under the runtime folder (`.spek/lat/`) and ensure configuration validation passes. If human-readable exports are required, produce JSON/graph exports into `wiki/vault/graph/exports/` (optional) so the `wiki/` remains browseable.
 
 Output expectations:
 
-- Index directory created (e.g. `wiki/vault/lat/`) with metadata
+- Index directory created (e.g. `.spek/lat/`) with metadata
 - Initial index build completes and reports file counts
 - Validation checks for consistency and missing links
 
@@ -160,7 +164,7 @@ Example (conceptual):
 #!/bin/bash
 # Auto-refresh lat.md index after each commit (optional)
 if [ -z "$LAT_SKIP_HOOKS" ]; then
-  lat.md index --incremental --config .spekificity/config.yaml || true
+  lat.md index --incremental --config .spek/config.yaml || true
 fi
 ```
 
@@ -216,7 +220,7 @@ These tools should be documented in the agent toolbox and expose guarded timeout
 ## Migration Notes
 
 - Any previous legacy graph artifacts should be removed or migrated into the new `lat.md` index store. Update references across wiki/specs and code.
-- Ensure `.spekificity/config.yaml` no longer references legacy tool names.
+- Ensure `.spek/config.yaml` no longer references legacy tool names.
 
 ---
 

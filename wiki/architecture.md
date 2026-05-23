@@ -237,7 +237,7 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 |-------|---------|------|----------|
 | **Knowledge Vault** | Git (vault/ sync) | Manual (user commits) + Auto (post/lessons) | Persistent (feature cycle + beyond) |
 | **Repo Memory** | `.git/spek-memory/` (YAML) | Git hook + manual | Persistent (workspace lifetime) |
-| **lat.md** | Index directory in `wiki/vault/lat/` | File watcher (auto) | Persistent (session lifetime) |
+| **lat.md** | Index directory in `.spek/lat/` (primary, non-human-readable) | File watcher (auto) | Persistent (session lifetime) |
 | **Session State** | In-memory + context window | Manual commits to memory | Temporary (single session) |
 
 ---

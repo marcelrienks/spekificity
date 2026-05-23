@@ -384,7 +384,7 @@ vault search: type:failure-log created:>2026-05-01
 
 ### Test Failure Parsers
 
-Add to `.spekificity/config.yaml`:
+Add to `.spek/config.yaml`:
 
 ```yaml
 backprop:
