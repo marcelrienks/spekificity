@@ -16,27 +16,27 @@ FEATURE LIFECYCLE
 
 START
   ↓
-/spek.prepare → 0% (prepared)
+/spek.prepare → prepared
   ├─ Verify git state
   ├─ Load context
   └─ Create feature state file
   ↓
-/spek.plan (specify) → 25% (specifying)
+/spek.plan (specify) → specifying
   ├─ Load decisions + patterns
   ├─ Call /speckit.specify
   └─ Validate spec aligns with decisions
   ↓
-/spek.plan (plan) → 50% (planning)
+/spek.plan (plan) → planning
   ├─ Load decisions + patterns + code graph
   ├─ Call /speckit.plan
   └─ Validate plan follows architecture
   ↓
-/spek.implement → 75% (implementing)
+/spek.implement → implementing
   ├─ Load decisions + patterns + code graph
   ├─ Execute implementation tasks
   └─ Collect code diff
   ↓
-/spek.conclude → 100% (completing)
+/spek.conclude → completing
   ├─ Extract lessons
   ├─ Update vault
   └─ Archive session
@@ -50,7 +50,7 @@ COMPLETE
 
 - ✅ Deterministic (same inputs → same outputs)
   /spek.plan (plan) → 50% (planning)
-- ✅ Progress visible (completion % tracked)
+- ✅ Progress visible (phase tracked)
 - ✅ Resumable (feature state persists across sessions)
 - ✅ Auditable (session log records all transitions)
 
@@ -78,14 +78,14 @@ status: "initialized | specifying | planning | implementing | completing"
 session_start: "2026-05-19T10:00:00Z"
 session_count: 1
 phase: "prepared | specifying | planning | implementing | completing"
-completion: 0-100
+completion: "not-started | in-progress | complete"
 ---
 
 ## Progress
-- ✅ Spec drafted (0-25%)
-- [ ] Plan drafted (25-50%)
-- [ ] Tasks generated (50-75%)
-- [ ] Implementation complete (75-100%)
+- ✅ Spec drafted
+- [ ] Plan drafted
+- [ ] Tasks generated
+- [ ] Implementation complete
 
 ## Session Log
 - Session 1: [timestamp] Prepared, loaded context
@@ -141,7 +141,7 @@ def run_specify_phase(feature_name):
     
     # Update state: transition to specifying
     state.phase = "specifying"
-    state.completion = 25
+    state.completion = "in-progress"
     state.session_log.append(f"[{now}] SPECIFYING phase started")
     save_feature_state(state)
     
@@ -156,7 +156,7 @@ def run_specify_phase(feature_name):
     # Save artifact
     save_file("spec.md", spec)
     
-    print(f"✓ Specify phase complete (25% → {state.completion}%)")
+    print(f"✓ Specify phase complete (phase: {state.phase})")
 ```
 
 ---
@@ -186,7 +186,7 @@ def run_specify_phase(feature_name):
 
 - [ ] State file created at /spek.prepare?
 - [ ] Preconditions validated before each phase?
-- [ ] Phase transition updates state (completion %)?
+- [ ] Phase transition updates state (phase visible)?
 - [ ] Session log records all transitions?
 - [ ] No skipping phases (validator enforces order)?
 - [ ] Resumable (state persists across sessions)?
@@ -194,10 +194,8 @@ def run_specify_phase(feature_name):
 
 ---
 
-## Token Cost
+## Notes on Resource Use
 
-- **State file I/O:** ~10 tokens per transition
-- **Precondition validation:** ~50 tokens
-- **Session log updates:** ~5 tokens per entry
+- Resource usage varies by feature and environment; teams should configure monitoring and tracking according to their needs.
 
-Total per feature: ~200 tokens (negligible vs. feature content).
+Avoid embedding fixed numeric estimates in public-facing docs; keep budgeting and limits configurable within team configuration files.

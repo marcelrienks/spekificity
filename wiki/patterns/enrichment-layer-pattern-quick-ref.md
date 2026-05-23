@@ -103,7 +103,7 @@ def specify_enriched(feature_description):
 def plan_enriched(spec):
     """PRE → CORE → POST for plan phase"""
     
-    # PRE: Load context (via MCP tools, 0 tokens)
+    # PRE: Load context (via MCP tools, no token cost)
     decisions = load_from_vault("vault/decision.md")
     patterns = load_from_vault("vault/patterns.md")
     
@@ -154,7 +154,7 @@ def plan_enriched(spec):
 def implement_enriched(tasks):
     """PRE → CORE → POST for implement phase"""
     
-    # PRE: Load context (via MCP tools, 0 tokens)
+    # PRE: Load context (via MCP tools, no token cost)
     decisions = load_from_vault("vault/decision.md")
     patterns = load_from_vault("vault/patterns.md")
     
@@ -176,7 +176,7 @@ def implement_enriched(tasks):
                 "impact": impact
             })
     
-    # Inject context (MCP tools have zero token cost)
+    # Inject context (MCP tools have no token cost)
     enriched_context = format_enrichment_context(
         decisions, patterns, graph_context
     )
@@ -213,7 +213,7 @@ def load_enrichment_context(phase):
     
     # Load lat.md via MCP tools (if plan/implement phase)
     if phase in ["plan", "implement"]:
-        # Query lat.md structure via MCP tools (0 tokens each)
+        # Query lat.md structure via MCP tools (no token cost)
         # Example: for each changed file, query its symbols and impact
         graph_queries = []
         recent_changes = get_git_log(limit=20)
@@ -266,12 +266,8 @@ def load_enrichment_context(phase):
 
 ---
 
-## Token Cost
+## Notes on Resource Use
 
-- **Context loading (PRE):** 500-1000 tokens
-- **Enrichment injection:** 200-300 tokens
-- **Validation (POST):** 100-200 tokens
+- Resource usage varies by feature and environment; teams should configure monitoring and tracking according to their needs.
 
-Total per phase: ~1-1.5K tokens (vs. ~500 for bare SpecKit).
-
-Optimization: Use Three-Layer Query Rule to reduce context loading cost to ~300-500 tokens.
+Optimization: Use the Three-Layer Query Rule to reduce context loading cost significantly.

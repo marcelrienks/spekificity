@@ -289,9 +289,10 @@ def validate_preconditions(target_phase):
 ---
 
 ## Token Cost
+## Token Considerations
 
-- **State file I/O:** ~10 tokens per write
-- **Precondition validation:** ~50 tokens per transition
-- **Session log:** ~5 tokens per entry
+- **State file I/O:** Minimal per-write overhead (small metadata writes)
+- **Precondition validation:** Modest per-transition overhead (validation queries)
+- **Session log:** Small per-entry overhead
 
-Total per feature: ~100-200 tokens (negligible overhead).
+Overall per-feature token usage is low when using the pattern as intended; track usage if operating under strict token constraints.

@@ -44,7 +44,7 @@ Spekificity is a **specification-driven agent development framework** designed t
 
 - Specifications, plans, decisions stored in Obsidian vault (Git-backed)
 - Lessons extracted and committed to vault at feature end
-- lat.md syncs automatically; never stale
+ - `lat.md` is required for code indexing and should be configured to sync as part of setup
 - Session memory persists via repo-scoped YAML files
 
 ### 4. Autonomy
@@ -89,12 +89,12 @@ No code without a specification.
 
 Real-time, pre-indexed code analysis via lat.md. No file scanning.
 
-- lat.md automatically syncs on every file change
-- Queries are deterministic (impact analysis, caller chains, definitions)
-- Agents use lat.md for code context, not file grep
-- lat.md is the modern standard for agent-driven code analysis
+ - `lat.md` is the required code analysis/indexing tool; configure it for regular syncs
+ - Queries are deterministic (impact analysis, caller chains, definitions)
+ - Agents use `lat.md` for code context, not file grep
+ - `lat.md` is the project's code intelligence tool
 
-**Implication:** Agent queries stay fast and token-cheap, even in large codebases.
+**Implication:** Agent queries are served from a deterministic index rather than ad-hoc file scans.
 
 ---
 

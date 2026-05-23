@@ -10,7 +10,7 @@ priority: "High"
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** High (Phase 1 recommended)  
-**Effort:** 3-4 hours  
+**Effort:** team-estimated  
 **Adoption Source:** B.9 (claude-code-memory-setup, production-validated)
 
 ---
@@ -73,7 +73,7 @@ related: ["[[note-name]]", "[[other-note]]"]
 |-------|----------|------|-------------|---------|
 | `title` | YES | string | Concise, unique note title | "Singleton Pattern for Service Management" |
 | `type` | YES | enum | Classification: decision, pattern, lesson, guide | "pattern" |
-| `tags` | YES | array | 2-5 tags for searchability + organization | ["pattern/singleton", "architecture", "service-layer"] |
+| `tags` | YES | array | a small set of tags for searchability + organization | ["pattern/singleton", "architecture", "service-layer"] |
 | `status` | YES | enum | active, deprecated, superseded, archived | "active" |
 | `created` | YES | date | ISO 8601 creation date | "2026-05-10" |
 | `updated` | YES | date | ISO 8601 last update date | "2026-05-19" |
@@ -86,7 +86,7 @@ related: ["[[note-name]]", "[[other-note]]"]
 
 - **Rules:**
 - Use lowercase letters, numbers, hyphens only
-- Maximum 50 characters (including extension)
+- Recommended maximum length (including extension)
  - Should be globally unique within `wiki/vault/` directory
 - Spaces → hyphens: "Singleton Pattern" → `singleton-pattern.md`
 - Abbreviations OK: "DI Pattern" → `di-pattern.md`
@@ -113,11 +113,11 @@ related: ["[[note-name]]", "[[other-note]]"]
 - ✅ Frontmatter schema enforced (all required fields present)
 - ✅ Filename conventions followed (kebab-case, unique, <50 chars)
 - ✅ Atomicity maintained (one concept per file)
-- ✅ Wikilinks present (minimum 2-3 cross-references per note)
+- ✅ Wikilinks present (a small number of cross-references per note)
 - ✅ Metadata searchable (tags enable discovery)
 - ✅ Status tracking accurate (active/deprecated/superseded labels correct)
 - ✅ Notes discoverable (grep + Obsidian search working)
-- [ ] 300-800 words (concise but complete)
+- [ ] Concise but complete (project-defined length)
 - [ ] Can be understood without reading related notes
 - [ ] Wikilinks enhance (don't require) understanding
 - [ ] Not a summary of multiple patterns or decisions
@@ -135,13 +135,13 @@ related: ["[[note-name]]", "[[other-note]]"]
 
 ## Wikilink Density Requirements
 
-**Minimum density:** 2-4 wikilinks per note (depending on length)
+**Minimum density:** a small number of wikilinks per note (depending on length)
 
 **Guidelines:**
 
-- **Short notes (300-400 words):** Minimum 2 wikilinks
-- **Medium notes (400-600 words):** Minimum 3 wikilinks
-- **Long notes (600-800 words):** Minimum 4 wikilinks
+- **Short notes:** Minimum a couple of wikilinks
+- **Medium notes:** Include a few wikilinks
+- **Long notes:** Ensure sufficient wikilinks to enable discovery
 
 **Wikilink Types:**
 

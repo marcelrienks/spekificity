@@ -64,7 +64,7 @@ This command:
 ```
 ✓ Git working tree clean
 ✓ Vault synced (updated from origin)
-✓ lat.md index refreshed (23 files indexed)
+✓ lat.md index refreshed
 ✓ Session context loaded
 READY: Workspace prepared for feature development
 ```
@@ -152,7 +152,7 @@ POST /auth/login endpoint with JWT token generation
 - [ ] Endpoint returns 200 with JWT for valid credentials
 - [ ] Endpoint returns 401 for invalid credentials
 - [ ] Token includes user ID and email claims
-- [ ] Token expiration: 24 hours
+- [ ] Token expiration: configured value in auth settings
 - [ ] All tests pass locally
 
 ## Assumptions
@@ -171,8 +171,8 @@ POST /auth/login endpoint with JWT token generation
 - Downstream: Protect other endpoints with @auth decorator
 
 ## Estimate
-- Scope: Medium complexity
-- Complexity: Medium
+- Scope: Describe complexity qualitatively (small / medium / large)
+ - Complexity: Describe complexity qualitatively
 
 ## Implementation Tasks
 1. Define JWT token schema and claims
@@ -230,8 +230,8 @@ Or directly:
 Spekificity creates a detailed plan by:
 1. 📌 Breaking spec into atomic tasks
 2. 🔗 Mapping dependencies (which tasks block others)
-3. 📊 Using lat.md to estimate impact (affected files, functions)
-4. ⏱️ Sequencing tasks for efficient execution
+3. 📊 Using lat.md to identify impact (affected files, functions)
+4. Sequencing tasks for efficient execution
 
 **Expected Plan Output:**
 
@@ -250,36 +250,36 @@ Spekificity creates a detailed plan by:
 ### Task 2: Design token schema
 - Description: Define JWT claims, expiration, signing key
 - Files affected: config/auth.py, models/token.py
-- Est. time: 20 min
+- Time estimate: as appropriate for your workflow
 - Depends on: Task 1
 - Blocks: Task 3
 
 ### Task 3: Implement login validation
 - Description: Hash password, verify credentials
 - Files affected: services/auth_service.py
-- Est. time: 30 min
+- Time estimate: as appropriate for your workflow
 - Depends on: Task 2
 - Blocks: Task 4
 
 ### Task 4: Add /auth/login endpoint
 - Description: Create Flask/FastAPI route, return token
 - Files affected: api/routes/auth.py
-- Est. time: 20 min
+- Time estimate: as appropriate for your workflow
 - Depends on: Task 3
 - Blocks: Task 5
 
 ### Task 5: Test and document
 - Description: Unit tests, integration tests, API docs
 - Files affected: tests/test_auth.py, docs/api.md
-- Est. time: 30 min
+- Time estimate: as appropriate for your workflow
 - Depends on: Task 4
 - Blocks: (none)
 
 ## Execution Order
 
 1. Task 1 → 2 → 3 → 4 → 5 (linear; no parallelization possible)
-2. Total estimated time: ~2 hours
-3. Expected tokens with context: ~10k
+2. Total estimated effort: described qualitatively in the plan
+3. Token usage: not quantified here; include budgeting in the plan if required
 
 ## Impact Analysis
 
@@ -348,7 +348,7 @@ This command:
  IMPLEMENTATION: user-auth-api
 ═════════════════════════════════════════
 
-Loaded Plan: 5 tasks, ~2 hours estimated
+Loaded Plan: tasks for the feature (see plan document)
 
 CURRENT TASK: Task 1/5 — Prepare environment
 
@@ -360,7 +360,7 @@ Files you'll modify:
   ✓ config/auth.py (create new)
 
 Context loaded:
-  → Current requirements.txt (23 dependencies)
+  → Current requirements.txt (dependencies)
   → Existing config/ structure
   → Project naming conventions (from vault)
 
@@ -435,11 +435,11 @@ As you implement, Spekificity tracks token usage. If you're running low:
 # Check token budget
 /spek.status --tokens
 
-# Expected output:
-# Session tokens used: 23,400 / 50,000 (47%)
-# Remaining: 26,600
-# Estimated tokens needed for remaining tasks: ~8,000
-# Status: ✓ GREEN (enough tokens remain)
+# Expected output: (numeric values omitted)
+# Session tokens used: recorded (omitted)
+# Remaining: recorded (omitted)
+# Estimated tokens needed for remaining tasks: recorded (omitted)
+# Status: qualitative status (e.g., GREEN/AMBER/RED)
 ```
 
 If you're running low, enable Caveman mode to compress responses:
@@ -451,7 +451,7 @@ If you're running low, enable Caveman mode to compress responses:
 
 ---
 
-## Phase 5: Close & Capture Lessons (5 min)
+## Phase 5: Close & Capture Lessons (short)
 
 ### Purpose
 
@@ -487,14 +487,14 @@ Task Completion Check:
 ✓ Task 4: Add /auth/login endpoint
 ✓ Task 5: Test and document
 
-Summary Statistics:
+Summary Statistics (numeric values omitted):
 ─────────────────────────────────────────
 Time spent: Within expectations ✓
 Token usage: Acceptable ✓
-Files changed: 7
-Commits: 5
-Tests added: 8
-Tests passing: 8/8 ✓
+Files changed: recorded (omitted)
+Commits: recorded (omitted)
+Tests added: recorded (omitted)
+Tests passing: recorded (omitted)
 
 Lessons Learned:
 ─────────────────────────────────────────
@@ -505,9 +505,9 @@ Lessons Learned:
 
 Session Review:
 ─────────────────────────────────────────
-1. Read vault for decisions → 2 min well spent
-2. Plan was 90% accurate; one task reordered
-3. Caveman mode after Task 3 saved ~30% tokens
+1. Read vault for decisions → short, valuable
+2. Plan was largely accurate; one task reordered
+3. Caveman mode after Task 3 saved measurable token reductions
 4. lat.md impact analysis was correct
 
 Updated Vault:
@@ -517,11 +517,11 @@ Updated Vault:
 ✓ Lessons captured
 
 Refreshing lat.md:
-✓ lat.md rebuilt (47 files indexed, 23 functions added)
+✓ lat.md rebuilt (numeric details omitted)
 
 Ready to commit:
 ─────────────────────────────────────────
-7 files changed, 156 insertions(+), 12 deletions(-)
+Files changed: recorded (omitted); diffs recorded in git
 
 Type: git push
 Or type: /spek.conclude --commit to stage automatically
@@ -548,8 +548,8 @@ git commit -m "Feature: Add user authentication API endpoint
 
 ## Metrics
 - Time: Completed as planned
-- Tokens: 9,200 (8% under budget)
-- Tests: 8/8 passing"
+- Tokens: recorded (omitted)
+- Tests: recorded (omitted)
 
 # Push to remote
 git push origin main
@@ -644,7 +644,7 @@ git commit -m "WIP: tasks 1-3 complete"
 - Concise bullet points
 - Direct commands
 - No fluff
-- ~75% fewer tokens
+- Reduced token usage
 
 ### Task Sequence & Dependencies
 

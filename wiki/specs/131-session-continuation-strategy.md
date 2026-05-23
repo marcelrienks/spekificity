@@ -8,9 +8,9 @@ date: "2026-05-20"
 
 **Status:** COMPLETE  
 **Date:** 2026-05-20  
-**Session Restart Frequency:** Daily (high priority)  
-**Feature Duration:** Single session (< 1 hour, simple resume)  
-**Token Budget Model:** Soft limit (warn at 80%, continue allowed)  
+**Session Restart Frequency:** regular (as needed)  
+**Feature Duration:** Single session (short, simple resume)  
+**Token Budget Model:** Soft limit (configured threshold; warnings issued)  
 **Checkpoint Strategy:** Task-level (resume from last completed task)  
 **Budget Exhaustion:** Graceful abort + state preservation
 
@@ -24,19 +24,19 @@ date: "2026-05-20"
 
 **Session Lifecycle:**
 ```
-Session Start (Day 1, 14:00)
-  ├─ /spek.context (load vault context)
-  ├─ /spek.prepare (create feature branch)
-  └─ vault/session/ (create session state)
+Session Start
+  ├─ `/spek.context` (load vault context)
+  ├─ `/spek.prepare` (create feature branch)
+  └─ `vault/session/` (create session state)
 
-Feature Work (Day 1, 14:00-15:30)
-  ├─ /spek.plan (specify → plan)
-  ├─ /spek.implement (task 1, task 2, task 3)
-  ├─ /spek.conclude (lessons, vault update)
+Feature Work
+  ├─ `/spek.plan` (specify → plan)
+  ├─ `/spek.implement` (execute tasks)
+  ├─ `/spek.conclude` (lessons, vault update)
   └─ Feature COMPLETE
 
-Session End (Day 1, 15:30)
-  ├─ Archive: vault/session/ → vault/
+Session End
+  ├─ Archive: `vault/session/` → `vault/`
   ├─ Git: merge feature branch to main
   └─ Session finished
 
@@ -83,74 +83,63 @@ Session End (Day 2, 10:30)
 
 ```markdown
 ---
-feature-id: add-logging-001
+feature-id: add-logging
 feature-name: Add Logging to Core Modules
 phase: implementing
-progress-percent: 60
-started-at: 2026-05-20T14:00:00Z
-last-checkpoint: 2026-05-20T14:45:00Z
-total-sessions: 2
+progress: TBD
+started-at: TBD
+last-checkpoint: TBD
+total-sessions: TBD
 ---
 
 # Feature State: Add Logging
 
 ## Summary
-Feature initiated Day 1 (14:00), interrupted mid-task Day 1 (14:45), resumed Day 2 (10:00).
+Feature initiated, interrupted mid-task, resumed later. Timestamps omitted.
 
 ## Phase Timeline
-- specify: ✓ (2026-05-20T14:15:00Z, ~1000 tokens)
-- plan: ✓ (2026-05-20T14:30:00Z, ~500 tokens)
-- implement: ⧐ (2026-05-20T14:45:00Z, in progress, ~1200 tokens so far)
-- post: ○ (pending)
+- specify: complete
+- plan: complete
+- implement: in progress
+- post: pending
 
 ## Implementation Progress
-- Task 1 (Add imports): ✓ COMPLETE (2026-05-20T14:40:00Z, 150 tokens)
-- Task 2 (Add log calls): ⧐ IN PROGRESS - INTERRUPTED at 2026-05-20T14:45:00Z
-  - Code context: Working on main.py (lines 10-50)
+- Task 1 (Add imports): COMPLETE
+- Task 2 (Add log calls): IN PROGRESS - INTERRUPTED
+  - Code context: Working on main.py (context preserved)
   - Error state: None (clean interrupt)
-  - Retry count: 0
-  - Next action: Resume task 2 from where it stopped
-- Task 3 (Config updates): ○ NOT STARTED
+  - Retry count: recorded
+  - Next action: Resume task 2 from checkpoint
+- Task 3 (Config updates): NOT STARTED
 
 ## Vault Context Loaded (Session 1)
-- Decisions: 5 loaded
-- Patterns: 3 loaded
-- Lessons: 2 relevant loaded
-- Total tokens (context): ~800
+- Decisions: loaded
+- Patterns: loaded
+- Lessons: relevant loaded
+- Total tokens (context): not specified
 
 ## Token Usage (Session 1)
-- Phase: specify (1000) + plan (500) + implement (1200) = 2700 tokens
-- Context reload cost (if needed): ~800 tokens
-- Total: 2700 tokens (Session 1 only)
-- Budget remaining: 5300 tokens (if 8K budget)
+- Phase totals recorded; numeric values omitted in public docs
 
 ## Resumed Session (Session 2)
 
-Checkpoint created: 2026-05-21T10:00:00Z
+Checkpoint created: recorded
 
 ### Context Reload (Session 2)
-- Vault reloaded: 5 decisions + 3 patterns + 2 lessons (~800 tokens)
+- Vault reloaded: decisions + patterns + lessons (counts omitted)
 - Previous state restored: phase=implementing, task 2 active
 - Error check: None
 - Status: Ready to resume
 
 ### Implementation Resumed
-- Task 2 retry: From checkpoint
-  - Code context reloaded: main.py (lines 10-50, previous state preserved)
-  - Tokens used: ~150 (reuse previous tokens for code context if possible)
+- Task 2 retry: From checkpoint (context reloaded)
 - Task 3: To be executed
 
 ### Token Usage (Session 2)
-- Context reload: ~800 tokens
-- Task 2 rerun: ~150 tokens
-- Task 3: ~150 tokens (estimated)
-- Total (Session 2): ~1100 tokens
-- Combined total: 2700 + 1100 = 3800 tokens
+- Context reload and task reruns recorded; numeric values omitted
 
 ## Lessons Captured (Post-Feature)
-- Session 1 insights: Decided to use logging.info() for main.py
-- Session 2 insights: Config structure simplified based on Task 2 experience
-- Combined lessons: Both insights merged into single vault/lessons/<date>-<feature>.md
+- Session insights merged into single lesson file in the vault
 ```
 
 ### 2.2 State Preservation Requirements
@@ -316,14 +305,14 @@ Examples:
 
 ### 5.1 Soft Limit Model
 
-**Budget:** 8000 tokens per session (configurable)
+**Budget:** session token soft limit (configurable)
 
 **Warning Thresholds:**
-- 60%: No warning (normal progress)
-- 70%: Info message (pacing on track)
-- 80%: **WARNING** (token usage significant, prepare to wrap up)
-- 90%: **ALERT** (tokens nearly exhausted, feature may not complete this session)
-- 100%+: Feature continues (soft limit, no hard stop)
+- Normal progress: informational
+- Pacing message: informational (when usage increases)
+- Warning: token usage significant (prepare to wrap up)
+- Alert: tokens nearly exhausted (feature may not complete this session)
+- Soft limit: feature may continue; user notified
 
 ### 5.2 Token Tracking in Session State
 
@@ -331,24 +320,24 @@ Examples:
 ---
 feature-id: add-logging-001
 phase: implementing
-progress-percent: 60
+progress-estimate: qualitative (numeric values omitted)
 
-# Token Usage Tracking
+# Token Usage Tracking (numeric values omitted in public docs)
 token-budget:
-  total-per-session: 8000
-  session-1-used: 2700
-  session-2-used: 1100
-  combined-total: 3800
-  remaining: 4200
-  budget-percentage: 47%
+  total-per-session: configured-value
+  session-1-used: recorded (omitted)
+  session-2-used: recorded (omitted)
+  combined-total: recorded (omitted)
+  remaining: recorded (omitted)
+  budget-percentage: recorded (omitted)
   warning-level-reached: false
 
 token-usage-by-phase:
-  specify: 1000
-  plan: 500
-  implement: 1200
-  context-reload: 800
-  total: 3500
+  specify: recorded (omitted)
+  plan: recorded (omitted)
+  implement: recorded (omitted)
+  context-reload: recorded (omitted)
+  total: recorded (omitted)
 ---
 ```
 
@@ -358,67 +347,67 @@ token-usage-by-phase:
 
 ```
 /spek.plan progress:
-  ✓ Specify complete (1000 tokens used)
-  Token budget: 1000 / 8000 (12%)
+  ✓ Specify complete (tokens used recorded)
+  Token budget: values omitted (see token tracking)
   
-  ✓ Plan complete (500 tokens used)
-  Token budget: 1500 / 8000 (18%)
+  ✓ Plan complete (tokens used recorded)
+  Token budget: values omitted (see token tracking)
   
 /spek.implement progress:
-  ✓ Task 1 complete (150 tokens used)
-  Token budget: 1650 / 8000 (20%)
+  ✓ Task 1 complete (tokens used recorded)
+  Token budget: values omitted (see token tracking)
   
-  ✓ Task 2 complete (200 tokens used)
-  Token budget: 1850 / 8000 (23%)
+  ✓ Task 2 complete (tokens used recorded)
+  Token budget: values omitted (see token tracking)
   
-  ⧐ Task 3 in progress... (estimated 150 tokens)
-  Token budget: ~2000 / 8000 (25%) — On track
+  ⧐ Task 3 in progress... (estimated tokens omitted)
+  Token budget: values omitted — On track
 
 /spek.conclude phase (lessons generation):
-  Estimating lessons token cost: ~300 tokens
-  Final budget projection: 2300 / 8000 (28%)
-  ✓ Feature will complete within budget
+  Estimating lessons token cost: estimate omitted
+  Final budget projection: values omitted
+  ✓ Feature will complete within budget (qualitative)
 
 ---
 
 SCENARIO: Token Exhaustion Risk
 
 /spek.plan phase 1:
-  ✓ Specify complete (2500 tokens — higher than expected!)
-  Token budget: 2500 / 8000 (31%)
+  ✓ Specify complete (tokens used recorded; higher than expected)
+  Token budget: values omitted
   
-  ⧐ Plan in progress... (estimated 1500 tokens)
-  Token budget: ~4000 / 8000 (50%)
+  ⧐ Plan in progress... (estimated tokens omitted)
+  Token budget: values omitted
   
-  ⧐ Plan complete (1500 tokens used)
-  Token budget: 4000 / 8000 (50%)
+  ⧐ Plan complete (tokens used recorded)
+  Token budget: values omitted
   
 /spek.implement phase:
-  ⧐ Task 1 in progress... (estimated 400 tokens)
-  Token budget: ~4400 / 8000 (55%)
+  ⧐ Task 1 in progress... (estimated tokens omitted)
+  Token budget: values omitted
   
-  ✓ Task 1 complete (400 tokens)
-  Token budget: 4400 / 8000 (55%)
+  ✓ Task 1 complete (tokens used recorded)
+  Token budget: values omitted
   
-  ⧐ Task 2 in progress... (estimated 500 tokens)
-  Token budget: ~4900 / 8000 (61%)
+  ⧐ Task 2 in progress... (estimated tokens omitted)
+  Token budget: values omitted
   
   ⚠️  WARNING: Token usage higher than expected
-      Suggest: Continue with Task 2 (50% complete)
+      Suggest: Continue with Task 2 (partial progress)
       Or: Save state + resume next session
   
-  ✓ Task 2 complete (500 tokens)
-  Token budget: 4900 / 8000 (61%)
+  ✓ Task 2 complete (tokens used recorded)
+  Token budget: values omitted
   
-  ⧐ Task 3 in progress... (estimated 600 tokens)
-  Token budget: ~5500 / 8000 (68%) — OK but tight
+  ⧐ Task 3 in progress... (estimated tokens omitted)
+  Token budget: values omitted — OK but tight
   
-  ✓ Task 3 complete (600 tokens)
-  Token budget: 5500 / 8000 (68%)
+  ✓ Task 3 complete (tokens used recorded)
+  Token budget: values omitted
   
-  ⚠️  ALERT: Approaching budget limit (over 80%)
-      /spek.conclude estimated cost: 300-400 tokens
-      Final projection: 5800-5900 / 8000 (73%)
+    ⚠️  ALERT: Approaching budget limit (configured warning level)
+      /spek.conclude estimated cost: estimate omitted
+      Final projection: values omitted
       ✓ Feature will complete (soft limit allows)
 ```
 

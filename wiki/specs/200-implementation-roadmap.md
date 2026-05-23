@@ -24,7 +24,7 @@ Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All arch
 | **Workflow Definition** | ✓ Complete | [workflow.md](../workflow.md) |
 | **Integration Contracts** | ✓ Complete | [110-speckit-integration-contract.md](110-speckit-integration-contract.md) |
 | **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) |
-| **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) — **Obsidian CLI (the `obsidian` command bundled with the desktop app) is the recommended interface for automated vault operations (sync/export/metadata extraction). See `setup.sh` for verification and guidance to register the CLI. For CI/headless scenarios, consider Obsidian Headless or plugin-based exports.** |
+| **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) — `Obsidian` + `obsidian` CLI are required for the vault operations described in this roadmap. |
 | **lat.md Specification** | ✓ Complete | [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md) |
 | **Skill Specifications** | ✓ Complete | [100-prepare-command.md](100-prepare-command.md) through [105-spek-implement-workflow.md](105-spek-implement-workflow.md) |
 | **Automation Workflow** | ✓ Complete | [120-spek-automate-workflow.md](120-spek-automate-workflow.md), [121-cli-orchestration.md](121-cli-orchestration.md) |
@@ -41,8 +41,8 @@ Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All arch
 - **SpecKit Ecosystem:** SpecKit CLI is Python-native; deep integration with `uv` package manager
 - **Code Analysis:** AST-based parsing for lat.md support (ast, Pygments libraries mature)
 - **CLI Framework:** Click or Typer for deterministic SpecKit orchestration
-- **Obsidian CLI:** **Recommended for automated vault operations (sync/export/metadata extraction).** The `setup.sh` installer verifies that the `obsidian` command is available in PATH and will print guidance to register the CLI if it is missing. For headless/CI alternatives see https://obsidian.md/help/headless or consider exporting via community plugins or the metadata cache.
-- **Performance:** Fast startup, acceptable for 2-5s target (prepare command)
+- **Obsidian CLI:** `Obsidian` and the `obsidian` CLI are required for the automated vault operations (sync/export/metadata extraction) described in this roadmap. The `setup.sh` installer verifies that the `obsidian` command is available in PATH and will print guidance to register the CLI if it is missing.
+- **Performance:** Fast startup is a target; precise numeric performance targets are defined in implementation artifacts.
 - **Dependency Management:** `uv` provides fast, reproducible environments
 - **Observability:** Structured logging (loguru/structlog) for debugging agent handoffs
 
@@ -168,7 +168,7 @@ spekificity/
 ### Step 4: Core Skills Implementation (Phase 1–7)
 
 #### 4a. /spek.prepare (Workspace Setup)
-**Deliverable:** 7-step workspace initialization
+**Deliverable:** multi-step workspace initialization
 
 **Tasks:**
 - Implement git verification (clean working tree, feature branch check)
@@ -183,7 +183,7 @@ spekificity/
 - `spek prepare` validates git state ✓
 - Feature name extracted from branch or prompted ✓
 - Context loaded and session memory initialized ✓
-- Returns ✓ in <2 seconds
+- Returns ✓ quickly
 
 **Spec Reference:** [100-prepare-command.md](100-prepare-command.md)
 
@@ -321,7 +321,7 @@ spekificity/
 - SQLite schema defined ✓
 - Indexer processes Python files (AST) ✓
 - Queries return correct results ✓
-- Graph refreshes in <3 seconds ✓
+- Graph refreshes within acceptable time ✓
 - MCP tools callable from agent context ✓
 
 **Spec Reference:** [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md), [051-graph-storage-structure.md](051-graph-storage-structure.md), [052-node-schema-design.md](052-node-schema-design.md), [053-graph-refresh-strategy.md](053-graph-refresh-strategy.md), [054-graph-query-patterns.md](054-graph-query-patterns.md)
@@ -334,7 +334,7 @@ spekificity/
 
 | Phase | What | Where | Success Criteria |
 |-------|------|-------|------------------|
-| **Unit Tests** | Individual components (CLI, graph, vault, memory) | `tests/unit/` | >80% coverage per module |
+| **Unit Tests** | Individual components (CLI, graph, vault, memory) | `tests/unit/` | Coverage adequate per module |
 | **Integration Tests** | Multi-step workflows (prepare → context → plan) | `tests/integration/` | Full workflow succeeds ✓ |
 | **E2E Tests** | Complete feature from intent → lessons | `tests/e2e/` | Feature completes end-to-end ✓ |
 
@@ -344,9 +344,9 @@ spekificity/
 - [ ] Context loads without errors (user, session, repo layers)
 - [ ] SpecKit orchestration produces artifacts (spec, plan, tasks)
 - [ ] lat.md indexes code correctly
-- [ ] `/spek.prepare` completes in <5 seconds
+- [ ] `/spek.prepare` completes and returns ready status
 - [ ] `/spek.implement` context includes full vault + graph
-- [ ] Lessons extraction identifies ≥2 patterns
+- [ ] Lessons extraction identifies multiple patterns
 - [ ] Full feature workflow completes end-to-end
 
 **Spec Reference:** [140-integration-validation-and-testing.md](140-integration-validation-and-testing.md), [141-test-suite-specification.md](141-test-suite-specification.md)
@@ -373,36 +373,15 @@ spekificity/
 
 ## Success Metrics
 
-| Metric | Target |
-|--------|--------|
-| CLI startup time | <1 second |
-| `/spek.prepare` execution | <5 seconds |
-| lat.md refresh (100 files) | <3 seconds |
-| Full feature workflow (prepare → implement → post) | <30 minutes (human-driven) |
-| Test coverage | >80% |
-| Documentation completeness | 100% (wiki + docstrings) |
+Success criteria and numeric targets are defined in implementation artifacts and CI configuration. This roadmap avoids prescriptive numeric targets; implementation teams should define precise metrics (startup time, prepare execution, index refresh, end-to-end workflow duration, test thresholds) in their project CI/specs as appropriate.
 
 ---
 
-## Timeline Estimate
+## Timeline
 
-| Step | Effort | Duration |
-|------|--------|----------|
-| **Step 2:** Language + environment | 2h | 1 day |
-| **Step 3:** CLI scaffolding | 4h | 1-2 days |
-| **Step 4a:** /spek.prepare | 6h | 1-2 days |
-| **Step 4b:** /spek.context | 4h | 1 day |
-| **Step 4c:** /spek.plan | 8h | 2 days |
-| **Step 4d:** /spek.map | 6h | 1-2 days |
-| **Step 4e:** /spek.implement | 8h | 2 days |
-| **Step 4f:** /spek.conclude | 4h | 1 day |
-| **Step 4g:** /spek.lessons | 3h | 1 day |
-| **Step 5:** lat.md MCP | 10h | 2-3 days |
-| **Testing & Validation** | 8h | 2 days |
-| **TOTAL** | ~63h | 2-3 weeks |
+Timeline and effort estimates are omitted from this specification. Implementation teams should create task-level estimates in their project management tooling.
 
 ---
-
 ## Next Steps
 
 1. ✓ Confirm readiness (this document)

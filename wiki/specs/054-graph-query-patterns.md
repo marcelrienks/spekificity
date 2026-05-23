@@ -23,20 +23,20 @@ Query patterns for accessing `lat.md` via its CLI or MCP server (not shell grep/
 ## The 3-Layer Query Rule (Updated for lat.md)
 
 ```
-Layer 1: MCP Tool Calls (0 tokens, <100ms)
+Layer 1: MCP Tool Calls (zero tokens, low latency)
 ├─ Use: lat_symbols, lat_references, lat_callers, lat_definition
 ├─ Example: "Find all callers of function X"
-└─ Cost: 0 tokens, <100ms latency
+└─ Cost: zero tokens; low latency
 
-Layer 2: Built-in Impact Analysis (0 tokens, <500ms)
+Layer 2: Built-in Impact Analysis (zero tokens, modest latency)
 ├─ Use: lat_impact
 ├─ Example: "What's the impact of changing this function?"
-└─ Cost: 0 tokens, <500ms latency
+└─ Cost: zero tokens; modest latency
 
-Layer 3: LLM Synthesis (1-2K tokens, 5-15s)
+Layer 3: LLM Synthesis (LLM reasoning required)
 ├─ Use: Complex reasoning over multiple queries
 ├─ Example: "Redesign this module considering all dependencies"
-└─ Cost: 1-2K tokens, requires LLM reasoning
+└─ Cost: requires LLM reasoning and associated runtime
 ```
 
 **Strategy:** Use Layer 1-2 MCP tools whenever possible; fallback to Layer 3 only for complex reasoning.
@@ -181,13 +181,13 @@ result = call_mcp_tool("lat_query",
 
 ## Success Criteria
 
-- ✅ MCP tool calls complete in <100ms (direct index lookups)
-- ✅ Impact analysis completes in <500ms (built-in graph traversal)
+- ✅ MCP tool calls complete quickly (direct index lookups)
+- ✅ Impact analysis completes promptly (built-in graph traversal)
 - ✅ All queries return accurate results (verified against lat.md database)
-- ✅ Layer 1-2 covers 95%+ of use cases (no LLM synthesis needed for routine queries)
+- ✅ Layer 1-2 covers the majority of routine use cases (no LLM synthesis needed for routine queries)
 - ✅ Zero shell scripting overhead (MCP tools handle complexity)
 - ✅ Agent workflows use tool calls, not manual grep/jq
-- ✅ Query latency <500ms (supports real-time context loading in `/spek.plan`)
+- ✅ Query latency remains low to support real-time context loading in `/spek.plan`
 
 ---
 

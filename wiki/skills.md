@@ -1,6 +1,6 @@
 # Spekificity Skills Index: Command Reference
 
-**Last Updated:** 2026-05-20  
+**Last Updated:** date-omitted (future-state)  
 **Version:** 1.0.0-alpha.1  
 **Status:** ATOMIC SPECIFICATION
 
@@ -32,7 +32,7 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 2. Index code state via lat.md
 3. List available specs for feature selection
 4. Load prior decisions + patterns relevant to feature
-5. Present onboarding summary (5 min read)
+5. Present onboarding summary (short read)
 
 **Output:**
 - Feature context + related specs
@@ -120,11 +120,11 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 - Record any deviations from spec for post-mortem
 
 **Output:**
-- Implementation progress (step N/M complete)
+- Implementation progress (step status)
 - Code changes committed (with spec + plan linkage)
 - Decisions logged (new or referenced)
 - Token usage to date
-- Estimated completion
+- Completion status summary
 
 **Spec Reference:** [spek-implement-workflow.md](../specs/spek-implement-workflow.md)
 
@@ -141,7 +141,7 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 3. Log new decisions if architecture changed
 4. Update Success Criteria if spec changed
 5. Generate post-mortem summary
-6. Archive to vault/lessons/YYYY-MM-DD-feature-name.md
+6. Archive to `vault/lessons/<feature>.md`
 
 **Output:**
 - Post-mortem document (vault/lessons/)
@@ -199,7 +199,7 @@ The following commands are **first-class and fully documented**, but **not requi
 4. Make context available to all downstream commands
 
 **Output:**
-- Context loaded summary (# decisions, # lessons, # patterns available)
+- Context loaded summary (decisions, lessons, patterns available)
 - Context refresh timestamp
 
 **Spec Reference:** [context-layer.md](../specs/context-layer.md)
@@ -308,13 +308,13 @@ For fine-grained context control at specific workflow points:
 1. Detect file changes since last sync
 2. Update graph incrementally (not full rebuild)
 3. Validate graph integrity (check for stale references)
-4. Report coverage % (what % of codebase indexed)
+4. Report index coverage (qualitative completeness)
 5. Warn if manual rebuild recommended
 
 **Output:**
 - Sync complete (files added/modified/removed)
-- Graph size (node + edge count)
-- Coverage % of codebase
+- Graph size (nodes + edges)
+- Coverage of codebase
 - Timestamp of last sync
 
 **Spec Reference:** [050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md)
@@ -329,9 +329,9 @@ For fine-grained context control at specific workflow points:
 **Usage:** `/caveman [--intensity lite|full|ultra]`
 
 **Modes:**
-- `lite`: ~30% token reduction (remove explanations)
-- `full`: ~75% token reduction (terse format, abbreviations) — DEFAULT
-- `ultra`: ~90% token reduction (minimal prose, lossy)
+- `lite`: modest token reduction (remove explanations)
+- `full`: significant token reduction (terse format, abbreviations) — DEFAULT
+- `ultra`: maximal token reduction (minimal prose, lossy)
 
 **What it does:**
 1. Enable terse output mode for current session

@@ -5,7 +5,7 @@ lat index (updated)
 ├─ All symbols and document nodes indexed
 ├─ All references mapped
 ├─ Impact chains calculated
-└─ Ready for next query in < 100ms
+└─ Ready for next query with low latency
 ```
 ✓ lat.md index refreshed
 
@@ -13,7 +13,7 @@ lat index (updated)
 │  ├─ Query lat.md:
 │  │  - User model exists (✓ verified in lat.md)
 │  │  - JWT utilities exist (✓ verified in lat.md)
-├─ lat.md queried: 3 files affected, 12 functions touched
+├─ lat.md queried: affected files and functions identified
 
 ├─ Query lat.md:
 │  │  - User model exists (✓ verified in lat.md)
@@ -29,7 +29,7 @@ lat index (updated)
 
 > **Purpose:** Single source of truth for what Spekificity is, what it delivers, and how it operates when fully implemented.
 >
-> **Read Time:** 10 minutes  
+> **Read Time:** short  
 > **For:** Anyone trying to understand the complete vision and end state
 
 ---
@@ -65,9 +65,9 @@ Spekificity is a **specification-driven agent development framework** built arou
   - Specs, decisions, patterns stored and referenced repeatedly
   - Memory architecture (3-layer: user, session, repo) prevents redundant loads
 
-- **Caveman Compression:** Response format cuts token usage 75-90%
+-- **Caveman Compression:** Response format cuts token usage significantly
   - Concrete, active voice, no filler
-  - Same technical accuracy with 1/4 the tokens
+  - Same technical accuracy with far fewer tokens
 
 ### 2. Determinism
 **Repeatable workflows. No guessing. No drift.**
@@ -176,7 +176,7 @@ These core skills form the primary workflow and map to the four stages (Prepare 
 │  /spek.implement                                            │
 │  ├─ Tasks executed sequentially/parallel                    │
 │  ├─ Code written per spec                                   │
-│  ├─ Tests written (aim for high coverage — target 95%+ where practical) │
+│  ├─ Tests written (aim for high coverage where practical) │
 │  ├─ Docs updated                                            │
 │  └─ Changes committed to git                                │
 │       ↓                                                      │
@@ -306,7 +306,7 @@ lat index (updated)
 ├─ All symbols and document nodes indexed
 ├─ All references mapped
 ├─ Impact chains calculated
-└─ Ready for next query in < 100ms
+└─ Ready for next query with low latency
 ```
 
 ### In Vault Metadata
@@ -357,7 +357,7 @@ SPEC GENERATION
 ├─ Query lat.md:
 │  ├─ Found existing: auth/models.py (user model)
 │  ├─ Found existing: auth/tokens.py (jwt utilities)
-│  └─ Impact: 3 existing files touch auth system
+│  └─ Impact: several existing files touch auth system
 │
 ├─ Enrich with layers:
 │  ├─ Success Criteria:
@@ -365,7 +365,7 @@ SPEC GENERATION
 │  │  - ✓ Valid credentials return JWT token
 │  │  - ✓ Invalid credentials return 401
 │  │  - ✓ JWT validates on protected endpoints
-│  │  - ✓ 95%+ test coverage on new code
+│  │  - ✓ high test coverage on new code
 │  │
 │  ├─ Assumptions:
 │  │  - User model exists (✓ verified in lat.md)
@@ -378,9 +378,9 @@ SPEC GENERATION
 │  │  - 🟢 LOW: Rate limiting not implemented (mitigation: future feature)
 │  │
 │  └─ Resource Estimate:
-│     - Complexity: Medium (3 files touched, 1 existing pattern reused)
-│     - Tokens: ~2,000-3,000 for full cycle
-│     - Time: 1-2 hours
+│     - Complexity: Medium (multiple files touched; existing patterns reused)
+│     - Tokens: not specified
+│     - Time: not specified
 │
 └─ Output: wiki/vault/specs/150-user-auth-api.md (CREATED)
    └─ Ready for planning phase
@@ -400,7 +400,7 @@ SPEC GENERATION
 ```
 TASK BREAKDOWN
 ├─ Spec parsed: 150-user-auth-api.md
-├─ lat.md queried: 3 files affected, 12 functions touched
+├─ lat.md queried: affected files and functions identified
 │
 ├─ Dependencies analyzed:
 │  ├─ Upstream: User model (EXISTS, no changes needed)
@@ -611,30 +611,22 @@ Step 10: Report Completion
 #### WITHOUT Spekificity
 
 ```
-Day 1 (Morning):
+Initial session (investigation):
 ├─ Developer starts feature
-├─ Searches codebase for existing auth code (15 min)
-├─ Reads 5 files to understand structure
+├─ Searches codebase for existing auth code (short search)
+├─ Reads a small set of files to understand structure
 ├─ Misses JWT utilities in separate module
 └─ Starts coding without spec
 
-Day 1 (Afternoon):
+Later session (refactor & review):
 ├─ Code written without success criteria
-├─ Tests incomplete; coverage 60%
+├─ Tests incomplete
 ├─ Realizes JWT utilities exist; refactors
-└─ Lost 2 hours
+└─ Time lost due to ad-hoc discovery and rework
 
-Day 2 (Morning):
-├─ Code review: reviewer asks "why JWT not sessions?"
-├─ Developer has no documented reason
-├─ Meeting called; decision remade
-└─ Lost 1 hour
-
-Day 2 (Afternoon):
-├─ Tests passing, code merged
-├─ No lessons documented
-├─ Same patterns reinvented on next feature
-└─ Total: 2.5 days, 8,000+ tokens, no knowledge captured
+Knowledge leakage:
+├─ Code review questions require meetings to resolve
+└─ No lessons documented; patterns reinvented on next feature
 
 KNOWLEDGE DEBT: Next time, developer repeats same analysis
 ```
@@ -642,29 +634,22 @@ KNOWLEDGE DEBT: Next time, developer repeats same analysis
 #### WITH Spekificity
 
 ```
-Day 1 (Morning - 30 min):
-├─ /spek.prepare (lat.md shows JWT utilities exist)
-├─ /spek.plan --phase=specify (spec written with enrichment)
-├─ Success criteria clear, assumptions documented
-├─ Spec reviewed + approved by team
-└─ Ready to implement
+Initial session (prepare & specify):
+├─ `/spek.prepare` confirms JWT utilities via lat.md
+├─ `/spek.plan --phase=specify` produces an enriched spec
+├─ Success criteria and assumptions documented
+└─ Ready to implement with clear guidance
 
-Day 1 (Afternoon - 2 hours):
-├─ /spek.plan --phase=plan (tasks broken down, dependencies checked)
-├─ /spek.implement (code written per task spec)
-├─ Tests written (95%+ coverage)
-├─ Decisions logged: "JWT chosen for statelessness"
-└─ /spek.conclude (lessons captured, patterns indexed)
+Implementation session (plan & implement):
+├─ `/spek.plan --phase=plan` breaks tasks and checks dependencies
+├─ `/spek.implement` executes tasks per spec
+├─ Tests written and validated
+├─ Decisions logged (e.g., JWT chosen for statelessness)
+└─ `/spek.conclude` captures lessons and indexes patterns
 
-TOTAL: 2.5 hours active work, 3,200 tokens, knowledge captured
+KNOWLEDGE GAIN: Vault now contains specs, decisions, patterns, and lessons for reuse
 
-KNOWLEDGE GAIN: Vault now contains:
-├─ Spec (for next similar feature)
-├─ Decisions (why JWT)
-├─ Patterns (JWT generation, error responses)
-└─ Lessons (what worked, edge cases found)
-
-NEXT TIME: Developer reads vault, reuses pattern, saves 1.5 hours
+NEXT TIME: Developer reads vault, reuses pattern, and saves developer effort
 ```
 
 ---
@@ -675,12 +660,12 @@ Spekificity is working when:
 
 ✅ **Specs exist before code** — Developers write spec first, not as documentation after  
 ✅ **lat.md answers code questions** — "Where is X used?" answered via pre-indexed queries, not manual scanning  
-✅ **Decisions are documented** — Vault grows; decisions logged with rationale  
-✅ **Patterns are reused** — Each feature references 2-3 patterns from vault  
+✅ **Decisions are documented** — Vault grows; decisions logged with rationale
+✅ **Patterns are reused** — Each feature references multiple patterns from vault
 ✅ **Lessons are captured** — Each feature adds to lessons archive  
 ✅ **Context survives sessions** — Developer can close editor, come back tomorrow, resume without rebuilding context  
-✅ **Token usage is predictable** — Feature tokens estimated accurately; no surprises  
-✅ **Onboarding is faster** — New developer can read vault and understand project in 1 hour  
+✅ **Token usage is predictable** — Feature token usage is manageable and considered during planning
+✅ **Onboarding is faster** — New developer can read vault and understand project quickly  
 
 ---
 
@@ -693,18 +678,18 @@ Spekificity is working when:
 - ✅ SpecKit orchestration (deterministic pipeline)
 - ✅ Obsidian vault (Git-backed knowledge store)
 - ✅ Memory architecture (3-layer persistence)
-- ✅ Caveman compression (75-90% token reduction)
+-- ✅ Caveman compression (significant token reduction)
 - ✅ Lesson extraction (automatic from execution trace)
 - ✅ Pattern indexing (reusable solutions tracked)
 - ✅ Decision logging (archived with rationale)
 - ✅ Multi-developer coordination (async + sync workflows)
 - ✅ Session continuation (resume across interruptions)
-- ✅ Test strategy (135+ tests across 3-layer pyramid)
+- ✅ Test strategy (comprehensive tests across the 3-layer pyramid)
 
 **Ready to Use:**
-- ✅ All 41 specifications (010-189 phase-based sequencing)
+- ✅ Complete set of specifications (phase-based sequencing)
 - ✅ Full wiki documentation (vision, intention, architecture, workflow)
-- ✅ Quick start guide (30-min first feature walkthrough)
+- ✅ Quick start guide (short first feature walkthrough)
 - ✅ Skill framework (`/spek.*` commands)
 
 ---
@@ -717,7 +702,7 @@ Spekificity is working when:
 | [wiki/intention.md](../intention.md) | Core principles and design tenets |
 | [wiki/architecture.md](../architecture.md) | Technical architecture and components |
 | [wiki/workflow.md](../workflow.md) | 4-stage workflow details (reference during development) |
-| [wiki/quickstart.md](../quickstart.md) | Hands-on walkthrough of first feature (30 min tutorial) |
+| [wiki/quickstart.md](../quickstart.md) | Hands-on walkthrough of first feature (short tutorial) |
 
 ---
 

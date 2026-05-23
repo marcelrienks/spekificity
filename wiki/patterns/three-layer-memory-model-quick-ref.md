@@ -68,7 +68,7 @@ MEMORY ARCHITECTURE
 ```
 Session Start:
   1. Load Layer 3 (if exists from prior session)
-  2. If Layer 3 empty, load top 3-5 from Layer 2
+  2. If Layer 3 empty, load top entries from Layer 2
   3. If Layer 2 empty, load from Layer 1
   ↓
 During Feature Work:
@@ -168,8 +168,8 @@ def load_context():
 
 ## Token Cost
 
-- **Layer 1 load:** 1-3K tokens (full vault read)
-- **Layer 2 load:** 100-300 tokens (compressed cache)
-- **Layer 3 load:** ~50 tokens (ephemeral, already in context)
+## Notes on Resource Use
+
+- Resource usage varies by feature and environment; prefer Layer 2 or Layer 3 for routine loads and avoid full Layer 1 reads unless necessary.
 
 Best practice: Load Layer 2 or Layer 3, avoid full Layer 1 read unless necessary.

@@ -128,7 +128,7 @@ def orchestrate_skills(feature_description):
             elif category == "TRANSIENT":
                 # Retry
                 print(f"Retrying {skill.name} (transient error)...")
-                result = retry_skill(skill, inputs, max_retries=3)
+                result = retry_skill(skill, inputs, max_retries=MAX_RETRIES)
                 
             elif category == "FATAL":
                 # Suggest manual remediation
@@ -231,10 +231,6 @@ def chain_specify_and_plan():
 
 ---
 
-## Token Cost
+## Notes on Resource Use
 
-- **Orchestrator overhead:** ~50-100 tokens per feature
-- **Per-skill I/O:** ~50 tokens (input collection + output validation)
-- **Error handling:** ~100-200 tokens (if errors occur)
-
-Total: ~200-500 tokens overhead (vs. ~50 tokens for bare skill execution).
+- Resource usage for orchestration and skill chaining depends on workflow complexity and configured enrichment; teams should monitor and configure budgets rather than embedding fixed numeric estimates in docs.

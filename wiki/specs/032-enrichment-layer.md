@@ -85,14 +85,14 @@ Specifies what to build, guided by project decisions and patterns.
 3. Prepend to feature description before calling SpecKit
 
 **Context Used:**
-- Recent decisions (top 5, active only)
-- Recent patterns (top 3, active only)
+- Recent decisions (recent active decisions only)
+- Recent patterns (recent active patterns only)
 
 **Goal:** Guide spec toward existing constraints without over-constraining
 
 ## Success Criteria
 
-- ✅ Context injection adds decisions + patterns without overwhelming LLM (context <10K tokens)
+-- ✅ Context injection adds decisions + patterns without overwhelming LLM (context within configured safe size)
 - ✅ Generated artifacts are more context-aware than vanilla SpecKit (improvement visible in review)
 - ✅ Specify phase generates specs aligned with architectural decisions
 - ✅ Plan phase generates plans that consider existing code structure
@@ -114,8 +114,8 @@ Specifies what to build, guided by project decisions and patterns.
 
 **Model Settings:**
 - Model: Claude Opus (high-quality spec generation)
-- Temperature: 0.3 (consistent + focused)
-- Max tokens: 4000
+- Temperature: conservative (team-configured)
+- Max tokens: project-configured limit
 
 **Output:** spec.md (created in current directory)
 
@@ -129,11 +129,11 @@ Specifies what to build, guided by project decisions and patterns.
 
 **Update Memory:**
 - Mark vault/session/ phase as "specifying"
-- Set completion to 25%
+- Set completion state to "in-progress"
 - Add session log entry: "[SPECIFIED] spec.md created"
 
 **Output:**
-- Completion report: "✓ Spec created. Phase: specifying (25% complete)"
+- Completion report: "✓ Spec created. Phase: specifying (in-progress)"
 
 ### Error Handling
 
@@ -199,8 +199,8 @@ Creates technical implementation plan, guided by spec, decisions, patterns, and 
 **Input:** spec.md + injected context + code graph
 
 **Model:** Claude Opus (high-quality architecture)  
-**Temperature:** 0.3  
-**Max tokens:** 5000
+**Temperature:** conservative (team-configured)  
+**Max tokens:** project-configured limit
 
 **Output:** plan.md (architecture, design decisions, component breakdown)
 
@@ -215,7 +215,7 @@ Creates technical implementation plan, guided by spec, decisions, patterns, and 
 
 **Update Memory:**
 - Mark vault/session/ phase as "planning"
-- Set completion to 50%
+- Set completion state to "in-progress"
 - Log: "[PLANNED] plan.md created"
 
 ### Error Handling
@@ -285,13 +285,13 @@ Executes tasks and collects artifacts for post-processing.
 
 **Analyze:**
 - Success rate: how many tasks completed?
-- Partial completion: 60% complete vs. 100%?
+- Partial completion: some tasks completed vs. all tasks
 - Error summary: what went wrong?
 
 **Update Memory:**
 - Mark vault/session/ phase as "implementing"
-- Set completion % based on task success
-- Log session entry: "[IMPLEMENTED] X/Y tasks complete"
+- Set completion state based on task success (qualitative)
+- Log session entry: "[IMPLEMENTED] task completion recorded"
 - Note blockers (failed tasks)
 
 **Report:**
@@ -393,9 +393,9 @@ enrichment:
     implement: true
   
   # Context to inject
-  context:
-    recent_decisions_count: 5
-    recent_patterns_count: 3
+   context:
+      recent_decisions_count: TOP_N
+      recent_patterns_count: TOP_M
     include_code_graph: true
   
   # Validation

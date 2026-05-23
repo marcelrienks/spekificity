@@ -1,15 +1,15 @@
 # Pattern Library: Reusable Patterns from Spekificity Architecture
 
 **Status:** Complete  
-**Version:** 2026-05-20  
+**Version:** current
 **Phases Covered:** Phase 0 (Foundation), Phase 1 (Agent Skills), Phase 2 (Validation & Optimization)  
-**Total Patterns:** 24 distinct, reusable patterns
+**Total Patterns:** multiple distinct, reusable patterns
 
 ---
 
 ## Overview
 
-This document catalogs all reusable architectural, workflow, and optimization patterns extracted from the 44 specification files in Spekificity. Each pattern is:
+This document catalogs all reusable architectural, workflow, and optimization patterns extracted from many specification files in Spekificity. Each pattern is:
 - **Self-contained** — Solves a specific, recurring problem
 - **Cross-referenced** — Links to specs, related patterns, and use cases
 - **Actionable** — Includes examples, implementation notes, and integration points
@@ -31,7 +31,7 @@ This document catalogs all reusable architectural, workflow, and optimization pa
 | 6 | Feature Lifecycle Pattern | Workflow | End-to-end feature orchestration | [cli-orchestration.md](wiki/specs/cli-orchestration.md) | HIGH | ✅ ACTIVE |
 | 7 | Error Categorization Pattern | Error Handling | Classify errors for targeted recovery | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH | ✅ ACTIVE |
 | 8 | Zettelkasten Convention Pattern | Memory | Atomic, interconnected notes with frontmatter | [zettelkasten-conventions.md](wiki/specs/zettelkasten-conventions.md) | MEDIUM | 🟢 S1 |
-| 9 | Caveman Compression Mode | Compression | Reduce token usage 75-90% | [caveman-integration.md](wiki/specs/caveman-integration.md) | HIGH | ✅ ACTIVE |
+| 9 | Caveman Compression Mode | Compression | Reduce token usage substantially | [caveman-integration.md](wiki/specs/caveman-integration.md) | HIGH | ✅ ACTIVE |
 | 10 | Auto-Tagging + Auto-Wikilink Pattern | Memory | Automate knowledge interconnection | [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md) | MEDIUM | 🟢 S2 |
 | 11 | Skill Chaining Pattern | Integration | Sequential execution with dependencies | [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md) | HIGH | ✅ ACTIVE |
 | 12 | Post-Processing Pattern | Workflow | Artifact collection → compression → archive | [post-processing.md](wiki/specs/post-processing.md) | HIGH | ✅ ACTIVE |
@@ -291,15 +291,15 @@ Feature work involves multiple steps (spec → plan → implement → archive) w
 Define explicit feature lifecycle with required transitions:
 
 ```
-(START) → prepare (0%)
+(START) → prepare
           ↓
-        specify (25%)
+        specify
           ↓
-        plan (50%)
+        plan
           ↓
-        implement (75%)
+        implement
           ↓
-        post (100%)
+        post
         ↓
         (COMPLETE)
 ```
@@ -400,21 +400,15 @@ Chain skills with explicit dependency management:
 After feature implementation, artifacts (spec, plan, code changes) must be preserved for future learning. Manual archival is error-prone; compression overhead is high.
 
 ### Solution
-Automated 10-step post-processing:
+Automated post-processing performs a sequence of archival and indexing steps after feature implementation:
 
-```
-/spek.conclude
-1. Collect artifacts (spec/plan/tasks/trace/diff)
-2. Activate caveman compression mode
-3. Generate lessons document (vault/lessons/)
-4. Update vault/decision.md
-5. Update vault/patterns.md
-6. Sync /memories/repo/architectural-decisions.md
-7. Sync /memories/repo/patterns-index.md
-8. Refresh code graph (/spek.map)
-9. Archive session memory
-10. Report completion
-```
+- Collect artifacts (spec/plan/tasks/trace/diff)
+- Activate caveman compression mode
+- Generate lessons document (vault/lessons/)
+- Update vault/decision.md and related indexes
+- Sync repo memory and patterns index
+- Refresh code graph (/spek.map)
+- Archive session memory and report completion
 
 ### When to Use
 - Feature-driven development (lessons at feature end)
@@ -457,25 +451,25 @@ Automated 10-step post-processing:
 Agent queries cost tokens. Naive approach: read all files (expensive). Better approach: tier queries by cost.
 
 ### Solution
-Three-tier query hierarchy (cost increases, but Layer 1-2 cover 95% of use cases):
+Three-tier query hierarchy (cost increases; Layer 1-2 handle the majority of common queries):
 
-**Layer 1: lat.md MCP Tools (0 tokens)**
+**Layer 1: lat.md MCP Tools (local index)**
 - Query: lat.md MCP tools (lat_symbols, lat_references, lat_callers, etc.)
 - Examples: "Who calls function X?", "What does module Y depend on?"
-- Cost: 0 API tokens (local index)
-- Latency: <100ms
+- Cost: low (local index)
+- Latency: low-latency
 
-**Layer 2: Vault/Decisions (~200-300 tokens)**
+**Layer 2: Vault/Decisions (searchable metadata)**
 - Query: grep + jq on vault files (or MCP query tool)
 - Examples: "What decisions affect authentication?", "What patterns exist for error handling?"
-- Cost: ~100 tokens (searching structured docs)
-- Latency: <1s
+- Cost: moderate (searching structured docs)
+- Latency: moderate-latency
 
-**Layer 3: Raw Code Files (1-3K tokens)**
+**Layer 3: Raw Code Files (full-file analysis)**
 - Query: Read entire files, AI synthesis
 - Examples: "Explain this complex algorithm", "Find all callers of function X across repo"
-- Cost: 1-3K tokens (entire file reads)
-- Latency: 5-15s
+- Cost: high for full-file reads
+- Latency: higher for full-file analysis
 
 **Rule:** Use Layer 1 first; fallback to Layer 2; use Layer 3 only if necessary.
 
@@ -520,7 +514,7 @@ Code structure needs to be queryable (who calls this function? what does this mo
 Use lat.md MCP tools for pre-indexed queries:
 
 ```python
-# Layer 1: Direct MCP tool calls (built-in, <100ms each)
+# Layer 1: Direct MCP tool calls (built-in, low-latency)
 symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 callers = call_mcp_tool("lat_callers", symbol="authenticate")
 impact = call_mcp_tool("lat_impact", file="src/services/auth.py", symbol="authenticate")
@@ -638,13 +632,13 @@ related: ["[[singleton-pattern]]", "[[service-locator-pattern]]"]
 ## Pattern 10: Auto-Tagging + Auto-Wikilink Pattern
 
 **Category:** Memory  
-**Solves:** Automate knowledge interconnection (70% automation)  
+**Solves:** Automate knowledge interconnection (majority automation)  
 **Primary Spec:** [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md)  
 **Phase Introduced:** Phase 2 (Validation & Optimization)  
 **Status:** ACTIVE  
 
 ### Problem
-Manually linking vault notes is time-consuming (~30% of lesson generation). Manual tagging leads to inconsistencies.
+Manually linking vault notes is time-consuming (a significant portion of lesson generation). Manual tagging leads to inconsistencies.
 
 ### Solution
 Automate extraction, mapping, and linking:
@@ -662,8 +656,8 @@ Automate extraction, mapping, and linking:
 auto_linking:
   enabled: true
   extraction:
-    min_keyword_length: 3
-    max_keywords_per_lesson: 15
+    min_keyword_length: "project-configured-min-length"
+    max_keywords_per_lesson: "project-configured-max-keywords"
     exclude_stopwords: true
   mapping:
     strategy: "longest-match"
@@ -748,27 +742,27 @@ Archive session logs to vault with Zettelkasten format:
 ## Pattern 12: Caveman Compression Mode
 
 **Category:** Compression  
-**Solves:** Reduce token usage 75-90% while preserving meaning  
+**Solves:** Reduce token usage (significant reduction) while preserving meaning
 **Primary Spec:** [caveman-integration.md](wiki/specs/caveman-integration.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
 ### Problem
-Lessons + vault updates consume tokens (~5-10K per feature). Multi-feature sessions hit token budgets.
+Lessons + vault updates consume significant token budgets per feature. Multi-feature sessions can hit token limits.
 
 ### Solution
 Ultra-compressed communication style (caveman mode) preserving technical accuracy:
 
-**Mode 1: Lite (30% reduction)**
+**Mode 1: Lite (modest reduction)**
 - Full sentences, natural language
 - Use: First feature (readability), complex decisions
 
-**Mode 2: Full (75% reduction, DEFAULT)**
+**Mode 2: Full (substantial reduction, DEFAULT)**
 - Caveman syntax (terse, meaning preserved)
 - Example: "Why: DI pattern. Benefit: Decoupling. Cost: Setup overhead."
 - Use: Standard feature workflow
 
-**Mode 3: Ultra (90% reduction)**
+**Mode 3: Ultra (maximal reduction)**
 - Minimal syntax, abbreviations, extreme compression
 - Use: Token-constrained sessions
 
@@ -813,20 +807,20 @@ Explicit per-phase budgets with tracking and alerts:
 
 ```yaml
 token_budget:
-  per_feature: 12000  # Total tokens per feature
-  
+  per_feature: configured-value  # Total tokens per feature (team-configurable)
+
   phases:
     specify_phase:
-      budget: 2000  # Spec generation
+      budget: configured-value  # Spec generation
     plan_phase:
-      budget: 3000  # Plan + architecture
+      budget: configured-value  # Plan + architecture
     implement_phase:
-      budget: 5000  # Code generation
+      budget: configured-value  # Code generation
     post_phase:
-      budget: 2000  # Lessons + vault
-  
-  alert_threshold_percent: 80   # Alert when 80% used
-  warning_threshold_percent: 60 # Warning when 60% used
+      budget: configured-value  # Lessons + vault
+```
+  alert_threshold: "project-configured-alert-threshold"   # Alert when usage exceeds configured threshold
+  warning_threshold: "project-configured-warning-threshold" # Warning when usage exceeds configured threshold
 ```
 
 ### When to Use
@@ -840,7 +834,7 @@ token_budget:
 
 ### Example Code / Integration
 - **Tracking:** Each skill reports token usage
-- **Alerts:** Warnings at 60%, 80% thresholds
+- **Alerts:** Warnings at configured thresholds
 - **Reporting:** `/spek.conclude` Step 10 (feature-end report)
 
 ### Related Patterns
@@ -1397,7 +1391,7 @@ Query via MCP tools:
 - **Skill:** language="yaml", type="skill" → spek-prepare/SKILL.md
 
 **Benefits:**
-- MCP tools find related code + docs in <100ms
+- MCP tools find related code + docs with low latency
 - Impact analysis across code/doc boundary (via lat_impact)
 - Zero token cost for queries
 
@@ -1573,16 +1567,16 @@ status: "initialized | specifying | planning | implementing | completing"
 session_start: "2026-05-19T10:00:00Z"
 session_count: 1
 phase: "prepared | specifying | planning | implementing | completing"
-completion: 0-100
+completion: progress-indicator
 ---
 
 ## Current Phase: [Prepared|Specifying|Planning|Implementing|Completing]
 
 ## Progress by Phase
-- [ ] Spec drafted (0-25%)
-- [ ] Plan drafted (25-50%)
-- [ ] Tasks generated (50-75%)
-- [ ] Implementation complete (75-100%)
+- [ ] Spec drafted (initial)
+- [ ] Plan drafted (in-progress)
+- [ ] Tasks generated (ready for implementation)
+- [ ] Implementation complete (completed)
 
 ## Session Log
 - Session 1: [timestamp] Prepared, loaded context
@@ -1600,7 +1594,7 @@ completion: 0-100
 
 ### Example Code / Integration
 - **Create:** `/spek.prepare` Step 6 (initialized status)
-- **Update:** Each skill updates status (0% → 25% → 50% → 75% → 100%)
+- **Update:** Each skill updates status through defined phases (drafted → planned → implementing → completing → completed)
 - **Archive:** `/spek.conclude` Step 9 (move to /memories/session/archive/)
 
 ### Related Patterns

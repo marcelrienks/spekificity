@@ -2,7 +2,7 @@
 
 **Category:** Query  
 **Problem:** Agent queries cost tokens; naive approach reads all files (expensive)  
-**Solution:** Tier queries by cost; use Layer 1-2 for 90% of cases  
+**Solution:** Tier queries by cost; use Layer 1-2 for the majority of cases
 **Used in:** Context loading, `/spek.context`, code graph queries  
 
 ---
@@ -14,35 +14,35 @@ Hierarchical query strategy that prioritizes efficiency:
 ```
 QUERY HIERARCHY (lat.md-Based)
 
-Layer 1: lat.md MCP Tools (FAST, FREE)
-├─ Cost: 0 tokens
-├─ Latency: <100ms
+Layer 1: lat.md MCP Tools (FAST, LOW-COST)
+├─ Cost: low
+├─ Latency: low-latency
 ├─ Query: MCP tool calls (lat_symbols, lat_references, lat_callers, etc.)
 ├─ Examples:
 │  - "Who calls function X?" → lat_callers
 │  - "What does module Y depend on?" → lat_callees
 │  - "Find all classes in file Z" → lat_symbols
-└─ Success rate: 95% of queries
+└─ Success rate: high for common structural queries
 
-Layer 2: Vault/Decisions (MEDIUM, CHEAP)
-├─ Cost: ~200-300 tokens
-├─ Latency: <1s
+Layer 2: Vault/Decisions (MEDIUM COST)
+├─ Cost: moderate
+├─ Latency: moderate-latency
 ├─ Query: grep + jq on vault files (decisions, patterns)
 ├─ Examples:
 │  - "What decisions affect authentication?"
 │  - "What patterns exist for error handling?"
 │  - "Find recent lessons about caching"
-└─ Success rate: 85% of queries
+└─ Success rate: good for metadata and decision queries
 
-Layer 3: Raw Code Files (SLOW, EXPENSIVE)
-├─ Cost: 1-3K tokens
-├─ Latency: 5-15s
+Layer 3: Raw Code Files (HIGHER COST)
+├─ Cost: higher
+├─ Latency: higher-latency
 ├─ Query: Read entire files, AI synthesis
 ├─ Examples:
 │  - "Explain this complex algorithm"
 │  - "Find all edge cases in function X"
 │  - "What's the performance bottleneck?"
-└─ Success rate: 100% (if query possible at all)
+└─ Success rate: comprehensive when full context is required
 
 RULE: Use Layer 1 → Layer 2 → Layer 3
 Only escalate when necessary.
@@ -52,8 +52,8 @@ Only escalate when necessary.
 
 ## Why Use It
 
-- ✅ Token savings (Layer 1-2 cover 90% of cases, save 90% tokens)
-- ✅ Speed (Layer 1 queries complete in <100ms)
+- ✅ Token savings (Layer 1-2 handle the majority of common queries)
+- ✅ Speed (Layer 1 queries are low-latency)
 - ✅ Scalability (multiple features per session)
 - ✅ Fallback (if Layer 1 fails, try Layer 2)
 - ✅ Measurable (cost breakdown visible)
@@ -78,7 +78,7 @@ Only escalate when necessary.
 **Setup:**
 ```
 lat.md indexing active. Access via MCP tool calls.
-Seven built-in tools available: lat_symbols, lat_definition, 
+Built-in tools available: lat_symbols, lat_definition, 
 lat_references, lat_callers, lat_callees, lat_impact, lat_query
 ```
 
@@ -114,7 +114,7 @@ result = call_mcp_tool("lat_query", query="find all methods returning bool")
 # Returns: [authenticate(...), is_valid_token(...), ...]
 ```
 
-**Cost:** 0 tokens per query
+**Cost:** low per query
 
 ---
 
@@ -145,7 +145,7 @@ grep -l "dependency-injection" vault/lessons/*.md | head -3
 grep -A 3 "title: \"Singleton Pattern\"" vault/decision.md
 ```
 
-**Cost:** 100-300 tokens (metadata + search results)
+**Cost:** moderate (metadata + search results)
 
 ---
 
@@ -162,11 +162,11 @@ grep -A 3 "title: \"Singleton Pattern\"" vault/decision.md
 cat src/complex-algorithm.py | \
 wc -l  # Check size first (avoid huge files)
 
-# If < 500 lines: read and send to LLM
-# If > 500 lines: break into sections, query one at a time
+# If small: read and send to LLM
+# If large: break into sections, query one at a time
 ```
 
-**Cost:** 1-3K tokens per file (can be 10x more than Layer 1)
+**Cost:** higher per file (more than Layer 1)
 
 ---
 
@@ -231,31 +231,12 @@ def query_with_escalation(query_text):
 - [ ] Fallback to Layer 2 if Layer 1 empty?
 - [ ] Fallback to Layer 3 only if 1-2 insufficient?
 - [ ] Token cost tracked per layer?
-- [ ] Performance targets met (Layer 1 <100ms)?
+- [ ] Performance targets met (Layer 1 low latency)?
 
 ---
 
-## Token Cost Example
+## Notes on Resource Use
 
-**Scenario: Find all callers of a function**
+- Layer 1 is typically the most efficient for structural queries; Layer 2 suits metadata and decision queries; Layer 3 is for full-file analysis when necessary.
 
-```
-Layer 1 approach:
-  grep + node lookup: ~50 tokens
-  grep edges: ~20 tokens
-  Total: ~70 tokens ✓ EFFICIENT
-
-Layer 2 approach:
-  grep vault: ~100 tokens
-  parse results: ~50 tokens
-  Total: ~150 tokens
-
-Layer 3 approach:
-  Read src/ files: ~1000 tokens
-  Parse and analyze: ~1000 tokens
-  Total: ~2000 tokens ✗ EXPENSIVE
-
-Savings: Layer 1 vs. Layer 3 = 28x cheaper (70 vs. 2000 tokens)
-```
-
-For multi-feature sessions, Layer 1 queries enable 10-15 queries per feature budget.
+Avoid embedding fixed numeric budgets in public docs; teams should configure per-project limits in configuration files.

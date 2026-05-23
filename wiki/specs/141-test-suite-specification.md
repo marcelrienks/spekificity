@@ -2,14 +2,14 @@
 title: "Spekificity Test Suite & Validation Strategy"
 status: "COMPLETE"
 date: "2026-05-20"
-coverage_target: "80%"
+coverage_target: "omitted"
 ---
 
 # Spekificity Test Suite & Validation Strategy
 
 **Status:** COMPLETE  
 **Date:** 2026-05-20  
-**Coverage Target:** 80% (good baseline)  
+**Coverage Target:** high (good baseline; team-defined)  
 **Test Fixtures:** Small synthetic project (faster, controlled)  
 **Mocking Strategy:** Full mocks for unit + integration (isolated, fast)  
 **CI/CD:** GitHub Actions on PR + local pre-commit hooks  
@@ -22,37 +22,31 @@ coverage_target: "80%"
 ### 1.1 Three-Layer Test Pyramid
 
 ```
-     E2E Tests (5 scenarios)
-        10% of tests
+      E2E Tests (representative scenarios)
+          small portion of tests
     
-  Integration Tests (15 scenarios)
-      30% of tests
+  Integration Tests (representative scenarios)
+        moderate portion of tests
     
-   Unit Tests (40+ scenarios)
-      60% of tests
+    Unit Tests (representative scenarios)
+        largest portion of tests
 ```
 
 ### 1.2 Test Organization by Component
 
 ```
 tests/
-├── unit/                          # 60% of tests, fastest, fully mocked
+├── unit/                          # majority of tests, fastest, fully mocked
 │   ├── test_enrichment_layer.py
-│   ├── test_memory_layer.py
-│   ├── test_feature_state.py
-│   ├── test_decorator_wrapper.py
-│   ├── test_context_injection.py
-│   └── test_compression.py
+ │   ├── test_feature_state.py
+ │   ├── test_context_injection.py
+ │
+ │   ├── test_prepare_workflow.py
+ │   ├── test_plan_workflow.py
+ │   ├── test_post_workflow.py
+ │   └── test_full_pipeline.py
 │
-├── integration/                    # 30% of tests, medium speed, mocked externals
-│   ├── test_prepare_workflow.py
-│   ├── test_specify_workflow.py
-│   ├── test_plan_workflow.py
-│   ├── test_implement_workflow.py
-│   ├── test_post_workflow.py
-│   └── test_full_pipeline.py
-│
-├── e2e/                           # 10% of tests, slowest, synthetic fixtures
+├── e2e/                           # small portion of tests, slowest, synthetic fixtures
 │   ├── test_full_workflow.py
 │   ├── test_error_scenarios.py
 │   ├── test_multi_feature.py
@@ -89,42 +83,42 @@ tests/
     │
     └── pre-commit-hooks/
         ├── run-unit-tests.sh    # Local pre-commit hook (unit tests only)
-        └── run-quick-tests.sh   # Local quick check (< 5s, critical path)
+        └── run-quick-tests.sh   # Local quick check (critical path)
 ```
 
 ---
 
-## 2. Unit Tests (60% Coverage)
+## 2. Unit Tests (coverage guidance)
 
-### 2.1 Enrichment Layer Unit Tests
+ ✅ Coverage: enrichment_layer.py — aim for high coverage where practical (adjust per component)
 
-**File:** `tests/unit/test_enrichment_layer.py`
+ ✅ Coverage: memory_layer.py — aim for high coverage where practical (adjust per component)
 
-**Scope:** Load context from vault, merge patterns, inject into input
+ ✅ Coverage: feature_state.py — aim for high coverage where practical (adjust per component)
 
-**Fixtures:** 
--- `mock_lat_adapter`: MockLatAdapter (simulates adapter mapping spec tool names to lat.md commands) with 50 sample symbols
-
+ ✅ Coverage: decorator_wrapper.py — aim for high coverage where practical (adjust per component)
+- `mock_lat_adapter`: MockLatAdapter (simulates adapter mapping spec tool names to lat.md commands) with a representative sample of symbols
+ ✅ Coverage: context_injection.py — aim for high coverage where practical (adjust per component)
 **Test Cases:**
-
+ ✅ Coverage: compression.py — aim for high coverage where practical (adjust per component)
 | Test ID | Test Name | Setup | Assertion |
 |---------|-----------|-------|-----------|
-| U-E1 | Load vault decision | Mock vault with 2 decisions | context["decisions"] = 2 items |
-| U-E2 | Load vault patterns | Mock vault with 5 patterns | context["patterns"] = 5 items |
-| U-E3 | Query lat.md symbols | MockLatAdapter with 50 symbols | context["symbols"] returns 50 (unfiltered) |
-| U-E4 | Filter lat.md by type | MockLatAdapter, query by type "function" | returns only functions (~30 of 50) |
-| U-E5 | Merge context layers | 2 decisions + 3 patterns + 20 symbols | merged output = 25 items, no duplicates |
+| U-E1 | Load vault decision | Mock vault with multiple decisions | context["decisions"] returns entries |
+| U-E2 | Load vault patterns | Mock vault with multiple patterns | context["patterns"] returns entries |
+| U-E3 | Query lat.md symbols | MockLatAdapter with representative symbols | context["symbols"] returns a representative set (unfiltered) |
+| U-E4 | Filter lat.md by type | MockLatAdapter, query by type "function" | returns only functions (filtered) |
+| U-E5 | Merge context layers | Multiple decisions, patterns, and symbols | merged output contains combined items, no duplicates |
 | U-E6 | Handle vault not found | Mock vault missing patterns.md | raise FileNotFoundError w/ clear message |
-| U-E7 | Handle lat.md timeout | MockLatAdapter timeout (3s) | raise TimeoutError, continue without index |
+| U-E7 | Handle lat.md timeout | MockLatAdapter simulates timeout (short) | raise TimeoutError, continue without index |
 | U-E8 | Handle lat.md error | MockLatAdapter returns error | log warning, continue w/ vault only |
-| U-E9 | Token estimate | Merge 100 items | tokens ~= 100 * 3 (conservative estimate) |
-| U-E10 | Compression flag | Inject context w/ compress=True | output compressed (caveman format, ~75% reduction) |
+| U-E9 | Token estimate | Merge many items | token estimate omitted (qualitative guidance only) |
+| U-E10 | Compression flag | Inject context w/ compress=True | output compressed (caveman format; substantial reduction) |
 
 **Success Criteria:**
-- ✅ All 10 tests pass
+- ✅ All listed tests pass
 - ✅ No network calls (fully mocked)
-- ✅ < 100ms per test (total < 1s)
-- ✅ Coverage: enrichment_layer.py — target 95%+ where practical (adjust per component)
+- ✅ Fast per-test execution (quick)
+- ✅ Coverage: enrichment_layer.py — aim for high coverage where practical (adjust per component)
 
 ---
 
@@ -135,7 +129,7 @@ tests/
 **Scope:** Read/write vault, repo memory, session memory; handle conflicts
 
 **Fixtures:**
-- `mock_vault_dir`: Temporary Obsidian vault (3 docs + 2 patterns)
+- `mock_vault_dir`: Temporary Obsidian vault (several docs + patterns)
 - `mock_repo_memory`: Temporary vault/repo/ files
 - `mock_session_memory`: Temporary vault/session/ files
 
@@ -152,12 +146,12 @@ tests/
 | U-M7 | Clear session on exit | End of session | vault/session/ files deleted |
 | U-M8 | Conflict: vault duplicate pattern | Try write duplicate pattern name | raise NameConflictError w/ suggestion |
 | U-M9 | Conflict: repo memory overwrite | Try overwrite different summary | prompt for overwrite vs. keep old |
-| U-M10 | Token estimate vault read | Read 100-item decision.md | tokens ~= 300 (3x for JSON parse overhead) |
+| U-M10 | Token estimate vault read | Read large decision.md | token estimate omitted (qualitative guidance only) |
 
 **Success Criteria:**
 - ✅ All 10 tests pass
 - ✅ No disk writes to real vault (temp dirs only)
-- ✅ < 50ms per test (total < 500ms)
+- ✅ Fast per-test execution (low latency)
 -- ✅ Coverage: memory_layer.py — target 95%+ where practical (adjust per component)
 
 ---
@@ -176,14 +170,14 @@ tests/
 
 | Test ID | Test Name | Setup | Assertion |
 |---------|-----------|-------|-----------|
-| U-FS1 | Initialize feature state | New feature | phase="not_started", % = 0 |
-| U-FS2 | Transition to specifying | state.transition("specifying") | phase="specifying", % = 10 |
-| U-FS3 | Transition to specified | state.transition("specified") | phase="specified", % = 20 |
-| U-FS4 | Transition to planning | state.transition("planning") | phase="planning", % = 30 |
-| U-FS5 | Transition to planned | state.transition("planned") | phase="planned", % = 40 |
-| U-FS6 | Transition to implementing | state.transition("implementing") | phase="implementing", % = 50 |
-| U-FS7 | Transition to completing | state.transition("completing") | phase="completing", % = 90 |
-| U-FS8 | Finalize feature | state.transition("complete") | phase="complete", % = 100 |
+| U-FS1 | Initialize feature state | New feature | phase="not_started" |
+| U-FS2 | Transition to specifying | state.transition("specifying") | phase="specifying" |
+| U-FS3 | Transition to specified | state.transition("specified") | phase="specified" |
+| U-FS4 | Transition to planning | state.transition("planning") | phase="planning" |
+| U-FS5 | Transition to planned | state.transition("planned") | phase="planned" |
+| U-FS6 | Transition to implementing | state.transition("implementing") | phase="implementing" |
+| U-FS7 | Transition to completing | state.transition("completing") | phase="completing" |
+| U-FS8 | Finalize feature | state.transition("complete") | phase="complete" |
 | U-FS9 | Invalid transition | Try transition "completing" → "planning" | raise InvalidTransitionError |
 | U-FS10 | Persist state | Write state to file, reload | state identical after reload |
 
@@ -222,7 +216,7 @@ tests/
 
 **Success Criteria:**
 - ✅ All 10 tests pass
-- ✅ < 100ms per test (total < 1s)
+- ✅ Fast per-test execution (low latency)
 -- ✅ Coverage: decorator_wrapper.py — target 95%+ where practical (adjust per component)
 
 ---
@@ -234,8 +228,8 @@ tests/
 **Scope:** Build context strings for injection into SpecKit prompts
 
 **Fixtures:**
-- `mock_vault`: Vault w/ 3 decisions, 5 patterns
-- `mock_lat`: lat.md w/ 50 symbols
+- `mock_vault`: Vault with a representative set of decisions and patterns
+- `mock_lat`: lat.md with a representative symbol set
 - `mock_feature_state`: Feature in "planning" phase
 
 **Test Cases:**
@@ -245,11 +239,11 @@ tests/
 | U-C1 | Build context for specify | Feature new → context includes goals | context contains project vision + goals |
 | U-C2 | Build context for plan | Feature specified → context includes spec | context contains spec + decisions |
 | U-C3 | Build context for implement | Feature planned → context includes plan | context contains plan + relevant patterns + code symbols |
-| U-C4 | Rank patterns by relevance | 5 patterns + feature topic | top 2 patterns ranked first (by similarity score) |
-| U-C5 | Filter symbols by scope | 50 symbols + affected modules | returns ~15 relevant symbols only |
-| U-C6 | Token estimate context | Build full context for implement | estimate ~500 tokens |
-| U-C7 | Compress context | Build context w/ compress=True | output caveman format, ~75% reduction (~125 tokens) |
-| U-C8 | Context too large | Attempt build 2000-token context | warn, truncate to 1500, log warning |
+| U-C4 | Rank patterns by relevance | several patterns + feature topic | top patterns ranked first (by similarity score) |
+| U-C5 | Filter symbols by scope | representative symbols + affected modules | returns filtered relevant symbols |
+| U-C6 | Token estimate context | Build full context for implement | token estimate omitted (qualitative guidance only) |
+| U-C7 | Compress context | Build context w/ compress=True | output caveman format; substantial reduction |
+| U-C8 | Context too large | Attempt build large context | warn, truncate to a safe size, log warning |
 | U-C9 | Missing decisions | Vault empty → context includes fallback | fallback text = "No prior decisions" |
 | U-C10 | Format for inject | Build context → ready for prompt injection | output = clean markdown, no escape chars |
 
@@ -267,23 +261,23 @@ tests/
 **Scope:** Caveman compression (lite, full, ultra modes)
 
 **Fixtures:**
-- `mock_text`: 1000-word markdown document
-- `mock_code`: 500-line Python file with comments
+- `mock_text`: long markdown document
+- `mock_code`: sizable Python file with comments
 
 **Test Cases:**
 
 | Test ID | Test Name | Setup | Assertion |
 |---------|-----------|-------|-----------|
-| U-CP1 | Compress lite | markdown → lite mode | output ~70% original size, readable |
-| U-CP2 | Compress full | markdown → full mode | output ~25% original size, technical accuracy preserved |
-| U-CP3 | Compress ultra | markdown → ultra mode | output ~10% original size, caveman format (extreme) |
+| U-CP1 | Compress lite | markdown → lite mode | output: substantial reduction, readable |
+| U-CP2 | Compress full | markdown → full mode | output: major reduction, technical accuracy preserved |
+| U-CP3 | Compress ultra | markdown → ultra mode | output: extreme reduction, caveman format (extreme) |
 | U-CP4 | Preserve code | compress code w/ full mode | code blocks untouched, comments reduced |
 | U-CP5 | Preserve URLs | compress w/ links | URLs preserved, anchor text reduced if possible |
 | U-CP6 | Preserve structure | compress markdown w/ headers | header hierarchy preserved, content under each reduced |
 | U-CP7 | Round-trip compression | compress → decompress | original meaning recoverable (not exact text) |
 | U-CP8 | Multi-compress | compress already-compressed | idempotent (no further reduction) |
 | U-CP9 | Empty input | compress "" → lite | output = "" (no error) |
-| U-CP10 | Estimate tokens | original ~300 tokens → full mode | output ~75 tokens (75% reduction) |
+| U-CP10 | Estimate tokens | original tokens omitted | token estimate omitted (qualitative guidance only) |
 
 **Success Criteria:**
 - ✅ All 10 tests pass
@@ -322,8 +316,8 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, la
 
 **Success Criteria:**
 - ✅ All 5 tests pass
-- ✅ < 500ms per test (total < 3s)
-- ✅ Coverage: prepare_workflow.py = 90%+
+- ✅ Fast per-test execution (low latency)
+- ✅ Coverage: prepare_workflow.py — aim for high coverage where practical
 
 ---
 
@@ -347,7 +341,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, la
 | I-SP2 | Specify queries lat.md | spec.specify() called | lat.md queried for project symbols |
 | I-SP3 | Specify injects context | context injected into SpecKit prompt | SpecKit receives enriched prompt |
 | I-SP4 | Specify saves spec | SpecKit returns spec JSON | spec saved to wiki/vault/specs/<feature>.json |
-| I-SP5 | Specify updates state | Spec saved | feature state phase → "specified", % → 20 |
+| I-SP5 | Specify updates state | Spec saved | feature state phase → "specified" (progress recorded) |
 | I-SP6 | Specify handles lat.md error | lat.md timeout | spec still generated (vault-only context) |
 | I-SP7 | Specify compresses context if enabled | feature.compress=true | context injected in caveman format |
 | I-SP8 | Specify exits with code 0 | All steps succeed | exit code 0 |
@@ -355,7 +349,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, la
 **Success Criteria:**
 - ✅ All 8 tests pass
 - ✅ < 1s per test (total < 8s, note: SpecKit calls are slow)
-- ✅ Coverage: specify_workflow.py = 90%+
+- ✅ Coverage: specify_workflow.py — aim for high coverage where practical
 
 ---
 
@@ -380,14 +374,14 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, la
 | I-PL3 | Plan queries lat.md by topic | plan called | lat.md filtered by affected modules |
 | I-PL4 | Plan injects enriched context | context injected | SpecKit receives spec + decisions + patterns + symbols |
 | I-PL5 | Plan saves plan | SpecKit returns plan JSON | plan saved to wiki/vault/plans/<feature>.json |
-| I-PL6 | Plan updates state | Plan saved | feature state phase → "planned", % → 40 |
+| I-PL6 | Plan updates state | Plan saved | feature state phase → "planned" (progress recorded) |
 | I-PL7 | Plan handles spec missing | spec.json not found | raise MissingArtifactError w/ clear message |
 | I-PL8 | Plan exits with code 0 | All steps succeed | exit code 0 |
 
 **Success Criteria:**
 - ✅ All 8 tests pass
 - ✅ < 1s per test (total < 8s)
-- ✅ Coverage: plan_workflow.py = 90%+
+- ✅ Coverage: plan_workflow.py — aim for high coverage where practical
 
 ---
 
@@ -409,12 +403,12 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, la
 |---------|-----------|-------|-----------|
 | I-IM1 | Implement loads plan | implement called | plan.json loaded from vault |
 | I-IM2 | Implement iterates tasks | plan w/ 3 tasks | core called 3 times (once per task) |
-| I-IM3 | Implement task 1 success | Task 1 succeeds | output: "Task 1/3 complete ✓" |
-| I-IM4 | Implement task 2 fail | Task 2 fails | output: "Task 2/3 failed (continue)", core not called for task 3? No—**continue-on-error mode** |
+| I-IM3 | Implement task 1 success | Task 1 succeeds | output: "Task complete ✓" |
+| I-IM4 | Implement task 2 fail | Task 2 fails | output: "Task failed (continue)", core not called for task 3? No—**continue-on-error mode** |
 | I-IM5 | Implement continue-on-error | Task 2 fails → Task 3 called | Task 3 still executed (skip failed, proceed) |
-| I-IM6 | Implement task 3 success | Task 3 succeeds after task 2 fail | output: "Task 3/3 complete ✓" |
+| I-IM6 | Implement task 3 success | Task 3 succeeds after task 2 fail | output: "Task complete ✓" |
 | I-IM7 | Implement collects git diff | All tasks done → git diff called | execution trace includes code diffs in JSON format |
-| I-IM8 | Implement updates state partial | 2 of 3 succeed | feature state phase → "completing", % → 90 |
+| I-IM8 | Implement updates state partial | 2 of 3 succeed | feature state phase → "completing" (progress recorded) |
 | I-IM9 | Implement exit code 1 | Some tasks fail | exit code 1 (partial completion) |
 | I-IM10 | Implement exit code 0 | All tasks succeed | exit code 0 (full completion) |
 

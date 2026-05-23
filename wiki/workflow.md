@@ -6,18 +6,18 @@
 
 ## Overview
 
-Spekificity feature development follows a deterministic workflow with four required stages:
+Spekificity feature development follows a deterministic, staged workflow:
 
-1. **Prepare** – Pre-flight checks and workspace setup
-2. **Specify & Plan** – Write feature spec, generate implementation plan
-3. **Implement** – Execute tasks with full context
-4. **Post** – Archive outcomes, sync vault, update graph
+- **Prepare** – Pre-flight checks and workspace setup
+- **Plan** – Write feature spec, generate implementation plan
+- **Implement** – Execute tasks with full context
+- **Post** – Archive outcomes, sync vault, update graph
 
 Optional enhancements (context loading, dependency analysis, retrospectives) can be applied at any stage. Each stage produces durable artifacts stored in the vault.
 
 ---
 
-## Stage 1: Preparation & Workspace Setup
+## Preparation
 
 ### Command
 ```
@@ -50,7 +50,7 @@ Pre-flight checks before feature development begins. Ensures workspace is ready,
 
 ---
 
-## Stage 2: Specification & Planning
+## Planning
 
 ### Commands
 ```
@@ -110,7 +110,7 @@ Each spec includes structured enrichment:
 
 ---
 
-## Stage 3: Planning & Task Breakdown
+## Planning
 
 ### Commands
 ```
@@ -152,32 +152,32 @@ Example plan excerpt:
 ```markdown
 ## Task Breakdown
 
-### Task 1: Auth Service Setup
+### Auth Service Setup
 - Description: Create authentication service with token validation
-- Depends On: None (blocker for Tasks 2, 3)
-- Est. Complexity: Medium
-- Est. Tokens: 2500
+- Depends On: None (blocks related tasks)
+- Complexity: Medium
+- Resource notes: Specify project-specific resource estimates in task metadata
 - Files Affected: src/auth/service.ts, test/auth.test.ts
 
-### Task 2: User Model Extension
+### User Model Extension
 - Description: Add OAuth fields to User model
-- Depends On: Task 1 (auth service API must be defined)
-- Est. Complexity: Low
-- Est. Tokens: 1200
+- Depends On: Auth Service (API must be defined)
+- Complexity: Low
+- Resource notes: Specify project-specific resource estimates in task metadata
 - Files Affected: src/models/user.ts, migration/001-oauth-fields.sql
 
-### Task 3: Integration Tests
+### Integration Tests
 - Description: Write E2E tests for OAuth flow
-- Depends On: Tasks 1, 2
-- Est. Complexity: High
-- Est. Tokens: 3200
+- Depends On: Auth Service, User Model
+- Complexity: High
+- Resource notes: Specify project-specific resource estimates in task metadata
 - Files Affected: test/e2e/auth.test.ts, test/fixtures/oauth-mock.ts
 
 ## Dependency Graph
 
-Task 1 (Auth Service)
-  ├─→ Task 2 (User Model)
-  └─→ Task 3 (Integration Tests) ← Task 2 also required
+Auth Service (Auth Service)
+    ├─→ User Model (depends)
+    └─→ Integration Tests (depends)
 ```
 
 ### Output Artifacts
@@ -197,7 +197,7 @@ Task 1 (Auth Service)
 
 ---
 
-## Stage 4: Implementation by Task
+## Implementation
 
 ### Commands
 ```
@@ -291,13 +291,13 @@ Before moving to the final stage, verify all quality gates:
 - [ ] Code follows project style guide (linting passes)
 
 **Testing**
-- [ ] Unit tests pass locally (< 5 minutes)
-- [ ] Integration tests pass locally (< 10 minutes)
+- [ ] Unit tests pass locally
+- [ ] Integration tests pass locally
 - [ ] Edge cases covered (null, empty, invalid input)
 - [ ] Error paths tested (exceptions, boundary conditions)
-- [ ] Test coverage > 80% for new code
+- [ ] Test coverage is sufficient for new code
 - [ ] Existing tests still pass (no breaking changes)
-- [ ] Full test suite runs locally < 5 minutes
+- [ ] Full test suite runs locally within acceptable time
 
 **lat.md Integration**
 - [ ] lat.md reflects all new code (symbols, functions, classes)
@@ -451,20 +451,20 @@ Status: Complete
 
 ```
 DAY 1
-├─ Morning: /spek.prepare          [~5 min]
-├─ Morning: /spek.plan         [~30 min: spec + plan review]
-├─ Afternoon: Review & Approve     [~15 min: stakeholder sign-off]
+├─ Morning: /spek.prepare          [short setup]
+├─ Morning: /spek.plan             [spec + plan review]
+├─ Afternoon: Review & Approve     [stakeholder sign-off]
 │
 DAY 2
-├─ Morning: /spek.implement        [~2–4 hours: Task 1–2]
-├─ Afternoon: /spek.implement      [~1–2 hours: Task 3]
-├─ Late: Local testing + fixes     [~30 min]
+├─ Morning: /spek.implement        [implementation work]
+├─ Afternoon: /spek.implement      [continued implementation]
+├─ Late: Local testing + fixes     [testing and fixes]
 │
 DAY 3
-├─ Morning: Final validation       [~15 min]
-├─ Afternoon: /spek.conclude           [~15 min: archive + lessons]
+├─ Morning: Final validation       [final validation]
+├─ Afternoon: /spek.conclude       [archive + lessons]
 │
-TOTAL: ~24 hours across 3 days
+TOTAL: multi-day effort
 ```
 
 ---

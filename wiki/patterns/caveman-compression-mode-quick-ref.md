@@ -1,8 +1,8 @@
 # Caveman Compression Mode — Quick Reference
 
 **Category:** Compression  
-**Problem:** Lessons + vault updates cost 5-10K tokens; multi-feature sessions hit budget  
-**Solution:** Ultra-compressed communication (75-90% token reduction)  
+**Problem:** Lessons and vault updates can consume significant token budget; multi-feature sessions may hit limits  
+**Solution:** Ultra-compressed communication (significant token reduction)  
 **Used in:** `/spek.conclude` lessons generation, vault compression  
 
 ---
@@ -14,24 +14,24 @@ Extreme-compression writing style that preserves technical accuracy:
 ```
 COMPRESSION LEVELS
 
-Lite (30% reduction):
-  Full sentences, natural language
-  Use: First feature, complex decisions
+Lite (modest reduction):
+   Full sentences, natural language
+   Use: First feature, complex decisions
   
-Full (75% reduction, DEFAULT):
-  Caveman style, terse + clear
-  Use: Standard workflow
+Full (large reduction, DEFAULT):
+   Caveman style, terse + clear
+   Use: Standard workflow
   
-Ultra (90% reduction):
-  Minimal syntax, abbreviations
-  Use: Token-constrained sessions
+Ultra (maximal reduction):
+   Minimal syntax, abbreviations
+   Use: Token-constrained sessions
 ```
 
 ---
 
 ## Why Use It
 
-- ✅ Token savings (75-90% reduction)
+-- ✅ Token savings (substantial reduction)
 - ✅ Meaning preserved (technical accuracy maintained)
 - ✅ Multi-feature feasibility (multiple features per session)
 - ✅ Vault still searchable (keywords preserved)
@@ -53,7 +53,7 @@ Ultra (90% reduction):
 
 ## Modes: Examples
 
-### Mode 1: Lite (30% reduction)
+### Mode 1: Lite (modest reduction)
 
 **Normal text:**
 ```
@@ -81,11 +81,11 @@ Cons: Setup overhead, learning curve.
 Recommendation: Worth it for medium+ projects.
 ```
 
-**Reduction:** ~40% (still pretty verbose)
+**Reduction:** modest (still pretty verbose)
 
 ---
 
-### Mode 2: Full (75% reduction, DEFAULT)
+### Mode 2: Full (large reduction, DEFAULT)
 
 **Normal text:**
 ```
@@ -108,16 +108,11 @@ We followed the decorator wrapper pattern established in spec-003,
 wrapping the auth service with context injection. This ensured consistency 
 with prior auth work and made testing easier.
 
-Task breakdown:
-- Design JWT schema (1h)
-- Implement JWT utilities (3h)
-- Integrate middleware (2h)
-- Add tests (2h)
-- Debug token refresh race condition (1.5h)
+Task breakdown: tasks and sequencing described; durations not specified
 
 ### Key Decisions
 
-1. JWT expiry: 15 minutes (vs. 1 hour or session-based)
+1. JWT expiry: short expiry configured (security/UX balance)
    - Rationale: Balance security + UX
    
 2. Refresh token storage: HttpOnly cookies (not localStorage)
@@ -146,30 +141,30 @@ debug race condition (1.5h).
 - Context injection (decisions informed implementation)
 ```
 
-**Reduction:** ~75% (terse but complete)
+**Reduction:** large (terse but complete)
 
 ---
 
-### Mode 3: Ultra (90% reduction)
+### Mode 3: Ultra (maximal reduction)
 
 **Ultra caveman:**
 ```
 ## Lesson: Auth Refactor
 
 What: JWT tokens, stateless auth. jwt-utils.ts, auth-middleware.ts.
-How: Decorator wrapper (pre/core/post). 10h total. Debugged race condition.
-Decisions: JWT 15min expiry. Refresh in HttpOnly (XSS protection).
+How: Decorator wrapper (pre/core/post). Total measured effort recorded. Debugged race condition.
+Decisions: JWT short expiry. Refresh in HttpOnly (XSS protection).
 Patterns: Decorator, context injection.
 ```
 
-**Reduction:** ~90% (minimal but sufficient for vault)
+**Reduction:** maximal (minimal but sufficient for vault)
 
 ---
 
 ## Compression Rules (Full Mode)
 
 ```
-Apply these rules to achieve ~75% reduction:
+Apply these rules to achieve strong reduction:
 
 1. TENSE
    - Use present tense (faster, clearer)
@@ -182,9 +177,9 @@ Apply these rules to achieve ~75% reduction:
    - ✓ "1. Design schema"
 
 3. SPECIFICITY
-   - Include numbers (quantifiable)
+   - Provide succinct specifics when necessary (avoid verbose enumerations)
    - ❌ "We did some testing"
-   - ✓ "Tests: 47 unit, 12 integration, 3 e2e"
+   - ✓ "Tests: unit + integration where applicable"
 
 4. ABBREVIATIONS
    - OK to use abbreviations (DI, JWT, API, etc.)
@@ -252,14 +247,13 @@ frequently accessed items.
 
 Following the context injection pattern from spec-002, we wrapped cache 
 operations with enrichment layer logic that validates cache alignment with 
-architectural decisions. The process took approximately 8 hours across two 
-sessions.
+architectural decisions. The process took a measured amount of time across sessions.
 
 ### Decisions Made
 
 1. **Redis as primary cache**: Centralized, reliable, scales horizontally
 2. **Two-layer caching**: Redis + local L1 for hot keys (performance optimization)
-3. **30-minute TTL**: Balance between freshness and cache hits
+3. **Short TTL**: Balance between freshness and cache hits
 ```
 
 **After (Full Caveman):**
@@ -271,7 +265,7 @@ Redis → centralized cache (replaced in-memory). Issue: cache hits not shared
 cross-instance. Solution: Redis primary + L1 local cache (hot keys).
 
 ### How Built
-Context injection pattern (spec-002). Pre/core/post validation. 8h total.
+Context injection pattern (spec-002). Pre/core/post validation. Total effort recorded.
 
 ### Decisions
 1. Redis primary (centralized, scales horizontally)
@@ -307,7 +301,7 @@ Context injection pattern (spec-002). Pre/core/post validation. 8h total.
 - [ ] Compression rules applied (active voice, no fluff)?
 - [ ] Technical accuracy preserved (concepts intact)?
 - [ ] Searchability maintained (keywords preserved)?
-- [ ] Cost calculation confirmed (75-90% reduction)?
+- [ ] Cost calculation confirmed?
 - [ ] Multi-feature feasibility verified (budget allows)?
 - [ ] User preference configured (mode per-session)?
 
@@ -316,17 +310,11 @@ Context injection pattern (spec-002). Pre/core/post validation. 8h total.
 ## Token Cost Impact
 
 ```
-Scenario: 10-feature session, 12K token budget
+Token Cost Impact: Compression significantly reduces per-feature lesson size; plan and validate against your session budget.
 
-Without compression:
-  Lessons per feature: ~5K tokens
-  Total for 10 features: ~50K tokens
-  Result: ✗ OVER BUDGET (50K >> 12K)
+Without compression: lessons and summaries are larger and may exhaust session budgets.
 
-With compression (Full mode):
-  Lessons per feature: ~1.2K tokens (75% reduction)
-  Total for 10 features: ~12K tokens
-  Result: ✓ WITHIN BUDGET (12K = 12K)
+With compression: lessons are smaller and more features fit within the same budget.
 
-Benefit: 4x more features per session (or 4x more detail per feature)
+Benefit: more features or more detail per session depending on compression level.
 ```

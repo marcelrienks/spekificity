@@ -30,9 +30,9 @@ feature_name: "spek-full-workflow-cli"
 feature_id: "003"
 status: "initialized | specifying | planning | implementing | completing"
 session_start: "2026-05-19T10:00:00Z"
-session_count: 1
-phase: "prepared | specifying | planning | implementing | completing"
-completion: 0-100
+  session_count: 1
+  phase: "prepared | specifying | planning | implementing | completing"
+  completion: progress-indicator
 ---
 ```
 
@@ -47,11 +47,11 @@ completion: 0-100
 - [ ] Tasks generated
 - [ ] Implementation complete
 
-## Progress %
-0% - 25% (Prepared)
-25% - 50% (Specifying)
-50% - 75% (Planning)
-75% - 100% (Implementing)
+## Progress Markers
+- Prepared
+- Specifying
+- Planning
+- Implementing
 
 ## Session Log
 - Session 1: [timestamp] Prepared, loaded context
@@ -66,21 +66,21 @@ completion: 0-100
 ```
 initialized
   ↓
-prepare: prepared (0%)
+prepare: prepared
   ↓
-specify: specifying (25%)
+specify: specifying
   ↓
-plan: planning (50%)
+plan: planning
   ↓
-implement: implementing (75%)
+implement: implementing
   ↓
-post: completing (100%)
+post: completing
 ```
 
 ## Success Criteria
 
 - ✅ State accurately reflects current phase (transitions valid + timely)
-- ✅ Completion % updated at each step (0% → 25% → 50% → 75% → 100%)
+- ✅ Progress updated at each step (phase marker advanced)
 - ✅ Session log tracks all work (every command logs entry + timestamp)
 - ✅ Transitions are valid (no skip phases, linear progression)
 - ✅ State file readable by all commands (consistent YAML format)

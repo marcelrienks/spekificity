@@ -300,7 +300,7 @@ vault/graph/
 - Contains all code nodes (indexed via lat.md)
 - Contains all doc nodes (merged from Obsidian export)
 - Maintained via MCP tools (lat_symbols, lat_references, lat_callers, lat_callees, lat_impact, lat_definition, lat_query)
-- Queried via lat.md MCP tools (zero token cost)
+  - Queried via lat.md MCP tools (no token cost)
 
 **Optional Exports:** JSONL files in `exports/` subdirectory
 - Generated on-demand for external tool compatibility

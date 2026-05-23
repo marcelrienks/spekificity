@@ -5,8 +5,8 @@ tags: [meta, knowledge-management, pattern]
 sources:
   - "raw/llm-wiki/"
   - "raw/articles/"
-created: 2026-05-15
-updated: 2026-05-15
+created: current
+updated: current
 ---
 
 # LLM Wiki: Persistent, Compounding Knowledge Management
@@ -29,7 +29,7 @@ updated: 2026-05-15
 
 2. **The Maintenance Burden:** Humans abandon wikis because the maintenance cost grows faster than the value. LLMs can update cross-references, flag contradictions, and maintain consistency across dozens of pages in one pass.
 
-3. **Synthesis at Scale:** RAG rediscovers knowledge from scratch on every query. LLM Wiki pre-compiles synthesis so that complex questions requiring five documents to piece together are already answered by the interconnected wiki.
+3. **Synthesis at Scale:** RAG rediscovers knowledge from scratch on every query. LLM Wiki pre-compiles synthesis so that complex questions requiring multiple documents to piece together are already answered by the interconnected wiki.
 
 4. **Portability Without Complexity:** Unlike enterprise knowledge management systems, this is intentionally personal, local, and portable—just markdown files, no vendor lock-in, no cloud dependency.
 
@@ -118,8 +118,8 @@ tags: [tag1, tag2, kebab-case]
 sources: 
   - "raw/articles/source-1.md"
   - "raw/papers/source-2.pdf"
-created: 2026-05-15
-updated: 2026-05-15
+recorded: date-omitted (future-state)
+revised: date-omitted (future-state)
 contradictions: []
 ---
 ```
@@ -200,22 +200,22 @@ When agent detects conflicting claims:
 1. **Stop execution.** Do not auto-resolve.
 2. **Flag in frontmatter:**
    ```yaml
-   contradictions:
-     - claim: "LLM Wiki works best at 100–500 pages"
-       source_a: "raw/articles/karpathy-idea.md"
-       quote_a: "moderate scale (~100 sources)"
-       source_b: "raw/articles/enterprise-guide.md"
-       quote_b: "scales to 10,000+ pages"
-       resolution_needed: true
+    contradictions:
+      - claim: "LLM Wiki works best at personal scale"
+        source_a: "raw/articles/karpathy-idea.md"
+        quote_a: "moderate scale"
+        source_b: "raw/articles/enterprise-guide.md"
+        quote_b: "enterprise-scale"
+        resolution_needed: true
    ```
 3. **Notify human:** Report in plan review
 4. **Wait for decision:** Human chooses which claim to use or synthesizes both
 5. **Document decision:**
    ```yaml
-   - claim: "..."
-     resolution: "HUMAN_DECIDED: Use source_a; source_b is outdated"
-     resolved_by: "human"
-     resolved_at: 2026-05-15
+    - claim: "..."
+      resolution: "HUMAN_DECIDED: Use source_a; source_b is outdated"
+      resolved_by: "human"
+      resolved_at: recorded
    ```
 
 ### Optional: Aggressive (Auto-Resolve)
@@ -287,11 +287,11 @@ The LLM Wiki literature contains several documented tensions. Here's how this im
 | Tension | Debate | Resolution |
 |---------|--------|-----------|
 | **RAG vs. LLM Wiki** | Is RAG dead? | Both useful at different scales. This is pure LLM Wiki. |
-| **Scale** | Enterprise ready? | Personal scale (~100–500 pages). Enterprise scalability out of scope. |
+| **Scale** | Enterprise ready? | Personal scale (moderate-size personal vault). Enterprise scalability out of scope. |
 | **Simplicity** | "Just markdown" or complex? | Structured (not minimal) but disciplined via schema. |
 | **Obsidian** | Essential or optional? | Optional. Uses portable markdown links, not wikilinks. |
 | **Ingestion** | Batch or incremental? | Incremental & supervised (mandatory plan review). |
-| **Query system** | Index or search infra? | Index + grep for ~500 pages; scalable search (qmd) later if needed. |
+| **Query system** | Index or search infra? | Index + grep for moderate-size wikis; scalable search (qmd) later if needed. |
 | **Models** | Cloud APIs or local? | Schema-agnostic. Agents implement per their capabilities. |
 | **Contradictions** | Auto-resolve or flag? | Conservative by default (flag + human); optional aggressive mode. |
 | **Authority** | Who resolves disputes? | Human by default; audit trail via git. |
@@ -327,9 +327,9 @@ The LLM Wiki literature contains several documented tensions. Here's how this im
 
 | Model | Context | Use Case | VRAM |
 |-------|---------|----------|------|
-| **Qwen2.5-14B-Instruct** | 128K | Balanced all-rounder | 16GB |
-| **Llama-3.1-70B-Instruct** | 128K | Complex reasoning | 48GB |
-| **Llama-3.1-8B** | 128K | Low VRAM environments | 8GB |
+| **Qwen** | large context | Balanced all-rounder | Choose based on local resources |
+| **Llama 3.1 (high-capacity)** | large context | Complex reasoning | Choose based on local resources |
+| **Llama 3.1 (compact)** | large context | Low-resource deployments | Choose based on local resources |
 
 **Infrastructure:** Ollama (simple) or vLLM (high-throughput).
 
@@ -337,8 +337,8 @@ The LLM Wiki literature contains several documented tensions. Here's how this im
 
 | Tool | When to Use | Purpose |
 |------|-------------|---------|
-| **Index + grep** | ~500 pages | Sufficient for small wikis |
-| **qmd** | >500 pages | BM25/vector hybrid search over wiki |
+| **Index + grep** | small-to-medium wikis | Sufficient for many projects |
+| **qmd** | larger wikis | BM25/vector hybrid search over wiki |
 
 ---
 
@@ -376,7 +376,7 @@ Master catalog of all wiki pages. Updated after each ingestion.
 
 ---
 
-Last updated: 2026-05-15  
+Last updated: date-omitted (future-state)  
 Total pages: N/A (count during first ingest)
 ```
 
@@ -441,14 +441,14 @@ Source: raw/articles/my-article.md
   - wiki/concept-two.md (summary: Secondary pattern)
 
 🔗 EXISTING PAGES TO UPDATE:
-  - wiki/overview.md: Add 2 new citations
-  - wiki/comparison.md: Add this source to comparison table
+   - wiki/overview.md: Add a small number of new citations
+   - wiki/comparison.md: Add this source to comparison table
 
 ⚠️ CONTRADICTIONS FLAGGED:
-  - Claim: "LLM Wiki scales to enterprise"
-  - Source A: "Personal scale only"
-  - Source B: "Enterprise-ready with 10k+ pages"
-  - Resolution: Awaiting human decision
+   - Claim: "LLM Wiki scales to enterprise"
+   - Source A: "Personal scale only"
+   - Source B: "Enterprise-ready at large scale"
+   - Resolution: Awaiting human decision
 
 [AWAITING APPROVAL]
 Do you approve this plan? (yes/no)
@@ -467,7 +467,7 @@ mkdir -p wiki/{raw/articles,index,log}
 
 **Step 2: Prepare test source**
 - Copy a sample article to `wiki/raw/articles/test.md`
-- Manually extract 2-3 key concepts from the article
+- Manually extract a few key concepts from the article
 
 **Step 3: Simulate agent plan creation**
 - List pages to create (with frontmatter)
@@ -569,7 +569,7 @@ Agents implementing LLM Wiki should:
 ## When to Use LLM Wiki
 
 ✅ **Good fit:**
-- Personal knowledge base (100–500 pages)
+- Personal knowledge base (personal-sized)
 - Research synthesis (consolidating sources)
 - Project memory (specs, decisions, lessons)
 - Agent-maintained documentation
@@ -577,7 +577,7 @@ Agents implementing LLM Wiki should:
 ❌ **Not a fit:**
 - Enterprise document management (no RBAC, audit, ACID)
 - Real-time collaborative editing (git-based, eventually consistent)
-- Very large wikis (>10k pages; needs specialized search)
+- Very large wikis (very large; needs specialized search)
 
 ---
 

@@ -31,8 +31,8 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 | Sync | Automatic (file watcher, debounced) |
 | Setup | Medium (init + MCP config) |
 | Framework Support | Broad framework support (including routing detection) |
-| Query Performance | 100ms average (vs. 2000ms+ for file scan) |
-| **Fit for Agent Workflows** | **9/10** (purpose-built for this use case) |
+| Query Performance | low-latency average (vs. much slower for file scan) |
+| **Fit for Agent Workflows** | **high** (purpose-built for this use case) |
 
 #### Legacy indexing approaches
 
@@ -44,7 +44,6 @@ Older indexing tools required manual syncs and produced document-heavy outputs t
 
 #### Decision Made: lat.md as the canonical indexer
 
-**Effective Date:** 2026-05-23  
 **Status:** Final (lat.md is the project's canonical indexing tool)  
 **Legacy Support:** Legacy specs archived for reference only; migrate to `lat.md` for active work  
 **Migration:** Existing legacy-index users → rebuild index using `lat.md` and update configuration as specified in the lat.md setup spec
@@ -67,8 +66,8 @@ Older indexing tools required manual syncs and produced document-heavy outputs t
 Earlier analysis compared legacy indexers vs newer indexers (see Decision 1 v1 below). This decision confirms and finalizes the choice to standardize on `lat.md` for new projects.
 
 **Previous Comparison (For Reference):**
-- Legacy indexers (archived): 7/10 fit for agent workflows
-- lat.md (Recommended): 9/10 fit for agent workflows
+- Legacy indexers (archived): moderate fit for agent workflows
+- lat.md (Recommended): high fit for agent workflows
 
 ---
 
@@ -146,9 +145,9 @@ Spekificity Workflow (via agent)
 
 | Aspect | Cost | Benefit |
 |--------|------|---------|
-| Setup | Medium (2 tools to initialize) | Fast onboarding (both tools visible immediately) |
+| Setup | Medium (multiple tools to initialize) | Fast onboarding (both tools visible immediately) |
 | Maintenance | Medium (vault + code analysis tool sync) | High (automated impact analysis saves errors) |
-| Complexity | 2 systems instead of 1 | Clear separation (no sprawl; each tool optimized) |
+| Complexity | multiple systems instead of a single tool | Clear separation (no sprawl; each tool optimized) |
 | Token efficiency | Lower (vault queries) | Very high (code analysis tool queries) |
 
 ---
@@ -157,14 +156,14 @@ Spekificity Workflow (via agent)
 
 - **Greenfield projects with no existing code:** Obsidian alone sufficient initially (add code analysis tool when code grows)
 - **Scripts/utilities without complexity:** Code analysis tool overhead > value
-- **Projects <10 files:** Manual code understanding cheaper than indexing
+- **Small projects (few files):** Manual code understanding may be cheaper than indexing
 - **Fully no-code platforms:** Skip code analysis tool; use Obsidian only
 
 ---
 
 ### When to Use This
 
-- **Production codebases >100 files**
+- **Large production codebases**
 - **Teams using AI agents for implementation**
 - **Refactoring/debugging workflows (frequent changes)**
 - **Onboarding new developers**
@@ -185,11 +184,11 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Tool | Type | Popularity | Fit | Token Savings | Notes |
 |------|------|-----------|-----|---------------|-------|
-| **Caveman (recommended)** | Compression | Medium | 9/10 | substantial | Simple notation; preserves code; used in agent workflows |
-| Squeez | Compression | Low | 7/10 | 70%+ | Rust-based; multi-CLI support; self-teaching protocol; zero deps |
-| contextzip | Compression | Low | 6/10 | 60-90% | CLI-focused; stdout compression; session history coming |
-| clipforge-PAKT | Compression | Low | 5/10 | 50%+ | Lossless for JSON/YAML; library + CLI + MCP + browser extension |
-| claw-compactor | Compression | Low | 4/10 | 70%+ | 14-stage pipeline; AST-aware; reversible; complex setup |
+| **Caveman (recommended)** | Compression | Medium | high | substantial | Simple notation; preserves code; used in agent workflows |
+| Squeez | Compression | Low | moderate | substantial | Rust-based; multi-CLI support; self-teaching protocol; zero deps |
+| contextzip | Compression | Low | moderate | varies by workload | CLI-focused; stdout compression; session history coming |
+| clipforge-PAKT | Compression | Low | moderate | varies by workload | Lossless for JSON/YAML; library + CLI + MCP + browser extension |
+| claw-compactor | Compression | Low | lower | varies by workload | multi-stage pipeline; AST-aware; reversible; complex setup |
 
 **Recommendation:** Use `Caveman` for token compression. Evaluating additional compression tools for specific use cases.
 
@@ -201,12 +200,12 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Tool | Type | Popularity | Fit | Determinism | Notes |
 |------|------|-----------|-----|-------------|-------|
-| **SpecKit/Specify (recommended)** | Spec Framework | **High** | 10/10 | YAML-first; enforces spec→plan→tasks | GitHub's official tool; active ecosystem; broad adoption |
-| SDD Pilot | Spec Framework | Medium | 8/10 | Spec-driven phases + quality gates | VSCode + Windsurf support; strong quality gates; enforces phases |
-| FSPEC | Spec Framework | Low | 7/10 | Multi-agent factory; DDD/BDD support | TDD/DDD/BDD focus; example mapping; guardrails; newer |
-| spec-driven-steroids | Spec Framework | Low | 6/10 | Simple toolkit; native AI tool integration | Focus on CLI discipline; minimal overhead; less documented |
-| Paul (Plan-Apply-Unify Loop) | Framework | Low | 7/10 | Plan-Apply-Unify; quality-over-speed | Claude Code native; roundtable-style; newer |
-| spec2ship | Spec Framework | Low | 6/10 | Multi-agent; roundtable collaboration | Claude Code focus; social/collaborative; emerging |
+| **SpecKit/Specify (recommended)** | Spec Framework | **High** | very high | YAML-first; enforces spec→plan→tasks | GitHub's official tool; active ecosystem; broad adoption |
+| SDD Pilot | Spec Framework | Medium | high | Spec-driven phases + quality gates | VSCode + Windsurf support; strong quality gates; enforces phases |
+| FSPEC | Spec Framework | Low | moderate | Multi-agent factory; DDD/BDD support | TDD/DDD/BDD focus; example mapping; guardrails; newer |
+| spec-driven-steroids | Spec Framework | Low | moderate | Simple toolkit; native AI tool integration | Focus on CLI discipline; minimal overhead; less documented |
+| Paul (Plan-Apply-Unify Loop) | Framework | Low | moderate | Plan-Apply-Unify; quality-over-speed | Claude Code native; roundtable-style; newer |
+| spec2ship | Spec Framework | Low | moderate | Multi-agent; roundtable collaboration | Claude Code focus; social/collaborative; emerging |
 
 **Recommendation:** Use `SpecKit/Specify` for planning & determinism. Strong ecosystem maturity, broad feature coverage, and active maintenance. Alternatives (SDD Pilot, FSPEC) target specific niches (quality gates, DDD) but require more specialized setup.
 
@@ -218,13 +217,13 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Tool | Type | Popularity | Fit | Persistence | Notes |
 |------|------|-----------|-----|-------------|-------|
-| **Obsidian (recommended)** | Vault | **Very High** | 10/10 | Markdown; git-backed; desktop + vault | Largest PKM community; markdown standard; optional UI; proven |
-| Basic Memory | Vault | Low | 9/10 | MCP-based; cross-conversation memory | Privacy-first; Obsidian-compatible; emerging; active development |
-| SilverBullet | Vault | Medium | 8/10 | Markdown + Lua scripting; self-hosted | Open-source; scriptable; more feature-rich; active community |
-| Trilium | Vault | Medium | 7/10 | Notes + knowledge graph; multi-platform | Desktop app; rich UI; not git-backed; harder to version |
-| ByteRover (byterover-cli) | Memory Layer | Low | 6/10 | Portable memory for agents; MCP | Emerging; agent-specific; good for session-scoped memory; not file-based |
-| Draft | Chrome Extension | Low | 5/10 | Capture AI chats into KB; cloud | Browser-only; cloud-dependent; not ideal for offline/local |
-| TidGi-Desktop | Vault | Low | 7/10 | TiddlyWiki + git-backup + REST API | Git-backed; web-clipper; Anki connect; less common; Qt-based |
+| **Obsidian (recommended)** | Vault | **Very High** | very high | Markdown; git-backed; desktop + vault | Largest PKM community; markdown standard; optional UI; proven |
+| Basic Memory | Vault | Low | high | MCP-based; cross-conversation memory | Privacy-first; Obsidian-compatible; emerging; active development |
+| SilverBullet | Vault | Medium | strong | Markdown + Lua scripting; self-hosted | Open-source; scriptable; more feature-rich; active community |
+| Trilium | Vault | Medium | moderate | Notes + knowledge graph; multi-platform | Desktop app; rich UI; not git-backed; harder to version |
+| ByteRover (byterover-cli) | Memory Layer | Low | moderate | Portable memory for agents; MCP | Emerging; agent-specific; good for session-scoped memory; not file-based |
+| Draft | Chrome Extension | Low | limited | Capture AI chats into KB; cloud | Browser-only; cloud-dependent; not ideal for offline/local |
+| TidGi-Desktop | Vault | Low | moderate | TiddlyWiki + git-backup + REST API | Git-backed; web-clipper; Anki connect; less common; Qt-based |
 
 **Recommendation:** Use `Obsidian` for memory persistence. Large PKM ecosystem, portable markdown, and standard git versioning make it a practical baseline. Alternatives (Basic Memory, SilverBullet) offer better agent integration (MCP) or richer features (scripting); evaluate based on project needs.
 
@@ -236,12 +235,12 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Tool | Type | Popularity | Fit | Autonomy | Notes |
 |------|------|-----------|-----|----------|-------|
-| **lat.md (recommended)** | Code Analysis | Medium | 10/10 | Pluggable extractors; fast incremental queries; framework-aware | Strong fit for agent workflows; lower token cost; faster queries |
-| codebase-memory-mcp | Code Analysis | Low | 9/10 | MCP server; persistent knowledge graph; zero deps | Broad language support; fast queries; high-performance; Cypher support |
-| Joern | Code Analysis | Medium | 7/10 | Code property graph; multi-language; dataflow | Academic-grade; C/C++/Java focus; more complex; strong dataflow |
-| Pylance | Code Analysis | **High** | 6/10 | Python-specific; language server; fast | Python community standard; not agent-optimized; limited to Python |
-| Legacy markdown indexers | Code Analysis | Low | 5/10 | Markdown vault output; human-browsable | Legacy; outputs readable docs; inefficient for agent queries |
-| codeflow | Visualization | Low | 4/10 | Browser-based; D3.js visualization; GitHub-linked | Great for humans; not agent-efficient; one-off analysis |
+| **lat.md (recommended)** | Code Analysis | Medium | very high | Pluggable extractors; fast incremental queries; framework-aware | Strong fit for agent workflows; lower token cost; faster queries |
+| codebase-memory-mcp | Code Analysis | Low | high | MCP server; persistent knowledge graph; zero deps | Broad language support; fast queries; high-performance; Cypher support |
+| Joern | Code Analysis | Medium | moderate | Code property graph; multi-language; dataflow | Academic-grade; C/C++/Java focus; more complex; strong dataflow |
+| Pylance | Code Analysis | **High** | moderate | Python-specific; language server; fast | Python community standard; not agent-optimized; limited to Python |
+| Legacy markdown indexers | Code Analysis | Low | limited | Markdown vault output; human-browsable | Legacy; outputs readable docs; inefficient for agent queries |
+| codeflow | Visualization | Low | limited | Browser-based; D3.js visualization; GitHub-linked | Great for humans; not agent-efficient; one-off analysis |
 
 **Recommendation:** Use `lat.md` for autonomy & code understanding. It fits agent workflows well through fast queries and impact analysis. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) for high-performance scenarios.
 
@@ -253,10 +252,10 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Pillar | Tool | Fit | Rationale |
 |--------|------|-----|-----------|
-| Token Efficiency | Caveman | 9/10 | Simple notation; preserves code; tested across tools |
-| Determinism | SpecKit/Specify | 10/10 | YAML-first; GitHub official; broadly adopted |
-| Persistence | Obsidian | 10/10 | Largest PKM community; markdown portable; git-backed |
-| Autonomy | lat.md | 10/10 | Strong fit for agent workflows; lower token cost; fast queries |
+| Token Efficiency | Caveman | high | Simple notation; preserves code; tested across tools |
+| Determinism | SpecKit/Specify | very high | YAML-first; GitHub official; broadly adopted |
+| Persistence | Obsidian | very high | Largest PKM community; markdown portable; git-backed |
+| Autonomy | lat.md | very high | Strong fit for agent workflows; lower token cost; fast queries |
 
 **Installation for New Projects:**
 
@@ -277,17 +276,17 @@ spekificity init
 - **Persistence:** Markdown vault (plain files; no dependencies)
 - **Autonomy:** Manual grep (no tool; skip for small projects)
 
-**Best for:** <100-file projects; teams without CI/CD infrastructure
+**Best for:** small projects; teams without CI/CD infrastructure
 
 ---
 
 #### **Use Case 2: Maximum Token Savings (Production Codebases)**
-- **Token Efficiency:** Squeez (Rust CLI; 70% savings) + Caveman
+-- **Token Efficiency:** Squeez (Rust CLI) + Caveman
 - **Determinism:** SDD Pilot (strict quality gates)
 - **Persistence:** Obsidian + SilverBullet (markdown + scripting)
 - **Autonomy:** codebase-memory-mcp (emerging; better than lat.md for high-performance scenarios)
 
-**Best for:** Teams running frequent agent cycles; large codebases >500 files
+**Best for:** Teams running frequent agent cycles; large codebases
 
 ---
 
@@ -305,10 +304,10 @@ spekificity init
 
 | Criterion | Caveman | Squeez | contextzip | clipforge | claw-compactor |
 |-----------|---------|---------|-----------|-----------|--------|
-| Token Savings | 60% | 70% | 60-90% | 50% | 70% |
+| Token Savings | varies | varies | varies | varies | varies |
 | Ease of Use | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
 | Community | Medium | Small | Small | Small | Small |
-| Setup Time | <5 min | 10 min | 10 min | 15 min | 30 min |
+| Setup Time | varies | varies | varies | varies | varies |
 | Multi-Tool Support | ❌ | ✅ | ✅ | ✅ | ❌ |
 | **Recommendation** | **Yes** | Consider | Consider | Optional | Advanced |
 
@@ -319,8 +318,8 @@ spekificity init
 Each tool rated on:
 
 1. **Popularity** — GitHub stars, community size, adoption in production (high/medium/low)
-2. **Fit** — How well it integrates with Spekificity's decorator pattern and four-pillar model (1-10)
-3. **Technical Metric** — Pillar-specific measure (token savings %, determinism level, etc.)
+2. **Fit** — How well it integrates with Spekificity's decorator pattern and four-pillar model (qualitative)
+3. **Technical Metric** — Pillar-specific measure (token savings indicator, determinism level, etc.)
 4. **Maintenance** — Active development, responsiveness to issues, documentation quality
 
 ---
@@ -333,7 +332,7 @@ Each tool rated on:
 | **Dataflow analysis needed** | Add Joern alongside lat.md |
 | **Team already uses SilverBullet** | Replace Obsidian (compatible via markdown export) |
 | **Python-only codebase** | Pylance sufficient for autonomy; skip lat.md |
-| **100+ files, deep history** | Consider codebase-memory-mcp for extreme scale scenarios |
+| **Large codebase with deep history** | Consider codebase-memory-mcp for extreme scale scenarios |
 | **Offline-first requirement** | Ensure all tools work locally; Obsidian + lat.md do; verify others |
 
 ---
@@ -355,7 +354,7 @@ Each tool rated on:
 
 ### Decision
 
-**Recommendation:** We strongly recommend adopting Zettelkasten conventions for vault notes: atomic notes (one concept per file), YAML frontmatter with metadata (title, type, tags, status, created, updated, source, related), filename kebab-case, and a suggested wikilink density (2-4 links per note). These conventions enable reliable automation (auto-tagging, graph exports, and AI-friendly context injection).
+**Recommendation:** We strongly recommend adopting Zettelkasten conventions for vault notes: atomic notes (one concept per file), YAML frontmatter with metadata (title, type, tags, status, created, updated, source, related), filename kebab-case, and a suggested small number of wikilinks per note. These conventions enable reliable automation (auto-tagging, graph exports, and AI-friendly context injection).
 
 If a project cannot adopt the full convention immediately, the automation features will still work with less-structured markdown, but some tooling (auto-tagging, graph visualizations, and automated lesson extraction) may be degraded. We provide migration guidance and helper scripts for teams that want to progressively adopt these conventions.
 
@@ -431,16 +430,17 @@ This approach is validated from:
 
 ### Decision
 
-**Automate 70%+ of wikilink insertion and tag generation by implementing keyword extraction → vault mapping → auto-insert pipeline, enabled by default in `/spek.conclude` lesson generation step.**
+**Automate the majority of wikilink insertion and tag generation by implementing keyword extraction → vault mapping → auto-insert pipeline, enabled by default in `/spek.conclude` lesson generation step.**
 
 ---
 
 ### Rationale
 
+
 #### Problem: Manual Linking Burden
 
 Without automation:
-- Every lesson requires manual cross-referencing (~5-10 min per lesson)
+- Every lesson requires manual cross-referencing (a few minutes per lesson)
 - Cross-references incomplete (patterns missed)
 - Redundancy undetected (lesson duplicates prior pattern)
 - Tags manually added (inconsistent naming)
@@ -454,7 +454,7 @@ Without automation:
 - Generate tags from keywords (consistent naming)
 
 **Benefits:**
-- Saves ~70% of manual linking labor
+- Saves the majority of manual linking labor
 - Detects redundancy (alerts if lesson duplicates vault pattern)
 - Prevents orphaned patterns (all notes interconnected)
 - Enables auto-discovery (wikilinks make patterns discoverable)
@@ -462,7 +462,7 @@ Without automation:
 - **Configuration:**
 - `.spek/config.yaml` contains keyword-to-tag mappings
 - Per-project customization (teams can add domain-specific keywords)
-- Scoring threshold configurable (match confidence 0-1)
+-- Scoring threshold configurable (use a high confidence threshold by default)
 
 ---
 
@@ -470,9 +470,9 @@ Without automation:
 
 | Trade-off | Reasoning |
 |-----------|-----------|
-| Config file complexity | Upfront cost (~1 hour) pays off after 3-5 features |
+| Config file complexity | Upfront cost is small; benefits accrue after a few features |
 | False positives (wrong links) | Override mechanism exists; user can remove incorrect links |
-| NLP accuracy limits | 75% confidence threshold catches most; 25% manual review acceptable |
+| NLP accuracy limits | High-confidence threshold recommended; lower-confidence results require manual review |
 | New dependency (keyword extraction) | Lightweight; no external service calls; works offline |
 
 ---
@@ -487,7 +487,7 @@ Without automation:
 
 - Manual vault note creation (disable auto-linking; edit by hand)
 - Highly specialized domain (before config tuned) → review links before committing
-- Small projects with <10 notes (overhead > benefit)
+- Small projects with few notes (overhead may exceed benefit)
 
 ---
 
@@ -495,44 +495,38 @@ Without automation:
 
 ### Decision
 
-**Enforce 3-layer query hierarchy: (1) Code Graph (indexed, fast, ~280 tokens), → (2) Vault (searchable, ~500 tokens), → (3) Raw Code Files (full scan, ~5000+ tokens). Prioritize lower layers; only escalate when necessary.**
+**Enforce a 3-layer query hierarchy: (1) Code Graph (indexed, compact), → (2) Vault (searchable summaries), → (3) Raw Code Files (full content). Prioritize lower layers; escalate to deeper layers only when necessary.**
 
 ---
 
 ### Rationale
 
-#### Problem: Token Bloat from File Scanning
+#### Problem: Token and Context Bloat from File Scanning
 
 Without hierarchy:
-- Every code question triggers full file scan (2000-5000 tokens per query)
-- Context window fills with implementation details
-- Agent cannot reason efficiently (noise >> signal)
+- Full-file scans are comparatively costly and can overload reasoning with implementation details
+- Context windows become noisy and impede efficient agent reasoning
 
 #### 3-Layer Solution
 
 **Layer 1 — Code Graph:**
-- Pre-indexed symbol definitions, relationships, types
-- Query cost: ~280 tokens (symbol info only, no file content)
+- Pre-indexed symbol definitions, relationships, and types
+- Semantic symbol summaries and relationships (minimal content)
 - Use for: "Who calls this function?" "What changed in this module?"
-- Result: Instant, deterministic, no ambiguity
+- Result: Fast, deterministic answers with low overhead
 
 **Layer 2 — Vault:**
-- Architecture decisions, patterns, lessons, integration context
-- Query cost: ~500 tokens (searchable summaries)
+- Architecture decisions, patterns, lessons, and integration context
+- Searchable summaries and intent-level context (moderate content)
 - Use for: "Why did we choose this pattern?" "What patterns work for X?"
-- Result: Architectural intent, not implementation details
+- Result: Architectural intent without implementation noise
 
 **Layer 3 — Raw Code:**
-- Full source files, comments, test cases
-- Query cost: ~5000+ tokens per file
-- Use ONLY when Layers 1-2 insufficient
-- Example: "Debug this error; show full stack trace"
+- Full source files, tests, and comments
+- Full-file content is expensive to process and should be used sparingly
+- Use ONLY when Layers 1-2 do not provide sufficient detail (for deep debugging or full-context reconstruction)
 
-**Token Savings:**
-- Typical agent workflow: 5 queries
-- With files: 5 × 5000 = 25,000 tokens
-- With 3-layer rule: (3 × 280) + (2 × 500) = 1840 tokens
-- **Savings: ~86% token reduction**
+Using the 3-layer rule reduces overall query cost significantly compared to naive full-file scans and preserves useful, intent-focused context for agents.
 
 ---
 
@@ -540,7 +534,7 @@ Without hierarchy:
 
 | Trade-off | Reasoning |
 |-----------|-----------|
-| Requires lat.md setup | One-time cost (~30 min); saves tokens every session thereafter |
+| Requires lat.md setup | One-time setup effort; saves tokens every session thereafter |
 | Requires vault context | Architectural decisions must be documented first |
 | Misses implementation details | By design; saves tokens; details available in Layer 3 if needed |
 | User discipline needed | Follow 3-layer rule consistently; document rationale when escalating |
@@ -585,7 +579,7 @@ Note: Spekificity's supported default, lat.md, provides a file-watcher-based aut
 
 **Auto-Sync Strategy:**
 - Git post-commit hook runs `lat update` after every commit
-- Only changed files re-indexed (incremental, fast: 2-4 seconds)
+- Only changed files re-indexed (incremental, fast)
 - Graph stored in SQLite; queries instant
 - No user intervention required
 
@@ -606,24 +600,24 @@ Note: Spekificity's supported default, lat.md, provides a file-watcher-based aut
 
 | Trade-off | Reasoning |
 |-----------|-----------|
-| Git hook overhead (~2-4s per commit) | Negligible; background refresh; more than offset by query speed |
+| Git hook overhead (short per commit) | Negligible; background refresh; more than offset by query speed |
 | Potential hook conflicts | Rare; hook exits quickly; can be disabled if issues arise |
-| Graph storage (SQLite on disk) | Small footprint (~5-50MB depending on codebase size) |
+| Graph storage (SQLite on disk) | Small footprint (varies with codebase size) |
 | Requires lat.md installed | lat.md + MCP already required for Layer 1 queries |
 
 ---
 
 ### When to Use
 
-- Production codebases (>100 files)
-- Long-lived features (>1 day)
+- Production codebases with many files
+- Long-lived features
 - Frequent implementation cycles
 - Teams using lat.md for Layer 1 queries
 
 ### When NOT to Use
 
 - Temporary sandboxes (manual refresh acceptable)
-- Projects where commit frequency extremely high (>100/day; consider batch refresh)
+- Projects with very high commit frequency (consider batch refresh)
 - Environments where `.git/hooks` restricted (corporate policies)
 
 ---
@@ -682,7 +676,7 @@ Future features proposing singleton automatically see warning.
 | Trade-off | Reasoning |
 |-----------|-----------|
 | Requires test infrastructure | Assume existing (Jest/Mocha/pytest); no new setup |
-| Parsing overhead | Minimal (~50-100ms per feature end) |
+| Parsing overhead | Minimal (per-feature parsing overhead is small) |
 | False positives possible | Manual review before committing warnings; can override |
 | Schema changes to vault | Minor (add tags/notes; no breaking changes) |
 
@@ -728,7 +722,7 @@ Without reflection:
    - Extract original spec requirements
    - Extract actual implemented features
    - Identify deviations (additions, omissions, architecture divergence)
-   - Output: "Code is 95% aligned; 3 additions, 1 omission, 1 architecture change"
+  - Output: "Code largely aligned; a small number of additions and minor omissions detected"
 
 2. **ACT:** User chooses response for each deviation
    - Option A: Fix code to match spec
@@ -820,12 +814,12 @@ Without validation:
 - Require user to justify deviation
 
 **Rule 2: Complexity Increases**
-- If spec complexity > 50% above similar features → Alert
-- Example: Similar feature ~1200 LOC, current spec ~2000 LOC → Justify 67% increase
+- If spec complexity is substantially above similar features → Alert
+- Example: Compared to a baseline feature size, the current spec is substantially larger — justify the increased scope
 - Allow override with documented reason
 
 **Rule 3: Pattern Consistency**
-- If 3+ recent features used pattern X → Flag deviations
+- If multiple recent features used pattern X → Flag deviations
 - Example: 3 recent features used observer pattern; spec proposes direct subscription → Suggest observer
 - User can override with rationale
 
@@ -852,7 +846,7 @@ Without validation:
 
 | Trade-off | Reasoning |
 |-----------|-----------|
-| May slow spec generation | Checks fast (~1-2s per rule); worth early detection |
+| May slow spec generation | Checks are fast; worth early detection |
 | False positives possible | Override mechanism exists; documented violations captured |
 | Requires tuned thresholds | Per-project config; teams adjust based on their patterns |
 | Complexity of rules | Simple rules (threshold-based); easy to understand + debug |
@@ -924,8 +918,8 @@ Without blind review:
 | Trade-off | Reasoning |
 |-----------|-----------|
 | Extra step before merge | Optional; can skip for rapid iteration; recommended for production |
-| Setup effort (GitHub Actions) | ~1 hour one-time; pay-as-you-go thereafter |
-| Anonymization overhead | ~100ms per run; minimal compared to CI/CD |
+| Setup effort (GitHub Actions) | One-time setup effort; pay-as-you-go thereafter |
+| Anonymization overhead | Minimal per-run overhead; negligible compared to CI/CD |
 | May flag false positives | Manual review; user decides if flags valid |
 
 ---
@@ -949,7 +943,7 @@ Without blind review:
 
 ### Decision
 
-**Implement token budget allocation (12K tokens default per feature, configurable) with soft limits (warnings at 60%, 80% thresholds, not hard caps). Track usage per phase; enable cost-aware optimization decisions without blocking progress.**
+**Implement a configurable token budget model with soft limits and warnings. Track usage per phase to enable cost-aware decisions without blocking progress; exact numeric budgets are team-configurable and not documented as fixed values in public-facing docs.**
 
 ---
 
@@ -961,50 +955,38 @@ Without budgets:
 - No visibility into token costs per phase
 - Expensive phases go unnoticed (bad habits compound)
 - Optimization decisions made without data
-- Token limits hit unexpectedly (deadline pressure)
 
 #### Token Budget Solution
 
 **Soft Limits Strategy:**
-- Allocate 12K tokens per feature (configurable per team)
-- Break down per phase: Specify (2K), Plan (3K), Implement (5K), Post (2K)
-- Alert at 60% and 80% thresholds (warning, not blocking)
-- Track actual usage (report at feature end)
+- Allocate a configurable token budget per feature (team-defined)
+- Break down the budget per phase according to team preferences
+- Configure warning thresholds (non-blocking) to guide optimization
+- Track actual usage and report at feature end for learning
 
 **Per-Phase Tracking:**
-```
-/spek.plan Specify Phase:
-  Budget: 2000 tokens
-  Layer 1 queries: 500 tokens
-  Layer 2 queries: 1000 tokens
-  Spec generation: 300 tokens
-  Auto-linking: 200 tokens
-  ─────────────────────────────
-  Total: 2000 tokens (100% of budget, ON BUDGET)
-```
+Use per-phase accounting to capture relative costs for layer queries, spec generation, and automation steps; numeric values are recorded in internal telemetry and omitted from public docs.
 
 **Soft Limit Behavior:**
-- 60% threshold: Log warning "Approaching budget"
-- 80% threshold: Alert "80% of budget used; optimize next phase"
-- >100% allowed: Continue; discuss why in post-feature review
+- Configured warning thresholds issue non-blocking alerts
+- Teams may exceed budgets when justified and discuss in post-feature reviews
 
 **Benefits:**
 - Visibility into token costs (data-driven optimization)
-- Early warning system (avoid budget surprises)
-- Flexibility (soft limits, not hard caps; team can exceed if justified)
+- Early warning system (avoid surprises)
+- Flexibility (soft limits; configurable by team)
 - Learning loop (budget metrics feed into future improvements)
 
-**Configuration:**
+**Configuration (example schema):**
 ```yaml
 token_budget:
-  per_feature: 12000  # Adjust based on team budget
-  alert_60_percent: true
-  alert_80_percent: true
-  
-# Different teams can customize:
-solo_developer: 8000   # Smaller budget
-team_collaborative: 15000  # Larger budget
-enterprise: 5000  # Cost-sensitive
+  per_feature: TBD  # Team-defined
+  alert_thresholds: []  # Configure warning thresholds as needed
+
+# Team presets (placeholders)
+solo_developer: TBD
+team_collaborative: TBD
+enterprise: TBD
 ```
 
 ---
@@ -1014,7 +996,7 @@ enterprise: 5000  # Cost-sensitive
 | Trade-off | Reasoning |
 |-----------|-----------|
 | Soft limits not enforced | By design; team has flexibility; alerts guide discipline |
-| Tracking overhead | Minimal (~10-20ms per phase; negligible) |
+| Tracking overhead | Minimal (small processing time per phase) |
 | Requires monitoring | User reads alerts; can ignore if justified |
 | Per-phase granularity | Can add sub-phase tracking if needed (optional) |
 
@@ -1025,7 +1007,7 @@ enterprise: 5000  # Cost-sensitive
 - Any feature workflow (teams should track token costs)
 - Cost-sensitive environments (startups, individuals)
 - Long-running projects (costs accumulate; visibility important)
-- Teams optimizing for efficiency (3-layer rule + caveman compression)
+- Teams optimizing for efficiency (use 3-layer rule and compression techniques)
 
 ### When NOT to Use
 
@@ -1050,12 +1032,12 @@ START: "Do you use AI agents for development?"
 │  │  │
 │  │  ├─ YES → Configuration: FULL STACK + TDD
 │  │  │  Recommendations:
-│  │  │  • Enable all Phase 1-2 decisions (4-12)
+│  │  │  • Enable all Phase 1-2 decisions
 │  │  │  • Use 3-layer query rule (Decision 6)
 │  │  │  • Enable backprop reflex (Decision 8)
 │  │  │  • Enable RARV cycles (Decision 9)
 │  │  │  • Use caveman mode for compression
-│  │  │  • Budget: 12K tokens per feature
+│  │  │  • Budget: configured token budget per feature (value omitted)
 │  │  │  • Best for: Production codebases, TDD teams
 │  │  │
 │  │  └─ NO → Configuration: TOKEN-OPTIMIZED
@@ -1063,29 +1045,29 @@ START: "Do you use AI agents for development?"
 │  │     • Enable Decisions 6 (3-layer), 10 (anti-sycophancy), 12 (budget)
 │  │     • Skip backprop + RARV (TDD not priority)
 │  │     • Use caveman mode + 3-layer rule
-│  │     • Budget: 12K tokens per feature (strict)
+│  │     • Budget: configured token budget per feature (value omitted)
 │  │     • Best for: Tight token budgets, non-TDD teams
 │  │
 │  └─ NO → "Team size?"
 │     │
-│     ├─ 1 developer → Configuration: SOLO WITH GUARDRAILS
+│     ├─ solo developer → Configuration: SOLO WITH GUARDRAILS
 │     │  Recommendations:
 │     │  • Enable Decisions 4-5 (zettelkasten, auto-tagging)
 │     │  • Enable Decision 10 (anti-sycophancy) [critical for solo dev]
 │     │  • Enable Decision 12 (budget tracking)
 │     │  • Skip blind review (no team to review)
 │     │  • Standard mode (no caveman compression)
-│     │  • Budget: 8K tokens per feature
+│     │  • Budget: configured token budget per feature (value omitted)
 │     │  • Best for: Solo developers, token monitoring
 │     │
-│     └─ 2-5 developers → Configuration: TEAM BASELINE
+│     └─ small team → Configuration: TEAM BASELINE
 │        Recommendations:
 │        • Enable Decisions 4-7 (full Phase 1)
 │        • Enable Decisions 8-9 (backprop, RARV)
 │        • Enable Decision 11 (blind review)
 │        • Enable Decision 12 (budget)
 │        • Standard mode (caveman optional)
-│        • Budget: 15K tokens per feature
+│        • Budget: configured token budget per feature (value omitted)
 │        • Best for: Collaborative teams, shared vault
 │
 
@@ -1093,7 +1075,7 @@ START: "Do you use AI agents for development?"
    │
    ├─ YES → "How large is the codebase?"
    │  │
-   │  ├─ >500 files → Configuration: MINIMAL AGENT USE
+  │  ├─ many files → Configuration: MINIMAL AGENT USE
    │  │  Recommendations:
    │  │  • Enable Decision 6 (3-layer) for manual queries
   │  │  • Use lat.md for code analysis (human-driven)
@@ -1102,7 +1084,7 @@ START: "Do you use AI agents for development?"
    │  │  • Manual reviews via blind review
    │  │  • Best for: Human-centric teams with existing tools
    │  │
-   │  └─ 100-500 files → Configuration: MANUAL FIRST, AGENT OPTIONAL
+  │  └─ moderate-to-large codebase → Configuration: MANUAL FIRST, AGENT OPTIONAL
    │     Recommendations:
    │     • Zettelkasten vault (Decision 4)
   │     • Manual code analysis + optional lat.md
@@ -1117,7 +1099,7 @@ START: "Do you use AI agents for development?"
       │  • Lightweight: Zettelkasten (Decision 4) + Manual vault
       │  • Skip automated tooling (premature)
       │  • Focus on code quality (tests, basic linting)
-      │  • Add agent workflows after 100+ files + stable architecture
+      │  • Add agent workflows after the codebase reaches large size and architecture stabilizes
       │  • Budget: Not applicable (no agents)
       │  • Best for: New projects, move fast
       │
@@ -1215,5 +1197,5 @@ High-Value Combinations:
 | **Anti-Sycophancy (10) flags decision 4 contradiction** | Decision 10 raises alert; user reviews vault + spec; either updates spec or documents override rationale |
 | **Backprop (8) + RARV (9) find conflicting failure patterns** | Backprop logs failure; RARV compares to spec; RARV decision takes precedence (architectural); update failure notes accordingly |
 | **Blind Review (11) finds issues backprop missed (8)** | Blind review flags issues; if caught by backprop alert, document; if new issue, create tech debt item |
-| **Token Budget (12) exceeded during Phase 1** | Warning at 80% threshold; user can continue (soft limit) or optimize; review 3-layer rule usage for Phase 2 |
+| **Token Budget (12) exceeded during Phase 1** | Warning when approaching the configured budget; user can continue (soft limit) or optimize; review 3-layer rule usage for Phase 2 |
 | **Git Hooks (7) conflict with CI/CD** | Disable hooks via `.spek/.disable-git-hooks`; use CI/CD graph refresh instead |

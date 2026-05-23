@@ -58,7 +58,7 @@ Output
 
 ❌ When tool provides hooks (prefer hooks)  
 ❌ Simple wrapping with 1-2 lines (composition simpler)  
-❌ Performance-critical code (wrapper adds ~50-100ms)  
+❌ Performance-critical code (wrapper adds minor overhead)  
 
 ---
 
@@ -137,11 +137,9 @@ def specify_enriched(feature_description):
 
 ---
 
-## Token Cost
+## Notes on Resource Use
 
-- **Decorator overhead:** ~50-100ms per invocation
-- **Context loading (PRE):** ~500-1000 tokens
-- **Tool invocation (CORE):** Depends on tool
-- **Validation (POST):** ~100-200 tokens
+- Decorator wrappers introduce minor runtime and resource overhead; measure in your environment.
+- Context loading and validation resource use depends on feature size and configured enrichment.
 
-Total: ~1-2K tokens per enriched call (vs. ~500 tokens for bare tool).
+Keep budgeting and limits configurable rather than embedding fixed numeric estimates in documentation.

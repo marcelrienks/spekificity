@@ -68,7 +68,7 @@
 - `quickstart.md` (key validation scenarios)
 
 **Purpose:** Translate business requirements into technical architecture  
-**Constitutional gates:** Phase -1 gates enforce Simplicity (≤3 projects) and Anti-Abstraction (direct framework use)  
+**Constitutional gates:** Phase -1 gates enforce Simplicity (small project set) and Anti-Abstraction (direct framework use)  
 **Can run again?** Yes; regenerates plan artifacts. Use with caution if you've edited them directly.
 
 ---

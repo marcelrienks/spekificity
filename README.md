@@ -1,6 +1,6 @@
 # Spekificity
 
-> **Status:** Active development. Full documentation and specifications in `/wiki` and `/specs`.
+> **Status:** Design/specification. These documents describe the intended future state and planned behavior; implementation is pending.
 >
 > **Documentation Structure:** `/wiki/` contains philosophy, architecture, and workflow guidance. `/specs/` contains detailed specifications and implementation contracts.
 
@@ -30,8 +30,8 @@ Spekificity is a **specification-driven framework for rapid AI agent development
     - [Download Obsidian](https://obsidian.md/download)
     - macOS: `brew install obsidian`
     - Windows: `choco install obsidian`
-- **Obsidian CLI** (recommended) — used to automate vault syncs, export vault structure/metadata, and run scripted exports that enable automated context loading, graph generation, and lesson extraction.
-    - Why recommended: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports). Having the Obsidian CLI available simplifies reliable automation in developer workflows and CI.
+- **Obsidian CLI** (required) — used to automate vault syncs, export vault structure/metadata, and run scripted exports that enable automated context loading, graph generation, and lesson extraction.
+    - Why: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports). Having the Obsidian CLI available simplifies reliable automation in developer workflows and CI.
     - Install / enable CLI: The Obsidian CLI is bundled with the Obsidian desktop app — enable it in Obsidian Settings → General → Command line interface, then follow the on-screen prompt to register the `obsidian` command in your PATH. See https://obsidian.md/help/cli for details.
     - Note: The Obsidian app must be installed (https://obsidian.md/download) and running for many CLI commands to work. For CI/headless scenarios, see Obsidian Headless: https://obsidian.md/help/headless
 
@@ -51,13 +51,11 @@ spek tools --list
 ```
 
 
-This automatically:
-- ✅ Installs Spekificity CLI
-- ✅ Installs all dependencies (SpecKit, lat.md, etc.)
-- ✅ Creates project directories (`.spek/`, `vault/`, `wiki/`)
-- ✅ Initializes lat.md index
-- ✅ Runs `specify init .` to initialize SpecKit
-- ✅ **Obsidian CLI is recommended for automated vault and persistent memory operations** — the `setup.sh` script verifies the `obsidian` command is available in PATH and will abort with clear instructions if it is missing; follow Obsidian Help → CLI to register the CLI.
+Planned automatic steps:
+- Install Spekificity CLI and configured dependencies (SpecKit, lat.md, etc.)
+- Create project directories (`.spek/`, `vault/`, `wiki/`)
+- Initialize lat.md index and invoke SpecKit initialization
+- Verify `obsidian` CLI availability (the automation described here requires the `obsidian` CLI to be installed and registered in PATH)
 
 ### Alternative: Manual Installation
 
@@ -105,10 +103,10 @@ Spekificity is built around four pillars:
 
 - **SpecKit / Specify** — Spec-driven workflow engine
 - **lat.md** — Indexing and doc-code linkage (preferred)
-- **Obsidian Vault (with Obsidian CLI)** — Recommended knowledge store and runtime interface for specs, decisions, patterns, lessons. Automated persistent-memory operations (scripted vault syncs, exports, metadata extraction) rely on the Obsidian CLI for reliable CI and developer automation. See `setup.sh` for verification and installation guidance; manual vault workflows are still supported when the CLI is unavailable.
+- **Obsidian Vault (with Obsidian CLI)** — Required knowledge store and runtime interface for specs, decisions, patterns, and lessons. The automation described in these documents depends on the `obsidian` CLI being available and registered in PATH.
 - **Caveman Mode** — Response compression for token control
 
-Spekificity defines how these tools work together—it doesn't replace them. **Obsidian CLI is recommended for automated vault and persistent memory management; if it's unavailable, Spekificity supports manual workflows with reduced automation.**
+Spekificity defines how these tools work together—it doesn't replace them. **The toolset described (SpecKit, lat.md, Obsidian + Obsidian CLI, Caveman) is required for the intended automation and behavior described in this documentation.**
 
 ---
 
@@ -146,7 +144,7 @@ Start with this reading order—each doc builds on the previous:
 
 | Document | Purpose |
 |----------|---------|
-| [wiki/workflow.md](wiki/workflow.md) | 4-stage workflow details (reference during development) |
+| [wiki/workflow.md](wiki/workflow.md) | staged workflow details (reference during development) |
 | [wiki/conventions.md](wiki/conventions.md) | Command naming and skill invocation |
 | [.spek/skill-index.md](.spek/skill-index.md) | Complete `/spek.*` command reference |
 
@@ -174,8 +172,8 @@ Start with this reading order—each doc builds on the previous:
 
 | Term | Canonical Usage | Aliases | Definition |
 |------|-----------------|---------|-----------|
-| **Stage** | "Stage 1: Prepare", "Stage 2: Specify & Plan", etc. (4 total) | "phase", "step" | One of four deterministic workflow stages in feature development |
-| **Closeout** | "Phase 5: Post-Feature Closeout" | "Close", "post-processing", "archive phase" | Final phase where artifacts are archived and lessons extracted |
+| **Stage** | "Prepare", "Specify & Plan", etc. | "phase", "step" | One of the deterministic workflow stages in feature development |
+| **Closeout** | "Post-Feature Closeout" | "Close", "post-processing", "archive phase" | Final phase where artifacts are archived and lessons extracted |
 | **Lessons Learned** | "lessons learned", "lessons" (in context of `/spek.conclude` output) | "reflection", "retrospective", "what we learned" | Structured insights captured at feature end (what worked, what didn't, patterns) |
 | **lat.md** | "lat.md" (indexer for docs and source) | "indexing tool", "doc-code linkage" | Markdown-native index + source metadata; primary source for context injection |
 | **Enrichment Layer** | "enrichment layers" (plural when multiple) | "context layers", "structured context" | Context-specific information added to specs/plans (Success Criteria, Assumptions, Risk Assessment, etc.) |
@@ -187,7 +185,7 @@ Start with this reading order—each doc builds on the previous:
 
 **New to Spekificity?** Start here:
 
-1. Read [wiki/quickstart.md](wiki/quickstart.md) (30 min)
+1. Read [wiki/quickstart.md](wiki/quickstart.md)
 2. Run `/spek.prepare` to initialize your workspace
 3. Create your first feature spec with `/spek.plan --phase=specify`
 

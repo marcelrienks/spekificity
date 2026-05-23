@@ -1,6 +1,6 @@
 # Spekificity: Vision and Philosophy
 
-**Date Documented:** May 13-20, 2026  
+**Date Documented:** recorded  
 **Status:** Active Development  
 **See also:** [intention.md](intention.md) (principles) → [architecture.md](architecture.md) (technical) → [workflow.md](workflow.md) (process)
 
@@ -76,7 +76,7 @@ How each component targets the four core problems:
 | Stage | Token Efficiency | Determinism | Persistence | Autonomy |
 |-------|---|---|---|---|
 | **Stage 0: Init** | Graph indexing configured once (amortizes over project lifetime) | Canonical tool choices established | Vault structure initialized | Agent has all tools available at start |
-| **Stage 1: Ingest** | Code graph indexed (92% fewer queries later) | Prior context structured consistently | Raw materials + graph stored permanently | Agent can analyze codebase independently |
+| **Stage 1: Ingest** | Code graph indexed to reduce repeated file reads | Prior context structured consistently | Raw materials + graph stored permanently | Agent can analyze codebase independently |
 | **Stage 2: Feature Dev** | `/context-load` loads vault once per session; graph queries replace file reads | Spec → plan → tasks → implement enforced; no exploration phase | Decisions + lessons captured in vault | Agent executes workflow autonomously with graph + vault context |
 | **Stage 3: Refinement** | Lessons written terse (caveman style); graph incrementally updated | Outcomes feed back into vault structure | Agent learns from each feature; compounding | Next feature starts with richer context; less dev guidance needed |
 
@@ -140,7 +140,7 @@ spekificity init
 **Output:** 
 - Code changes (merged to main branch)
 - Execution trace (stores in vault for analysis)
-- Lessons entry → `wiki/vault/lessons/<date>-<feature>.md`
+- Lessons entry → `wiki/vault/lessons/<feature>.md`
 
 **Time to Value:** Feature development workflow from spec through code
 
@@ -333,7 +333,7 @@ Spekificity doesn't build code analysis; it uses the chosen tool's index + prese
 
 **With Spekificity:**
 - `/spek.implement` uses code analysis tool's impact detection
-- Impact is instant: "Changing `auth.jwt()` affects 47 call sites, including these tests"
+- Impact is instant: changing `auth.jwt()` affects multiple call sites, including related tests
 - Agent checks impact before implementing
 
 Spekificity doesn't calculate impact; it surfaces the chosen tool's capabilities at the right moment.
@@ -352,7 +352,7 @@ All skills, workflows, configurations are markdown files. AI agents read and exe
 Each tool (spec framework, code mapper, vault, compression) is independently upgradable. Breaking changes in one tool should not require re-initialization of Spekificity. As better tools emerge, they can be swapped in.
 
 ### 4. Minimal Configuration
-If possible, auto-detect and auto-wire. Manual configuration only for truly customizable aspects (vault structure, skill routing). Defaults should work for 90% of users.
+If possible, auto-detect and auto-wire. Manual configuration only for truly customizable aspects (vault structure, skill routing). Defaults should work for most users.
 
 ### 5. Persistent Memory
 Project vault is the source of truth. Every output (spec, plan, lessons) goes into vault. Every new session starts with vault loaded. Knowledge compounds over time.

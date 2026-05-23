@@ -2,12 +2,12 @@
 title: "Per-Feature Lessons Format"
 status: "ATOMIC SPECIFICATION"
 version: "1.0.0-alpha.1"
-date: "2026-05-21"
+date: "omitted"
 ---
 
 # Spec: Per-Feature Lessons Format
 
-**Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1
 **Concern:** Template and lifecycle for lessons learned files written at feature end  
 **Extracted from:** extracted spec Type 1 (Per-Feature Lessons)  
 **Used by:** conclude-command, /spek.conclude skill  
@@ -18,20 +18,20 @@ date: "2026-05-21"
 
 **Problem:** After each feature completes, context is lost. Next feature requires re-reading spec/plan/tasks. Solution: capture "what was built + how + decisions" in self-contained lesson file.
 
-**Solution:** Define lesson template with 8 sections, write to wiki/vault/lessons/ after feature, compress with caveman mode for token efficiency.
+**Solution:** Define a multi-section lesson template, write to wiki/vault/lessons/ after feature, and compress with caveman mode for token efficiency.
 
-**Outcome:** wiki/vault/lessons/<YYYY-MM-DD>-<number>-<name>.md files that can be loaded by next feature session, reducing context reload cost by ~70%.
+**Outcome:** wiki/vault/lessons/<date>-<number>-<name>.md files that can be loaded by the next feature session, reducing context reload cost significantly.
 
 ---
 
 ## File Naming Convention
 
-**Pattern:** `<YYYY-MM-DD>-<number>-<feature-name>.md`
+**Pattern:** `<date>-<number>-<feature-name>.md`
 
 **Examples:**
-- `wiki/vault/lessons/2026-05-18-00spek-full-workflow-cli.md`
-- `wiki/vault/lessons/2026-05-12-00persistent-memories.md`
-- `wiki/vault/lessons/2026-05-10-00initial-setup.md`
+- `wiki/vault/lessons/<date>-<feature>-spek-full-workflow-cli.md`
+- `wiki/vault/lessons/<date>-<feature>-persistent-memories.md`
+- `wiki/vault/lessons/<date>-<feature>-initial-setup.md`
 
 **Rationale:**
 - Date: Sort by recency (newest first)
@@ -40,7 +40,7 @@ date: "2026-05-21"
 
 ---
 
-## Lesson Template (8 Sections)
+## Lesson Template (multi-section)
 
 ### Section 1: Header & Metadata
 
@@ -64,7 +64,7 @@ date: "2026-05-21"
 
 ---
 
-### Section 2: What We Built (2-3 sentence summary)
+### Section 2: What We Built (brief summary)
 
 ```markdown
 ## What We Built
@@ -76,38 +76,38 @@ date: "2026-05-21"
 - [Major change 2]
 - [Major change 3]
 
-**Files Modified:** [X files] — list if < 20, else count
-**Lines of Code:** +X-Y (net addition)
-**Test Coverage:** X%
+**Files Modified:** count omitted — list if small
+**Lines of Code:** recorded (omitted)
+**Test Coverage:** recorded (omitted)
 ```
 
 **Rationale:**
-- Next developer can understand feature scope in 30 seconds
+- Next developer can understand feature scope quickly
 - Digest without reading full spec.md
 - Metrics for estimation (duration + LOC)
 
 **Caveman Mode Example:**
 ```
-Spekificity prep + post skills (feature orchestration). Verifies git state. Loads context. 
+Spekificity prep + post skills (feature orchestration). Verifies git state. Loads context.
 Collects lessons. Updates vault. Incremental graph sync. Caveman activation built-in.
 
 Core changes:
-- /spek.prepare command (7-step workflow)
-- /spek.conclude command (10-step workflow)
+- /spek.prepare command (workflow)
+- /spek.conclude command (workflow)
 - Vault sync (decisions, patterns, code graph)
 - Caveman compression at each step
 
-Files: 5 modified, +180 LOC net, 85% test coverage
+Files/LOC/test-coverage: recorded (omitted)
 ```
 ## Success Criteria
 
 - ✅ Lesson format self-contained (readable without spec.md/plan.md)
-- ✅ Compression effective (~30-50% token reduction vs. normal prose)
+- ✅ Compression effective (significant token reduction vs. normal prose)
 - ✅ Lessons actionable (next feature can apply recommendations immediately)
 - ✅ Content specific + concrete (code examples, not vague advice)
-- ✅ 8 sections complete (all template sections filled for each lesson)
-- ✅ Wikilinks present (minimum 2-3 cross-references per lesson)
-- ✅ Metrics captured (token count, duration, test coverage included)
+- ✅ Template sections complete (all template sections filled or N/A marked)
+- ✅ Wikilinks present (cross-references recorded)
+- ✅ Metrics captured (values recorded; quantitative details omitted)
 ---
 
 ### Section 3: How We Built It (Technical Approach)
@@ -174,12 +174,12 @@ Tech stack:
 
 | Task | Status | Duration | Notes |
 |------|--------|----------|-------|
-| Task 1: [description] | ✓ done | X hours | [blockers/learnings] |
-| Task 2: [description] | ✓ done | Y hours | [blockers/learnings] |
-| Task 3: [description] | ✓ done | Z hours | [blockers/learnings] |
-| Task 4: [description] | ✗ partial | W hours | [why not complete] |
+| Task 1: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] |
+| Task 2: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] |
+| Task 3: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] |
+| Task 4: [description] | ✗ partial | duration recorded (omitted) | [why not complete] |
 
-**Total Feature Time:** X hours over Y days
+**Total Feature Time:** recorded (omitted)
 **Blocker Resolution:** [Any major blockers encountered and how resolved]
 ```
 
@@ -284,15 +284,15 @@ Tech stack:
 
 **Execution Metrics:**
 - Token Efficiency: meaningful reduction via decorator pattern + memory layering
-- Execution Time: 45 min feature cycle vs. 90 min (previous approach)
-- Code Quality: 85% test coverage, 0 critical bugs
-- Documentation: 12 specs created, 1200 LOC docs
+- Execution Time: recorded (omitted)
+- Code Quality: recorded (omitted)
+- Documentation: recorded (omitted)
 
 **Team Metrics:**
 - Author(s): [Name]
 - Reviewers: [Names]
-- Code Review Rounds: X
-- External Dependencies: [Y packages updated]
+- Code Review Rounds: recorded (omitted)
+- External Dependencies: recorded (omitted)
 
 ## References
 
@@ -334,8 +334,8 @@ Before writing to wiki/vault/lessons/, validate:
 ## Retention Policy
 
 - **Keep indefinitely:** All lessons stored in vault (permanent archive)
-- **Archive inactive:** After 6 months of no reference, mark `status: archived` (but don't delete)
-- **Index recent:** Repo memory keeps top 3-5 recent lessons for quick access
+-- **Archive inactive:** After a configured period of inactivity, mark `status: archived` (but don't delete)
+-- **Index recent:** Repo memory keeps recent lessons for quick access
 - **Search:** `/spek.context` loads 3-5 most recent lessons at session start
 
 ---
@@ -352,7 +352,7 @@ Before writing to wiki/vault/lessons/, validate:
 │   ├── Read spec/plan/tasks
 │   ├── Extract What/How/Tasks/Decisions/Patterns/Lessons/Metrics/References
 │   ├── Compress with caveman mode
-│   └── Write to wiki/vault/lessons/<YYYY-MM-DD>-<number>-<name>.md
+│   └── Write to wiki/vault/lessons/<date>-<number>-<name>.md
 └── Report: "Lessons written to wiki/vault/lessons/"
 ```
 
@@ -360,11 +360,11 @@ Before writing to wiki/vault/lessons/, validate:
 
 ## Success Criteria
 
-- [x] Lesson template has 8 sections covering scope + decisions + learnings + metrics
-- [x] File naming is consistent (date + number + name)
+- [x] Lesson template covers scope, decisions, learnings, and metrics (template-driven)
+- [x] File naming is consistent (date placeholder + number + name)
 - [x] Quality checklist ensures self-contained, actionable lessons
-- [x] Retention policy defined (keep forever, archive old)
-- [x] Caveman compression reduces token cost by ~60%
+- [x] Retention policy defined (keep and archive per policy)
+- [x] Caveman compression reduces token cost (significant reduction)
 - [x] Lessons are linked to original spec, decisions, related lessons
 - [x] Integration point with /spek.conclude is clear
 

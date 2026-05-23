@@ -105,12 +105,12 @@ Example:
 ```
 Severity: MEDIUM-HIGH
 Default Action: WARN + FALLBACK
-Recovery Flow: Async retry (30s intervals, max 3 retries)
+Recovery Flow: Async retry with increasing intervals
 
 Example:
   Warning: Vault inaccessible (permission denied: vault/decision.md)
   Fallback: Using cached decisions from /memories/repo/...
-  Retry: Vault access will be attempted every 30s for 3 retries
+  Retry: Vault access will be attempted with backoff
 ```
 
 ### Category 3: Graph/Code Index Errors
@@ -136,7 +136,7 @@ Example:
 ### Category 4: LLM Errors
 
 **Errors:**
-- API timeout (>30s)
+- API timeout
 - Rate limit exceeded
 - Model unavailable
 - API key invalid
@@ -145,13 +145,9 @@ Example:
 ```
 Severity: MEDIUM
 Default Action: RETRY + FALLBACK
-Recovery Flow: 3 retries with exponential backoff
+Recovery Flow: Limited retries with exponential backoff
 
-Retry strategy:
-  Retry 1: Wait 2s, then retry
-  Retry 2: Wait 5s, then retry
-  Retry 3: Wait 10s, then retry
-  On all failures: Fallback to simpler prompt
+Retry strategy: Limited retries with increasing waits between attempts; on persistent failures fallback to a simpler prompt
 ```
 
 ### Category 5: SpecKit Errors
@@ -170,7 +166,7 @@ Recovery Flow: Manual intervention required
 
 Example:
   Error: /speckit.specify failed
-  Details: Spec generation timed out after 60s
+  Details: Spec generation timed out
   Action: Increase timeout or simplify feature description
   Then: /spek.plan [revised-description]
 ```
@@ -225,11 +221,11 @@ def skill_with_categorization(inputs):
         if "timeout" in str(e):
             # Category: LLM ERROR (transient)
             log_error(e, category="LLM_TRANSIENT")
-            result = retry_with_backoff(core_execution, max_retries=3)
+            result = retry_with_backoff(core_execution, max_retries=MAX_RETRIES)
         elif "rate_limit" in str(e):
             # Category: LLM ERROR (transient)
             log_error(e, category="LLM_RATE_LIMIT")
-            result = retry_with_backoff(core_execution, max_retries=3)
+            result = retry_with_backoff(core_execution, max_retries=MAX_RETRIES)
         else:
             # Category: LLM ERROR (permanent)
             log_error(e, category="LLM_FATAL")
@@ -271,10 +267,6 @@ def skill_with_categorization(inputs):
 
 ---
 
-## Token Cost
+## Notes on Resource Use
 
-- **Error categorization:** ~50-100 tokens (one-time)
-- **Error logging:** ~10 tokens per error
-- **User guidance message:** ~50-100 tokens
-
-Total: Minimal if errors are rare; adds ~1-2K tokens if many errors.
+- Resource usage for error handling and logging varies by frequency and verbosity; teams should configure monitoring and limits as appropriate.

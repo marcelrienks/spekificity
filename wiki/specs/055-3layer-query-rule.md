@@ -2,7 +2,7 @@
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** RECOMMENDED (Phase 1)  
-**Effort:** 2-3 hours  
+**Effort:** moderate (team-defined)  
 **Adoption Source:** B.9 (claude-code-memory-setup, cited as motivation for large token savings)
 
 ---
@@ -40,10 +40,10 @@ Document and enforce the **3-Layer Query Rule** — a token-efficient context lo
 
 ## Success Criteria
 
-- ✅ Layer 1 (code graph) queries return results in <500ms without API tokens
-- ✅ Layer 2 (vault) queries return results in <2s with architecture context loaded
-- ✅ Layer 3 (code files) only accessed when Layers 1-2 insufficient (token savings measurable)
-- ✅ Token cost breakdown documented per layer (280 tokens avg Layer 1, 500 tokens avg Layer 2)
+- ✅ Layer 1 (code graph) queries return results with low latency and minimal overhead
+- ✅ Layer 2 (vault) queries return results with modest latency once architecture context is loaded
+- ✅ Layer 3 (code files) only accessed when Layers 1-2 are insufficient (token savings observable)
+- ✅ Token cost breakdown documented per layer (qualitative estimates recorded)
 - ✅ Integration points in `/spek.context` and `/spek.conclude` follow 3-layer rule
 - ✅ Documentation in copilot-instructions.md clearly lists all rules
 - ✅ Enforcement rules prevent unnecessary code file reads (fallback only)
@@ -56,7 +56,7 @@ Document and enforce the **3-Layer Query Rule** — a token-efficient context lo
 
 ## 3-Layer Query Model
 
-### Layer 1: Code Graph (~280 tokens)
+### Layer 1: Code Graph (low token cost)
 
 **What's in Layer 1:**
 
@@ -67,25 +67,25 @@ Document and enforce the **3-Layer Query Rule** — a token-efficient context lo
 ```
 Layer 1 Query: "Who calls the authenticate() function?"
   → Response: Code graph shows callers
-  → Cost: ~50 tokens
+  → Cost: low (qualitative)
   
 Layer 1 Query: "What does the UserService depend on?"
   → Response: Code graph shows dependencies
-  → Cost: ~75 tokens
+  → Cost: low (qualitative)
   
 Layer 1 Query: "What changed in the auth module in the last commit?"
   → Response: Code graph delta (before/after)
-  → Cost: ~100 tokens
+  → Cost: low (qualitative)
 ```
 
 **Cost Breakdown (Layer 1):**
-- Symbol definitions: ~50 tokens
-- Relationships: ~100 tokens
-- Type info: ~50 tokens
-- Deltas/changes: ~80 tokens
-- **Total per query: ~280 tokens average**
+- Symbol definitions: low
+- Relationships: low
+- Type info: low
+- Deltas/changes: low
+- **Total per query: low token cost (qualitative)**
 
-### Layer 2: Vault (~500 tokens)
+### Layer 2: Vault (moderate token cost)
 
 **What's in Layer 2:**
 - Architectural decisions (rationale, alternatives, consequences)
@@ -107,26 +107,26 @@ Layer 1 Query: "What changed in the auth module in the last commit?"
 Layer 2 Query: "Why did we choose dependency injection?"
   → Response: wiki/vault/decision-use-di.md
   → Rationale, alternatives considered, consequences
-  → Cost: ~300 tokens
+  → Cost: moderate (qualitative)
   
 Layer 2 Query: "What patterns work for state management?"
   → Response: wiki/vault/patterns/state-management-*.md
   → Multiple patterns, when to use each
-  → Cost: ~400 tokens
+  → Cost: moderate (qualitative)
   
 Layer 2 Query: "What did we learn from the auth feature?"
   → Response: wiki/vault/lessons/lessons-from-auth-feature.md
   → What worked, what failed, metrics
-  → Cost: ~200 tokens
+  → Cost: moderate (qualitative)
 ```
 
 **Cost Breakdown (Layer 2):**
-- Single decision: ~150-200 tokens
-- Pattern search (multiple): ~300-400 tokens
-- Lessons document: ~150-300 tokens
-- **Total per query: ~500 tokens average**
+- Single decision: moderate
+- Pattern search (multiple): moderate
+- Lessons document: moderate
+- **Total per query: moderate token cost (qualitative)**
 
-### Layer 3: Raw Code Files (~5000+ tokens)
+### Layer 3: Raw Code Files (high token cost)
 
 **What's in Layer 3:**
 - Full source code (implementation details)
@@ -142,10 +142,8 @@ Layer 2 Query: "What did we learn from the auth feature?"
 - Layer 1 & 2 insufficient
 
 **Cost of Layer 3:**
-- Single small file (100 lines): ~500 tokens
-- Single large file (1000 lines): ~5000 tokens
-- Multiple files: ~10,000+ tokens
-- Full module: ~20,000+ tokens
+- Small targeted reads: moderate to high token cost (qualitative)
+- Large file reads or multi-file scans: high token cost (qualitative)
 
 **WARNING:** Layer 3 is expensive! Only use when necessary.
 
@@ -153,64 +151,35 @@ Layer 2 Query: "What did we learn from the auth feature?"
 
 ```
 ❌ BAD: "Show me the authenticate() function"
-   → Response: Read entire authentication.js file
-   → Cost: ~5000 tokens (entire file read)
-   → Should use Layer 1 first: code graph shows function definition
+  → Response: Read entire authentication.js file
+  → Cost: high (entire file read)
+  → Should use Layer 1 first: code graph shows function definition
 
 ❌ BAD: "What's in the UserService class?"
-   → Response: Read entire service file
-   → Cost: ~3000 tokens
-   → Should use Layer 1: code graph shows all methods + callers
+  → Response: Read entire service file
+  → Cost: high
+  → Should use Layer 1: code graph shows all methods + callers
 
 ✅ GOOD: "Show me the error handling in retry logic"
-   → Response: Read only retry.js (targeted read)
-   → Cost: ~1000 tokens (specific file)
-   → Only after Layer 1-2 indicates likely location
+  → Response: Read only retry.js (targeted read)
+  → Cost: moderate (specific file)
+  → Only after Layer 1-2 indicates likely location
 ```
 
 ---
 
-## Token Cost Comparison
+## Notes on Resource Use
 
-### Query: "How does authentication work in this codebase?"
+Query: "How does authentication work in this codebase?"
 
-**❌ Bad Approach (Layer 3 only):**
-```
-1. Read authentication.js (full file)
-2. Read user-service.js (full file)
-3. Read token-manager.js (full file)
-4. Read tests/auth.test.js (full file)
-5. Total cost: ~15,000 tokens
-```
+- Bad Approach (Layer 3 only): reading multiple full files results in very high resource use and should be avoided for routine queries.
 
-**✅ Good Approach (3-Layer Rule):**
-```
-Layer 1: Query code graph for auth functions + callers
-  Cost: ~200 tokens
-  Result: Structure + dependencies + impact
+- Good Approach (3-Layer Rule):
+  1. Query Layer 1 (code graph) to locate symbols and callers (low cost)
+  2. Query Layer 2 (vault) for decisions and patterns (moderate cost)
+  3. Only read specific files if still necessary (targeted, higher cost)
 
-Layer 2: Query vault for auth decisions + patterns
-  Cost: ~400 tokens
-  Result: Rationale, constraints, tradeoffs
-
-→ If sufficient: STOP (cost: 600 tokens, 25x savings!)
-
-→ If need more: Read specific file
-  Cost: ~1000 tokens
-  Result: Implementation details
-
-Total: ~1600 tokens (9x savings vs bad approach)
-```
-
-**Overall Savings:**
-- **Bad approach:** 15,000 tokens
-- **Good approach:** 1,600 tokens
-- **Savings:** 13,400 tokens (90% reduction)
-
-**At scale (100 queries):**
-- Bad: 1,500,000 tokens
-- Good: 160,000 tokens
-- **Savings: 1,340,000 tokens (89% reduction)**
+Teams should avoid embedding fixed numeric budgets in public docs; configure per-project limits in configuration files and use qualitative guidance in documentation.
 
 ---
 
@@ -233,36 +202,35 @@ Total: ~1600 tokens (9x savings vs bad approach)
 ```
 /spek.context loads context with enforced layer prioritization:
   
-  1. [LAYER 1] Query code graph
-     - Recent changes in codebase
-     - Key symbols + dependencies
-     - Impact analysis (who calls what)
-     - Cost: ~500 tokens
+    1. [LAYER 1] Query code graph
+      - Recent changes in codebase
+      - Key symbols + dependencies
+      - Impact analysis (who calls what)
+      - Cost: low (qualitative)
   
-  2. [LAYER 2] Query vault
-     - Active decisions (last updated)
-     - Relevant patterns (by domain)
-     - Recent lessons (last 5 features)
-     - Cost: ~1000 tokens
+    2. [LAYER 2] Query vault
+      - Active decisions (last updated)
+      - Relevant patterns (by domain)
+      - Recent lessons (last 5 features)
+      - Cost: moderate (qualitative)
   
-  3. [Conditional] Read code only if necessary
-     - Specific file if decision/pattern references code
-     - Only if Layer 1-2 insufficient
-     - Cost: ~1000-5000 tokens (avoid!)
+    3. [Conditional] Read code only if necessary
+      - Specific file if decision/pattern references code
+      - Only if Layer 1-2 insufficient
+      - Cost: high (avoid when possible)
   
-  4. Synthesize + Compress (caveman mode)
-     - Summarize all layers
-     - Remove redundancy
-     - Compress to caveman format
-     - Cost: ~500 tokens
+    4. Synthesize + Compress (caveman mode)
+      - Summarize all layers
+      - Remove redundancy
+      - Compress to caveman format
+      - Cost: moderate (qualitative)
   
-  5. Write session context
-     - Store at vault/session/context-loaded.md
-     - Timestamped
-     - Include which layers were queried
-     - Cost: ~0 tokens (write only)
-  
-  Total Cost: ~3000-4000 tokens (vs 10,000+ with Layer 3 reads)
+    5. Write session context
+      - Store at vault/session/context-loaded.md
+      - Timestamped
+      - Include which layers were queried
+
+    Total: lower than full Layer 3 reads when rule applied; actual resource use depends on scope and team configuration.
 ```
 
 ### Implementation Pseudocode
@@ -273,7 +241,7 @@ def load_context_with_3layer_rule():
     
     context = {}
     
-    # LAYER 1: Code Graph (~500 tokens)
+    # LAYER 1: Code Graph (low cost)
     print("Loading Layer 1: Code Graph...")
     graph = query_code_graph(
         include_recent_changes=True,
@@ -281,9 +249,9 @@ def load_context_with_3layer_rule():
         include_dependencies=True
     )
     context['layer1_graph'] = graph
-    log_tokens("layer1", estimate=500)
+    log_tokens("layer1", label="low")
     
-    # LAYER 2: Vault (~1000 tokens)
+    # LAYER 2: Vault (moderate cost)
     print("Loading Layer 2: Vault...")
     vault = load_vault(
         decisions=get_active_decisions(),
@@ -291,19 +259,19 @@ def load_context_with_3layer_rule():
         lessons=get_recent_lessons(limit=5)
     )
     context['layer2_vault'] = vault
-    log_tokens("layer2", estimate=1000)
+    log_tokens("layer2", label="moderate")
     
-    # LAYER 3: Code Files (conditional, ~1000-5000 tokens)
+    # LAYER 3: Code Files (conditional, high cost)
     if layer1_layer2_insufficient(context):
         print("Layer 1-2 insufficient; reading raw code...")
         # Only read specific files that were referenced in Layer 2
         code = read_referenced_code_files(context['layer2_vault'])
         context['layer3_code'] = code
-        log_tokens("layer3", estimate=estimate_code_tokens(code))
+        log_tokens("layer3", label="high")
     else:
         print("Layer 1-2 sufficient; skipping Layer 3")
         context['layer3_code'] = None
-        log_tokens("layer3", estimate=0)
+        log_tokens("layer3", label="none")
     
     # Synthesize all layers
     print("Synthesizing context...")
@@ -315,7 +283,7 @@ def load_context_with_3layer_rule():
     
     # Write session memory
     write_session_context(compressed)
-    log_tokens("total", estimate=sum_tokens(context))
+    log_tokens("total", label="qualitative")
     
     return compressed
 ```
@@ -325,30 +293,30 @@ def load_context_with_3layer_rule():
 When `/spek.context` completes, report:
 
 ```
-✓ Context Loaded (Session: 2026-05-19T14:30:00Z)
+✓ Context Loaded (session recorded; timestamps omitted)
 
 Layer 1 (Code Graph):
-  • Recent changes: auth module (1 file changed)
+  • Recent changes: auth module (details recorded)
   • Key symbols: authenticate(), UserService, TokenManager
-  • Dependencies: 3 inbound, 2 outbound
-  • Tokens: ~500
+  • Dependencies: inbound/outbound counts recorded
+  • Tokens: low (qualitative)
 
 Layer 2 (Vault):
-  • Decisions: 3 active (use-di, token-lifecycle, error-handling)
-  • Patterns: 2 relevant (singleton, decorator)
-  • Lessons: 2 recent (auth-feature, state-management-feature)
-  • Tokens: ~1000
+  • Decisions: active decisions recorded (identifiers listed)
+  • Patterns: relevant patterns identified
+  • Lessons: recent lessons referenced
+  • Tokens: moderate (qualitative)
 
 Layer 3 (Code Files):
   • Status: Skipped (Layer 1-2 sufficient)
-  • Tokens: 0
+  • Tokens: none (skipped)
 
 Compression:
-  • Original: ~2500 tokens
-  • Compressed (caveman): ~800 tokens
-  • Savings: 68%
+  • Original: recorded (omitted)
+  • Compressed (caveman): recorded (omitted)
+  • Savings: substantial (qualitative)
 
-Total Context Load: ~2300 tokens
+Total Context Load: recorded (qualitative)
 Stored at: vault/session/context-loaded.md
 ```
 
@@ -363,7 +331,7 @@ Add this section to copilot-instructions.md for agent visibility:
 
 When gathering context during feature work, follow this priority order:
 
-### Layer 1: Query Code Graph (Fast, Indexed, ~280 tokens)
+### Layer 1: Query Code Graph (Fast, Indexed)
 
 Use when you need to understand:
 - Code structure (who calls what)
@@ -376,9 +344,9 @@ Example queries:
 - "What does UserService depend on?"
 - "What changed in the auth module?"
 
-Cost: ~280 tokens per query
+Cost: low per query (qualitative)
 
-### Layer 2: Query Vault (Searchable, Compiled, ~500 tokens)
+### Layer 2: Query Vault (Searchable, Compiled)
 
 Use when you need to understand:
 - Architectural rationale (why was this design chosen?)
@@ -391,9 +359,9 @@ Example queries:
 - "What state management patterns do we use?"
 - "What did we learn from the auth feature?"
 
-Cost: ~500 tokens per query
+Cost: moderate per query (qualitative)
 
-### Layer 3: Read Raw Code Files (Expensive, ~5000+ tokens)
+### Layer 3: Read Raw Code Files (Expensive)
 
 Use ONLY when Layers 1-2 are insufficient:
 - Need specific implementation details
@@ -401,50 +369,27 @@ Use ONLY when Layers 1-2 are insufficient:
 - Need to understand all edge cases
 - Need to review error handling
 
-Cost: ~5000-20000 tokens per query (AVOID!)
+Cost: high per query (avoid when possible)
 
-### Token Savings
+## Token Cost Comparison
 
-Following this rule reduces token usage by ~20x:
-- Bad approach (Layer 3 only): 15,000 tokens
-- Good approach (3-Layer): 1,600 tokens
-- Savings: 90% reduction
+### Query: "How does authentication work in this codebase?"
 
-Always start with Layer 1, use Layer 2 next, only read code (Layer 3) as last resort.
+**❌ Bad Approach (Layer 3 only):**
+```
+Read multiple full source files to gather implementation details (high token cost).
 ```
 
----
-
-## Enforcement Rules
-
-### Rule 1: Automatic Layer Prioritization
-
-In `/spek.context` skill:
+**✅ Good Approach (3-Layer Rule):**
 ```
-IF user asks for context:
-  1. Query Layer 1 first (code graph)
-  2. Query Layer 2 second (vault)
-  3. Only read code if user explicitly requests
-  4. Log which layers were used
-  5. Report token savings
+1. Query Layer 1 (code graph) to locate symbols and callers (low token cost)
+2. Query Layer 2 (vault) for decisions and patterns (moderate token cost)
+3. Only read specific files if still necessary (targeted, higher cost)
 ```
 
-### Rule 2: Alert on Expensive Queries
+**Overall Savings:**
 
-In `/spek.context` skill:
-```
-IF user tries to read large code file:
-  1. Alert: "This will cost ~5000 tokens. Try Layer 1-2 first?"
-  2. Suggest Layer 1 query (code graph)
-  3. Suggest Layer 2 query (vault)
-  4. Allow override (user can force read)
-  5. Log override for audit
-```
-
-### Rule 3: Session Context Compliance
-
-When loading session context:
-```
+- Following the 3-layer rule provides substantial token savings compared to naïvely reading full source files; exact savings depend on local workload and should be measured in-context.
 ✓ Layer 1 check: Code graph loaded? Provide summary
 ✓ Layer 2 check: Vault loaded? Provide summary
 ✓ Layer 3 check: If code read, was it necessary? Report why

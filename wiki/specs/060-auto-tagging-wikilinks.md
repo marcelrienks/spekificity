@@ -9,7 +9,7 @@ date: "2026-05-21"
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** RECOMMENDED (Phase 1)  
-**Effort:** 4-6 hours  
+**Effort:** Implementation effort to be estimated by the project team
 **Adoption Source:** B.9 (claude-code-memory-setup, chat import pipeline pattern)  
 **Depends On:** C.3.1 Zettelkasten Conventions
 
@@ -24,7 +24,7 @@ Automate the process of:
 4. **Auto-generating tags** for domain, tech stack, and methodology
 5. **Validating lessons** against prior patterns to prevent redundancy
 
-**Goal:** Reduce manual linking effort (~70% automation), enable knowledge discovery across features, validate lessons against vault.
+**Goal:** Reduce manual linking effort substantially, enable knowledge discovery across features, validate lessons against vault.
 
 ---
 
@@ -42,14 +42,14 @@ Automate the process of:
 - Vault schema (see C.3.1 Zettelkasten)
 - Lesson content generation (see B.8.4 Post Command Step 3)
  - Graph queries (see B.11 lat.md Setup)
-- Manual linking workflows (assume auto-linking handles 70%)
+- Manual linking workflows (assume auto-linking handles the majority of linking)
 
 ---
 
 ## Success Criteria
 
-- ✅ Keyword extraction achieves 70%+ automation (manual linking drops significantly)
-- ✅ Keyword-to-vault mapping detects relevant decisions/patterns with >75% accuracy
+- ✅ Keyword extraction automates the majority of linking work (manual linking drops significantly)
+- ✅ Keyword-to-vault mapping reliably detects relevant decisions/patterns
 - ✅ Auto-wikilinks inserted without manual intervention (links appear in generated lessons)
 - ✅ Auto-tags generated for domain, tech stack, methodology (frontmatter enriched)
 - ✅ Redundancy detection alerts when lesson duplicates vault pattern (prevents duplication)
@@ -78,15 +78,15 @@ auto_linking:
   
   # Keyword extraction settings
   extraction:
-    min_keyword_length: 3  # Minimum characters
-    max_keywords_per_lesson: 15  # Limit extracted keywords
+    min_keyword_length: "project-configured-min-length"  # Minimum characters
+    max_keywords_per_lesson: "project-configured-max-keywords"  # Limit extracted keywords
     exclude_stopwords: true  # Filter common words (the, a, and, etc.)
     
   # Mapping strategy
   mapping:
     strategy: "longest-match"  # "longest-match" or "exact-match"
     case_sensitive: false
-    score_threshold: 0.75  # Confidence threshold for matches (0-1)
+    score_threshold: "project-configured-threshold"  # Confidence threshold for matches
   
   # Output behavior
   output:
@@ -246,34 +246,34 @@ Algorithm:
 ```
 Keyword "dependency-injection":
   - Exact match in keyword_tag_map
-  - confidence: 1.0
+  - confidence: high
   - vault_link: "dependency-injection-pattern"
 
 Keyword "singleton":
   - Exact match in keyword_tag_map
-  - confidence: 1.0
+  - confidence: high
   - vault_link: "singleton-pattern"
 
 Keyword "service":
   - No exact match
   - Fuzzy search vault for "service"
   - Found: "service-layer-pattern", "microservices-patterns"
-  - confidence: 0.72 for "service-layer-pattern"
-  - Include if score >= threshold (0.75)? NO, just under threshold
+  - confidence: below configured threshold for "service-layer-pattern"
+  - Include if score >= threshold? NO — score below configured threshold
   - Alert: "Keyword 'service' matched with low confidence"
 
 Keyword "testing":
   - No exact match
   - Fuzzy search vault for "testing"
   - Found: "unit-testing-strategy", "integration-testing-strategy"
-  - confidence: 0.80 for "unit-testing-strategy"
+  - confidence: above configured threshold for "unit-testing-strategy"
   - Include if score >= threshold? YES
   - vault_link: "unit-testing-strategy"
 
 Result (after filtering + dedup):
-  - [[dependency-injection-pattern]] (confidence: 1.0)
-  - [[singleton-pattern]] (confidence: 1.0)
-  - [[unit-testing-strategy]] (confidence: 0.80)
+  - [[dependency-injection-pattern]] (confidence: high)
+  - [[singleton-pattern]] (confidence: high)
+  - [[unit-testing-strategy]] (confidence: above configured threshold)
 ```
 
 ### Step 3: Auto-Insert Wikilinks
@@ -355,14 +355,14 @@ Final tags (sorted):
 After auto-linking complete, check:
   1. Is this lesson similar to existing lessons?
      - Compare against all wiki/vault/lessons/*.md
-     - Semantic similarity > 0.80?
-     - Alert: "Similar lesson exists: [[existing-lesson]]; review for duplication"
+    - Semantic similarity above configured similarity threshold?
+    - Alert: "Similar lesson exists: [[existing-lesson]]; review for duplication"
   2. Do wikilinks form circular patterns?
      - Check for A→B, B→C, C→A cycles
      - Alert if cycle detected (likely indicates over-linking)
   3. Are all wikilinks valuable?
-     - Confidence score < 0.70?
-     - Alert: "Wikilink [[X]] has low confidence; consider removing"
+    - Confidence score below configured threshold?
+    - Alert: "Wikilink [[X]] has low confidence; consider removing"
 ```
 
 ### Pattern Detection
@@ -499,7 +499,7 @@ Result: ✅ Fully interconnected lesson, zero manual work
 1. /spek.conclude generates lesson
 2. Auto-linking extracts keywords (dependency-injection, custom-service-locator, testing)
 3. "dependency-injection" matches perfectly
-4. "custom-service-locator" has low confidence (0.65 < 0.75 threshold)
+4. "custom-service-locator" has low confidence (below configured threshold)
 5. Alert: "Keyword 'custom-service-locator' has low confidence; consider adding to config"
 6. User can:
    a. Add mapping to config: "custom-service-locator" → "service-locator-anti-pattern"
@@ -531,14 +531,14 @@ Result: ✅ Vault continuously enriched; no stale patterns
 ## Success Criteria
 
 - ✅ Auto-linking enabled in `/spek.conclude` Step 3
-- ✅ ~70% of wikilinks auto-generated (< 30% manual work)
-- ✅ Confidence score > 0.75 for all auto-inserted links
-- ✅ Auto-generated tags match manual tagging conventions
-- ✅ No circular dependencies in wikilink graph
-- ✅ Redundancy checks alert on duplicate lessons
-- ✅ Config-driven keyword mappings (no code changes needed to add keywords)
-- ✅ User alerted on low-confidence matches
-- ✅ Vault interconnection density >= 2-4 wikilinks per lesson (validated)
+-- ✅ Majority of wikilinks auto-generated (minor manual work)
+-- ✅ Confidence score above configured threshold for auto-inserted links
+-- ✅ Auto-generated tags match manual tagging conventions
+-- ✅ No circular dependencies in wikilink graph
+-- ✅ Redundancy checks alert on duplicate lessons
+-- ✅ Config-driven keyword mappings (no code changes needed to add keywords)
+-- ✅ User alerted on low-confidence matches
+-- ✅ Vault interconnection density: sufficient wikilinks per lesson (validated)
 
 ---
 
@@ -553,6 +553,6 @@ Result: ✅ Vault continuously enriched; no stale patterns
 
 ## References
 
-- **Production Source:** https://github.com/lucasrosati/claude-code-memory-setup (chat import pipeline pattern, 659⭐)
+-- **Production Source:** https://github.com/lucasrosati/claude-code-memory-setup (chat import pipeline pattern)
 - **Keyword Extraction:** BM25 scoring (common in search/NLP)
 - **Fuzzy Matching:** Levenshtein distance, Jaro-Winkler similarity

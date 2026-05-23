@@ -55,7 +55,7 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 **From vault (permanent archive):**
 - Active decisions (vault/decision.md)
 - Active patterns (vault/patterns.md)
-- Recent lessons (vault/lessons/ — top 3-5)
+- Recent lessons (vault/lessons/ — a small set of recent lessons)
 
 **NOTE:** Vault context is authoritative and can be loaded via multiple mechanisms. Spekificity recommends using the Obsidian CLI (`obsidian` command bundled with the desktop app) where available for scripted automation; alternative methods include reading `.obsidian/cache.json`, using Dataview/plugin exports, or running `obsidian eval` snippets. The implementation should gracefully fall back to cache/plugin-based exports when the CLI is not available.
 
@@ -79,7 +79,7 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 - Context is loaded into the agent's context window at session start
 - Format: Compressed markdown (caveman mode)
 - Availability: Entire session (until context refresh)
-- Size: ~1-2K tokens (compressed)
+- Size: compact (compressed)
 
 **In Session Files (persistent within session):**
 - vault/session/ — What was loaded
@@ -97,28 +97,28 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 **Query Type 1: "What decisions exist?"**
 ```python
 # Agent queries embedded context
-decisions = search_context("active decisions", limit=5)
-# Returns: top 5 active decisions from embedded context
+decisions = search_context("active decisions", limit="project-configured-limit")
+# Returns: a limited set of active decisions from embedded context
 ```
 
 **Query Type 2: "What patterns are relevant?"**
 ```python
 # Agent queries embedded context
-patterns = search_context("patterns for [domain]", limit=3)
-# Returns: top 3 patterns matching domain tags
+patterns = search_context("patterns for [domain]", limit="project-configured-limit")
+# Returns: a limited set of patterns matching domain tags
 ```
 
 **Query Type 3: "What's the code structure?"**
 ```python
 # Agent queries embedded context
-modules = search_context("module list", limit=10)
-# Returns: top 10 modules by importance
+modules = search_context("module list", limit="project-configured-limit")
+# Returns: a limited set of modules by importance
 ```
 
 **Query Type 4: "What was learned?"**
 ```python
 # Agent queries embedded context
-lessons = search_context("lessons from similar feature", limit=3)
+lessons = search_context("lessons from similar feature", limit="project-configured-limit")
 # Returns: lessons from similar features
 ```
 

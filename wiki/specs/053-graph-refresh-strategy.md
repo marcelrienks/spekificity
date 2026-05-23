@@ -16,7 +16,7 @@ date: "2026-05-21"
 
 ## Overview
 
-Graph refresh strategy uses SHA256 caching and incremental sync to keep code graph fresh without expensive full rebuilds (2-5 seconds vs. 30-60).
+Graph refresh strategy uses SHA256 caching and incremental sync to keep the code graph fresh without expensive full rebuilds; incremental updates are significantly faster than full rebuilds.
 
 ---
 
@@ -41,7 +41,7 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 4. If mismatch: file changed, re-index
 5. Update cache with new hash
 
-**Cost:** ~1ms per file (negligible)
+**Cost:** minimal per file (negligible for typical files)
 
 ### Node Index Lookup Table
 
@@ -58,7 +58,7 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 
 ---
 
-## Incremental Sync Strategy
+### Incremental Sync Strategy
 
 ### When to Sync (Triggers)
 
@@ -68,7 +68,8 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 
 **Manual:**
 - User runs `/spek.map`
-- Scheduled: e.g., once per hour
+
+Note: Scheduling and frequency are project-configurable; teams should choose cadence that fits their workflow.
 
 ### How to Sync
 
@@ -86,22 +87,20 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 ### Incremental vs. Full
 
 **Incremental:**
-- Changed files: 5/200
-- Re-index 5 files
-- Duration: 2-5 seconds
-- Cost: cheap
+- Re-index only changed files
+- Duration: significantly faster than a full rebuild
+- Cost: lower
 
 **Full:**
-- All files: 200/200
-- Re-index all 200
-- Duration: 30-60 seconds
-- Cost: expensive
+- Re-index entire codebase
+- Duration: longer than incremental
+- Cost: higher
 
-**Decision:** Use incremental by default; full only if cache corrupted or user requests
+**Decision:** Use incremental by default; full rebuilds are reserved for cache corruption, major changes, or explicit user request.
 
 ---
 
-## Performance Optimization
+### Performance Optimization
 
 ### Parallel Processing
 
@@ -110,10 +109,10 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 lat:
   performance:
     parallel: true
-    max_workers: 4
+    max_workers: <n>
 ```
 
-**Process:** Index up to 4 files in parallel
+**Process:** Index multiple files in parallel (configurable worker count)
 
 **Benefit:** Faster sync on multi-core machines
 
@@ -123,11 +122,11 @@ lat:
 ```yaml
 lat:
   caching:
-    cache_expiry_hours: 24
+    cache_expiry: <duration>
 ```
 
 **Process:**
-- If cache > 24 hours old: force full rebuild
+- If cache older than configured expiry: force full rebuild
 - Reason: file system cache might be stale
 
 **Benefit:** Fresh cache, prevent stale nodes
@@ -138,39 +137,23 @@ lat:
 ```yaml
 lat:
   refresh:
-    watch_debounce_ms: 1000
+    watch_debounce_ms: <ms>
 ```
 
 **Process:**
-- Multiple file changes within 1s → batch into one sync
-- Avoid re-indexing 10 times for 10 file edits
+- Multiple file changes within a short debounce window → batch into one sync
 
 **Benefit:** Reduces unnecessary syncs
 
 ---
-### Cache Expiry
-
-**Config:**
-```yaml
-lat:
-  caching:
-    cache_expiry_hours: 24
-```
-
-**Process:**
-- If cache > 24 hours old: force full rebuild
-- Reason: file system cache might be stale
-
-**Benefit:** Fresh cache, prevent stale nodes
 
 ## Success Criteria
 
 - ✅ Incremental sync detects changed files (SHA256 hashing works correctly)
 - ✅ Cache validates correctly (no corruption, valid JSON)
-- ✅ Expiry triggers rebuild when stale (>24 hours old)
-- ✅ Parallel processing speeds up indexing (4 workers functional)
-- ✅ Debouncing prevents excessive syncs (batches changes within 1s window)
-- ✅ Performance improvement measurable (incremental <5s vs full 30-60s)
+- ✅ Expiry triggers rebuild when cache is stale (per project configuration)
+- ✅ Parallel processing speeds up indexing when enabled and configured
+- ✅ Debouncing prevents excessive syncs (batching short bursts of edits)
 - ✅ Cache validation comprehensive (file exists, checksum valid, timestamp recent)
 
 ---
@@ -238,14 +221,14 @@ If invalid JSON: Rebuild cache
 | Cache miss | 30-60s | No | 0 |
 | Watch mode (per change) | 1-2s | Yes | 0 |
 
-**Token Cost:** Always 0 (pure local file I/O, no LLM calls)
+**Token Cost:** none (pure local file I/O, no LLM calls)
 
 ---
 
 ## Success Criteria
 
-✅ SHA256 cache reduces sync time by 80%+  
-✅ Incremental sync completes in < 5 seconds  
+✅ SHA256 cache substantially reduces sync time
+✅ Incremental sync completes quickly
 ✅ Full rebuild only when necessary  
 ✅ Cache is validated on startup  
 ✅ Watch mode enables continuous updates  

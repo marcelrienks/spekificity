@@ -271,31 +271,31 @@ Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
 ```markdown
 # Current Feature State
 
-**Feature:** feature-003-spek-workflow-cli  
-**Date:** 2026-05-19  
-**Status:** IMPLEMENTED  
-**Last Updated:** 2026-05-19 15:30:22 UTC  
+**Feature:** feature-003-spek-workflow-cli
+**Date:** recorded (omitted)
+**Status:** IMPLEMENTED
+**Last Updated:** recorded (omitted)
 
 ## Workflow Progress
 
 | Step | Command | Status | Timestamp | Output |
 |------|---------|--------|-----------|--------|
-| 1 | /spek.prepare | ✓ COMPLETE | 2026-05-19 10:00:15 | Context loaded |
-| 2 | /spek.plan | ✓ COMPLETE | 2026-05-19 10:18:30 | spec.md, plan.md, tasks.md |
-| 3 | /spek.implement | ✓ COMPLETE | 2026-05-19 15:30:22 | 24 files modified, 1200 lines added |
+| 1 | /spek.prepare | ✓ COMPLETE | recorded (omitted) | Context loaded |
+| 2 | /spek.plan | ✓ COMPLETE | recorded (omitted) | spec.md, plan.md, tasks.md |
+| 3 | /spek.implement | ✓ COMPLETE | recorded (omitted) | code changes recorded (details omitted) |
 | 4 | /spek.conclude | ⏳ PENDING | — | Ready to run |
 
 ## Artifacts
 
-- Spec: specs/spec.md (234 lines)
-- Plan: specs/plan.md (412 lines)
-- Tasks: specs/tasks.md (8 tasks)
-- Code changes: 24 files, 1200 lines added, 340 removed
+- Spec: specs/spec.md (lines omitted)
+- Plan: specs/plan.md (lines omitted)
+- Tasks: specs/tasks.md (count omitted)
+- Code changes: files/lines recorded (details omitted)
 
 ## Context Status
 
-- Context loaded: 2026-05-19 10:00:15 (age: 5.5h)
-- Graph version: 2026-05-19 08:30:00 (age: 7h)
+- Context loaded: recorded (omitted)
+- Graph version: recorded (omitted)
 - Vault accessible: ✓ YES
 ```
 

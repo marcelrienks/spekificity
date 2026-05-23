@@ -85,8 +85,8 @@ def load_context(phase="specify"):
     # Code graph via MCP tools (for plan/implement phases)
     if phase in ["plan", "implement"]:
         try:
-            # Query code graph structure via MCP tools (0 tokens)
-            recent_files = get_git_log(limit=20)
+            # Query code graph structure via MCP tools (no token cost)
+            recent_files = get_git_log(limit=RECENT_LIMIT)
             graph_context = []
             for file in recent_files:
                 symbols = call_mcp_tool("lat_symbols", file_path=file)
@@ -113,12 +113,12 @@ def compose_enrichment_prompt(user_input, context, phase="specify"):
     relevant_decisions = select_by_relevance(
         context["decisions"],
         user_input,
-        limit=5  # Top 5 most relevant
+        limit=TOP_N  # configurable top-N most relevant
     )
     relevant_patterns = select_by_relevance(
         context["patterns"],
         user_input,
-        limit=3  # Top 3 most relevant
+        limit=TOP_M  # configurable top-M most relevant
     )
     
     # Format as enrichment prompt
@@ -135,7 +135,7 @@ def compose_enrichment_prompt(user_input, context, phase="specify"):
     # Add code context (if plan/implement)
     if phase in ["plan", "implement"] and context.get("graph"):
         enrichment += f"\n\nRelated code:"
-        for file in context["recent_files"][:5]:
+        for file in context["recent_files"][:RECENT_FILES_PREVIEW]:
             enrichment += f"\n- {file}"
     
     return enrichment
@@ -224,16 +224,12 @@ def specify_with_context_injection(feature_description):
 - [ ] Tool receives enriched input?
 - [ ] Error handling covers all layers (missing context)?
 - [ ] Logging clear (which context was loaded)?
-- [ ] Performance acceptable (context loading < 2s)?
+- [ ] Performance acceptable (context loading within acceptable bounds)?
 
 ---
 
-## Token Cost
+## Notes on Resource Use
 
-- **Load phase:** 500-1000 tokens (Layer 1), 100-300 tokens (Layer 2)
-- **Compose phase:** 50-100 tokens (selection + formatting)
-- **Inject phase:** Minimal (string concatenation)
+- Resource usage varies by feature and environment; teams should configure monitoring and tracking according to their needs.
 
-Total: ~1-2K tokens for full injection (vs. ~500 for bare input).
-
-Optimization: Use Layer 2 (compressed cache) instead of Layer 1; reduces to ~300-500 tokens.
+Optimization: Use Layer 2 (compressed cache) instead of Layer 1 to reduce context-loading resource use.

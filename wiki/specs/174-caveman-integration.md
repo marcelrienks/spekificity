@@ -15,7 +15,7 @@ version: "2026-05-19"
 
 ## Overview
 
-Caveman compression mode drastically reduces token usage (~75-90% reduction) by employing ultra-compressed, meaning-preserving communication. This spec defines how and when caveman compression is applied within Spekificity workflows, token impact validation, and user control mechanisms.
+Caveman compression mode drastically reduces token usage (significant qualitative reduction) by employing ultra-compressed, meaning-preserving communication. This spec defines how and when caveman compression is applied within Spekificity workflows, token impact validation, and user control mechanisms.
 
 **Purpose:**
 - Maintain full context richness while minimizing token overhead
@@ -29,7 +29,7 @@ Caveman compression mode drastically reduces token usage (~75-90% reduction) by 
 
 ### Mode 1: `lite` (Minimal Compression)
 
-**Compression Level:** ~30% token reduction
+**Compression Level:** modest token reduction
 
 **When Used:**
 - First feature in a session (user prefers readability over efficiency)
@@ -70,7 +70,7 @@ Enables: 3-layer memory (decisions + patterns permanent storage).
 
 ### Mode 2: `full` (Default Compression)
 
-**Compression Level:** ~75% token reduction
+**Compression Level:** substantial token reduction
 
 **When Used:**
 - Standard feature workflow (prepare → post)
@@ -97,7 +97,7 @@ Use: 3-layer memory (decisions, patterns archived).
 
 ### Mode 3: `ultra` (Maximum Compression)
 
-**Compression Level:** ~90% token reduction
+**Compression Level:** maximal token reduction
 
 **When Used:**
 - Token budget nearly exhausted
@@ -147,12 +147,12 @@ spek conclude --caveman-mode=ultra --dry-run
 2. Format per [Lessons Format](lessons-format.md)
 3. Apply compression mode (`full` by default)
 4. Write to `wiki/vault/lessons/<date>-<feature>-<name>.md`
-5. Log compression ratio to feature state (e.g., "80% reduction via caveman full")
+5. Log compression ratio to feature state (quantitative values omitted)
 
 **Impact:**
-- `lite`: ~200 lines per lesson (typical)
-- `full`: ~50 lines per lesson (compressed)
-- `ultra`: ~15 lines per lesson (ultra-compressed)
+- `lite`: longer lessons (detailed)
+- `full`: concise lessons (compressed)
+- `ultra`: minimal-line summaries (ultra-compressed)
 
 ---
 

@@ -9,8 +9,8 @@ priority: "MEDIUM"
 # C.3.10 Token Budget Allocation & Tracking
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Priority:** MEDIUM (Phase 2, quick win)  
-**Effort:** 2-3 hours  
+**Priority:** MEDIUM (phasing and prioritization)  
+**Effort:** effort estimate omitted / configurable
 **Adoption Source:** B.10 (Pilot Shell)  
 **Requires:** C.3.1-C.3.5 Phase 1 specs
 
@@ -53,56 +53,35 @@ Implement token cost transparency by:
 
 ### Default Per-Feature Budget
 
-```yaml
-token_budget:
-  per_feature: 12000  # Total tokens per feature
-  
-  # Phase breakdown
-  phases:
-    specify_phase:
-      budget: 2000  # Spec generation
-      tools: ["/spek.plan (specify phase)", "C.3.2 auto-linking"]
-    
-    plan_phase:
-      budget: 3000  # Plan generation + architecture decisions
-      tools: ["/spek.plan (plan phase)", "code graph queries"]
-    
-    implement_phase:
-      budget: 5000  # Code generation + debugging
-      tools: ["/spek.implement", "pair programming"]
-    
-    post_phase:
-      budget: 2000  # Lessons + vault updates + archival
-      tools: ["/spek.conclude", "session archival", "vault updates"]
-  
-  # Alert thresholds
-  alert_threshold_percent: 80  # Alert when 80% used
-  warning_threshold_percent: 60  # Warning when 60% used
-```
+Per-feature token budgets are configurable per team. The specification recommends defining a per-feature budget and breaking it down by phase (specify, plan, implement, post), but exact numeric values are environment-specific and should be set in project configuration.
+
+Example configuration (qualitative):
+- `per_feature`: configurable total budget for a feature
+- `phases`: per-phase allocations (specify, plan, implement, post)
+- `alerts`: configured thresholds to trigger warnings and alerts
 
 ## Success Criteria
 
-- ✅ Token budget allocated per phase (default 12K per feature, customizable)
-- ✅ Tracking working (actual usage measured + reported)
-- ✅ Alerts functional (warnings at 60%, 80% thresholds)
-- ✅ Reporting comprehensive (metrics visible at feature end)
-- ✅ Cost-aware optimization enabled (users can adjust budget based on feedback)
-- ✅ Token savings measurable (3-layer query rule + caveman compression tracked)
-- ✅ Budget customizable (teams can adjust per their needs)
+-- ✅ Token budget allocated per phase (configurable)
+-- ✅ Tracking working (actual usage measured + reported)
+-- ✅ Alerts functional (configured thresholds trigger warnings)
+-- ✅ Reporting comprehensive (metrics visible at feature end)
+-- ✅ Cost-aware optimization enabled (users can adjust budget based on feedback)
+-- ✅ Token savings measurable (3-layer query rule + caveman compression tracked)
+-- ✅ Budget customizable (teams can adjust per their needs)
 
 ### Customize per Team
 
 ```yaml
-# Different strategies for different teams
-
+# Different strategies for different teams (numeric values omitted)
 solo_developer:
-  per_feature: 8000  # Smaller budget (fewer iterations)
-  
+  per_feature: configured-value  # Team-specific configured budget
+
 team_collaborative:
-  per_feature: 15000  # Larger budget (more context loading)
+  per_feature: configured-value  # Team-specific configured budget
 
 enterprise_cost_sensitive:
-  per_feature: 5000  # Aggressive optimization needed
+  per_feature: configured-value  # Team-specific configured budget
 ```
 
 ---
@@ -111,56 +90,13 @@ enterprise_cost_sensitive:
 
 ### Per-Phase Tracking
 
-**During `/spek.plan` Specify Phase:**
-```
-/spek.plan specify-phase execution:
-  Layer 1 query (code graph):   ~500 tokens
-  Layer 2 query (vault):        ~1000 tokens
-  Spec generation:              ~300 tokens
-  Auto-linking:                 ~200 tokens
-  ─────────────────────────────────────
-  Total Phase Cost:             ~2000 tokens
-  Budget:                        2000 tokens
-  Usage:                         100%
-  Status:                        ✓ On budget
-```
+Token usage should be measured and tracked per phase. Concrete token counts vary by project and feature; the system records per-operation deltas and aggregates them per phase for reporting.
 
-**During `/spek.plan` Plan Phase:**
-```
-/spek.plan plan-phase execution:
-  Context reload:               ~400 tokens
-  Code graph analysis:          ~800 tokens
-  Plan generation:              ~1200 tokens
-  Architecture validation:      ~400 tokens
-  ─────────────────────────────────────
-  Total Phase Cost:             ~2800 tokens
-  Budget:                        3000 tokens
-  Usage:                         93%
-  Status:                        ⚠ Approaching limit (80% threshold)
-  
-  Alert: "Plan phase at 93% of budget; implement efficiently"
-```
+- During `specify` and `plan` phases, track Layer 1 (code graph) vs Layer 2 (vault) usage and report aggregated phase cost.
+- Implement phase token usage is typically determined at feature end and reported in conclude.
+- Conclude phase tracks lesson generation, auto-linking, vault updates, and archival costs.
 
-**During Implement Phase:**
-```
-[Implement happens locally; token tracking at feature end]
-```
-
-**During Conclude Phase:****
-```
-/spek.conclude execution:
-  Context reload:               ~300 tokens
-  Test failure analysis:        ~200 tokens
-  Lesson generation:            ~600 tokens
-  Auto-linking:                 ~400 tokens
-  Vault updates:                ~300 tokens
-  Session archival:             ~200 tokens
-  ─────────────────────────────────────
-  Total Phase Cost:             ~2000 tokens
-  Budget:                        2000 tokens
-  Usage:                         100%
-  Status:                        ✓ On budget
-```
+Reports should show per-phase totals, configured budget vs actual usage, and triggered alerts when configured thresholds are met.
 
 ---
 
@@ -191,41 +127,41 @@ def track_token_usage(phase_name, operation_name):
     phase_budget = config.token_budget.phases[phase_name]['budget']
     phase_used = get_phase_token_total(phase_name)
     
-    if phase_used > phase_budget * 0.8:
-        alert(f"⚠ {phase_name} at {phase_used/phase_budget*100:.0f}% of budget")
+    if phase_used > phase_budget * configured_threshold:
+      alert(f"⚠ {phase_name} approaching configured budget threshold")
     
     return delta
 ```
 
 ### Session Logging
 
-Log all token usage to session memory:
+Log all token usage to session memory (numeric values omitted in examples):
 
 ```markdown
-# Token Usage: auth-refactor
+# Token Usage: <feature-name>
 
 ## Specify Phase
-- Spec generation:    500t
-- Context loading:    1200t
-- Auto-linking:       300t
-Total:               2000t (100% of budget)
+- Spec generation:    recorded (omitted)
+- Context loading:    recorded (omitted)
+- Auto-linking:       recorded (omitted)
+Total:               recorded (omitted)
 
 ## Plan Phase
-- Planning:           2800t (93% of budget)
-⚠ Alert: Approaching limit
+- Planning:           recorded (omitted)
+⚠ Alert: Approaching configured limit (qualitative)
 
 ## Implement Phase
-[Local; tokens estimated at feature end]
+[Local; tokens recorded at feature end]
 
 ## Conclude Phase
-- Lessons:            600t
-- Vault updates:      400t
-- Archival:           300t
-Total:               2000t (100% of budget)
+- Lessons:            recorded (omitted)
+- Vault updates:      recorded (omitted)
+- Archival:           recorded (omitted)
+Total:               recorded (omitted)
 
 ## Overall
-Total tokens used:    ~9000t of 12000t (75%)
-Efficiency:           Above target ✓
+Total tokens used:    recorded (omitted)
+Efficiency:           qualitative descriptor (see metrics)
 ```
 
 ---
@@ -237,40 +173,29 @@ Efficiency:           Above target ✓
 At feature end (`/spek.conclude` Step 10), show:
 
 ```
-╔════════════════════════════════════════════════════════════╗
-║       Feature Token Usage Report: auth-refactor            ║
-╠════════════════════════════════════════════════════════════╣
-║ Feature:        auth-refactor                              ║
-║ Duration:       5 days                                     ║
-║ Total Tokens:   9200 / 12000 (77%)                        ║
-║ Cost Savings:   3000 tokens (20% under budget)            ║
-╠════════════════════════════════════════════════════════════╣
-║ Phase Breakdown:                                           ║
-║                                                            ║
-║ Specify:   2000 / 2000  (100%) ███████████ ✓              ║
-║ Plan:      2800 / 3000  (93%)  ██████████▌ ⚠ High        ║
-║ Implement: 2400 / 5000  (48%)  █████░░░░░ ✓ Efficient    ║
-║ Post:      2000 / 2000  (100%) ███████████ ✓              ║
-╠════════════════════════════════════════════════════════════╣
-║ Key Metrics:                                               ║
-║                                                            ║
-║ Specify Efficiency:   2000 tokens for 12KB spec            ║
-║ Plan Efficiency:      2800 tokens for 8KB plan             ║
-║ Implement Efficiency: 2400 tokens (1.9 tokens per LOC)     ║
-║ Post Efficiency:      2000 tokens (lessons + archival)     ║
-║                                                            ║
-║ 3-Layer Query Rule:   Used 15 times, saved ~2500 tokens   ║
-║ Auto-linking:         70% wikilinks auto-generated         ║
-║ Caveman Compression:  Saved ~800 tokens in lessons         ║
-╠════════════════════════════════════════════════════════════╣
-║ Trend (Last 3 Features):                                   ║
-║                                                            ║
-║ auth-refactor:    9200t (77%)  ↓ Improved                 ║
-║ state-mgmt:       10500t (88%) ↑ More complex             ║
-║ api-redesign:     12000t (100%) = Same as budget           ║
-║                                                            ║
-║ Trend: Token usage decreasing as patterns improve ✓       ║
-╚════════════════════════════════════════════════════════════╝
+Feature Token Usage Report (numeric values omitted):
+
+Feature:        <feature-name>
+Duration:       recorded (omitted)
+Total Tokens:   recorded (omitted)
+Cost Savings:   qualitative descriptor (numeric omitted)
+
+Phase Breakdown:
+- Specify:   recorded (omitted)
+- Plan:      recorded (omitted)
+- Implement: recorded (omitted)
+- Post:      recorded (omitted)
+
+Key Metrics:
+- Specify Efficiency:   recorded (omitted)
+- Plan Efficiency:      recorded (omitted)
+- Implement Efficiency: recorded (omitted)
+- Post Efficiency:      recorded (omitted)
+- 3-Layer Query Rule:   usage recorded (omitted)
+- Auto-linking:         qualitative descriptor
+- Caveman Compression:  qualitative descriptor
+
+Trend (Last features): numeric values omitted; see trend logs
 ```
 
 ### Efficiency Metrics
@@ -308,11 +233,11 @@ Trend:
 **Action Plan:**
 
 ```
-IF tokens > budget * 0.8:
+IF tokens exceed configured warning threshold:
   1. Run report (identify expensive phase)
   2. Suggest optimizations:
      a. Use 3-layer query rule more (save Layer 3 reads)
-     b. Enable caveman compression (save ~30% in lessons)
+     b. Enable caveman compression (reduces lesson cost significantly)
      c. Defer optional features to v2 (reduce scope)
      d. Batch similar queries (avoid duplication)
   3. User can:

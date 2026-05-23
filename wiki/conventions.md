@@ -205,7 +205,7 @@ spek.context-load` | `spek.context` | Keep prefix; simplify command portion |
 - Easier to type and remember while maintaining namespace distinction
 ```
 
-**New naming is 40% shorter and more memorable.**
+**New naming is shorter and more memorable.**
 
 ---
 

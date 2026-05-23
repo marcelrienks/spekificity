@@ -2,13 +2,13 @@
 title: "Lessons Command (C4.6)"
 status: "ATOMIC SPECIFICATION"
 version: "1.0.0-alpha.1"
-date: "2026-05-20"
+date: "omitted"
 type: "skill"
 ---
 
 # ATOMIC SPECIFICATION: Lessons Command (C4.6)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
+**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1
 **Type:** Skill — /spek.lessons (manual lesson extraction + query interface)  
 **Depends On:** lessons-format.md, memory-architecture.md, post-processing.md  
 **Requires:** Obsidian CLI (recommended) for automated vault/lessons operations and persistent memory management
@@ -33,7 +33,7 @@ type: "skill"
 /spek.conclude step 3
   ├─ Collect artifacts (spec, plan, tasks, execution trace)
   ├─ Call /spek.lessons (internally, no user visibility)
-  │  ├─ Generate 8-section lesson document
+   │  ├─ Generate multi-section lesson document
   │  ├─ Compress with caveman mode
    │  ├─ Write to vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md (via Obsidian CLI)
   │  └─ Return: lesson file path + validation
@@ -57,7 +57,7 @@ spek lessons --regenerate [--dry-run]
 1. Check current feature state (`vault/session/`)
 2. Verify feature is NOT yet completed (phase < completing)
 3. Read current artifacts (spec, plan, tasks, execution trace if exists)
-4. Generate lesson document (same 8-section format as auto mode)
+4. Generate lesson document (same multi-section template as auto mode)
 5. Write to temporary file (e.g., `/tmp/spek-lesson-preview.md`)
 6. Output: Preview + "Lesson ready; run `/spek.conclude` to finalize"
 
@@ -88,20 +88,20 @@ $ spek lessons --pattern="dependency-injection"
 
 === Lessons Matching Pattern: dependency-injection ===
 
-1. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md (managed via Obsidian CLI)
+- vault/lessons/<date>-<feature>-spek-full-workflow-cli.md (managed via Obsidian CLI)
    Excerpt: "... reused dependency injection pattern from auth service, adapted for graph queries ..."
 
-2. vault/lessons/2026-05-12-001-persistent-memories.md (managed via Obsidian CLI)
+- vault/lessons/<date>-<feature>-persistent-memories.md (managed via Obsidian CLI)
    Excerpt: "... introduced dependency injection for vault access layer ..."
 
-Total: 2 lessons
+Total: recorded (omitted)
 ```
 
 **Output format:** Markdown (list of matched lessons + excerpts)
 
 ## Success Criteria
 
-- ✅ Automatic mode generates lessons in <10s (embedded in `/spek.conclude` Step 3)
+- ✅ Automatic mode generates lessons quickly (embedded in `/spek.conclude` Step 3)
 - ✅ Manual regenerate mode works (preview lessons during feature)
 - ✅ Pattern query discovers relevant lessons (search by pattern name)
 - ✅ Full-text search finds lessons by keyword (grep-based query)
@@ -129,15 +129,15 @@ $ spek lessons --search="cache" --limit=5
 
 === Lessons Matching "cache" ===
 
-1. vault/lessons/2026-05-15-002-code-graph-indexing.md (managed via Obsidian CLI, relevance: 0.92)
+1. vault/lessons/<date>-code-graph-indexing.md (managed via Obsidian CLI, relevance recorded)
    Section: How We Built It
    Excerpt: "... implemented SHA256 caching for incremental graph refresh ..."
 
-2. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md (managed via Obsidian CLI, relevance: 0.67)
+2. vault/lessons/<date>-spek-full-workflow-cli.md (managed via Obsidian CLI, relevance recorded)
    Section: Lessons for Next Feature
    Excerpt: "... beware: graph cache can become stale if git hooks fail ..."
 
-Total: 5 lessons (showing top 5)
+Total: recorded (omitted)
 ```
 
 **Output format:** Markdown (ranked list + excerpts)
@@ -175,7 +175,7 @@ Global Options:
 ```
 Step 3: Generate lessons
 ├─ Collect artifacts (spec, plan, tasks, execution trace)
-├─ Extract 8 sections:
+├─ Extract multiple sections (template-driven):
 │  1. Header & metadata
 │  2. What We Built
 │  3. How We Built It
@@ -184,8 +184,8 @@ Step 3: Generate lessons
 │  6. Patterns Identified or Reused
 │  7. Lessons for Next Feature
 │  8. Metrics
-├─ Compress with caveman mode (75% reduction)
-├─ Write vault/lessons/<YYYY-MM-DD>-<feature-id>-<name>.md
+├─ Compress with caveman mode (significant reduction)
+├─ Write vault/lessons/<date>-<feature-id>-<name>.md
 ├─ Validate: self-contained checklist
 │  ✓ Self-contained (readable without spec/plan)
 │  ✓ Compressed (caveman format)
@@ -210,7 +210,7 @@ Step 3: Generate lessons
    └─ Read artifacts (spec, plan, tasks, trace)
 
 2. Generate lesson document
-   ├─ Use same 8-section template
+   ├─ Use same multi-section template
    ├─ Populate from current artifacts
    └─ Apply caveman compression
 
@@ -234,13 +234,13 @@ Developer wants to validate lessons midway through feature 003:
 ```bash
 $ spek lessons --regenerate
 Feature: 003 - spek-full-workflow-cli
-Phase: implementing (1 of 5 tasks complete)
+Phase: implementing (progress recorded)
 
 Generated lesson preview (not yet saved):
-# Lesson: Spekificity Full Workflow CLI (Spec-003, 2026-05-20)
+# Lesson: Spekificity Full Workflow CLI (Spec-003)
 ## What We Built
-  Prepare + implement commands + feature state tracking. 
-  ... [full 8 sections follow] ...
+   Prepare + implement commands + feature state tracking.
+   ... [full template sections follow] ...
 
 Action: Complete remaining tasks, then run /spek.conclude to finalize lessons.
 Exit: spek lessons --regenerate (saved to /tmp/spek-lesson-preview.md for review)
@@ -334,7 +334,7 @@ Total: 2 lessons found
 
 1. vault/lessons/2026-05-15-002-code-graph-indexing.md (managed via Obsidian CLI, Relevance: 0.92)
    Section: How We Built It
-   Excerpt: "... implemented SHA256 caching for incremental graph refresh, reducing rebuild time from 60s to 3s ..."
+   Excerpt: "... implemented SHA256 caching for incremental graph refresh, reducing rebuild time substantially ..."
    [View full](file:///vault/lessons/2026-05-15-002-code-graph-indexing.md)
 
 2. vault/lessons/2026-05-18-003-spek-full-workflow-cli.md (managed via Obsidian CLI, Relevance: 0.67)
@@ -398,11 +398,11 @@ commit_range: abc123..def456
 
 **With Memory Architecture:**
 - Writes to vault/lessons/ (permanent storage, via Obsidian CLI)
-- Read by `/spek.context` at session start (recent 3-5 lessons loaded)
+- Read by `/spek.context` at session start (recent lessons loaded)
 - Indexed by code graph during `/spek.map` refresh
 
 **With Lessons Format (lessons-format.md):**
-- Uses 8-section template
+- Uses multi-section template
 - Applies Zettelkasten conventions (tags, wikilinks)
 - Compressed with caveman mode
 
@@ -416,7 +416,7 @@ commit_range: abc123..def456
 | Feature already done | "Lessons immutable" | Suggest: Review existing lesson |
 | Missing artifacts | "tasks.md not found" | Prompt: Run `/spek.plan` first |
 | Pattern not found | "Pattern '[X]' not in library" | Show: Available patterns |
-| Search timeout | "Search timeout (>5s)" | Show: Partial results, suggest refinement |
+| Search timeout | "Search timeout (short)" | Show: Partial results, suggest refinement |
 
 ---
 
