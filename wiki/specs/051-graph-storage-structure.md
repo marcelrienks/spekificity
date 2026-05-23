@@ -17,7 +17,7 @@ type: "data-schema"
 
 ## Overview
 
-Code graph stored in `vault/graph/` as SQLite database with optional export formats. CodeGraph maintains a queryable index via MCP tools and optional JSONL exports for integration with external systems.
+Code graph stored in `vault/graph/` as SQLite database with optional export formats. `lat.md` maintains a queryable index via MCP tools and optional JSONL exports for integration with external systems.
 
 ---
 
@@ -25,7 +25,7 @@ Code graph stored in `vault/graph/` as SQLite database with optional export form
 
 ```
 vault/graph/
-├── codegraph.db             # SQLite database (primary store — code + doc nodes + edges)
+├── lat_index.db             # SQLite database (primary store — code + doc nodes + edges)
 ├── config.json              # Metadata (version, generation timestamp, stats)
 ├── cache/
 │   ├── query-cache.db       # Query result cache (TTL-based)
@@ -39,7 +39,7 @@ vault/graph/
 └── refresh-log.md           # Refresh history + timestamps
 ```
 
-**Primary Interface:** Agents query CodeGraph via **MCP tools** (codegraph_symbols, codegraph_references, codegraph_callers, codegraph_impact, etc.), not JSONL files.
+**Primary Interface:** Agents query `lat.md` via **MCP tools** (lat_symbols, lat_references, lat_callers, lat_callees, lat_impact, lat_definition, lat_query), not JSONL files.
 
 **Export Format:** JSONL exports available in `vault/graph/exports/` for compatibility with external systems (updated on each `/spek.map` run).
 
@@ -47,21 +47,21 @@ vault/graph/
 
 ## File Schemas
 
-### config.json (CodeGraph Metadata)
+### config.json (lat.md Metadata)
 
-Metadata file created by CodeGraph init:
+Metadata file created by lat.md init:
 
 ```json
 {
   "version": "1.0",
   "generated_at": "2026-05-19T14:00:00Z",
-  "database": "codegraph.db",
+  "database": "lat_index.db",
   "database_format": "SQLite3",
   "graph_type": "hybrid",
   "sources": [
     {
       "type": "code",
-      "tool": "CodeGraph",
+      "tool": "lat.md",
       "languages": ["python", "typescript", "yaml", "markdown"],
       "file_count": 156,
       "indexed_symbols": 2847,
@@ -76,13 +76,13 @@ Metadata file created by CodeGraph init:
     }
   ],
   "mcp_tools": [
-    "codegraph_symbols",
-    "codegraph_definition", 
-    "codegraph_references",
-    "codegraph_callers",
-    "codegraph_callees",
-    "codegraph_impact",
-    "codegraph_query"
+    "lat_symbols",
+    "lat_definition",
+    "lat_references",
+    "lat_callers",
+    "lat_callees",
+    "lat_impact",
+    "lat_query"
   ],
   "performance": {
     "cache_enabled": true,
@@ -95,16 +95,16 @@ Metadata file created by CodeGraph init:
 }
 ```
 
-**Key:** Agents do **not** read JSONL files directly. Instead, they use the **MCP tools** listed above (codegraph_symbols, codegraph_references, etc.) to query the SQLite database.
+**Key:** Agents do **not** read JSONL files directly. Instead, they use the **MCP tools** listed above (lat_symbols, lat_references, etc.) to query the SQLite database.
 
 ### Node & Edge Storage (SQLite - Internal)
 
-CodeGraph stores nodes and edges in `codegraph.db` (SQLite format). Agents interact with this database via MCP tool calls:
+lat.md stores nodes and edges in `lat_index.db` (SQLite format). Agents interact with this database via MCP tool calls:
 
-**Example MCP Tool Call (Agent → CodeGraph):**
+**Example MCP Tool Call (Agent → lat.md):**
 ```python
 # Agent queries: "Find all methods in AuthService"
-result = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+result = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 # Returns: List of symbols (classes, methods, functions) in that file
 ```
 
@@ -129,7 +129,7 @@ result = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
 
 ### JSONL Exports (Optional - External Integration)
 
-For integration with external systems, CodeGraph can export data to JSONL format (in `vault/graph/exports/`). This is optional and generated on-demand:
+For integration with external systems, lat.md can export data to JSONL format (in `vault/graph/exports/`). This is optional and generated on-demand:
 
 **nodes.jsonl (Example):**
 ```json
@@ -174,14 +174,14 @@ For integration with external systems, CodeGraph can export data to JSONL format
 
 ```python
 # Find all symbols in module
-symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 
 # Find all methods in class
-methods = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+methods = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 # Filter result: [s for s in symbols if s["parent"] == "AuthService"]
 
 # Find all callers
-callers = call_mcp_tool("codegraph_callers", symbol="authenticate")
+callers = call_mcp_tool("lat_callers", symbol="authenticate")
 ```
 
 **Optional: JSONL Export Queries (External Tools)**
@@ -232,4 +232,4 @@ grep '"to_node": "[target-id]"' wiki/vault/graph/exports/edges.jsonl
 - [graph-refresh-strategy.md](graph-refresh-strategy.md) — Cache strategy
 
 **External:**
-- [graph-setup Part 2](codegraph-setup-and-integration.md#part-2-vault-structure-for-graphs)
+- [graph-setup Part 2](050-latmd-setup-and-integration.md#part-2-vault-structure-for-graphs)

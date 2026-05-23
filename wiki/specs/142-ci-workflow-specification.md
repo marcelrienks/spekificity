@@ -28,7 +28,7 @@ Jobs
 
 Inputs & Secrets
 - No sensitive inputs required for basic validation.
-- Optional secrets for third-party integrations (e.g., CodeGraph hosted API) must be read from GitHub Secrets.
+- Optional secrets for third-party integrations (e.g., lat.md hosted API) must be read from GitHub Secrets.
 
 Success Criteria
 - PR job exit code 0 when: tests pass, lint passes, coverage target not decreased.

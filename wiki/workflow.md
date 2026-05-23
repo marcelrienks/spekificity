@@ -25,7 +25,7 @@ Optional enhancements (context loading, dependency analysis, retrospectives) can
 ```
 
 ### Purpose
-Pre-flight checks before feature development begins. Ensures workspace is ready, vault is current, CodeGraph is fresh, and git state is clean.
+Pre-flight checks before feature development begins. Ensures workspace is ready, vault is current, lat.md index is fresh, and git state is clean.
 
 ### Sub-steps
 
@@ -33,19 +33,19 @@ Pre-flight checks before feature development begins. Ensures workspace is ready,
 |------|--------|-----------|--------|
 | Git Status | Check for uncommitted changes | No stale work left | Clean working tree |
 | Vault Fresh | Pull latest from Obsidian git sync | No vault conflicts | Current specs/decisions |
-| CodeGraph Sync | Refresh CodeGraph from latest code (incremental update) | Code index reflects current state | Fresh `codegraph.db` |
+| lat.md Sync | Refresh lat.md index from latest code (incremental update) | Code index reflects current state | Fresh `lat_index.db` |
 | Session State | Initialize context (vault, repo memory, graph) | All context ready | Session context loaded |
 | Feature Readiness | Verify no blocking issues | Prerequisites met | Ready to start |
 
 ### Output Artifacts
 - Clean git working tree
-- Loaded session context (vault, repo memory, CodeGraph)
+- Loaded session context (vault, repo memory, lat.md)
 - Ready-to-use project context (specs, decisions, lessons)
 
 ### Exit Criteria
 - ✅ Git working tree clean (or staged changes approved)
 - ✅ Vault synced with origin
-- ✅ CodeGraph up-to-date
+- ✅ lat.md up-to-date
 - ✅ Session context available
 
 ---
@@ -69,7 +69,7 @@ FEATURE INTENT (user describes goal)
     ↓
 /speckit.specify
     ├─ Generate base spec (what, why, scope)
-    ├─ Query CodeGraph for affected areas
+    ├─ Query lat.md for affected areas
     ├─ Link to existing decisions/specs
     │
     └─ Apply Enrichment Layers:
@@ -98,7 +98,7 @@ Each spec includes structured enrichment:
 ### Output Artifacts
 - Specification document (Markdown, vault-stored)
 - Enrichment layer details embedded in spec
-- Links to CodeGraph impact analysis
+- Links to lat.md impact analysis
 - Links to relevant architectural decisions
 
 ### Exit Criteria
@@ -131,7 +131,7 @@ SPEC DOCUMENT
 /speckit.plan (Step 1: Architecture)
     ├─ Analyze spec requirements
     ├─ Design architecture + tech choices
-    ├─ Query CodeGraph for affected areas
+    ├─ Query lat.md for affected areas
     └─ Produce: plan.md (rationale, architecture decisions)
     ↓
 /speckit.tasks (Step 2: Task Breakdown)
@@ -139,7 +139,7 @@ SPEC DOCUMENT
     ├─ Identify task boundaries
     ├─ Determine dependencies (task A blocks B)
     ├─ Estimate per-task resources
-    ├─ Query CodeGraph for file locations
+    ├─ Query lat.md for file locations
     └─ Produce: tasks.md (ordered, IDs, dependencies, risk mitigation)
     ↓
 PLAN + TASKS DOCUMENTS (vault + git commit)
@@ -183,7 +183,7 @@ Task 1 (Auth Service)
 ### Output Artifacts
 - `plan.md` — Architecture, tech choices, rationale, research (Markdown, vault-stored)
 - `tasks.md` — Dependency-ordered executable tasks with IDs, resource estimates, critical path (Markdown, vault-stored)
-- CodeGraph references for implementation
+- lat.md references for implementation
 - Record architectural decisions and rationale
 
 ### Exit Criteria
@@ -206,7 +206,7 @@ Task 1 (Auth Service)
 ```
 
 ### Purpose
-Execute each task from the plan with full context (spec, plan, CodeGraph, enrichment).
+Execute each task from the plan with full context (spec, plan, lat.md, enrichment).
 
 ### Workflow Per Task
 
@@ -215,7 +215,7 @@ FOR EACH TASK IN PLAN (in dependency order):
     ├─ Load Task Context
     │  ├─ Spec (what/why)
     │  ├─ Plan (dependencies, what this task does)
-    │  ├─ CodeGraph (files to change, impact analysis)
+    │  ├─ lat.md (files to change, impact analysis)
     │  └─ Previous Task Outcomes (linking info)
     │
     ├─ Implement
@@ -247,7 +247,7 @@ Each task execution includes:
 |---------|--------|---------|
 | **Feature Spec** | Vault | Why are we doing this? Success Criteria? |
 | **Task Definition** | Plan | What exactly does this task do? |
-| **CodeGraph** | Live analysis | What files need to change? Who calls what? |
+| **lat.md** | Live analysis | What files need to change? Who calls what? |
 | **Risk Assessment** | Plan + Spec | What could fail? How to mitigate? |
 | **Previous Outcomes** | Vault (updated) | What did earlier tasks create? |
 
@@ -255,7 +255,7 @@ Each task execution includes:
 
 - [ ] Load task context from plan
 - [ ] Read Success Criteria for this task
-- [ ] Query CodeGraph for affected symbols/files
+- [ ] Query lat.md for affected symbols/files
 - [ ] Write code (implementation)
 - [ ] Add docstrings to new functions/classes
 - [ ] Write tests (or extend existing tests)
@@ -299,10 +299,10 @@ Before moving to the final stage, verify all quality gates:
 - [ ] Existing tests still pass (no breaking changes)
 - [ ] Full test suite runs locally < 5 minutes
 
-**CodeGraph Integration**
-- [ ] CodeGraph reflects all new code (symbols, functions, classes)
+**lat.md Integration**
+- [ ] lat.md reflects all new code (symbols, functions, classes)
 - [ ] Impact analysis shows affected downstream components
-- [ ] CodeGraph queries used during implementation (not file grep)
+- [ ] lat.md queries used during implementation (not file grep)
 
 **Vault Integration**
 - [ ] Spec stored in vault with correct metadata
@@ -318,7 +318,7 @@ Before moving to the final stage, verify all quality gates:
 
 **Performance**
 - [ ] Token budget not exceeded (if one was set)
-- [ ] CodeGraph queries working correctly
+- [ ] lat.md queries working correctly
 - [ ] API responses working (if applicable)
 - [ ] No N+1 queries or unnecessary loops
 
@@ -364,7 +364,7 @@ IMPLEMENTATION COMPLETE
     │  └─ Link to specs/decisions (why/how)
     │
     ├─ Refresh State
-    │  ├─ Rebuild CodeGraph (full index incorporating feature changes)
+    │  ├─ Rebuild lat.md index (full index incorporating feature changes)
     │  ├─ Update repo memory (project facts)
     │  ├─ Clean session context
     │  └─ Prepare for next feature
@@ -414,14 +414,14 @@ Status: Complete
 - Archived spec (vault)
 - Archived plan (vault)
 - Lessons learned document (vault)
-- Updated CodeGraph (fresh)
+- Updated lat.md index (fresh)
 - Updated repo memory
 - Feature complete (tagged in git)
 
 ### Exit Criteria
 - ✅ Feature artifacts archived in vault
 - ✅ Lessons learned extracted and committed
-- ✅ CodeGraph refreshed
+- ✅ lat.md refreshed
 - ✅ Repo memory updated
 - ✅ Session context cleaned
 

@@ -117,7 +117,7 @@ Example:
 
 **Errors:**
 - Code graph corrupted
-- CodeGraph index refresh fails
+- lat.md index refresh fails
 - Node index missing
 - Edge computation failed
 

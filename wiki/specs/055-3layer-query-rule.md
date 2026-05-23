@@ -32,7 +32,7 @@ Document and enforce the **3-Layer Query Rule** — a token-efficient context lo
 - Enforcement rules
 
 **What this spec does NOT cover:**
-- Graph query syntax (see B.11 Codegraph Setup)
+- Graph query syntax (see B.11 lat.md Setup)
 - Vault structure (see B.8.2 Persistent Memories)
 - Code reading strategies (assume needed only in Layer 3)
 
@@ -52,31 +52,17 @@ Document and enforce the **3-Layer Query Rule** — a token-efficient context lo
 
 ## Related Specs
 
-- B.11: Codegraph Setup (Layer 1 implementation)
-- B.8.2: Persistent Memories (Layer 2 implementation)
-- B.8.4: Post Command (uses 3-layer rule for context injection)
-- C.3.3: This spec (enforcement + documentation)
 
----
 
 ## 3-Layer Query Model
 
 ### Layer 1: Code Graph (~280 tokens)
 
 **What's in Layer 1:**
-- Symbol definitions (functions, classes, modules)
-- Relationships (dependencies, callers, inheritance)
-- Type information (parameters, return types)
-- Recent changes (git diff, code graph deltas)
 
 **When to Query Layer 1:**
-- Need to understand code structure
-- Need to find who calls a function
-- Need to check dependencies
-- Need impact analysis (code graph shows scope)
-- Need recent changes (what changed in this feature?)
 
-**Example Queries:**
+ **Query Patterns:** Derived from successful context loading patterns in Obsidian + lat.md workflows
 
 ```
 Layer 1 Query: "Who calls the authenticate() function?"
@@ -483,7 +469,7 @@ When loading session context:
 
 ## Related Specifications
 
-- **B.11:** Codegraph Setup (Layer 1 implementation)
+- **B.11:** lat.md Setup (Layer 1 implementation)
 - **B.8.2:** Persistent Memories (Layer 2 implementation)
 - **B.8.4:** Post Command (context injection pattern)
 - **C.3.3:** This spec (3-layer enforcement)
@@ -494,4 +480,4 @@ When loading session context:
 
 - **Production Source:** https://github.com/lucasrosati/claude-code-memory-setup (external reference for large token-savings patterns)
 - **Cost Analysis:** Based on real-world token measurements from session data
-- **Query Patterns:** Derived from successful context loading patterns in Obsidian + CodeGraph workflows
+- **Query Patterns:** Derived from successful context loading patterns in Obsidian + lat.md workflows

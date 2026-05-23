@@ -57,14 +57,14 @@ specify --version   # Global SpecKit installed
 This command:
 1. ✅ Checks git working tree (should be clean; feature branch recommended for new work)
 2. ✅ Pulls latest vault updates (from Obsidian sync)
-3. ✅ Refreshes CodeGraph from current code
+3. ✅ Refreshes lat.md index from current code
 4. ✅ Loads session memory (decisions, patterns, lessons)
 
 **Expected Output:**
 ```
 ✓ Git working tree clean
 ✓ Vault synced (updated from origin)
-✓ CodeGraph refreshed (23 files indexed)
+✓ lat.md index refreshed (23 files indexed)
 ✓ Session context loaded
 READY: Workspace prepared for feature development
 ```
@@ -75,7 +75,7 @@ READY: Workspace prepared for feature development
 |-------|----------|
 | `git status` shows uncommitted changes | Run `git add .` and `git commit -m "..."`, or `git stash` to save work |
 | Vault sync fails | Ensure Obsidian is open and git plugin is enabled; pull manually: `git pull origin vault` |
-| CodeGraph refresh fails | Reinstall CodeGraph MCP config; see [setup.md](setup.md) |
+| lat.md refresh fails | Reinstall lat.md config; see [setup.md](setup.md) |
 | Session memory not loading | Check `vault/session/` and `.specify/memory/` for syntax errors |
 
 ---
@@ -130,7 +130,7 @@ When prompted:
 **What Happens Next:**
 
 Spekificity enriches the basic spec by:
-1. 🔍 Querying CodeGraph for existing auth-related code
+1. 🔍 Querying lat.md for existing auth-related code
 2. 🔗 Linking to relevant decisions (e.g., "Use JWT tokens")
 3. 📋 Pulling patterns from vault (e.g., API error handling)
 4. ✅ Adding enrichment layers:
@@ -230,7 +230,7 @@ Or directly:
 Spekificity creates a detailed plan by:
 1. 📌 Breaking spec into atomic tasks
 2. 🔗 Mapping dependencies (which tasks block others)
-3. 📊 Using CodeGraph to estimate impact (affected files, functions)
+3. 📊 Using lat.md to estimate impact (affected files, functions)
 4. ⏱️ Sequencing tasks for efficient execution
 
 **Expected Plan Output:**
@@ -323,7 +323,7 @@ git commit -m "Refine plan: split Task 4 into two tasks"
 ### Purpose
 
 Execute the plan with full context. Spekificity automatically:
-- Loads relevant code (CodeGraph queries)
+- Loads relevant code (lat.md queries)
 - Injects architectural decisions and patterns
 - Provides task-by-task scaffolding
 - Tracks what's done and what remains
@@ -336,7 +336,7 @@ Execute the plan with full context. Spekificity automatically:
 
 This command:
 1. 🔄 Loads plan (task sequence)
-2. 📂 Queries CodeGraph for affected files
+2. 📂 Queries lat.md for affected files
 3. 📖 Injects relevant code context
 4. 📋 Displays next task and scaffold
 5. ▶️ Waits for your input
@@ -470,7 +470,7 @@ This command:
 2. 📦 Stages git commit
 3. 📝 Extracts lessons learned (what worked, what didn't)
 4. 🗂️ Updates vault (decisions, patterns, outcomes)
-5. 🔄 Refreshes CodeGraph
+5. 🔄 Refreshes lat.md
 6. 📊 Generates completion summary
 
 **Expected Output:**
@@ -498,7 +498,7 @@ Tests passing: 8/8 ✓
 
 Lessons Learned:
 ─────────────────────────────────────────
-✓ What worked: CodeGraph context was accurate; saved manual file scanning
+✓ What worked: lat.md context was accurate; saved manual file scanning
 ✓ What was hard: Setting up JWT claims schema; took 10 min longer than planned
 ✓ What to reuse: Error handling pattern (see patterns/error-categorization-pattern-quick-ref.md)
 ✓ For next time: Pre-validate password hashing library choice earlier
@@ -508,7 +508,7 @@ Session Review:
 1. Read vault for decisions → 2 min well spent
 2. Plan was 90% accurate; one task reordered
 3. Caveman mode after Task 3 saved ~30% tokens
-4. CodeGraph impact analysis was correct
+4. lat.md impact analysis was correct
 
 Updated Vault:
 ─────────────────────────────────────────
@@ -516,8 +516,8 @@ Updated Vault:
 ✓ Patterns documented
 ✓ Lessons captured
 
-Refreshing CodeGraph:
-✓ CodeGraph rebuilt (47 files indexed, 23 functions added)
+Refreshing lat.md:
+✓ lat.md rebuilt (47 files indexed, 23 functions added)
 
 Ready to commit:
 ─────────────────────────────────────────
@@ -542,7 +542,7 @@ git commit -m "Feature: Add user authentication API endpoint
 - 24-hour token expiration
 
 ## Lessons learned
-- CodeGraph context eliminated manual file scanning
+- lat.md context eliminated manual file scanning
 - JWT claims schema needs earlier validation
 - Error handling pattern from vault proved reusable
 
@@ -594,12 +594,12 @@ cd ..
 3. Commit changes
 4. Regenerate plan: `/spek.plan --phase=plan`
 
-### Issue: CodeGraph context is out of date
+### Issue: lat.md context is out of date
 
 **Solution:**
 ```bash
 # Force refresh
-/spek.prepare --force-codegraph-refresh
+/spek.prepare --force-lat-refresh
 
 # This rebuilds the entire code graph from scratch
 ```
@@ -651,7 +651,7 @@ git commit -m "WIP: tasks 1-3 complete"
 **Tasks are ordered by dependencies.** `/spek.implement` shows:
 - Which task blocks which others
 - What files each task affects
-- Impact analysis from CodeGraph
+- Impact analysis from lat.md
 
 ---
 

@@ -10,7 +10,7 @@
 - `spek.*` — Spekificity user-facing commands (prepare, specify, plan, implement, post, lessons)
 - `speckit.*` — SpecKit wrapped commands (constitution, specify, clarify, plan, tasks, analyze)
 - `context.*` — Context loading and injection (load, inject)
-- `cg.*` — CodeGraph queries (query, sync)
+ - `lat.*` — Indexing queries (lat.md: query, sync)
 - `caveman.*` — Compression mode (caveman, review)
 
 **Style:**
@@ -65,7 +65,7 @@ All commands follow:
 /spek.prepare                              # Prepare for feature
 /spek.plan --phase=specify             # Run spec phase
 /spek.implement feature-name --verbose     # Verbose output
-/cg.query symbol my_function               # Query code graph
+/lat.query symbol my_function               # Query index (lat.md)
 ```
 
 **Flags Pattern:**
@@ -84,7 +84,7 @@ All commands follow:
 ├── spek-prepare/       # Directory name matches command
 ├── spek-plan/
 ├── context-load/
-└── cg-query/
+└── lat-query/
 ```
 
 **Artifact Files:**

@@ -21,12 +21,12 @@ ENRICHMENT WORKFLOW
 │  └─ POST: Validate spec aligns with decisions
 │
 ├─ PLAN PHASE
-│  ├─ PRE: Load decisions + patterns + code graph
+│  ├─ PRE: Load decisions + patterns + lat.md index
 │  ├─ CORE: Call /speckit.plan (enriched)
 │  └─ POST: Validate plan follows architecture
 │
 └─ IMPLEMENT PHASE (post-approval)
-   ├─ PRE: Load decisions + patterns + code graph
+    ├─ PRE: Load decisions + patterns + lat.md index
    ├─ CORE: Call /speckit.implement (enriched)
    └─ POST: Collect diff + validate
 ```
@@ -107,12 +107,12 @@ def plan_enriched(spec):
     decisions = load_from_vault("vault/decision.md")
     patterns = load_from_vault("vault/patterns.md")
     
-    # Query code graph structure (MCP tool calls)
+    # Query lat.md structure (MCP tool calls)
     changed_files = extract_files_from_spec(spec)  # e.g., ["src/services/auth.py"]
     graph_context = []
     for file in changed_files:
-        symbols = call_mcp_tool("codegraph_symbols", file_path=file)
-        impact = call_mcp_tool("codegraph_impact", file=file)
+        symbols = call_mcp_tool("lat_symbols", file_path=file)
+        impact = call_mcp_tool("lat_impact", file=file)
         graph_context.append({"file": file, "symbols": symbols, "impact": impact})
     
     # Validate inputs
@@ -128,7 +128,7 @@ def plan_enriched(spec):
     Proven patterns to apply:
     {format_patterns(patterns)}
     
-    Relevant code structure (via CodeGraph):
+    Relevant code structure (via lat.md):
     {format_graph_context(graph_context)}
     """
     
@@ -164,11 +164,11 @@ def implement_enriched(tasks):
         affected_symbols = task.get("affected_code", [])
         for symbol in affected_symbols:
             # Find definition
-            definition = call_mcp_tool("codegraph_definition", symbol=symbol)
+            definition = call_mcp_tool("lat_definition", symbol=symbol)
             # Find callers
-            callers = call_mcp_tool("codegraph_callers", symbol=symbol)
+            callers = call_mcp_tool("lat_callers", symbol=symbol)
             # Estimate impact
-            impact = call_mcp_tool("codegraph_impact", symbol=symbol)
+            impact = call_mcp_tool("lat_impact", symbol=symbol)
             graph_context.append({
                 "symbol": symbol,
                 "definition": definition,
@@ -211,15 +211,15 @@ def load_enrichment_context(phase):
     decisions = load_from_vault("vault/decision.md")
     patterns = load_from_vault("vault/patterns.md")
     
-    # Load code graph via MCP tools (if plan/implement phase)
+    # Load lat.md via MCP tools (if plan/implement phase)
     if phase in ["plan", "implement"]:
-        # Query code graph structure via MCP tools (0 tokens each)
+        # Query lat.md structure via MCP tools (0 tokens each)
         # Example: for each changed file, query its symbols and impact
         graph_queries = []
         recent_changes = get_git_log(limit=20)
         for file in extract_changed_files(recent_changes):
-            symbols = call_mcp_tool("codegraph_symbols", file_path=file)
-            impact = call_mcp_tool("codegraph_impact", file=file)
+            symbols = call_mcp_tool("lat_symbols", file_path=file)
+            impact = call_mcp_tool("lat_impact", file=file)
             graph_queries.append({"file": file, "symbols": symbols, "impact": impact})
     else:
         graph_queries = None
@@ -256,7 +256,7 @@ def load_enrichment_context(phase):
 ## Quick Checklist
 
 - [ ] PRE layer loads decisions + patterns?
-- [ ] PRE layer loads code graph (if applicable)?
+- [ ] PRE layer loads lat.md index (if applicable)?
 - [ ] Context injection formats clearly?
 - [ ] CORE layer receives enriched input?
 - [ ] POST layer validates alignment?

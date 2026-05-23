@@ -174,19 +174,20 @@ These are already excluded in the project `.gitignore`.
 
 ---
 
-## Tool 3: Code Analysis Tool
+## Tool 3: Indexing Tool (lat.md)
 
-Spekificity uses a code analysis tool to index your codebase and make it queryable for context injection during feature development. Two options are available:
+Spekificity uses an indexing tool to make source code and documentation queryable for context injection during feature development. The recommended, canonical tool for this project is `lat.md`.
 
-### Current Recommendation: CodeGraph
+### Current Recommendation: lat.md
 
-CodeGraph (SQLite + MCP) is the recommended primary tool for Spekificity. It provides:
-- Pre-indexed queries without file scanning overhead
-- Built-in impact analysis tools
-- Real-time sync on file changes
-- Broad framework support
+`lat.md` focuses on creating a Markdown-first knowledge layer that links specs, vault content, and source metadata. It provides:
+- Markdown-native indexing (frontmatter, headings, wikilinks)
+- Pluggable extractors for source symbols and basic dependency edges
+- Incremental refresh and watch mode for fast updates
+- Connectors for Obsidian-style vaults so documentation and code share a single graph
+- Agent-friendly query interface (MCP or HTTP API) for context injection
 
-See [wiki/specs/codegraph-setup-and-integration.md](../specs/codegraph-setup-and-integration.md) for complete CodeGraph setup and integration details.
+See [wiki/specs/050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md) for complete lat.md setup and integration details.
 
 ---
 
@@ -205,8 +206,8 @@ After installing all tools:
    # Expected: decisions.md, patterns.md
    ```
 
-3. **Verify Code Analysis Tool:**
-   See CodeGraph setup docs for complete verification.
+3. **Verify Indexing Tool:**
+   See lat.md setup docs for complete verification.
 
 4. **Commit to Git:**
    ```bash
@@ -236,10 +237,10 @@ tools:
     enabled: true
     mode: global  # installed globally via uv
   
-  code_analysis:
-    enabled: true
-    tool: codegraph
-    mode: global
+   code_analysis:
+      enabled: true
+      tool: lat.md
+      mode: global
   
   vault:
     enabled: true
@@ -277,4 +278,4 @@ See individual tool sections above for tool-specific troubleshooting.
 
 ## See Also
 
-- [wiki/specs/codegraph-setup-and-integration.md](../specs/050-codegraph-setup-and-integration.md) (recommended code analysis tool)
+- [wiki/specs/050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md) (recommended indexing tool)

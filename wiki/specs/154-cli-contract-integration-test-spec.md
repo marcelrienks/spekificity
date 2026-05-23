@@ -1,10 +1,10 @@
 ---
-title: "Small CLI Contract Integration Test (SpecKit / CodeGraph)"
+title: "Small CLI Contract Integration Test (SpecKit / lat.md)"
 status: "DRAFT"
 date: "2026-05-21"
 ---
 
-# Small CLI Contract Integration Test (SpecKit / CodeGraph)
+# Small CLI Contract Integration Test (SpecKit / lat.md)
 
 Status: DRAFT
 Date: 2026-05-21
@@ -17,9 +17,9 @@ Tests (high-level)
   - Run: `speckit --version` → assert exit `0` and human-readable version.
   - Run: `speckit.specify --format=json --sample-input tests/fixtures/mock_specs/complete_spec.json` (or equivalent) → assert JSON parseable and contains `feature_name`, `requirements`, `tasks` keys.
 
-- `tests/integration/cli_contracts/test_codegraph_contract.py`
-  - Run: `codegraph --version` → assert exit `0`.
-  - Run: `codegraph query --json 'symbols' --path tests/fixtures/synthetic_project/src` → assert JSON and fields `name,type,file,line` exist in first result.
+- `tests/integration/cli_contracts/test_lat_contract.py`
+  - Run: `lat --version` → assert exit `0`.
+  - Run: `lat query --json 'symbols' --path tests/fixtures/synthetic_project/src` → assert JSON and fields `name,type,file,line` exist in first result.
 
 Mocking & CI
 - These tests should run with mocks in CI when the real CLIs are unavailable. Provide environment variable `SKIP_CLI_CONTRACTS=true` to skip when unavailable (but require at least one run on CI with real tools).

@@ -12,16 +12,16 @@
 Hierarchical query strategy that prioritizes efficiency:
 
 ```
-QUERY HIERARCHY (CodeGraph-Based)
+QUERY HIERARCHY (lat.md-Based)
 
-Layer 1: CodeGraph MCP Tools (FAST, FREE)
+Layer 1: lat.md MCP Tools (FAST, FREE)
 ├─ Cost: 0 tokens
 ├─ Latency: <100ms
-├─ Query: MCP tool calls (codegraph_symbols, codegraph_references, codegraph_callers, etc.)
+├─ Query: MCP tool calls (lat_symbols, lat_references, lat_callers, etc.)
 ├─ Examples:
-│  - "Who calls function X?" → codegraph_callers
-│  - "What does module Y depend on?" → codegraph_callees
-│  - "Find all classes in file Z" → codegraph_symbols
+│  - "Who calls function X?" → lat_callers
+│  - "What does module Y depend on?" → lat_callees
+│  - "Find all classes in file Z" → lat_symbols
 └─ Success rate: 95% of queries
 
 Layer 2: Vault/Decisions (MEDIUM, CHEAP)
@@ -73,44 +73,44 @@ Only escalate when necessary.
 
 ---
 
-## Layer 1: CodeGraph MCP Tools
+## Layer 1: lat.md MCP Tools
 
 **Setup:**
 ```
-CodeGraph indexing active. Access via MCP tool calls.
-Seven built-in tools available: codegraph_symbols, codegraph_definition, 
-codegraph_references, codegraph_callers, codegraph_callees, codegraph_impact, codegraph_query
+lat.md indexing active. Access via MCP tool calls.
+Seven built-in tools available: lat_symbols, lat_definition, 
+lat_references, lat_callers, lat_callees, lat_impact, lat_query
 ```
 
 **Examples (MCP tool calls):**
 
 ```python
 # Query 1: Find all symbols in a file
-symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 # Returns: [AuthService, authenticate, refresh_token, ...]
 
 # Query 2: Find all callers of a function
-callers = call_mcp_tool("codegraph_callers", symbol="authenticate")
+callers = call_mcp_tool("lat_callers", symbol="authenticate")
 # Returns: [handlers.login_handler, commands.cli_login, ...]
 
 # Query 3: Find all references to a symbol
-refs = call_mcp_tool("codegraph_references", symbol="authenticate")
+refs = call_mcp_tool("lat_references", symbol="authenticate")
 # Returns: [handlers.py:42, commands.py:18, tests/test_auth.py:101]
 
 # Query 4: Find definition of symbol
-definition = call_mcp_tool("codegraph_definition", symbol="authenticate", context="AuthService")
+definition = call_mcp_tool("lat_definition", symbol="authenticate", context="AuthService")
 # Returns: {file: "src/services/auth.py", line: 25, signature: "def authenticate(...)"}
 
 # Query 5: Find what this function calls (dependencies)
-callees = call_mcp_tool("codegraph_callees", symbol="authenticate")
+callees = call_mcp_tool("lat_callees", symbol="authenticate")
 # Returns: [database.query_user, security.verify_password, ...]
 
 # Query 6: Estimate change impact
-impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="authenticate")
+impact = call_mcp_tool("lat_impact", file="src/services/auth.py", symbol="authenticate")
 # Returns: {direct_callers: 2, indirect_callers: 5, affected_tests: 8, risk_level: "medium"}
 
 # Query 7: Custom graph query (advanced)
-result = call_mcp_tool("codegraph_query", query="find all methods returning bool")
+result = call_mcp_tool("lat_query", query="find all methods returning bool")
 # Returns: [authenticate(...), is_valid_token(...), ...]
 ```
 

@@ -13,7 +13,7 @@ Spekificity exposes a set of CLI skills and AI agent commands for specification-
 **Quick Reference:**
 - Workflow commands: `/spek.*` namespace (agent/skill identifiers)
 - Context commands: `/context.*` namespace
-- Analysis commands: `/cg.*` (CodeGraph) namespace
+- Analysis commands: `/lat.*` (lat.md) namespace
 - Compression: `/caveman` mode commands
 
 Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers used in agent skill files and documentation. The equivalent user-facing CLI commands are the plain `spek` invocations (for example, `spek prepare` or `spek plan --mode=specify`). Both refer to the same operations; use the CLI form when running commands locally and the slash-prefixed form when referring to skills in docs or agent prompts.
@@ -29,7 +29,7 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 
 **What it does:**
 1. Load vault context (3-layer memory model)
-2. Index code state via CodeGraph
+2. Index code state via lat.md
 3. List available specs for feature selection
 4. Load prior decisions + patterns relevant to feature
 5. Present onboarding summary (5 min read)
@@ -52,7 +52,7 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 **What it does:**
 1. Parse spec Success Criteria
 2. Generate task list (granular, implementable)
-3. Identify code sections to modify (CodeGraph impact analysis)
+3. Identify code sections to modify (lat.md impact analysis)
 4. Estimate token budget per task
 5. Suggest related patterns + decision references
 
@@ -84,7 +84,7 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 #### Mode 2: `plan` (Auto-generate Implementation Plan)
 - Parse existing spec
 - Break Success Criteria into tasks
-- Map tasks to code sections (CodeGraph)
+- Map tasks to code sections (lat.md)
 - Estimate effort + token cost per task
 - Order tasks by dependency
 
@@ -108,7 +108,7 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 **What it does:**
 1. Load spec + plan
 2. Execute tasks sequentially (or jump to step N)
-3. After each step: log to vault, query CodeGraph for context
+3. After each step: log to vault, query lat.md for context
 4. Track token usage against budget
 5. Capture new decisions + lessons as they emerge
 6. Mark steps complete
@@ -155,7 +155,7 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 
 ### `/spek.conclude`
 
-**Purpose:** Archive feature outcomes, extract lessons, update vault + refresh CodeGraph  
+**Purpose:** Archive feature outcomes, extract lessons, update vault + refresh lat.md  
 **Usage:** `/spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]`
 
 **What it does:**
@@ -164,7 +164,7 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 3. Document architectural decisions and rationale
 4. Update vault/patterns.md with new patterns
 5. Sync repo memory (architectural decisions, pattern index)
-6. Refresh CodeGraph via /spek.map (incremental)
+6. Refresh lat.md index via /spek.map (incremental)
 7. Archive current feature session state
 8. Report completion
 
@@ -195,7 +195,7 @@ The following commands are **first-class and fully documented**, but **not requi
 **What it does:**
 1. Read memory files from specified scope
 2. Parse YAML frontmatter (if present)
-3. Index into CodeGraph for quick querying
+3. Index into lat.md for quick querying
 4. Make context available to all downstream commands
 
 **Output:**
@@ -222,7 +222,7 @@ The following commands are **first-class and fully documented**, but **not requi
 - `--show-all`: Full dependency graph (specs + code)
 
 **What it does:**
-1. Query CodeGraph for code references to spec topic
+1. Query lat.md for code references to spec topic
 2. Query wiki/decision.md for related decisions
 3. Query wiki/specs/ for dependent + related specs
 4. Generate visual dependency graph (text or Mermaid)
@@ -266,7 +266,7 @@ For fine-grained context control at specific workflow points:
 
 ---
 
-## CodeGraph Skills: `/cg.*` Namespace
+## lat.md Skills: `/lat.*` Namespace
 
 ### `/cg.query`
 
@@ -295,7 +295,7 @@ For fine-grained context control at specific workflow points:
 - Call/dependency graph
 - Risk assessment (if impact query)
 
-**Spec Reference:** [codegraph-setup-complete.md](../specs/codegraph-setup-complete.md)
+**Spec Reference:** [050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md)
 
 ---
 
@@ -317,7 +317,7 @@ For fine-grained context control at specific workflow points:
 - Coverage % of codebase
 - Timestamp of last sync
 
-**Spec Reference:** [codegraph-setup-complete.md](../specs/codegraph-setup-complete.md)
+**Spec Reference:** [050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md)
 
 ---
 
@@ -388,7 +388,7 @@ For fine-grained context control at specific workflow points:
 **Keys:**
 - `vault.scope`: Default memory scope (user|session|repo)
 - `context.compression`: Default compression mode (caveman intensity)
-- `cg.sync-interval`: Auto-sync interval (minutes)
+- `lat.sync-interval`: Auto-sync interval (minutes)
 - `token.budget`: Max tokens per feature (advisory)
 
 ---
@@ -399,7 +399,7 @@ For fine-grained context control at specific workflow points:
 
 ```
 /spek.prepare [feature-name]
-  → Workspace ready, git clean, CodeGraph fresh
+  → Workspace ready, git clean, lat.md fresh
   ↓
 /spek.plan --phase=specify
   → Feature specification generated
@@ -460,7 +460,7 @@ For fine-grained context control at specific workflow points:
 
 | Tier | Command | Purpose |
 |------|---------|----------|
-| **REQUIRED** | `/spek.prepare` | Initialize workspace, git state, CodeGraph |
+| **REQUIRED** | `/spek.prepare` | Initialize workspace, git state, lat.md index |
 | **REQUIRED** | `/spek.plan` | Generate specs, plans, task breakdown |
 | **REQUIRED** | `/spek.implement` | Execute tasks with context |
 | **REQUIRED** | `/spek.conclude` | Archive outcomes, update vault, sync graph |
@@ -485,7 +485,7 @@ For fine-grained context control at specific workflow points:
 | `/speckit.tasks` | Generate task list | `/spek.plan --phase=plan` |
 | `/speckit.analyze` | Cross-artifact consistency check | `/spek.plan --phase=analyze` (optional) |
 
-**Design:** Vanilla SpecKit commands use `speckit.*` namespace. Spekificity wraps these (decorator pattern) to inject enrichment layers (vault decisions, CodeGraph context, pattern references) without modifying SpecKit internals.
+**Design:** Vanilla SpecKit commands use `speckit.*` namespace. Spekificity wraps these (decorator pattern) to inject enrichment layers (vault decisions, lat.md context, pattern references) without modifying SpecKit internals.
 
 ---
 
@@ -495,9 +495,9 @@ For fine-grained context control at specific workflow points:
 - `/context.load` — Load memory scope (user|session|repo)
 - `/context.inject` — Inject context at workflow stages
 
-**CodeGraph Queries:** `/cg.*`  
-- `/cg.query` — Query code intelligence
-- `/cg.sync` — Refresh code graph
+**lat.md Queries:** `/lat.*`  
+- `/lat.query` — Query code/document index
+- `/lat.sync` — Refresh lat.md index
 
 **Compression:** `/caveman.*`  
 - `/caveman` — Activate compression mode  

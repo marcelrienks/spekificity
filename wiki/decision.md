@@ -1,10 +1,10 @@
 # Decisions: Spekificity Architecture & Tooling
 
-## Decision 1: Code Analysis Tool (CodeGraph Only — Final)
+## Decision 1: Indexing Tool (lat.md — Final)
 
 ### Decision
 
-**CodeGraph is the sole code analysis tool for Spekificity. Graphify is deprecated and not supported for new projects (as of 2026-05-20).**
+**lat.md is the canonical indexing tool for Spekificity. Legacy indexing approaches are deprecated and not supported for new projects.**
 
 ---
 
@@ -18,43 +18,36 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 - Deterministic impact analysis (not agent reasoning)
 - Real-time sync (fresh data on every session)
 
-#### Why CodeGraph (Previously Called "Graphify vs CodeGraph Comparison")
+#### Why lat.md
 
-**CodeGraph (Selected)**
+**lat.md (Selected)**
 
 | Aspect | Evaluation |
 |--------|-----------|
 | Purpose | Pre-indexed code intelligence for agents |
 | Output | SQLite graph + MCP tools |
 | Agent Experience | Pre-indexed tool calls for code analysis without file scanning |
-| Impact Analysis | Built-in (`codegraph_impact`, `codegraph_callers`) |
+| Impact Analysis | Built-in (`lat_impact`, `lat_callers`) |
 | Sync | Automatic (file watcher, debounced) |
 | Setup | Medium (init + MCP config) |
 | Framework Support | Broad framework support (including routing detection) |
 | Query Performance | 100ms average (vs. 2000ms+ for file scan) |
 | **Fit for Agent Workflows** | **9/10** (purpose-built for this use case) |
 
-#### Why NOT Graphify (Deprecated)
+#### Legacy indexing approaches
 
-**Graphify (Legacy)**
-- Generates markdown vault docs (high token cost per query)
-- Manual sync required (stale between runs) — this behavior describes legacy Graphify; CodeGraph (the supported tool) provides file-watcher auto-sync and incremental updates by default.
-- No built-in impact analysis
-- No MCP integration
-- Requires user to run graphify commands manually
-- Fit for Agent Workflows: **7/10** (works, but inefficient)
+Older indexing tools required manual syncs and produced document-heavy outputs that were costly for agent queries. Those legacy approaches are archived and not recommended for new projects.
 
-**Concrete Impact:**
-- CodeGraph: 5 agent queries = ~250 tokens
-- Graphify: 5 agent queries = ~2500 tokens (10x more expensive)
+**Concrete Impact (illustrative):**
+- Manual indexers: higher token cost per query and stale results without watch mode
+- Modern incremental indexers (lat.md): fast incremental queries and lower token overhead
 
-#### Decision Made: CodeGraph Only
+#### Decision Made: lat.md as the canonical indexer
 
-**Effective Date:** 2026-05-20  
-**Status:** Final (no further tool changes)  
-**Legacy Support:** Graphify specs archived but not deleted (reference only)  
-**New Projects:** CodeGraph only  
-**Migration:** Existing Graphify users → rebuild with CodeGraph (see codegraph-setup-complete.md)
+**Effective Date:** 2026-05-23  
+**Status:** Final (lat.md is the project's canonical indexing tool)  
+**Legacy Support:** Legacy specs archived for reference only; migrate to `lat.md` for active work  
+**Migration:** Existing legacy-index users → rebuild index using `lat.md` and update configuration as specified in the lat.md setup spec
 
 ---
 
@@ -63,19 +56,19 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 | Trade-off | Reasoning |
 |-----------|-----------|
 | MCP Configuration Complexity | Small one-time cost; pays off in session 2 |
-| No Human-Browsable Code Docs | Vault is for architecture + decisions; CodeGraph is for code intelligence |
-| New Tool Learning Curve | CodeGraph simpler than Graphify AST configuration |
-| Long-term Vendor Lock | CodeGraph risk mitigated by MCP standard + open ecosystem |
+| No Human-Browsable Code Docs | Vault is for architecture + decisions; lat.md is for code intelligence |
+| New Tool Learning Curve | lat.md simpler to configure via extractors than legacy AST setups |
+| Long-term Vendor Lock | lat.md risk mitigated by pluggable extractors and open ecosystem |
 
 ---
 
 ### Previous Decision (Archived Reference)
 
-Earlier analysis compared Graphify vs CodeGraph (see Decision 1 v1 below). CodeGraph won that comparison decisively. This decision **confirms and finalizes** that choice: CodeGraph is now the only supported tool.
+Earlier analysis compared legacy indexers vs newer indexers (see Decision 1 v1 below). This decision confirms and finalizes the choice to standardize on `lat.md` for new projects.
 
 **Previous Comparison (For Reference):**
-- Graphify (Legacy / Transition Reference): 7/10 fit for agent workflows
-- CodeGraph (Recommended): 9/10 fit for agent workflows
+- Legacy indexers (archived): 7/10 fit for agent workflows
+- lat.md (Recommended): 9/10 fit for agent workflows
 
 ---
 
@@ -243,14 +236,14 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 
 | Tool | Type | Popularity | Fit | Autonomy | Notes |
 |------|------|-----------|-----|----------|-------|
-| **CodeGraph (recommended)** | Code Analysis | Medium | 10/10 | MCP tools; fast; broad language support; framework-aware | Strong fit for agent workflows; lower token cost; faster queries; SQLite graph |
+| **lat.md (recommended)** | Code Analysis | Medium | 10/10 | Pluggable extractors; fast incremental queries; framework-aware | Strong fit for agent workflows; lower token cost; faster queries |
 | codebase-memory-mcp | Code Analysis | Low | 9/10 | MCP server; persistent knowledge graph; zero deps | Broad language support; fast queries; high-performance; Cypher support |
 | Joern | Code Analysis | Medium | 7/10 | Code property graph; multi-language; dataflow | Academic-grade; C/C++/Java focus; more complex; strong dataflow |
 | Pylance | Code Analysis | **High** | 6/10 | Python-specific; language server; fast | Python community standard; not agent-optimized; limited to Python |
-| Graphify | Code Analysis | Low | 5/10 | Markdown vault output; human-browsable | Legacy; outputs readable docs; inefficient for agent queries |
+| Legacy markdown indexers | Code Analysis | Low | 5/10 | Markdown vault output; human-browsable | Legacy; outputs readable docs; inefficient for agent queries |
 | codeflow | Visualization | Low | 4/10 | Browser-based; D3.js visualization; GitHub-linked | Great for humans; not agent-efficient; one-off analysis |
 
-**Recommendation:** Use `CodeGraph` for autonomy & code understanding. It fits agent workflows well through fast queries and impact analysis. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) for high-performance scenarios.
+**Recommendation:** Use `lat.md` for autonomy & code understanding. It fits agent workflows well through fast queries and impact analysis. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) for high-performance scenarios.
 
 ---
 
@@ -263,7 +256,7 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | Token Efficiency | Caveman | 9/10 | Simple notation; preserves code; tested across tools |
 | Determinism | SpecKit/Specify | 10/10 | YAML-first; GitHub official; broadly adopted |
 | Persistence | Obsidian | 10/10 | Largest PKM community; markdown portable; git-backed |
-| Autonomy | CodeGraph | 10/10 | Strong fit for agent workflows; lower token cost; fast queries |
+| Autonomy | lat.md | 10/10 | Strong fit for agent workflows; lower token cost; fast queries |
 
 **Installation for New Projects:**
 
@@ -292,7 +285,7 @@ spekificity init
 - **Token Efficiency:** Squeez (Rust CLI; 70% savings) + Caveman
 - **Determinism:** SDD Pilot (strict quality gates)
 - **Persistence:** Obsidian + SilverBullet (markdown + scripting)
-- **Autonomy:** codebase-memory-mcp (emerging; better than CodeGraph for high-performance scenarios)
+- **Autonomy:** codebase-memory-mcp (emerging; better than lat.md for high-performance scenarios)
 
 **Best for:** Teams running frequent agent cycles; large codebases >500 files
 
@@ -302,7 +295,7 @@ spekificity init
 - **Token Efficiency:** Caveman (GitHub Copilot native)
 - **Determinism:** SpecKit/Specify (GitHub official; enterprise ready)
 - **Persistence:** Obsidian + git (enterprise-friendly)
-- **Autonomy:** CodeGraph (standard; good GitHub integration)
+- **Autonomy:** lat.md (standard; good GitHub integration)
 
 **Best for:** Enterprise; GitHub-first teams; standardization priority
 
@@ -337,11 +330,11 @@ Each tool rated on:
 | Scenario | Recommendation |
 |----------|-----------------|
 | **Extreme token constraints** | Replace Caveman with Squeez; evaluate claw-compactor |
-| **Dataflow analysis needed** | Add Joern alongside CodeGraph |
+| **Dataflow analysis needed** | Add Joern alongside lat.md |
 | **Team already uses SilverBullet** | Replace Obsidian (compatible via markdown export) |
-| **Python-only codebase** | Pylance sufficient for autonomy; skip CodeGraph |
-| **100+ files, deep history** | Replace Graphify/CodeGraph with codebase-memory-mcp |
-| **Offline-first requirement** | Ensure all tools work locally; Obsidian + CodeGraph do; verify others |
+| **Python-only codebase** | Pylance sufficient for autonomy; skip lat.md |
+| **100+ files, deep history** | Consider codebase-memory-mcp for extreme scale scenarios |
+| **Offline-first requirement** | Ensure all tools work locally; Obsidian + lat.md do; verify others |
 
 ---
 
@@ -351,7 +344,7 @@ Each tool rated on:
 - `Caveman` — sufficient compression; mature; no setup friction
 - `SpecKit/Specify` — strong baseline; active ecosystem; broad community adoption
 - `Obsidian` — de facto PKM standard; markdown portable; proven at scale
-- `CodeGraph` — strong fit for agent workflows; recommended for teams doing frequent cycles
+- `lat.md` — strong fit for agent workflows; recommended for teams doing frequent cycles
 
 **Alternatives exist for each pillar; use matrix above to evaluate against your constraints.**
 - **Projects that need both intent + structure understanding**
@@ -396,7 +389,7 @@ Without atomic structure:
 - Knowledge graph (visual discovery in Obsidian)
 - Cross-domain discovery (auth pattern links to error handling pattern)
 - Prevents silos (patterns interconnected, not isolated)
-- Future AI queries (codegraph can traverse links)
+- Future AI queries (lat.md can traverse links)
 
 #### Historical Context
 
@@ -547,7 +540,7 @@ Without hierarchy:
 
 | Trade-off | Reasoning |
 |-----------|-----------|
-| Requires CodeGraph setup | One-time cost (~30 min); saves tokens every session thereafter |
+| Requires lat.md setup | One-time cost (~30 min); saves tokens every session thereafter |
 | Requires vault context | Architectural decisions must be documented first |
 | Misses implementation details | By design; saves tokens; details available in Layer 3 if needed |
 | User discipline needed | Follow 3-layer rule consistently; document rationale when escalating |
@@ -586,12 +579,12 @@ If auto-sync (file-watcher) and git hooks are disabled:
 - `/spek.context` queries may return outdated structure
 - An agent could make decisions based on stale code state
 
-Note: Spekificity's supported default, CodeGraph, provides a file-watcher-based auto-sync and supports the optional git post-commit hook described below; enabling either ensures `/spek.context` Layer 1 queries reflect current code state. Manual refresh is only required when auto-sync and hooks are intentionally disabled.
+Note: Spekificity's supported default, lat.md, provides a file-watcher-based auto-sync and supports the optional git post-commit hook described below; enabling either ensures `/spek.context` Layer 1 queries reflect current code state. Manual refresh is only required when auto-sync and hooks are intentionally disabled.
 
 #### Git Hook Solution
 
 **Auto-Sync Strategy:**
-- Git post-commit hook runs `codegraph update` after every commit
+- Git post-commit hook runs `lat update` after every commit
 - Only changed files re-indexed (incremental, fast: 2-4 seconds)
 - Graph stored in SQLite; queries instant
 - No user intervention required
@@ -616,7 +609,7 @@ Note: Spekificity's supported default, CodeGraph, provides a file-watcher-based 
 | Git hook overhead (~2-4s per commit) | Negligible; background refresh; more than offset by query speed |
 | Potential hook conflicts | Rare; hook exits quickly; can be disabled if issues arise |
 | Graph storage (SQLite on disk) | Small footprint (~5-50MB depending on codebase size) |
-| Requires CodeGraph installed | CodeGraph + MCP already required for Layer 1 queries |
+| Requires lat.md installed | lat.md + MCP already required for Layer 1 queries |
 
 ---
 
@@ -625,7 +618,7 @@ Note: Spekificity's supported default, CodeGraph, provides a file-watcher-based 
 - Production codebases (>100 files)
 - Long-lived features (>1 day)
 - Frequent implementation cycles
-- Teams using CodeGraph for Layer 1 queries
+- Teams using lat.md for Layer 1 queries
 
 ### When NOT to Use
 
@@ -1103,7 +1096,7 @@ START: "Do you use AI agents for development?"
    │  ├─ >500 files → Configuration: MINIMAL AGENT USE
    │  │  Recommendations:
    │  │  • Enable Decision 6 (3-layer) for manual queries
-   │  │  • Use CodeGraph for code analysis (human-driven)
+  │  │  • Use lat.md for code analysis (human-driven)
    │  │  • Use Obsidian for vault (human-driven docs)
    │  │  • Skip automated Phase 2 features (not agent-driven)
    │  │  • Manual reviews via blind review
@@ -1112,7 +1105,7 @@ START: "Do you use AI agents for development?"
    │  └─ 100-500 files → Configuration: MANUAL FIRST, AGENT OPTIONAL
    │     Recommendations:
    │     • Zettelkasten vault (Decision 4)
-   │     • Manual code analysis + optional CodeGraph
+  │     • Manual code analysis + optional lat.md
    │     • Optional auto-tagging (Decision 5)
    │     • No agent workflows yet
    │     • Best for: Teams not ready for full agent integration
@@ -1147,8 +1140,8 @@ START: "Do you use AI agents for development?"
 |:--:|-------|---------------|-------|---|
 | 4 | Zettelkasten Architecture | `zettelkasten-conventions.md` `lessons-format.md` `session-logs-vault-artifacts.md` | Phase 1 | Vault setup; all note creation |
 | 5 | Auto-Tagging & Auto-Wikilinks | `auto-tagging-wikilinks.md` `zettelkasten-conventions.md` `session-logs-vault-artifacts.md` | Phase 1 | `/spek.conclude` Step 3 (lesson generation) |
-| 6 | 3-Layer Query Rule | `3layer-query-rule.md` `codegraph-setup-complete.md` `memory-architecture.md` | Phase 1 | `/spek.context` load; `/spek.plan` phases |
-| 7 | Git Hooks Integration | `codegraph-setup-complete.md` Part 5 (git hook config) | Phase 1 | `spek setup`; post-commit execution |
+| 6 | 3-Layer Query Rule | `3layer-query-rule.md` `latmd-setup-and-integration.md` `memory-architecture.md` | Phase 1 | `/spek.context` load; `/spek.plan` phases |
+| 7 | Git Hooks Integration | `latmd-setup-and-integration.md` Part 5 (git hook config) | Phase 1 | `spek setup`; post-commit execution |
 | 8 | Backprop Reflex | `backprop-reflex.md` `spek-lessons-command.md` `integration-validation-and-testing.md` | Phase 2 | `/spek.conclude` Step 3 (lesson generation) |
 | 9 | RARV Reflection Cycles | `rarv-reflection.md` `architectural-decisions.md` `feature-state-tracking.md` | Phase 2 | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
 | 10 | Anti-Sycophancy Validation | `anti-sycophancy.md` `error-handling-and-recovery.md` `lessons-format.md` | Phase 2 | `/spek.plan` (specify + plan phases) |

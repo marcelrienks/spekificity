@@ -16,7 +16,7 @@ date: "2026-05-20"
 
 ## Overview
 
-**Problem:** Code nodes (from CodeGraph) and documentation nodes (from Obsidian export) need a unified schema so they can be merged, queried, and indexed together.
+**Problem:** Code nodes (from lat.md) and documentation nodes (from Obsidian export) need a unified schema so they can be merged, queried, and indexed together.
 
 **Solution:** Define explicit JSON schemas for code nodes, doc nodes (heading-level and file-level), and skill nodes. All stored in common JSONL format.
 
@@ -28,7 +28,7 @@ date: "2026-05-20"
 
 | Type | Source | Granularity | Frequency | Count (Est.) |
 |------|--------|-------------|-----------|--------------|
-| **code** | CodeGraph | Symbol (function/class/var) | Per file | 1000-5000 |
+| **code** | lat.md | Symbol (function/class/var) | Per file | 1000-5000 |
 | **doc** | Obsidian | Heading or file | Per feature | 100-500 |
 | **skill** | Obsidian/SpecKit | File | Per workflow | 20-50 |
 
@@ -36,7 +36,7 @@ date: "2026-05-20"
 
 ## Code Node Schema
 
-**Source:** CodeGraph AST analysis  
+**Source:** lat.md AST analysis  
 **Granularity:** Symbol-level (function, class, interface, variable, const)  
 **Example ID:** `src/prepare/prepare.ts:Prepare` (file:symbol)
 
@@ -114,7 +114,7 @@ interface CodeNode {
 - ✅ Doc node schema captures heading-level structure (file + heading + level)
 - ✅ Skill node schema captures workflow information (command + purpose + tags)
 - ✅ Graph relationships captured (calls, calledBy, usedBy, uses, references, referencedBy)
-- ✅ All nodes queryable via MCP tools (codegraph_symbols, codegraph_query, codegraph_references)
+- ✅ All nodes queryable via MCP tools (lat_symbols, lat_query, lat_references)
 - ✅ Schema extensible (new fields don't break existing queries)
 - ✅ Type safety enforced (TypeScript interfaces + validation)
 
@@ -125,7 +125,7 @@ interface CodeNode {
 - [ ] Define code node schema (TypeScript types)
 - [ ] Define doc node schema (TypeScript types)
 - [ ] Define skill node schema (TypeScript types)
-- [ ] Implement code node generation (from CodeGraph index)
+- [ ] Implement code node generation (from lat.md index)
 - [ ] Implement doc node generation (from Obsidian export)
 - [ ] Implement skill node generation (from SKILL.md parsing)
 - [ ] Implement node validation (schema conformance checks)
@@ -421,27 +421,28 @@ skills/spek-prepare/SKILL.md
 
 ### Find all decisions
 ```python
-decisions = call_mcp_tool("codegraph_query", query="find all nodes with type=doc and docType=decision")
+decisions = call_mcp_tool("lat_query", query="find all nodes with type=doc and docType=decision")
 ```
 
 ### Find all active decisions
 ```python
-active_decisions = call_mcp_tool("codegraph_query", query="find all nodes with type=doc and docType=decision and status=active")
+active_decisions = call_mcp_tool("lat_query", query="find all nodes with type=doc and docType=decision and status=active")
 ```
 
 ### Find nodes tagged "api"
 ```python
-api_nodes = call_mcp_tool("codegraph_query", query="find all nodes with tags containing api")
+api_nodes = call_mcp_tool("lat_query", query="find all nodes with tags containing api")
 ```
 
 ### Find all code nodes that reference a specific doc
 ```python
-refs = call_mcp_tool("codegraph_references", symbol="decision.md#api-versioning-strategy")
+refs = call_mcp_tool("lat_references", symbol="decision.md#api-versioning-strategy")
 ```
 
 ### Find all backreferences to a node
 ```python
-refs = call_mcp_tool("codegraph_references", symbol="api.ts:ApiController")
+# Returns: all nodes that reference this symbol
+refs = call_mcp_tool("lat_references", symbol="api.ts:ApiController")
 # Returns: all nodes that reference this symbol
 ```
 

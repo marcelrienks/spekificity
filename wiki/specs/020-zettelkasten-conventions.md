@@ -38,7 +38,7 @@ Define and enforce Zettelkasten conventions for all vault notes (decisions, patt
 **What this spec does NOT cover:**
 - Content generation for lessons (see C.3.2 Auto-tagging)
 - Vault directory structure (see B.8.2 Persistent Memories)
-- Graph query patterns (see B.11 Codegraph Setup)
+ - Graph query patterns (see B.11 lat.md Setup)
 
 **Related specs:**
 - C.3.2: Auto-tagging + auto-wikilink (uses frontmatter schema)

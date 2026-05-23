@@ -620,7 +620,7 @@ vault/
 ├── graph/
 │   ├── config.json       # Graph generation settings (paths, granularity, refresh policy)
 │   ├── nodes.jsonl       # Merged code + doc nodes
-	│   ├── nodes-code.jsonl  # Code symbols (from CodeGraph)
+    │   ├── nodes-code.jsonl  # Code symbols (from lat.md)
 │   └── nodes-docs.jsonl  # Doc headings (from Obsidian export)
 └── decision.md, patterns.md, ...
 ```
@@ -686,6 +686,6 @@ vault/
 
 **Architectural decisions:**
 - Decorator pattern over hook system (this spec)
-- Two-tool system: Obsidian (knowledge) + CodeGraph (code analysis) (extracted spec)
+- Two-tool system: Obsidian (knowledge) + lat.md (code analysis) (extracted spec)
 - Three-layer memory: Vault + Repo + Session (extracted spec)
 

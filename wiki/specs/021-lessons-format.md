@@ -155,14 +155,14 @@ Implementation:
 1. Define orchestration/enrichment pattern for `/spek.plan` phases and `/spek.implement`
 2. Implement /spek.context loader (vault → session memory)
 3. Implement /spek.prepare + /spek.conclude workflows
-4. Integrate CodeGraph + Obsidian export into /spek.map
+4. Integrate lat.md + Obsidian export into /spek.map
 5. Create caveman compression at prepare + post steps
 
 Tech stack:
 - TypeScript (cli + skills)
 - Python (graph merge scripts)
 - Obsidian (vault storage)
-- CodeGraph (code indexing)
+ - lat.md (code indexing)
 ```
 
 ---

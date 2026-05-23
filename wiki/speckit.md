@@ -198,7 +198,7 @@
 **Context Loading:** `/spek.context` loads three independent indices:
 - Obsidian vault (Layer 1 persistent memory)
 - Documentation index (independent graph of all project docs)
-- CodeGraph (independent index of source code)
+-- lat.md (independent index of source code)
 
 **Decision:** Analyze is **optional and non-blocking**. If findings are minor, skip remediation and proceed to implement. High-severity issues should be addressed before implement.
 

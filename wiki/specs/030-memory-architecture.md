@@ -85,7 +85,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
   ✓ Guides: 9
 ```
 
-**Note:** Documentation index is independent of CodeGraph, which indexes source code. These are two separate, complementary indices.
+**Note:** Documentation index complements lat.md, which indexes source code and links to documentation. These are separate, related artifacts.
 └── vault/session/scratchpad.md        [notes for current session]
 ```
 

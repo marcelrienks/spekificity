@@ -25,7 +25,7 @@ Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All arch
 | **Integration Contracts** | ✓ Complete | [110-speckit-integration-contract.md](110-speckit-integration-contract.md) |
 | **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) |
 | **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) — **Obsidian CLI is a mandatory runtime dependency for automated vault operations (sync/export/metadata extraction). See `setup.sh` for verification and install steps.** |
-| **CodeGraph Specification** | ✓ Complete | [050-codegraph-setup-and-integration.md](050-codegraph-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md) |
+| **lat.md Specification** | ✓ Complete | [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md) |
 | **Skill Specifications** | ✓ Complete | [100-prepare-command.md](100-prepare-command.md) through [105-spek-implement-workflow.md](105-spek-implement-workflow.md) |
 | **Automation Workflow** | ✓ Complete | [120-spek-automate-workflow.md](120-spek-automate-workflow.md), [121-cli-orchestration.md](121-cli-orchestration.md) |
 | **Testing & Validation** | ✓ Complete | [140-integration-validation-and-testing.md](140-integration-validation-and-testing.md), [141-test-suite-specification.md](141-test-suite-specification.md) |
@@ -39,7 +39,7 @@ Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All arch
 
 **Rationale:**
 - **SpecKit Ecosystem:** SpecKit CLI is Python-native; deep integration with `uv` package manager
-- **Code Analysis:** AST-based parsing for CodeGraph support (ast, Pygments libraries mature)
+- **Code Analysis:** AST-based parsing for lat.md support (ast, Pygments libraries mature)
 - **CLI Framework:** Click or Typer for deterministic SpecKit orchestration
 - **Obsidian CLI:** **Required for automated vault operations (sync/export/metadata extraction).** The `setup.sh` installer verifies the CLI and will abort with installation instructions if it is missing.
 - **Performance:** Fast startup, acceptable for 2-5s target (prepare command)
@@ -70,7 +70,7 @@ spekificity/
 │   │   │   └── lessons.py              # /spek.lessons skill
 │   │   ├── graph/
 │   │   │   ├── __init__.py
-│   │   │   ├── codegraph.py            # CodeGraph core
+│   │   │   ├── lat_index.py           # lat.md core
 │   │   │   ├── indexer.py              # File indexing
 │   │   │   ├── query.py                # Graph queries
 │   │   │   └── schema.py               # Node/edge schema
@@ -98,7 +98,7 @@ spekificity/
 │   ├── integration/
 │   └── e2e/
 ├── .spek/
-│   └── codegraph.db
+│   └── lat_index.db
 ├── wiki/
 └── pyproject.toml
 ```
@@ -173,8 +173,8 @@ spekificity/
 **Tasks:**
 - Implement git verification (clean working tree, feature branch check)
 - Implement feature name extraction/prompting
-- Implement CodeGraph freshness check
-- Implement conditional CodeGraph refresh (async call placeholder)
+-- Implement lat.md freshness check
+-- Implement conditional lat.md refresh (async call placeholder)
 - Implement context loading via `/spek.context`
 - Implement feature state tracking (create `.spek/current-feature.md`)
 - Report ready status
@@ -229,11 +229,11 @@ spekificity/
 
 **Spec Reference:** [110-speckit-integration-contract.md](110-speckit-integration-contract.md), [102-post-command.md](102-post-command.md)
 
-#### 4d. /spek.map (CodeGraph Wrapper)
-**Deliverable:** CodeGraph query interface + impact analysis
+-#### 4d. /spek.map (lat.md Wrapper)
+**Deliverable:** lat.md query interface + impact analysis
 
 **Tasks:**
-- Expose CodeGraph query tools: `symbols()`, `references()`, `definition()`, `impact()`
+- Expose lat.md query tools: `symbols()`, `references()`, `definition()`, `impact()`
 - Implement dependency graph visualization (ASCII/JSON output)
 - Implement cross-file impact analysis (what breaks if this file changes?)
 - Cache graph queries for session duration
@@ -244,7 +244,7 @@ spekificity/
 - `spek map --impact src/core.py` returns affected files ✓
 - Output includes file:line + context ✓
 
-**Spec Reference:** [050-codegraph-setup-and-integration.md](050-codegraph-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md)
+**Spec Reference:** [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md)
 
 #### 4e. /spek.implement (Execution Coordinator)
 **Deliverable:** Context-aware implementation execution
@@ -273,7 +273,7 @@ spekificity/
 - Verify feature is complete (all tasks done, tests pass)
 - Extract lessons learned (decisions, patterns, anti-patterns)
 - Commit lessons to vault (`wiki/lessons/`)
-- Update CodeGraph (final refresh)
+-- Update lat.md index (final refresh)
 - Merge feature branch to main (or prompt user)
 - Archive feature state to repo memory (`.spek/features/[feature-name]/`)
 - Sync vault to origin (Obsidian git plugin)
@@ -305,7 +305,7 @@ spekificity/
 
 ---
 
-### Step 5: CodeGraph MCP Setup
+### Step 5: lat.md MCP Setup
 **Deliverable:** Indexed code analysis + real-time sync
 
 **Tasks:**
@@ -313,7 +313,7 @@ spekificity/
 - Implement file indexer (AST-based for Python, regex-based for other languages)
 - Implement graph sync (incremental update on file changes)
 - Implement query engine (symbols, references, impact analysis)
-- Wire MCP tools: `codegraph_symbols()`, `codegraph_references()`, `codegraph_impact()`, `codegraph_definition()`
+- Wire MCP tools: `lat_symbols()`, `lat_references()`, `lat_impact()`, `lat_definition()`
 - Setup auto-refresh on `/spek.prepare` or on-demand
 - Add `--force-graph-refresh` flag to `/spek.prepare`
 
@@ -324,7 +324,7 @@ spekificity/
 - Graph refreshes in <3 seconds ✓
 - MCP tools callable from agent context ✓
 
-**Spec Reference:** [050-codegraph-setup-and-integration.md](050-codegraph-setup-and-integration.md), [051-graph-storage-structure.md](051-graph-storage-structure.md), [052-node-schema-design.md](052-node-schema-design.md), [053-graph-refresh-strategy.md](053-graph-refresh-strategy.md), [054-graph-query-patterns.md](054-graph-query-patterns.md)
+**Spec Reference:** [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md), [051-graph-storage-structure.md](051-graph-storage-structure.md), [052-node-schema-design.md](052-node-schema-design.md), [053-graph-refresh-strategy.md](053-graph-refresh-strategy.md), [054-graph-query-patterns.md](054-graph-query-patterns.md)
 
 ---
 
@@ -343,7 +343,7 @@ spekificity/
 - [ ] All CLI commands callable with `--help`
 - [ ] Context loads without errors (user, session, repo layers)
 - [ ] SpecKit orchestration produces artifacts (spec, plan, tasks)
-- [ ] CodeGraph indexes code correctly
+- [ ] lat.md indexes code correctly
 - [ ] `/spek.prepare` completes in <5 seconds
 - [ ] `/spek.implement` context includes full vault + graph
 - [ ] Lessons extraction identifies ≥2 patterns
@@ -363,7 +363,7 @@ spekificity/
 
 ### Soft Dependencies
 - Obsidian (for vault editing; not required for CLI to work)
-- CodeGraph MCP (can implement with simpler indexer first)
+- lat.md MCP (can implement with simpler indexer first)
 
 ### Potential Blockers
 - SpecKit API changes (mitigate: pin version in `pyproject.toml`)
@@ -377,7 +377,7 @@ spekificity/
 |--------|--------|
 | CLI startup time | <1 second |
 | `/spek.prepare` execution | <5 seconds |
-| CodeGraph refresh (100 files) | <3 seconds |
+| lat.md refresh (100 files) | <3 seconds |
 | Full feature workflow (prepare → implement → post) | <30 minutes (human-driven) |
 | Test coverage | >80% |
 | Documentation completeness | 100% (wiki + docstrings) |
@@ -397,7 +397,7 @@ spekificity/
 | **Step 4e:** /spek.implement | 8h | 2 days |
 | **Step 4f:** /spek.conclude | 4h | 1 day |
 | **Step 4g:** /spek.lessons | 3h | 1 day |
-| **Step 5:** CodeGraph MCP | 10h | 2-3 days |
+| **Step 5:** lat.md MCP | 10h | 2-3 days |
 | **Testing & Validation** | 8h | 2 days |
 | **TOTAL** | ~63h | 2-3 weeks |
 

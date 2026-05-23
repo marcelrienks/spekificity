@@ -3,8 +3,8 @@
 **Date:** 2026-05-21
 
 ## 1. Token Efficiency
-- All source code and wiki documents are pre-indexed using CodeGraph.
-- Context injection is performed by querying CodeGraph for only the most relevant nodes (functions, patterns, lessons, decisions, etc.).
+- All source code and wiki documents are pre-indexed using lat.md.
+- Context injection is performed by querying lat.md for only the most relevant nodes (functions, patterns, lessons, decisions, etc.).
 - Caveman skill is used to compress context (lessons, vault, session) for minimal token usage during agent operations.
 - This approach ensures that only the most essential information is loaded into the agent’s context window, optimizing for both speed and cost.
 
@@ -16,11 +16,11 @@
 
 ## 3. Persistence
 - Obsidian CLI is the recommended runtime interface for automated vault and persistent memory operations. Spekificity uses the Obsidian CLI to perform scripted vault syncs, exports, and metadata extractions that enable automated context loading and lesson extraction; see `setup.sh` for verification and install instructions. If the Obsidian CLI is not available, manual vault workflows (git-backed markdown, manual export) are supported but will reduce automation.
-- All session states, decisions, patterns, lessons, and architectural context (from CodeGraph source and wiki indexing) are managed and stored in the Obsidian vault.
+- All session states, decisions, patterns, lessons, and architectural context (from lat.md source and wiki indexing) are managed and stored in the Obsidian vault.
 - The vault serves as the single source of truth for all project knowledge, ensuring long-term durability and accessibility.
 
 ## 4. Autonomy
-- CodeGraph enables autonomous extraction of context, impact analysis, and knowledge mapping.
+- lat.md enables autonomous extraction of context, impact analysis, and knowledge mapping.
 - Agents can operate with minimal manual intervention, leveraging the indexed knowledge base for decision-making and workflow execution.
 - This supports agentic workflows and continuous improvement.
 
@@ -28,7 +28,7 @@
 
 ## Architectural Viability
 - The above principles are enforced in the project’s specifications, implementation roadmap, and workflow documentation.
-- All critical dependencies (CodeGraph, SpecKit, Obsidian CLI, Caveman skill) are recommended and integrated at the architectural level to enable full automation and the four-pillar guarantees. Alternative tools may be used where constraints require them; see the decision matrix in `decision.md` for guidance and migration paths.
+- All critical dependencies (lat.md, SpecKit, Obsidian CLI, Caveman skill) are recommended and integrated at the architectural level to enable full automation and the four-pillar guarantees. Alternative tools may be used where constraints require them; see the decision matrix in `decision.md` for guidance and migration paths.
 - This structure ensures the project’s goals of efficiency, determinism, persistence, and autonomy are met.
 
 ---
@@ -45,7 +45,7 @@
 
 ## Overview
 
-Spekificity is a **specification-driven agent development framework** that ties project knowledge (Obsidian vault), code analysis (CodeGraph), workflow automation (SpecKit), and skill execution (Agent Skills) into a coherent pipeline.
+Spekificity is a **specification-driven agent development framework** that ties project knowledge (Obsidian vault), code analysis (lat.md), workflow automation (SpecKit), and skill execution (Agent Skills) into a coherent pipeline.
 
 **Core Goal:** Enable rapid, deterministic feature development with minimal token overhead and maximum context reuse.
 
@@ -59,7 +59,8 @@ Spekificity is a **specification-driven agent development framework** that ties 
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  ┌──────────────────┐   ┌──────────────────┐                │
-│  │  vault/          │   │   CodeGraph MCP  │                │
+│  │  vault/          │   │   lat.md MCP     │                │
+│  │  vault/          │   │   lat.md Index   │                │
 │  │  (Knowledge)     │   │   (Code Intel)   │                │
 │  └────────┬─────────┘   └────────┬─────────┘                │
 │           │                      │                          │
@@ -96,7 +97,7 @@ Spekificity is a **specification-driven agent development framework** that ties 
 START FEATURE
     │
     ├─ /spek.prepare ─────────────► Workspace Ready
-    │  (Git state, vault/ fresh, graph synced)
+    │  (Git state, vault/ fresh, lat.md index synced)
     │
     ├─ /spek.plan ────────────────┐
     │  (Orchestrate SpecKit)           │
@@ -116,7 +117,7 @@ START FEATURE
     │  (Per-task execution)            (Tests, Docs)
     │
     ├─ /spek.conclude ─────────────→ Outcomes Archived
-    │  (Archive, Lessons, Refresh)     (vault/ + Graph Updated)
+    │  (Archive, Lessons, Refresh)     (vault/ + lat.md index updated)
     │
     ├─ /spek.lessons ─────────────────► Lessons Extracted
     │  (Structured capture)            (vault/ + Session Updated)
@@ -137,14 +138,14 @@ START FEATURE
 - Provides enrichment layers (Success Criteria, Assumptions, Risk Assessment, Metrics)
 - Syncs to Git for version control and collaboration
 
-### CodeGraph MCP
+### lat.md index
 
-**Real-time code analysis and impact detection.**
+**Real-time indexing and impact detection (lat.md).**
 
-- Indexes all project code (symbols, definitions, call chains)
-- Provides impact analysis (who calls this? what does it affect?)
-- Auto-syncs on file change (no manual refresh)
-- Serves agent queries without file scanning (token-efficient)
+- Indexes project Markdown and extracts source metadata (symbols, definitions, call chains)
+- Provides impact analysis via lat.md query tools
+- Supports incremental refresh and optional watch mode
+- Serves agent queries without full file scanning (token-efficient)
 
 ### SpecKit Workflow Engine
 
@@ -199,7 +200,7 @@ START FEATURE
 ┌──────────────▼───────────────────────────────────┐
 │  CORE LAYER: Knowledge + Analysis                │
 │  ├─ vault/ (persistent knowledge)           │
-│  ├─ CodeGraph MCP (real-time code analysis)      │
+│  ├─ lat.md MCP (real-time index/analysis)        │
 │  ├─ Git (version control)                        │
 │  └─ Session State (temp context)                 │
 └──────────────────────────────────────────────────┘
@@ -215,7 +216,7 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 
 1. **Load Vault Context:** Fetch specs, plans, decisions from vault/
 2. **Load Repo Memory:** Read `.git/spek-memory/` for workspace-scoped facts
-3. **Refresh CodeGraph:** Sync latest code changes via MCP
+3. **Refresh lat.md index:** Sync latest code changes via MCP
 4. **Populate Session State:** Assemble context for SpecKit engine or skill execution
 
 ### Command Execution (Example: `/spek.plan`)
@@ -236,7 +237,7 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 |-------|---------|------|----------|
 | **Knowledge Vault** | Git (vault/ sync) | Manual (user commits) + Auto (post/lessons) | Persistent (feature cycle + beyond) |
 | **Repo Memory** | `.git/spek-memory/` (YAML) | Git hook + manual | Persistent (workspace lifetime) |
-| **CodeGraph** | SQLite in `.codegraph/` | File watcher (auto) | Persistent (session lifetime) |
+| **lat.md** | Index directory in `wiki/vault/lat/` | File watcher (auto) | Persistent (session lifetime) |
 | **Session State** | In-memory + context window | Manual commits to memory | Temporary (single session) |
 
 ---
@@ -251,16 +252,16 @@ User Intention
 /spek.plan
     ├→ /speckit.specify (reads vault, writes spec)
     ├→ /speckit.plan (reads spec, writes plan)
-    ├→ /speckit.analyze (queries CodeGraph, validates)
+    ├→ /speckit.analyze (queries lat.md, validates)
     │
 /spek.implement
     ├→ Read plan from vault
-    ├→ Query CodeGraph for context (callers, definitions)
+    ├→ Query lat.md for context (callers, definitions)
     ├→ Generate + execute code changes
     │
 /spek.conclude
     ├→ Archive spec/plan/outcomes in vault
-    ├→ Refresh CodeGraph (commit changes)
+    ├→ Refresh lat.md index (commit changes)
     ├→ Update repo memory
     │
 /spek.lessons

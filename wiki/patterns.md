@@ -69,8 +69,8 @@ Create natural interconnection, enable discovery, validate lessons against patte
 **S3: 3-Layer Query Rule** (Graph → Vault → Code priority)  
 Reduce token waste, already planned. Dependencies: None.
 
-**S4: CodeGraph File Watcher** (Auto-sync on file changes)  
-Keep graph fresh, prevent stale queries. CodeGraph automatically syncs on file saves via file watcher. Dependencies: CodeGraph setup spec.
+**S4: lat.md File Watcher (optional)** (Auto-sync on file changes)  
+Keep index fresh, prevent stale queries. `lat.md` supports on-demand refresh and an optional file-watcher for incremental updates. Dependencies: lat.md setup spec.
 
 **S5: Session Logs as Vault Artifacts** (Archive session memory)  
 Provide audit trail, enable cross-feature discovery. Dependencies: S1, S2 (auto-linking).
@@ -459,8 +459,8 @@ Agent queries cost tokens. Naive approach: read all files (expensive). Better ap
 ### Solution
 Three-tier query hierarchy (cost increases, but Layer 1-2 cover 95% of use cases):
 
-**Layer 1: Code Graph MCP Tools (0 tokens)**
-- Query: CodeGraph MCP tools (codegraph_symbols, codegraph_references, codegraph_callers, etc.)
+**Layer 1: lat.md MCP Tools (0 tokens)**
+- Query: lat.md MCP tools (lat_symbols, lat_references, lat_callers, etc.)
 - Examples: "Who calls function X?", "What does module Y depend on?"
 - Cost: 0 API tokens (local index)
 - Latency: <100ms
@@ -490,7 +490,7 @@ Three-tier query hierarchy (cost increases, but Layer 1-2 cover 95% of use cases
 - Real-time reasoning (latency matters more than tokens)
 
 ### Example Code / Integration
-- **Layer 1:** `/spek.context` uses code graph for symbol lookup
+- **Layer 1:** `/spek.context` uses lat.md for symbol lookup
 - **Layer 2:** `/spek.prepare` queries vault for decisions
 - **Layer 3:** `/spek.implement` reads affected code files only when Layer 1-2 insufficient
 
@@ -517,13 +517,13 @@ Three-tier query hierarchy (cost increases, but Layer 1-2 cover 95% of use cases
 Code structure needs to be queryable (who calls this function? what does this module depend on?). Reading all source files is expensive.
 
 ### Solution
-Use CodeGraph MCP tools for pre-indexed queries:
+Use lat.md MCP tools for pre-indexed queries:
 
 ```python
 # Layer 1: Direct MCP tool calls (built-in, <100ms each)
-symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
-callers = call_mcp_tool("codegraph_callers", symbol="authenticate")
-impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="authenticate")
+symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
+callers = call_mcp_tool("lat_callers", symbol="authenticate")
+impact = call_mcp_tool("lat_impact", file="src/services/auth.py", symbol="authenticate")
 
 # Layer 2: Complex query composition (multiple tool calls)
 # Agent chains multiple queries to answer complex questions
@@ -533,10 +533,10 @@ impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="
 ```
 
 ### When to Use
-- Finding callers/callees (use codegraph_callers, codegraph_callees)
-- Dependency analysis (use codegraph_impact for change scope)
-- Code structure exploration (use codegraph_symbols, codegraph_references)
-- Impact estimation (use codegraph_impact for built-in analysis)
+- Finding callers/callees (use lat_callers, lat_callees)
+- Dependency analysis (use lat_impact for change scope)
+- Code structure exploration (use lat_symbols, lat_references)
+- Impact estimation (use lat_impact for built-in analysis)
 
 ### When NOT to Use
 - Semantic reasoning ("What does this code do?" → need source code reading)
@@ -544,13 +544,13 @@ impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="
 - Complex refactoring reasoning (may need LLM synthesis)
 
 ### Example Code / Integration
-- **Tool 1:** codegraph_symbols — Find all symbols in a file
-- **Tool 2:** codegraph_definition — Find where a symbol is defined
-- **Tool 3:** codegraph_references — Find all uses of a symbol
-- **Tool 4:** codegraph_callers — Find functions calling this function
-- **Tool 5:** codegraph_callees — Find functions called by this function
-- **Tool 6:** codegraph_impact — Estimate change impact radius
-- **Tool 7:** codegraph_query — Free-form graph queries
+-- **Tool 1:** lat_symbols — Find all symbols in a file
+-- **Tool 2:** lat_definition — Find where a symbol is defined
+-- **Tool 3:** lat_references — Find all uses of a symbol
+-- **Tool 4:** lat_callers — Find functions calling this function
+-- **Tool 5:** lat_callees — Find functions called by this function
+-- **Tool 6:** lat_impact — Estimate change impact radius
+-- **Tool 7:** lat_query — Free-form index queries
 
 ### Related Patterns
 - Three-Layer Query Rule (code graph = Layer 1)
@@ -897,7 +897,7 @@ POST-EXECUTION:
 
 ### Example Code / Integration
 - **Integration Point:** Decorator wrapper PRE layer
-- **Context sources:** vault/decision.md, vault/patterns.md, CodeGraph MCP tools
+- **Context sources:** vault/decision.md, vault/patterns.md, lat.md MCP tools
 - **Injection format:** Prompt text ("IMPORTANT: Adhere to these decisions: ...") + MCP tool results
 
 ### Related Patterns
@@ -948,7 +948,7 @@ Classify errors into categories; apply category-specific recovery:
 - Recovery: Async retry (30s intervals, max 3 retries)
 
 **Category 3: Graph/Code Index Errors (TRANSIENT or RECOVERABLE)**
-- Issue: Code graph corrupted, CodeGraph index rebuild fails
+- Issue: lat.md index corrupted, lat.md index rebuild fails
 - Severity: MEDIUM
 - Action: WARN + FALLBACK (continue with stale graph or grep)
 - Recovery: Re-trigger `/spek.map` on next run
@@ -1020,7 +1020,7 @@ Layer 3 (MINIMAL): Continue with empty context (log warning)
 
 **Example: Code Graph Query Fallback**
 ```
-Layer 1 (PRIMARY): Query via CodeGraph MCP tools (codegraph_symbols, codegraph_references, etc.)
+Layer 1 (PRIMARY): Query via lat.md MCP tools (lat_symbols, lat_references, lat_callers, lat_callees, lat_impact, lat_definition, lat_query)
   ↓ (if unavailable)
 Layer 2 (FALLBACK): Fall back to vault grep or file reading
   ↓ (if fails)
@@ -1368,14 +1368,14 @@ Step 4: Remediation
 **Status:** ACTIVE  
 
 ### Problem
-Code lives in CodeGraph index; documentation lives in Obsidian vault. Separate queries make context loading expensive (query code graph + query vault separately).
+Code lives in lat.md index; documentation lives in Obsidian vault. Separate queries make context loading expensive (query index + query vault separately).
 
 ### Solution
-Access unified code + doc graph via CodeGraph MCP tools:
+Access unified code + doc index via lat.md MCP tools:
 
 ```
-CodeGraph SQLite database (vault/graph/codegraph.db) contains:
-├─ Code nodes (from CodeGraph indexing)
+lat.md index (vault/graph/lat_index.db) contains:
+├─ Code nodes (from lat.md indexing)
 │  └─ Functions, classes, modules, variables
 ├─ Doc nodes (from Obsidian export)
 │  └─ Decisions, patterns, lessons, specs
@@ -1383,14 +1383,14 @@ CodeGraph SQLite database (vault/graph/codegraph.db) contains:
   └─ `/spek.prepare`, `/spek.conclude`, etc.
 
 Query via MCP tools:
-├─ codegraph_symbols → Find all code/doc in file
-├─ codegraph_references → Find all uses of code or doc reference
-├─ codegraph_callers → Find code calling this code
-├─ codegraph_impact → Estimate impact of change (code + doc scope)
-└─ codegraph_query → Custom graph queries (advanced)
+├─ lat_symbols → Find all code/doc in file
+├─ lat_references → Find all uses of code or doc reference
+├─ lat_callers → Find code calling this code
+├─ lat_impact → Estimate impact of change (code + doc scope)
+└─ lat_query → Custom index queries (advanced)
 ```
 
-**Node Types (in CodeGraph):**
+**Node Types (in lat.md index):**
 - **Code:** language="python" or other → function/class/variable
 - **Doc (file-level):** language="markdown", type="documentation" → decision.md
 - **Doc (heading-level):** type="documentation", heading=true → decision.md#heading
@@ -1398,7 +1398,7 @@ Query via MCP tools:
 
 **Benefits:**
 - MCP tools find related code + docs in <100ms
-- Impact analysis across code/doc boundary (via codegraph_impact)
+- Impact analysis across code/doc boundary (via lat_impact)
 - Zero token cost for queries
 
 ### When to Use
@@ -1413,7 +1413,7 @@ Query via MCP tools:
 ### Example Code / Integration
 - **Build process:** `/spek.map` generates hybrid graph (code pass + doc pass + merge)
 - **Query interface:** MCP tools (all 7 tools support hybrid queries)
-- **Storage:** vault/graph/codegraph.db (SQLite) + optional vault/graph/exports/ (JSONL exports)
+- **Storage:** vault/graph/lat_index.db (SQLite) + optional vault/graph/exports/ (JSONL exports)
 
 ### Related Patterns
 - Graph Merge Integration Pattern (merge algorithm)
@@ -1435,7 +1435,7 @@ Query via MCP tools:
 **Status:** ACTIVE  
 
 ### Problem
-Code nodes (from CodeGraph) and doc nodes (from Obsidian) are generated separately with different schemas. Merging requires deduplication, link discovery, and backreference computation.
+Code nodes (from lat.md) and doc nodes (from Obsidian) are generated separately with different schemas. Merging requires deduplication, link discovery, and backreference computation.
 
 ### Solution
 Merge process (5 steps):
@@ -1450,7 +1450,7 @@ Step 2: Deduplication
   └─ Output: unique code_nodes[], unique doc_nodes[]
 
 Step 3: Link discovery
-  ├─ Code → Code (already in CodeGraph edges)
+  ├─ Code → Code (already in lat.md edges)
   ├─ Doc → Doc (from markdown links)
   ├─ Code → Doc (from code comments referencing decisions)
   └─ Doc → Code (from decision.md affecting module.py)

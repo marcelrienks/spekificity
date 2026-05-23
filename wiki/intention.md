@@ -12,7 +12,7 @@ Spekificity is a **specification-driven agent development framework** designed t
 
 **Core Problem:** AI agents often produce code without clear, durable specifications. Knowledge gets lost between sessions. Context is rebuilt from scratch. Token budgets explode.
 
-**Core Solution:** Keep specifications in a persistent Obsidian vault, tie code analysis to a real-time CodeGraph, route work through a deterministic SpecKit pipeline, and expose all workflows as repeatable agent skills (`/spek.*` commands).
+**Core Solution:** Keep specifications in a persistent Obsidian vault, tie code analysis to lat.md, route work through a deterministic SpecKit pipeline, and expose all workflows as repeatable agent skills (`/spek.*` commands).
 
 **Outcome:** Teams can build features faster, audit decisions, extract lessons, and reuse context across sessions without token waste or knowledge loss.
 
@@ -24,7 +24,7 @@ Spekificity is a **specification-driven agent development framework** designed t
 
 **Every token counts. Agent queries should be pre-indexed, not re-scanned.**
 
-- Code analysis via CodeGraph MCP (pre-indexed SQLite) instead of grep + file reads
+- Code analysis via lat.md (pre-indexed index) instead of grep + file reads
 - Vault context loaded once per session, not re-read per query
 - Specifications written once, referenced many times
 - Lessons learned captured, stored, and reused across features
@@ -35,7 +35,7 @@ Spekificity is a **specification-driven agent development framework** designed t
 
 - All major steps captured in version-controlled specs and plans
 - Skills (`/spek.*`) define deterministic sequences
-- Impact analysis powered by CodeGraph, not agent reasoning
+- Impact analysis powered by lat.md, not agent reasoning
 - Decisions logged and linked to code changes
 
 ### 3. Persistence
@@ -44,7 +44,7 @@ Spekificity is a **specification-driven agent development framework** designed t
 
 - Specifications, plans, decisions stored in Obsidian vault (Git-backed)
 - Lessons extracted and committed to vault at feature end
-- CodeGraph syncs automatically; never stale
+- lat.md syncs automatically; never stale
 - Session memory persists via repo-scoped YAML files
 
 ### 4. Autonomy
@@ -53,7 +53,7 @@ Spekificity is a **specification-driven agent development framework** designed t
 
 - SpecKit pipeline is deterministic (not agent-driven)
 - Agent skills (`/spek.*`) are composable but opinionated
-- CodeGraph provides pre-indexed facts (no agent reasoning about code structure)
+- lat.md provides pre-indexed facts (no agent reasoning about code structure)
 - Skill chaining and multi-agent workflows are explicit, not emergent
 
 ---
@@ -85,14 +85,14 @@ No code without a specification.
 
 ---
 
-### 3. CodeGraph is Code Intelligence
+### 3. lat.md is Code Intelligence
 
-Real-time, pre-indexed code analysis via CodeGraph MCP. No file scanning.
+Real-time, pre-indexed code analysis via lat.md. No file scanning.
 
-- CodeGraph automatically syncs on every file change
+- lat.md automatically syncs on every file change
 - Queries are deterministic (impact analysis, caller chains, definitions)
-- Agents use CodeGraph for code context, not file grep
-- CodeGraph is the modern standard for agent-driven code analysis
+- Agents use lat.md for code context, not file grep
+- lat.md is the modern standard for agent-driven code analysis
 
 **Implication:** Agent queries stay fast and token-cheap, even in large codebases.
 
@@ -200,7 +200,7 @@ Consistent naming makes the system intuitive:
 **With Spekificity:**
 - Specs written once, referenced many times (token-efficient)
 - Decisions logged and linked to code (persistence)
-- Impact analysis is CodeGraph-backed (deterministic)
+- Impact analysis is lat.md-backed (deterministic)
 - Lessons learned are captured and reused (cumulative improvement)
 - Workflow is standardized and repeatable (consistent quality)
 

@@ -103,9 +103,9 @@ tests/
 **Scope:** Load context from vault, merge patterns, inject into input
 
 **Fixtures:** 
-- `mock_vault`: MockVault with 3 pre-built decision.md + patterns.md
-- `mock_codegraph`: MockCodeGraph with 50 sample symbols
-- `mock_context`: Empty enrichment context
+-- `mock_vault`: MockVault with 3 pre-built decision.md + patterns.md
+-- `mock_lat`: MockLat with 50 sample symbols
+-- `mock_context`: Empty enrichment context
 
 **Test Cases:**
 
@@ -113,12 +113,12 @@ tests/
 |---------|-----------|-------|-----------|
 | U-E1 | Load vault decision | Mock vault with 2 decisions | context["decisions"] = 2 items |
 | U-E2 | Load vault patterns | Mock vault with 5 patterns | context["patterns"] = 5 items |
-| U-E3 | Query CodeGraph symbols | Mock CodeGraph with 50 symbols | context["symbols"] returns 50 (unfiltered) |
-| U-E4 | Filter CodeGraph by type | Mock CodeGraph, query by type "function" | returns only functions (~30 of 50) |
+| U-E3 | Query lat.md symbols | MockLat with 50 symbols | context["symbols"] returns 50 (unfiltered) |
+| U-E4 | Filter lat.md by type | MockLat, query by type "function" | returns only functions (~30 of 50) |
 | U-E5 | Merge context layers | 2 decisions + 3 patterns + 20 symbols | merged output = 25 items, no duplicates |
 | U-E6 | Handle vault not found | Mock vault missing patterns.md | raise FileNotFoundError w/ clear message |
-| U-E7 | Handle CodeGraph timeout | Mock CodeGraph timeout (3s) | raise TimeoutError, continue without graph |
-| U-E8 | Handle CodeGraph error | Mock CodeGraph returns error | log warning, continue w/ vault only |
+| U-E7 | Handle lat.md timeout | MockLat timeout (3s) | raise TimeoutError, continue without index |
+| U-E8 | Handle lat.md error | MockLat returns error | log warning, continue w/ vault only |
 | U-E9 | Token estimate | Merge 100 items | tokens ~= 100 * 3 (conservative estimate) |
 | U-E10 | Compression flag | Inject context w/ compress=True | output compressed (caveman format, ~75% reduction) |
 
@@ -237,7 +237,7 @@ tests/
 
 **Fixtures:**
 - `mock_vault`: Vault w/ 3 decisions, 5 patterns
-- `mock_codegraph`: CodeGraph w/ 50 symbols
+- `mock_lat`: lat.md w/ 50 symbols
 - `mock_feature_state`: Feature in "planning" phase
 
 **Test Cases:**
@@ -299,7 +299,7 @@ tests/
 
 ### 3.1 Test Organization
 
-Integration tests use real Spekificity code but mock external tools (SpecKit, CodeGraph, vault file I/O). Each test exercises one complete workflow step.
+Integration tests use real Spekificity code but mock external tools (SpecKit, lat.md, vault file I/O). Each test exercises one complete workflow step.
 
 **File:** `tests/integration/test_prepare_workflow.py`
 
@@ -319,7 +319,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 | I-PR1 | Prepare creates feature state | Run prepare on new feature | feature-state.json created, phase="not_started" |
 | I-PR2 | Prepare creates vault dir | Run prepare | wiki/vault/decisions/ created, wiki/vault/patterns/ created |
 | I-PR3 | Prepare initializes config | Run prepare | .spekificity/config.yaml created w/ defaults |
-| I-PR4 | Prepare initializes CodeGraph | Run prepare w/ codegraph=true | codegraph init called, DB created |
+| I-PR4 | Prepare initializes lat.md index | Run prepare w/ lat=true | lat init called, DB created |
 | I-PR5 | Prepare exits cleanly | All prep steps succeed | exit code 0, success message |
 
 **Success Criteria:**
@@ -337,7 +337,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 
 **Fixtures:**
 - `mock_speckit.specify`: Returns mock spec JSON
-- `mock_enrichment`: Context loaded from vault + CodeGraph
+- `mock_enrichment`: Context loaded from vault + lat.md
 - `mock_state`: Feature in "not_started" phase
 - `mock_spec_output`: Expected spec.json structure
 
@@ -346,11 +346,11 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 | Test ID | Test Name | Setup | Assertion |
 |---------|-----------|-------|-----------|
 | I-SP1 | Specify loads vault context | spec.specify() called | vault decisions + patterns loaded |
-| I-SP2 | Specify queries CodeGraph | spec.specify() called | CodeGraph queried for project symbols |
+| I-SP2 | Specify queries lat.md | spec.specify() called | lat.md queried for project symbols |
 | I-SP3 | Specify injects context | context injected into SpecKit prompt | SpecKit receives enriched prompt |
 | I-SP4 | Specify saves spec | SpecKit returns spec JSON | spec saved to wiki/vault/specs/<feature>.json |
 | I-SP5 | Specify updates state | Spec saved | feature state phase → "specified", % → 20 |
-| I-SP6 | Specify handles CodeGraph error | CodeGraph timeout | spec still generated (vault-only context) |
+| I-SP6 | Specify handles lat.md error | lat.md timeout | spec still generated (vault-only context) |
 | I-SP7 | Specify compresses context if enabled | feature.compress=true | context injected in caveman format |
 | I-SP8 | Specify exits with code 0 | All steps succeed | exit code 0 |
 
@@ -370,7 +370,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 **Fixtures:**
 - `mock_spec`: Spec JSON from prior specify
 - `mock_speckit.plan`: Returns mock plan JSON
-- `mock_enrichment`: Context loaded from vault + CodeGraph + spec
+- `mock_enrichment`: Context loaded from vault + lat.md + spec
 - `mock_state`: Feature in "specified" phase
 
 **Test Cases:**
@@ -379,7 +379,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 |---------|-----------|-------|-----------|
 | I-PL1 | Plan loads spec | plan called | spec.json loaded from vault |
 | I-PL2 | Plan loads vault context | plan called | vault decisions + patterns loaded |
-| I-PL3 | Plan queries CodeGraph by topic | plan called | CodeGraph filtered by affected modules |
+| I-PL3 | Plan queries lat.md by topic | plan called | lat.md filtered by affected modules |
 | I-PL4 | Plan injects enriched context | context injected | SpecKit receives spec + decisions + patterns + symbols |
 | I-PL5 | Plan saves plan | SpecKit returns plan JSON | plan saved to wiki/vault/plans/<feature>.json |
 | I-PL6 | Plan updates state | Plan saved | feature state phase → "planned", % → 40 |
@@ -436,7 +436,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 
 **Fixtures:**
 - `mock_plan`: Plan JSON from prior implement
-- `mock_codegraph`: CodeGraph w/ executed code symbols
+- `mock_lat`: lat.md w/ executed code symbols
 - `mock_state`: Feature in "completing" phase
 
 **Test Cases:**
@@ -495,7 +495,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 
 ### 4.1 Test Organization
 
-E2E tests use the synthetic project fixture (real file I/O, real CodeGraph queries, real Spekificity code). No mocks. Validate entire workflow on a small Python project.
+E2E tests use the synthetic project fixture (real file I/O, real lat.md queries, real Spekificity code). No mocks. Validate entire workflow on a small Python project.
 
 **Fixture:** `tests/fixtures/synthetic_project/`
 
@@ -514,7 +514,7 @@ synthetic_project/
 
 **Setup:**
 - Copy synthetic_project to temp dir for each E2E test
-- Initialize CodeGraph on synthetic_project
+- Initialize lat.md on synthetic_project
 - Run Spekificity workflows
 - Verify outputs on real code
 
@@ -542,7 +542,7 @@ synthetic_project/
 - ✅ All 7 tests pass
 - ✅ < 30s per test (total < 210s, note: real SpecKit calls are slow)
 - ✅ Real code analysis on synthetic_project verified
-- ✅ CodeGraph queries return real symbols from src/
+- ✅ lat.md queries return real symbols from src/
 
 ---
 
@@ -550,7 +550,7 @@ synthetic_project/
 
 **File:** `tests/e2e/test_error_scenarios.py`
 
-**Scope:** Handle errors gracefully (missing vault, CodeGraph timeout, git error, task fail)
+**Scope:** Handle errors gracefully (missing vault, lat.md timeout, git error, task fail)
 
 **Test Cases:**
 
@@ -560,7 +560,7 @@ synthetic_project/
 | E-ES2 | Missing spec | Try implement without spec | Error: "Missing spec.json", exit code 2 |
 | E-ES3 | Missing plan | Try implement without plan | Error: "Missing plan.json", exit code 2 |
 | E-ES4 | Task fails | Task 1 fails → Task 2 should still run | Continue-on-error: Task 1 failed, Task 2 executed |
-| E-ES5 | CodeGraph timeout | CodeGraph queries timeout (mock 3s) | Context loaded from vault only, workflow continues |
+| E-ES5 | lat.md timeout | lat.md queries timeout (mock 3s) | Context loaded from vault only, workflow continues |
 | E-ES6 | Git error | git diff fails | Warning logged, workflow continues (no diff in trace) |
 | E-ES7 | State corruption | feature-state.json malformed JSON | Error: "Invalid state file", prompt user to reset |
 | E-ES8 | Interrupt mid-workflow | Ctrl+C during implement | Feature state phase remains as-is, resume on next run |
@@ -638,7 +638,7 @@ synthetic_project/
 | E-PB6 | Implement time | Time to implement 3 tasks | < 2s (mock SpecKit.implement) |
 | E-PB7 | Post time | Time to post (lesson generation) | < 1s |
 | E-PB8 | Full pipeline time | Prepare → specify → plan → implement → post | < 10s (all mocks, real file I/O) |
-| E-PB9 | CodeGraph perf | CodeGraph symbol query on synthetic_project | < 100ms (MCP tool call) |
+| E-PB9 | lat.md perf | lat.md symbol query on synthetic_project | < 100ms (MCP tool call) |
 | E-PB10 | Memory peak | Peak memory during implement | < 500MB |
 
 **Success Criteria:**
@@ -699,13 +699,13 @@ class MockSpecKit:
 
 ---
 
-### 5.2 Mock CodeGraph
+### 5.2 Mock lat.md
 
-**File:** `tests/fixtures/conftest.py` → `mock_codegraph` fixture
+**File:** `tests/fixtures/conftest.py` → `mock_lat` fixture
 
 ```python
-class MockCodeGraph:
-    """Simulates CodeGraph MCP tool responses."""
+class MockLat:
+    """Simulates lat.md MCP tool responses."""
     
     def __init__(self):
         self.symbols = [
@@ -715,20 +715,20 @@ class MockCodeGraph:
             # ... 47 more mock symbols
         ]
     
-    def codegraph_symbols(self, file_path):
+    def lat_symbols(self, file_path):
         """Return symbols in file."""
         return [s for s in self.symbols if s["file"] == file_path]
     
-    def codegraph_definition(self, symbol_name):
+    def lat_definition(self, symbol_name):
         """Return symbol definition."""
         sym = next((s for s in self.symbols if s["name"] == symbol_name), None)
         return sym or {"error": "Symbol not found"}
     
-    def codegraph_references(self, symbol_name):
+    def lat_references(self, symbol_name):
         """Return all references to symbol."""
         return [{"file": "main.py", "line": 15}, {"file": "utils.py", "line": 8}]
     
-    def codegraph_impact(self, symbol_name):
+    def lat_impact(self, symbol_name):
         """Return impact radius (affected symbols)."""
         return {
             "direct": ["caller1", "caller2"],
@@ -736,7 +736,7 @@ class MockCodeGraph:
             "estimate_impact": "medium"
         }
     
-    def codegraph_query(self, query):
+    def lat_query(self, query):
         """Return results from free-form query."""
         if "timeout" in query:
             raise TimeoutError("Query timeout (3s)")

@@ -50,14 +50,12 @@ spek implement --help
 spek conclude --help
 spek lessons --help
 spek tools --help
-spek init --help
 ```
 
 ### 4. Start Using Spekificity
 
 ```bash
 # 1. Prepare workspace
-spek prepare
 
 # 2. Load project context
 spek context
@@ -77,14 +75,11 @@ spek conclude
 # 7. Extract lessons
 spek lessons
 ```
-
 ---
 
 ## Detailed Installation Steps
 
 ### Prerequisites
-
-- **Python 3.11+** (required)
 - **uv** package manager (recommended)
   - Install: `curl -LsSf https://astral.sh/uv/install.sh | sh`
   - Or via Homebrew: `brew install uv`
@@ -101,17 +96,11 @@ uv tool install spekificity --from git+https://github.com/marcelrienks/spekifici
 spek --version
 ```
 
-**Advantages:**
-- Isolated environment (doesn't pollute system Python)
-- Easy to update: `uv tool upgrade spekificity`
-- Easy to remove: `uv tool uninstall spekificity`
 - Perfect for CI/CD and team collaboration
 
 #### Method 2: Via pip (Local Development)
 
 ```bash
-# Clone the repository
-git clone https://github.com/marcelrienks/spekificity.git
 cd spekificity
 
 # Install in development mode
@@ -126,7 +115,6 @@ spek --version
 ```bash
 pip install git+https://github.com/marcelrienks/spekificity.git
 ```
-
 ---
 
 ## Post-Installation Setup
@@ -139,7 +127,7 @@ spek init
 
 This interactive setup wizard:
 1. Creates necessary directories
-2. Initializes CodeGraph database
+2. Initializes the lat.md index
 3. Detects SpecKit installation
 4. Initializes SpecKit if available
 5. Provides next steps
@@ -152,8 +140,8 @@ If you prefer manual control:
 # Create directories
 mkdir -p .spek vault/{user,session,repo,lessons} wiki/{specs,lessons}
 
-# Initialize CodeGraph
-python -c "from spekificity.graph.codegraph import CodeGraph; CodeGraph()"
+# Initialize lat.md index
+python -c "from spekificity.graph.lat_index import LatIndex; LatIndex()"
 
 # Initialize SpecKit (optional)
 specify init .
@@ -171,13 +159,8 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 Or let `spek init` handle it automatically.
 
-#### CodeGraph
 
-CodeGraph is included by default. It automatically:
-- Creates SQLite database at `.spek/codegraph.db`
-- Indexes Python symbols via AST analysis
-- Provides query interface for agents
-
+- Provides a markdown-first code + doc index and MCP query interface for agents
 ---
 
 ## Installation Troubleshooting
@@ -194,8 +177,6 @@ uv tool install spekificity --from git+https://github.com/marcelrienks/spekifici
 
 # Check installation location
 which spek
-```
-
 ### Issue: SpecKit installation fails
 
 **Solution:**
@@ -210,7 +191,7 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 specify init .
 ```
 
-### Issue: CodeGraph database permission error
+### Issue: lat.md index permission error
 
 **Solution:**
 ```bash
@@ -220,14 +201,13 @@ mkdir -p .spek
 # Check permissions
 ls -la .spek/
 
-# Reinitialize CodeGraph
+# Reinitialize lat.md index
 spek init --skip-speckit
 ```
 
 ### Issue: Python version mismatch
 
 **Solution:**
-```bash
 # Check Python version
 python --version
 
@@ -237,7 +217,6 @@ python --version
 # Ubuntu: sudo apt-get install python3.11
 # Windows: Download from python.org
 ```
-
 ---
 
 ## Configuration
@@ -256,14 +235,7 @@ export SPEK_DIR=/path/to/.spek
 ```
 
 ### Project Configuration
-
-Configuration files (stored in vault/):
-- `vault/user/preferences.md` - User preferences
-- `vault/session/*.yaml` - Session and feature state
-- `vault/repo/*.md` - Repository decisions and patterns
-- `wiki/specs/` - Specification files
 - `wiki/lessons/` - Lesson extraction outputs
-
 ---
 
 ## Next Steps After Installation
@@ -281,11 +253,8 @@ spek context --layer all
 ```
 
 ### 3. Create Your First Feature
-
 ```bash
 spek plan "Implement feature X"
-```
-
 ### 4. Query Code Graph
 
 ```bash
@@ -296,7 +265,6 @@ spek tools --list
 ### 5. Integrate with Your Workflow
 
 See [workflow.md](workflow.md) for workflow integration patterns.
-
 ---
 
 ## Integration with AI Agents
@@ -309,23 +277,19 @@ from spekificity.mcp.client import get_mcp_client
 # Get MCP client (singleton)
 client = get_mcp_client()
 
-# Query CodeGraph
+# Query lat.md
 result = client.lookup_symbol("UserService")
 result = client.find_references("authenticate")
 result = client.analyze_impact("Config")
 
-# Use with agents
 available_tools = client.get_available_tools()
 ```
-
-Or via CLI:
 
 ```bash
 spek tools --list
 spek tools --tool lookup_symbol --symbol UserService
 spek tools --tool analyze_impact --symbol Config --format json
 ```
-
 ---
 
 ## Uninstallation
@@ -345,21 +309,13 @@ rm -rf .spek vault
 # Remove documentation (optional)
 rm -rf wiki/lessons
 ```
-
 ---
 
 ## Support & Documentation
-
-- **Quick Reference:** [quickstart.md](quickstart.md)
-- **Full Documentation:** See this `wiki/` directory
-- **Issues & Discussions:** GitHub Issues
 - **Contributing:** See CONTRIBUTING.md
-
----
 
 ## Architecture Overview
 
-```
 Installation via uv
         ↓
 ┌───────────────────────────────────────┐
@@ -374,7 +330,7 @@ Run: spek init
 ┌───────────────────────────────────────┐
 │  Post-Installation Setup              │
 │  - Create .spek directory             │
-│  - Initialize CodeGraph               │
+│  - Initialize lat.md index               │
 │  - Install SpecKit (if available)     │
 │  - Run specify init .                 │
 └───────────────────────────────────────┘
@@ -383,15 +339,10 @@ Project Ready for Use
         ↓
 Run: spek prepare → plan → implement → post
 ```
-
 ---
 
 ## Version Information
-
-- **Current Version:** 0.1.0-alpha.1
-- **Python Required:** 3.11+
 - **License:** MIT
-
 ---
 
 ## FAQ
@@ -406,7 +357,7 @@ Run: spek prepare → plan → implement → post
 
 ### Q: Can I use Spekificity offline?
 
-**A:** Mostly yes. The CodeGraph and core CLI work offline. SpecKit commands may require online validation.
+**A:** Mostly yes. The lat.md index and core CLI work offline. SpecKit commands may require online validation.
 
 ### Q: How do I update Spekificity?
 
@@ -422,15 +373,10 @@ uv tool upgrade spekificity
 ### Q: Is Spekificity compatible with Windows?
 
 **A:** Yes, but some features (git operations, shell commands) work best on Unix-like systems (macOS, Linux). On Windows, use WSL2 for best compatibility.
-
 ---
 
 ## Feedback & Contributions
 
-We'd love to hear from you! Please:
-- 📝 Report issues on GitHub
-- 💡 Suggest improvements
-- 🤝 Contribute code or documentation
 - 📢 Share your workflows
 
 See CONTRIBUTING.md for details.

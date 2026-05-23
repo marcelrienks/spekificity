@@ -1,3 +1,30 @@
+### In lat.md Index
+
+```
+lat index (updated)
+├─ All symbols and document nodes indexed
+├─ All references mapped
+├─ Impact chains calculated
+└─ Ready for next query in < 100ms
+```
+✓ lat.md index refreshed
+
+├─ lat.md queried for affected files
+│  ├─ Query lat.md:
+│  │  - User model exists (✓ verified in lat.md)
+│  │  - JWT utilities exist (✓ verified in lat.md)
+├─ lat.md queried: 3 files affected, 12 functions touched
+
+├─ Query lat.md:
+│  │  - User model exists (✓ verified in lat.md)
+- lat.md updated and ready
+
+| **Build faster** | Specs clarify intent upfront; lat.md prevents hand-tracing code |
+| **Prevent conflicts** | lat.md shows what code touches what; explicit dependency tracking prevents collisions |
+├─ /spek.prepare (lat.md shows JWT utilities exist)
+
+✅ **lat.md answers code questions** — "Where is X used?" answered via pre-indexed queries, not manual scanning  
+✅ **lat.md integration (pre-indexed queries, multiple languages)**
 # Spekificity: The Complete Goal
 
 > **Purpose:** Single source of truth for what Spekificity is, what it delivers, and how it operates when fully implemented.
@@ -29,10 +56,10 @@ Spekificity is a **specification-driven agent development framework** built arou
 ### 1. Token Efficiency
 **Every token counts. Agent queries should be pre-indexed, not re-scanned.**
 
-- **CodeGraph MCP:** Real-time indexed code analysis (pre-indexed, no file scanning)
-  - Pre-indexed SQLite database auto-syncs when files change
-  - Supports multiple languages via AST parsing
-  - Tools: `codegraph_symbols()`, `codegraph_references()`, `codegraph_impact()`, `codegraph_definition()`
+- **lat.md:** Real-time indexed documentation + source index (pre-indexed, no file scanning)
+  - Incremental index auto-syncs when files change
+  - Supports multiple languages via pluggable extractors
+  - Tools: `lat_symbols()`, `lat_references()`, `lat_impact()`, `lat_definition()`
 
 - **Scoped Context Loading:** Vault loaded once per session, not per query
   - Specs, decisions, patterns stored and referenced repeatedly
@@ -79,7 +106,7 @@ Spekificity is a **specification-driven agent development framework** built arou
   - **Session memory** (`vault/session/`) — Scoped to current session
   - **Repo memory** (`vault/repo/`) — Scoped to this project
 
-- **CodeGraph Auto-Sync:** Never stale
+- **lat.md Auto-Sync:** Never stale
   - File watches implemented
   - Incremental updates on file change
   - Query results always current
@@ -92,7 +119,7 @@ Spekificity is a **specification-driven agent development framework** built arou
   - No need to re-discover what's been tried
   - Can suggest solutions based on captured patterns
 
-- **Graph-Grounded Context:** CodeGraph provides pre-indexed facts
+- **Index-Grounded Context:** lat.md provides pre-indexed facts
   - No agent reasoning about "where does this function live?"
   - No guessing about impact
   - Deterministic analysis, not emergent reasoning
@@ -112,11 +139,11 @@ These core skills form the primary workflow and map to the four stages (Prepare 
 
 | Order | Skill | Purpose | Input | Output |
 |-------|-------|---------|-------|--------|
-| 1️⃣ | `/spek.prepare` | Pre-flight checks | Workspace state | Clean workspace + vault synced + CodeGraph fresh |
+| 1️⃣ | `/spek.prepare` | Pre-flight checks | Workspace state | Clean workspace + vault synced + lat.md index fresh |
 | 2️⃣ | `/spek.plan --phase=specify` | Enriched spec generation | Feature intent | `wiki/specs/NNN-feature-name.md` with enrichment layers |
 | 3️⃣ | `/spek.plan --phase=plan` | Task breakdown & validation | Specification | `wiki/specs/NNN-feature-plan.md` with dependencies |
 | 4️⃣ | `/spek.implement` | Execute tasks with full context | Tasks from plan | Code + tests + docs in git |
-| 5️⃣ | `/spek.conclude` | Archive & vault sync | Execution artifacts | Lessons in vault + decisions logged + CodeGraph refreshed |
+| 5️⃣ | `/spek.conclude` | Archive & vault sync | Execution artifacts | Lessons in vault + decisions logged + lat.md index refreshed |
 
 **Bookend Principle:** Skills 1 & 5 are semantic opposites:
 - `/spek.prepare` prepares the workspace FOR work
@@ -130,7 +157,7 @@ These core skills form the primary workflow and map to the four stages (Prepare 
 │                                                              │
 │  /spek.prepare                                               │
 │  ├─ Pre-flight checks (git clean, vault synced)             │
-│  ├─ CodeGraph refresh (indexed queries ready)               │
+│  ├─ lat.md index refresh (indexed queries ready)               │
 │  └─ Session context loaded                                  │
 │       ↓                                                      │
 │  /spek.plan --phase=specify                                 │
@@ -143,7 +170,7 @@ These core skills form the primary workflow and map to the four stages (Prepare 
 │  /spek.plan --phase=plan                                    │
 │  ├─ Tasks broken down                                       │
 │  ├─ Dependencies analyzed                                   │
-│  ├─ Impact mapped (CodeGraph)                               │
+│  ├─ Impact mapped (lat.md)                               │
 │  └─ Plan stored in wiki/specs/                              │
 │       ↓                                                      │
 │  /spek.implement                                            │
@@ -157,7 +184,7 @@ These core skills form the primary workflow and map to the four stages (Prepare 
 │  ├─ Lessons extracted & stored                              │
 │  ├─ Decisions logged with rationale                         │
 │  ├─ Patterns indexed for reuse                              │
-│  ├─ CodeGraph updated                                       │
+│  ├─ lat.md index updated                                    │
 │  └─ Session archived → ready for next feature               │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
@@ -272,11 +299,11 @@ vault/
       └─ Lessons learned for future reference
 ```
 
-### In CodeGraph
+### In lat.md Index
 
 ```
-codegraph.db (updated)
-├─ All symbols indexed
+lat index (updated)
+├─ All symbols and document nodes indexed
 ├─ All references mapped
 ├─ Impact chains calculated
 └─ Ready for next query in < 100ms
@@ -290,7 +317,7 @@ wiki/vault/
 ├─ All decisions documented
 ├─ All patterns captured
 ├─ Session lessons stored
-└─ Graph fresh and ready
+└─ lat.md index fresh and ready
 ```
 
 **Total Outcome:** Clean code + passing tests + architectural knowledge captured + lessons indexed + next developer can read vault and understand what happened and why.
@@ -308,7 +335,7 @@ wiki/vault/
 ```
 ✓ Git working tree clean
 ✓ Vault synced from origin
-✓ CodeGraph refreshed
+✓ lat.md index refreshed
 ✓ Session context loaded
 READY: Workspace prepared for feature development
 ```
@@ -316,7 +343,7 @@ READY: Workspace prepared for feature development
 **What happened:**
 - Git verified clean (no uncommitted work)
 - Vault pulled (latest specs/decisions/lessons from wiki/vault/)
-├─ CodeGraph queried for affected files
+├─ lat.md queried for affected files
 - Session memory loaded (decisions, patterns from wiki/vault/)
 - Feature state file created
 
@@ -327,7 +354,7 @@ READY: Workspace prepared for feature development
 ```
 SPEC GENERATION
 ├─ Feature Intent: "POST /auth/login endpoint validates credentials, returns JWT"
-├─ Query CodeGraph:
+├─ Query lat.md:
 │  ├─ Found existing: auth/models.py (user model)
 │  ├─ Found existing: auth/tokens.py (jwt utilities)
 │  └─ Impact: 3 existing files touch auth system
@@ -341,8 +368,8 @@ SPEC GENERATION
 │  │  - ✓ 95%+ test coverage on new code
 │  │
 │  ├─ Assumptions:
-│  │  - User model exists (✓ verified in CodeGraph)
-│  │  - JWT utilities exist (✓ verified in CodeGraph)
+│  │  - User model exists (✓ verified in lat.md)
+│  │  - JWT utilities exist (✓ verified in lat.md)
 │  │  - Passwords already hashed (✓ verified in auth/models.py)
 │  │
 │  ├─ Risk Assessment:
@@ -373,7 +400,7 @@ SPEC GENERATION
 ```
 TASK BREAKDOWN
 ├─ Spec parsed: 150-user-auth-api.md
-├─ CodeGraph queried: 3 files affected, 12 functions touched
+├─ lat.md queried: 3 files affected, 12 functions touched
 │
 ├─ Dependencies analyzed:
 │  ├─ Upstream: User model (EXISTS, no changes needed)
@@ -420,13 +447,13 @@ IMPLEMENTING TASK 1: Add login route handler
 
 INPUT:
 ├─ Task spec (150-user-auth-api.md + 151-user-auth-plan.md)
-├─ CodeGraph results (where to add code, what exists, what to reuse)
+├─ lat.md results (where to add code, what exists, what to reuse)
 ├─ Existing patterns (JWT handling, error responses)
 └─ Session memory (decisions from previous features)
 
 EXECUTION:
 ├─ Agent reads task spec
-├─ Agent queries CodeGraph for:
+├─ Agent queries lat.md for:
 │  ├─ User model location + interface
 │  ├─ JWT utilities location + interface
 │  ├─ Existing error handling patterns
@@ -488,7 +515,7 @@ Step 2: Activate Caveman Compression
 Step 3: Generate Lessons
 ├─ What worked:
 │  - JWT token generation pattern applied cleanly
-│  - CodeGraph impact analysis reduced manual code review effort
+│  - lat.md impact analysis reduced manual code review effort
 │  - Unit test template from existing auth tests reused
 │
 ├─ What didn't:
@@ -515,7 +542,7 @@ Step 6-7: Sync Repo Memory
 ├─ vault/repo/patterns-index.md (updated)
 └─ Ready for next project to use
 
-Step 8: Refresh CodeGraph
+Step 8: Refresh lat.md index
 ├─ Scan new code (auth/routes.py, tests/)
 ├─ Update index with new functions/classes
 └─ Graph now includes login handler, tests
@@ -538,7 +565,7 @@ Step 10: Report Completion
 - Lessons documented and indexed in vault
 - Decisions logged with rationale
 - Patterns captured for reuse
-- CodeGraph updated and ready
+- lat.md updated and ready
 - Session memory archived
 - Repository ready for next feature
 
@@ -550,7 +577,7 @@ Step 10: Report Completion
 
 | Benefit | How Spekificity Enables It |
 |---------|---------------------------|
-| **Build faster** | Specs clarify intent upfront; CodeGraph prevents hand-tracing code |
+| **Build faster** | Specs clarify intent upfront; lat.md prevents hand-tracing code |
 | **Make better decisions** | Decisions logged with rationale; future code can reference why choices were made |
 | **Reduce debugging** | Enrichment layers (assumptions, risk assessment) catch issues early |
 | **Learn from the past** | Lessons captured in vault; patterns indexed for reuse |
@@ -561,7 +588,7 @@ Step 10: Report Completion
 | Benefit | How Spekificity Enables It |
 |---------|---------------------------|
 | **Async coordination** | Specs are artifacts that can be reviewed, debated, approved before code |
-| **Prevent conflicts** | CodeGraph shows what code touches what; explicit dependency tracking prevents collisions |
+| **Prevent conflicts** | lat.md shows what code touches what; explicit dependency tracking prevents collisions |
 | **Share knowledge** | Vault is Git-backed; decisions, patterns, lessons visible to entire team |
 | **Reduce ramp-up time** | New developer reads vault, understands what's been tried and why |
 | **Replicate success** | Patterns are documented; next feature can reference and reuse |
@@ -616,7 +643,7 @@ KNOWLEDGE DEBT: Next time, developer repeats same analysis
 
 ```
 Day 1 (Morning - 30 min):
-├─ /spek.prepare (CodeGraph shows JWT utilities exist)
+├─ /spek.prepare (lat.md shows JWT utilities exist)
 ├─ /spek.plan --phase=specify (spec written with enrichment)
 ├─ Success criteria clear, assumptions documented
 ├─ Spec reviewed + approved by team
@@ -647,7 +674,7 @@ NEXT TIME: Developer reads vault, reuses pattern, saves 1.5 hours
 Spekificity is working when:
 
 ✅ **Specs exist before code** — Developers write spec first, not as documentation after  
-✅ **CodeGraph answers code questions** — "Where is X used?" answered via pre-indexed queries, not manual scanning  
+✅ **lat.md answers code questions** — "Where is X used?" answered via pre-indexed queries, not manual scanning  
 ✅ **Decisions are documented** — Vault grows; decisions logged with rationale  
 ✅ **Patterns are reused** — Each feature references 2-3 patterns from vault  
 ✅ **Lessons are captured** — Each feature adds to lessons archive  
@@ -662,7 +689,7 @@ Spekificity is working when:
 **When Fully Implemented, Spekificity Provides:**
 
 - ✅ 4-stage workflow (Prepare → Specify & Plan → Implement → Close)
-- ✅ CodeGraph integration (pre-indexed queries, multiple languages)
+- ✅ lat.md integration (pre-indexed queries, multiple languages)
 - ✅ SpecKit orchestration (deterministic pipeline)
 - ✅ Obsidian vault (Git-backed knowledge store)
 - ✅ Memory architecture (3-layer persistence)

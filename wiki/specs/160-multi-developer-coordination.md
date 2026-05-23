@@ -136,7 +136,7 @@ Feature Branch (spek-<feature>-<initials>):
 
 **Example:**
 ```
-Developer A: "Use CodeGraph for code intelligence (auto-syncing, MCP-integrated)"
+Developer A: "Use lat.md for code intelligence (auto-syncing, MCP-integrated)"
 Developer B: "Implement caveman compression for lessons"
 Result: Both added to vault/decision.md (no conflict)
 ```
@@ -269,7 +269,7 @@ def check_conflicts(main_branch, feature_branch):
 ### Feature Complete: "Add Tests" (Developer B, spek-add-tests-db)
 - Scope: Test infrastructure (pytest setup)
 - New decisions: Test coverage target = 80%
-- New patterns: Mock strategy for SpecKit + CodeGraph
+- New patterns: Mock strategy for SpecKit + lat.md
 - Code review: Pending
 - Status: AWAITING MERGE REVIEW
 - Link: https://github.com/...
@@ -304,7 +304,7 @@ spek-<feature-name>-<developer-initials>
 Examples:
 - spek-add-logging-da (Developer A's logging feature)
 - spek-add-tests-db (Developer B's tests feature)
-- spek-codegraph-integration-mc (Developer MC's CodeGraph work)
+- spek-latmd-integration-mc (Developer MC's lat.md work)
 ```
 
 **Branch Naming Rules:**

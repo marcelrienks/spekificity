@@ -16,20 +16,20 @@ date: "2026-05-21"
 
 ## Overview
 
-Query patterns for accessing CodeGraph via **MCP tools** (not shell grep/jq). CodeGraph exposes 7 primary MCP tools for agent queries with zero token cost and <500ms latency.
+Query patterns for accessing lat.md via **MCP tools** (not shell grep/jq). lat.md exposes 7 primary MCP tools for agent queries with zero token cost and <500ms latency.
 
 ---
 
-## The 3-Layer Query Rule (Updated for CodeGraph)
+## The 3-Layer Query Rule (Updated for lat.md)
 
 ```
 Layer 1: MCP Tool Calls (0 tokens, <100ms)
-├─ Use: codegraph_symbols, codegraph_references, codegraph_callers, codegraph_definition
+├─ Use: lat_symbols, lat_references, lat_callers, lat_definition
 ├─ Example: "Find all callers of function X"
 └─ Cost: 0 tokens, <100ms latency
 
 Layer 2: Built-in Impact Analysis (0 tokens, <500ms)
-├─ Use: codegraph_impact
+├─ Use: lat_impact
 ├─ Example: "What's the impact of changing this function?"
 └─ Cost: 0 tokens, <500ms latency
 
@@ -45,13 +45,13 @@ Layer 3: LLM Synthesis (1-2K tokens, 5-15s)
 
 ## Layer 1: Direct MCP Tool Calls
 
-Agents call MCP tools directly. CodeGraph returns structured data (not text files).
+Agents call MCP tools directly. lat.md returns structured data (not text files).
 
-### Tool 1: `codegraph_symbols` — List All Symbols in File
+### Tool 1: `lat_symbols` — List All Symbols in File
 
 **Agent call:**
 ```python
-symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 ```
 
 **Response:**
@@ -65,11 +65,11 @@ symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
 
 **Use:** Discover what's defined in a file (no file reading needed).
 
-### Tool 2: `codegraph_definition` — Find Symbol Definition
+### Tool 2: `lat_definition` — Find Symbol Definition
 
 **Agent call:**
 ```python
-definition = call_mcp_tool("codegraph_definition", symbol="authenticate", context="AuthService")
+definition = call_mcp_tool("lat_definition", symbol="authenticate", context="AuthService")
 ```
 
 **Response:**
@@ -85,11 +85,11 @@ definition = call_mcp_tool("codegraph_definition", symbol="authenticate", contex
 
 **Use:** Find exact definition of a symbol without reading source file.
 
-### Tool 3: `codegraph_references` — Find All References
+### Tool 3: `lat_references` — Find All References
 
 **Agent call:**
 ```python
-refs = call_mcp_tool("codegraph_references", symbol="authenticate")
+refs = call_mcp_tool("lat_references", symbol="authenticate")
 ```
 
 **Response:**
@@ -103,11 +103,11 @@ refs = call_mcp_tool("codegraph_references", symbol="authenticate")
 
 **Use:** Find all places a symbol is used.
 
-### Tool 4: `codegraph_callers` — Find Functions Calling This Function
+### Tool 4: `lat_callers` — Find Functions Calling This Function
 
 **Agent call:**
 ```python
-callers = call_mcp_tool("codegraph_callers", symbol="query_user")
+callers = call_mcp_tool("lat_callers", symbol="query_user")
 ```
 
 **Response:**
@@ -120,11 +120,11 @@ callers = call_mcp_tool("codegraph_callers", symbol="query_user")
 
 **Use:** Discover dependencies (what depends on this function).
 
-### Tool 5: `codegraph_callees` — Find Functions Called By This Function
+### Tool 5: `lat_callees` — Find Functions Called By This Function
 
 **Agent call:**
 ```python
-callees = call_mcp_tool("codegraph_callees", symbol="authenticate")
+callees = call_mcp_tool("lat_callees", symbol="authenticate")
 ```
 
 **Response:**
@@ -141,11 +141,11 @@ callees = call_mcp_tool("codegraph_callees", symbol="authenticate")
 
 ## Layer 2: Built-in Impact Analysis
 
-### Tool 6: `codegraph_impact` — Estimate Change Impact
+### Tool 6: `lat_impact` — Estimate Change Impact
 
 **Agent call:**
 ```python
-impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="authenticate")
+impact = call_mcp_tool("lat_impact", file="src/services/auth.py", symbol="authenticate")
 ```
 
 **Response:**
@@ -168,11 +168,11 @@ impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="
 
 ## Layer 3: Free-Form Queries (Advanced)
 
-### Tool 7: `codegraph_query` — SQL-Like Graph Queries
+### Tool 7: `lat_query` — SQL-Like Index Queries
 
 **Agent call (complex reasoning):**
 ```python
-result = call_mcp_tool("codegraph_query", 
+result = call_mcp_tool("lat_query", 
   query="find all methods in AuthService that return bool"
 )
 ```
@@ -193,7 +193,7 @@ result = call_mcp_tool("codegraph_query",
 
 - ✅ MCP tool calls complete in <100ms (direct index lookups)
 - ✅ Impact analysis completes in <500ms (built-in graph traversal)
-- ✅ All queries return accurate results (verified against CodeGraph database)
+- ✅ All queries return accurate results (verified against lat.md database)
 - ✅ Layer 1-2 covers 95%+ of use cases (no LLM synthesis needed for routine queries)
 - ✅ Zero shell scripting overhead (MCP tools handle complexity)
 - ✅ Agent workflows use tool calls, not manual grep/jq
@@ -210,13 +210,13 @@ result = call_mcp_tool("codegraph_query",
 **Code:**
 ```python
 # 1. Query: What's in the auth module?
-symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 
 # 2. Query: What calls authenticate()?
-callers = call_mcp_tool("codegraph_callers", symbol="authenticate")
+callers = call_mcp_tool("lat_callers", symbol="authenticate")
 
 # 3. Query: What's the full impact?
-impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="authenticate")
+impact = call_mcp_tool("lat_impact", file="src/services/auth.py", symbol="authenticate")
 
 # Result: Agent knows auth changes affect 5 callers across 3 files
 #         Can scope spec accurately without file reading
@@ -236,13 +236,13 @@ impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="
 **Code:**
 ```python
 # 1. Query: What's in the auth module?
-symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 
 # 2. Query: What calls authenticate()?
-callers = call_mcp_tool("codegraph_callers", symbol="authenticate")
+callers = call_mcp_tool("lat_callers", symbol="authenticate")
 
 # 3. Query: What's the full impact?
-impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="authenticate")
+impact = call_mcp_tool("lat_impact", file="src/services/auth.py", symbol="authenticate")
 
 # Result: Agent knows auth changes affect 5 callers across 3 files
 #         Can scope spec accurately without file reading
@@ -258,8 +258,8 @@ impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="
 **Code:**
 ```python
 # Check if module is mature (used by many, well-integrated)
-refs = call_mcp_tool("codegraph_references", symbol="crypto.py:verify_hash")
-impact = call_mcp_tool("codegraph_impact", file="src/utils/crypto.py")
+refs = call_mcp_tool("lat_references", symbol="crypto.py:verify_hash")
+impact = call_mcp_tool("lat_impact", file="src/utils/crypto.py")
 
 # Result: If refs > 5 and risk_level is low, reuse existing module
 ```
@@ -274,7 +274,7 @@ impact = call_mcp_tool("codegraph_impact", file="src/utils/crypto.py")
 **Code:**
 ```python
 # Query vault patterns by tag
-patterns = call_mcp_tool("codegraph_query", query="find all nodes with type=doc and docType=pattern and tags containing api")
+patterns = call_mcp_tool("lat_query", query="find all nodes with type=doc and docType=pattern and tags containing api")
 
 # Result: Returns relevant patterns for API features
 ```
@@ -353,4 +353,4 @@ Prompt: "Changed: [files]. Test files that import these: [test_files].
 - [enrichment-layer.md](enrichment-layer.md) — Enrichment uses code graph queries
 
 **External:**
-- [graph-setup Part 5](codegraph-setup-and-integration.md#part-5-query-patterns)
+- [graph-setup Part 5](050-latmd-setup-and-integration.md#part-5-query-patterns)

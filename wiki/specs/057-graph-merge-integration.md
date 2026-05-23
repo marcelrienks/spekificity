@@ -8,7 +8,7 @@ date: "2026-05-20"
 # Spec: Graph Merge and Integration
 
 **Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Concern:** Merging code nodes (CodeGraph) and doc nodes (Obsidian export) into unified graph  
+**Concern:** Merging code nodes (lat.md) and doc nodes (Obsidian export) into unified graph  
 **Extracted from:** extracted spec Questions 2, 3, 5  
 **Depends on:** obsidian-graph-export, node-schema-design  
 **Used by:** spek-map-command, graph-storage-structure  
@@ -17,7 +17,7 @@ date: "2026-05-20"
 
 ## Overview
 
-**Problem:** Code nodes (from CodeGraph) and doc nodes (from Obsidian) are generated separately. They need to be merged into a single queryable graph, with cross-references computed (e.g., "which code symbols does this decision affect?").
+**Problem:** Code nodes (from lat.md) and doc nodes (from Obsidian) are generated separately. They need to be merged into a single queryable graph, with cross-references computed (e.g., "which code symbols does this decision affect?").
 
 **Solution:** Define merge strategy: deduplication, link discovery, backreference computation, single nodes.jsonl output.
 
@@ -30,7 +30,7 @@ date: "2026-05-20"
 ### Step 1: Load Source Node Sets
 
 **Input:**
-- `vault/graph/nodes-code.jsonl` (from CodeGraph)
+- `vault/graph/nodes-code.jsonl` (from lat.md)
 - `vault/graph/nodes-docs.jsonl` (from Obsidian export)
 - `vault/graph/config.json` (merge strategy config)
 
@@ -83,7 +83,7 @@ doc_nodes = deduplicate(doc_nodes)
 
 **Patterns:**
 
-1. **Code → Code references** (already in code_nodes from CodeGraph)
+1. **Code → Code references** (already in code_nodes from lat.md)
    - Calls: `function_a` calls `function_b`
    - Dependencies: `class_a` uses `class_b`
    - Imports: `file_a` imports from `file_b`
@@ -366,7 +366,7 @@ One node per line, no pretty-printing, in merge order:
 
 **Step 3 (merge):**
 ```bash
-# After CodeGraph + Obsidian export complete:
+# After lat.md + Obsidian export complete:
 python3 .spekificity/bin/merge-graphs.py \
   --code-nodes "vault/graph/nodes-code.jsonl" \
   --doc-nodes "vault/graph/nodes-docs.jsonl" \

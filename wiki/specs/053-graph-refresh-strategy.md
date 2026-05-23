@@ -107,7 +107,7 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 
 **Config:**
 ```yaml
-codegraph:
+lat:
   performance:
     parallel: true
     max_workers: 4
@@ -121,7 +121,7 @@ codegraph:
 
 **Config:**
 ```yaml
-codegraph:
+lat:
   caching:
     cache_expiry_hours: 24
 ```
@@ -136,7 +136,7 @@ codegraph:
 
 **Config:**
 ```yaml
-codegraph:
+lat:
   refresh:
     watch_debounce_ms: 1000
 ```
@@ -152,7 +152,7 @@ codegraph:
 
 **Config:**
 ```yaml
-codegraph:
+lat:
   caching:
     cache_expiry_hours: 24
 ```
@@ -267,8 +267,8 @@ If invalid JSON: Rebuild cache
 ## References
 
 **Related Specs:**
-- [spek-map-command.md](spek-map-command.md) — /spek.map uses caching
-- [graph-storage-structure.md](graph-storage-structure.md) — Cache file location
+ - [spek-map-command.md](spek-map-command.md) — /spek.map uses caching
+ - [graph-storage-structure.md](graph-storage-structure.md) — Cache file location
 
 **External:**
-- [graph-setup Part 4](codegraph-setup-and-integration.md#part-4-refresh-strategy)
+- [graph-setup Part 4](050-latmd-setup-and-integration.md#part-4-refresh-strategy)

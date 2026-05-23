@@ -102,11 +102,11 @@ Action: Check vault permissions: `chmod -R 755 vault/`
 
 ### Category 3: Graph/Code Index Errors (TRANSIENT or RECOVERABLE)
 
-**Definition:** Code graph (CodeGraph output) is corrupted, stale, or export fails
+**Definition:** Code graph (lat.md output) is corrupted, stale, or export fails
 
 **Errors:**
 - `vault/graph/nodes.jsonl` corrupted (invalid JSON)
-- CodeGraph crashed or hung
+- lat.md crashed or hung
 - Obsidian export API failure
 - Graph merge failed
 - No symbols found (empty graph)
@@ -124,9 +124,9 @@ Action: Check vault permissions: `chmod -R 755 vault/`
 
 **Example:**
 ```
-Warning: Code graph corrupted (nodes.jsonl parse error at line 542)
+Warning: lat.md index corrupted (nodes.jsonl parse error at line 542)
 Fallback: Using cached graph from 4 hours ago
-Tip: Run `/spek.map --force` to rebuild the graph (can take 1-2 min)
+Tip: Run `/spek.map --force` to rebuild the lat.md index (can take 1-2 min)
 Continue: Proceeding with stale graph; some code references may be incomplete
 ```
 
@@ -386,8 +386,8 @@ while attempt <= 3:
 - Recovery: SUCCESS (after `chmod 755 vault/`)
 
 #### Error 2: Graph Export Timeout
-- Time: 2026-05-19 14:45:22
-- Component: /spek.map (CodeGraph)
+ - Time: 2026-05-19 14:45:22
+ - Component: /spek.map (lat.md)
 - Severity: MEDIUM
 - Action: Fallback to cached graph (2h old)
 - Recovery: AUTO (retried after 30s)
@@ -417,7 +417,7 @@ while attempt <= 3:
 
 **Category 3: Graph Errors**
 - [ ] Test: `nodes.jsonl` corrupted → Warn + fallback to old graph
-- [ ] Test: CodeGraph hung → Timeout after 2 min, offer async refresh
+ - [ ] Test: lat.md hung → Timeout after 2 min, offer async refresh
 - [ ] Test: Obsidian export fails → Warn + fallback
 - [ ] Validation: Graph error doesn't block workflow
 

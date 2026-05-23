@@ -474,7 +474,7 @@ Step 2: Save Checkpoint
 
 Step 3: Clean Up Resources
   ├─ Close open files
-  ├─ Cancel any in-flight API calls (to SpecKit, CodeGraph)
+  ├─ Cancel any in-flight API calls (to SpecKit, lat.md)
   ├─ Release locks (git, vault writes)
   └─ Status: Resources cleaned
 

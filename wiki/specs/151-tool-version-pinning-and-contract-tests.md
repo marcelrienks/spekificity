@@ -10,7 +10,7 @@ Status: DRAFT
 Date: 2026-05-21
 
 Purpose
-- Define how external tools (SpecKit, CodeGraph, uv, Obsidian CLI) are pinned and how simple CLI contract tests verify expected behavior.
+- Define how external tools (SpecKit, lat.md, uv, Obsidian CLI) are pinned and how simple CLI contract tests verify expected behavior.
 
 Pinning Strategy
 - Primary: declare minimal supported versions in `pyproject.toml` `dependencies` and `dev` extras.
@@ -20,7 +20,7 @@ Pinning Strategy
 CLI Contract Tests
 - Create lightweight integration tests under `tests/integration/cli_contracts/`:
   - `test_speckit_contract.py`: calls `specify-cli --version` and `specify-cli explain --format=json` (or the real CLI command used) and asserts JSON parseable output and presence of expected keys.
-  - `test_codegraph_contract.py`: calls `codegraph query --json 'symbols'` (or configured command), asserts well-formed JSON and required fields (`name`, `type`, `file`).
+  - `test_lat_contract.py`: calls `lat query --json 'symbols'` (or configured command), asserts well-formed JSON and required fields (`name`, `type`, `file`).
 
 Fallback & Graceful Degradation
 - If a CLI version is older than required: warn in `spek prepare` and continue in degraded mode when possible.

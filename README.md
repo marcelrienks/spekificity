@@ -10,7 +10,7 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 
 | Problem | Solution |
 |---------|----------|
-| **Token bloat** | Indexed code analysis (CodeGraph) + scoped context loading |
+| **Token bloat** | Indexed code analysis (lat.md) + scoped context loading |
 | **Shallow planning** | Spec-first workflow with enriched validation layers |
 | **Context loss** | Persistent knowledge vault (Git-backed Obsidian vault/) |
 | **Low autonomy** | Reusable agent skills with deterministic sequencing |
@@ -53,9 +53,9 @@ spek tools --list
 
 This automatically:
 - ✅ Installs Spekificity CLI
-- ✅ Installs all dependencies (SpecKit, CodeGraph, etc.)
+- ✅ Installs all dependencies (SpecKit, lat.md, etc.)
 - ✅ Creates project directories (`.spek/`, `vault/`, `wiki/`)
-- ✅ Initializes CodeGraph database
+- ✅ Initializes lat.md index
 - ✅ Runs `specify init .` to initialize SpecKit
 - ✅ **Obsidian CLI is required for automated vault and persistent memory operations** — the `setup.sh` script verifies the CLI is present and will abort with clear instructions if it is missing; manual install: `npm install -g @obsidianmd/obsidian-cli`.
 
@@ -81,7 +81,7 @@ spek init
 
 ✅ **Spec-Driven Workflow** — All work starts with a structured specification  
 ✅ **Persistent Memory** — Decisions, patterns, lessons stored in Git-backed vault  
-✅ **Token Efficiency** — Pre-indexed code analysis (CodeGraph) + Caveman compression  
+✅ **Token Efficiency** — Pre-indexed indexing (lat.md) + Caveman compression  
 ✅ **Deterministic Sequencing** — 4-stage workflow (Prepare → Specify & Plan → Implement → Close)  
 ✅ **Composable Skills** — `/spek.*` commands can be chained or run independently  
 
@@ -104,7 +104,7 @@ Spekificity is built around four pillars:
 ## Target Tool Stack
 
 - **SpecKit / Specify** — Spec-driven workflow engine
-- **CodeGraph** — Code intelligence & impact analysis
+- **lat.md** — Indexing and doc-code linkage (preferred)
 - **Obsidian Vault (with Obsidian CLI)** — Recommended knowledge store and runtime interface for specs, decisions, patterns, lessons. Automated persistent-memory operations (scripted vault syncs, exports, metadata extraction) rely on the Obsidian CLI for reliable CI and developer automation. See `setup.sh` for verification and installation guidance; manual vault workflows are still supported when the CLI is unavailable.
 - **Caveman Mode** — Response compression for token control
 
@@ -163,7 +163,7 @@ Start with this reading order—each doc builds on the previous:
 |------|-------|--------------|
 | **vision.md** | Vision statement, problem/solution, four pillars, design principles | Understand *why* Spekificity exists |
 | **intention.md** | Philosophy, core principles, project tenets, constraints, target users | Understand Spekificity *philosophy* and design intent |
-| **architecture.md** | Technical components, data flow, responsibilities (Vault, CodeGraph, SpecKit, Skills), integration | Understand *how* components fit together technically |
+| **architecture.md** | Technical components, data flow, responsibilities (Vault, lat.md, SpecKit, Skills), integration | Understand *how* components fit together technically |
 | **workflow.md** | 5-phase feature development workflow with entry/exit criteria, artifacts, detailed steps | Reference during *active development* |
 | **quickstart.md** | Hands-on walkthrough for first feature | *Get started* with your first feature |
 | **conventions.md** | `/spek.*` and `/speckit.*` command naming patterns and invocation | Know *which command to use* |
@@ -177,7 +177,7 @@ Start with this reading order—each doc builds on the previous:
 | **Stage** | "Stage 1: Prepare", "Stage 2: Specify & Plan", etc. (4 total) | "phase", "step" | One of four deterministic workflow stages in feature development |
 | **Closeout** | "Phase 5: Post-Feature Closeout" | "Close", "post-processing", "archive phase" | Final phase where artifacts are archived and lessons extracted |
 | **Lessons Learned** | "lessons learned", "lessons" (in context of `/spek.conclude` output) | "reflection", "retrospective", "what we learned" | Structured insights captured at feature end (what worked, what didn't, patterns) |
-| **CodeGraph** | "CodeGraph" (always capitalized, never "code graph") | "code intelligence tool", "code analysis" | Pre-indexed SQLite code analysis tool; primary source of code intelligence |
+| **lat.md** | "lat.md" (indexer for docs and source) | "indexing tool", "doc-code linkage" | Markdown-native index + source metadata; primary source for context injection |
 | **Enrichment Layer** | "enrichment layers" (plural when multiple) | "context layers", "structured context" | Context-specific information added to specs/plans (Success Criteria, Assumptions, Risk Assessment, etc.) |
 | **SpecKit** | "SpecKit" or "/speckit.*" commands | "spec framework", "specification tool" | Underlying spec-driven workflow engine (upstream tool, not Spekificity-specific) |
 
@@ -298,7 +298,7 @@ Use these documents first:
 - [wiki/specs/specify-enrichment.md](wiki/specs/specify-enrichment.md)
 - [wiki/specs/plan-enrichment.md](wiki/specs/plan-enrichment.md)
 - [wiki/specs/implement-enrichment.md](wiki/specs/implement-enrichment.md)
-- [wiki/specs/codegraph-setup-and-integration.md](wiki/specs/codegraph-setup-and-integration.md)
+- [wiki/specs/050-latmd-setup-and-integration.md](wiki/specs/050-latmd-setup-and-integration.md)
 - [wiki/specs/integration-validation-and-testing.md](wiki/specs/integration-validation-and-testing.md)
 
 ## Repository Layout

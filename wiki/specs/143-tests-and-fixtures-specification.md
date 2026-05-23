@@ -19,13 +19,13 @@ Layout
 - `tests/fixtures/` — contains `synthetic_project/`, `mock_specs/`, `mock_plans/`, and `conftest.py` providing standardized fixtures.
 
 Fixture Contracts
--- `mock_speckit` should implement `prepare`, `specify`, `plan`, `implement`, `post` stubs as shown in `141-test-suite-specification.md`.
--- `mock_codegraph` should respond to `codegraph_query(query)` with deterministic JSON, and support simulated `TimeoutError`.
--- `mock_vault` should implement read/write methods for decisions, patterns, specs, plans, and lessons and operate on temporary directories.
+- `mock_speckit` should implement `prepare`, `specify`, `plan`, `implement`, `post` stubs as shown in `141-test-suite-specification.md`.
+- `mock_lat` should respond to `lat_query(query)` with deterministic JSON, and support simulated `TimeoutError`.
+- `mock_vault` should implement read/write methods for decisions, patterns, specs, plans, and lessons and operate on temporary directories.
 
 Synthetic Project
 - Small Python repo with 3 source files, 1 test file and a minimal `.spekificity/config.yaml`.
-- Used by E2E tests to validate CodeGraph integration and file-level diffs.
+- Used by E2E tests to validate lat.md integration and file-level diffs.
 
 Performance & Flakiness
 - Unit tests: target median runtime per test < 50ms.

@@ -89,7 +89,7 @@ def load_context(phase="specify"):
             recent_files = get_git_log(limit=20)
             graph_context = []
             for file in recent_files:
-                symbols = call_mcp_tool("codegraph_symbols", file_path=file)
+                symbols = call_mcp_tool("lat_symbols", file_path=file)
                 graph_context.append({"file": file, "symbols": symbols})
             context["graph"] = graph_context
             context["recent_files"] = recent_files

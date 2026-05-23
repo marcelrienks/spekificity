@@ -195,7 +195,7 @@ spek conclude [options]
 
 ---
 
-### 5. `spek map` — Refresh Code Graph
+### 5. `spek map` — Refresh lat.md index
 
 **Purpose:** Generate or update code graph (code + documentation index).
 
@@ -207,7 +207,7 @@ spek map [options]
 ```
 
 **Behavior:**
-1. CodeGraph indexes code symbols via automatic file watcher
+1. lat.md indexes code symbols via automatic file watcher
 2. Export Obsidian document nodes
 3. Merge code + doc nodes
 4. Write to `wiki/vault/graph/nodes.jsonl`

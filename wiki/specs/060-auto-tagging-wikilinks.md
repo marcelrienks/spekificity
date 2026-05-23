@@ -41,7 +41,7 @@ Automate the process of:
 **What this spec does NOT cover:**
 - Vault schema (see C.3.1 Zettelkasten)
 - Lesson content generation (see B.8.4 Post Command Step 3)
-- Graph queries (see B.11 Codegraph Setup)
+ - Graph queries (see B.11 lat.md Setup)
 - Manual linking workflows (assume auto-linking handles 70%)
 
 ---

@@ -62,7 +62,7 @@ How each component targets the four core problems:
 
 | Pillar | Token Efficiency | Determinism | Persistence | Autonomy |
 |--------|---|---|---|---|
-| **Code Graph** (CodeGraph preferred) | Indexed queries cut token usage by an order of magnitude versus file scans | Exact ground-truth context eliminates hallucinations | Graph auto-syncs on file changes | Agent answers code questions without asking dev |
+| **Code Graph** (lat.md preferred) | Indexed queries cut token usage by an order of magnitude versus file scans | Exact ground-truth context eliminates hallucinations | Index auto-syncs on file changes | Agent answers code questions without asking dev |
 | **Vault** (Obsidian markdown) | Pre-synthesized context loads once per session | Enforces consistent structure; decisions stay consistent | Lessons + decisions persist across sessions + projects | Agent recalls patterns from history; no redundant searching |
 | **Spec-Driven Framework** (SpecKit) | Canonical steps = no token-wasteful exploration | Enforces spec → plan → tasks → implement | Specs + plans captured in vault for future reference | Deterministic workflow = less dev clarification needed |
 | **Compression** (Caveman) | Substantial output reduction at key stages | Terse notation cuts noise, improves clarity | — | Agent reads faster, processes more context in same tokens |
@@ -256,7 +256,7 @@ Skills are placed in `.agents/skills/` — the canonical, agent-agnostic locatio
 - **Independent:** Framework can be upgraded without restructuring Spekificity workflows
 - **Current Recommendation:** Spec-first frameworks emphasizing YAML/Markdown clarity
 
-### Code Analysis / Mapping Tool (CodeGraph)
+### Code Analysis / Mapping Tool (lat.md)
 - **Role:** Codebase topology (symbols, calls, inheritance, framework routes, dependencies)
 - **Integration:** Indexed once during init; incrementally synced on file changes
 - **Contribution:** Context injection during spec/plan stages; impact analysis for refactoring
@@ -291,7 +291,7 @@ Skills are placed in `.agents/skills/` — the canonical, agent-agnostic locatio
 **Recommended:** Commit the vault to git with the project.
 
 - **Rationale:** Vault entries (lessons learnt, decisions, patterns) are project artifacts with long-term value. Version-controlling them preserves history and enables team sharing.
-- **Exception:** Generated code-analysis indexes (e.g., `.codegraph/graph.db`) should be gitignored and regenerated per machine via `/map-codebase`. The vault itself (lessons + context) is always small and should always be committed.
+- **Exception:** Generated code-analysis indexes (e.g., `.spek/lat_index.db`) should be gitignored and regenerated per machine via `/map-codebase`. The vault itself (lessons + context) is always small and should always be committed.
 
 A `.gitignore` template covering this exception is included in the init workflow.
 
