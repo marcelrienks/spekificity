@@ -1,3 +1,9 @@
+---
+title: "Session Continuation & Token Budget Management"
+status: "COMPLETE"
+date: "2026-05-20"
+---
+
 # Session Continuation & Token Budget Management
 
 **Status:** COMPLETE  
@@ -149,7 +155,7 @@ Checkpoint created: 2026-05-21T10:00:00Z
 
 ### 2.2 State Preservation Requirements
 
-**Essential State (MUST preserve):**
+**Essential State (should be preserved):**
 - Feature ID + name
 - Current phase (specifying → specified → planning → planned → implementing → completing → complete)
 - Last completed task (task N-1)

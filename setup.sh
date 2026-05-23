@@ -66,10 +66,23 @@ fi
 
 # 5. Check Obsidian CLI
 if ! command -v obsidian-cli &> /dev/null; then
-    echo "Installing Obsidian CLI..."
-    npm install -g @obsidianmd/obsidian-cli
+    echo "Obsidian CLI not found. Attempting to install via npm..."
+    if ! command -v npm &> /dev/null; then
+        echo "❌ npm not found. Unable to install Obsidian CLI automatically."
+        echo "Please install Node.js/npm and then run: npm install -g @obsidianmd/obsidian-cli"
+        echo "Obsidian CLI is required for automated vault sync, graph export, and metadata extraction used by Spekificity."
+        exit 1
+    fi
+    npm install -g @obsidianmd/obsidian-cli || true
 fi
-echo "✓ Obsidian CLI found"
+if command -v obsidian-cli &> /dev/null; then
+    echo "✓ Obsidian CLI found"
+else
+    echo "❌ Obsidian CLI still not available after attempted install."
+    echo "Please install it manually: npm install -g @obsidianmd/obsidian-cli"
+    echo "Spekificity requires Obsidian CLI for automated vault operations (sync, export, metadata)."
+    exit 1
+fi
 
 # 6. Check Spekificity CLI
 if ! command -v spek &> /dev/null; then

@@ -1,3 +1,10 @@
+---
+title: "Node Schema Design"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+---
+
 # Spec: Node Schema Design
 
 **Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
@@ -9,7 +16,7 @@
 
 ## Overview
 
-**Problem:** Code nodes (from graphify) and documentation nodes (from Obsidian export) need a unified schema so they can be merged, queried, and indexed together.
+**Problem:** Code nodes (from CodeGraph) and documentation nodes (from Obsidian export) need a unified schema so they can be merged, queried, and indexed together.
 
 **Solution:** Define explicit JSON schemas for code nodes, doc nodes (heading-level and file-level), and skill nodes. All stored in common JSONL format.
 
@@ -21,7 +28,7 @@
 
 | Type | Source | Granularity | Frequency | Count (Est.) |
 |------|--------|-------------|-----------|--------------|
-| **code** | graphify | Symbol (function/class/var) | Per file | 1000-5000 |
+| **code** | CodeGraph | Symbol (function/class/var) | Per file | 1000-5000 |
 | **doc** | Obsidian | Heading or file | Per feature | 100-500 |
 | **skill** | Obsidian/SpecKit | File | Per workflow | 20-50 |
 
@@ -29,7 +36,7 @@
 
 ## Code Node Schema
 
-**Source:** Graphify AST analysis  
+**Source:** CodeGraph AST analysis  
 **Granularity:** Symbol-level (function, class, interface, variable, const)  
 **Example ID:** `src/prepare/prepare.ts:Prepare` (file:symbol)
 
@@ -107,7 +114,7 @@ interface CodeNode {
 - ✅ Doc node schema captures heading-level structure (file + heading + level)
 - ✅ Skill node schema captures workflow information (command + purpose + tags)
 - ✅ Graph relationships captured (calls, calledBy, usedBy, uses, references, referencedBy)
-- ✅ All nodes queryable via unified interface (jq + grep on nodes.jsonl)
+- ✅ All nodes queryable via MCP tools (codegraph_symbols, codegraph_query, codegraph_references)
 - ✅ Schema extensible (new fields don't break existing queries)
 - ✅ Type safety enforced (TypeScript interfaces + validation)
 
@@ -118,7 +125,7 @@ interface CodeNode {
 - [ ] Define code node schema (TypeScript types)
 - [ ] Define doc node schema (TypeScript types)
 - [ ] Define skill node schema (TypeScript types)
-- [ ] Implement code node generation (from graphify output)
+- [ ] Implement code node generation (from CodeGraph index)
 - [ ] Implement doc node generation (from Obsidian export)
 - [ ] Implement skill node generation (from SKILL.md parsing)
 - [ ] Implement node validation (schema conformance checks)
@@ -410,31 +417,52 @@ skills/spek-prepare/SKILL.md
 
 ---
 
-## Query Patterns
+## Query Patterns (Via MCP Tools)
 
 ### Find all decisions
-```bash
-grep '"type":"doc"' vault/graph/nodes.jsonl | grep '"docType":"decision"'
+```python
+decisions = call_mcp_tool("codegraph_query", query="find all nodes with type=doc and docType=decision")
 ```
 
 ### Find all active decisions
-```bash
-grep '"type":"doc"' vault/graph/nodes.jsonl | grep '"docType":"decision"' | grep '"status":"active"'
+```python
+active_decisions = call_mcp_tool("codegraph_query", query="find all nodes with type=doc and docType=decision and status=active")
 ```
 
 ### Find nodes tagged "api"
-```bash
-grep '"tags":.*"api"' vault/graph/nodes.jsonl
+```python
+api_nodes = call_mcp_tool("codegraph_query", query="find all nodes with tags containing api")
 ```
 
 ### Find all code nodes that reference a specific doc
-```bash
-grep '"vault/decision.md"' vault/graph/nodes.jsonl | grep '"type":"code"'
+```python
+refs = call_mcp_tool("codegraph_references", symbol="decision.md#api-versioning-strategy")
 ```
 
 ### Find all backreferences to a node
+```python
+refs = call_mcp_tool("codegraph_references", symbol="api.ts:ApiController")
+# Returns: all nodes that reference this symbol
+```
+
+---
+
+## Legacy: JSONL Query Examples (Not Recommended)
+
+If using optional JSONL exports for external tools:
+
 ```bash
-jq -r '.referencedBy[]' <<< '{"referencedBy":["src/api/v1.ts","tests/api.test.ts"]}'
+# Find all decisions (NOT RECOMMENDED - use MCP tools)
+grep '"type":"doc"' wiki/vault/graph/exports/nodes.jsonl | grep '"docType":"decision"'
+
+# Find all active decisions (NOT RECOMMENDED - use MCP tools)
+grep '"type":"doc"' wiki/vault/graph/exports/nodes.jsonl | grep '"docType":"decision"' | grep '"status":"active"'
+
+# Find nodes tagged "api" (NOT RECOMMENDED - use MCP tools)
+grep '"tags":.*"api"' wiki/vault/graph/exports/nodes.jsonl
+
+# Find all code nodes that reference a specific doc (NOT RECOMMENDED - use MCP tools)
+grep '"vault/decision.md"' wiki/vault/graph/exports/nodes.jsonl | grep '"type":"code"'
 ```
 
 ---

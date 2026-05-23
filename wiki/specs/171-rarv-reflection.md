@@ -1,3 +1,10 @@
+---
+title: "RARV Reflection Cycles (Redirect)"
+status: "REDIRECTED"
+date: "2026-05-20"
+original_id: "C.3.7"
+---
+
 # ⚠️ REDIRECT: RARV Reflection Cycles: Reason-Act-Reflect-Verify
 
 **This specification has been consolidated into a single archive file.**

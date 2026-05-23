@@ -1,3 +1,10 @@
+---
+title: "SpecKit Integration Contract"
+status: "SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-18"
+---
+
 # extracted spec — SpecKit Integration Contract
 
 **Status:** SPECIFICATION (2026-05-18) | **Version:** 1.0.0-alpha.1 (2026-05-20)  
@@ -613,7 +620,7 @@ vault/
 ├── graph/
 │   ├── config.json       # Graph generation settings (paths, granularity, refresh policy)
 │   ├── nodes.jsonl       # Merged code + doc nodes
-│   ├── nodes-code.jsonl  # Code symbols (from graphify)
+	│   ├── nodes-code.jsonl  # Code symbols (from CodeGraph)
 │   └── nodes-docs.jsonl  # Doc headings (from Obsidian export)
 └── decision.md, patterns.md, ...
 ```

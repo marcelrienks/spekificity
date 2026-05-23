@@ -1,8 +1,14 @@
+---
+title: "Error Handling and Recovery (F1.0)"
+status: "FOUNDATIONAL SPECIFICATION"
+version: "2026-05-19"
+---
+
 # FOUNDATIONAL SPECIFICATION: Error Handling and Recovery (F1.0)
 
-**Status:** FOUNDATIONAL SPECIFICATION  
-**Type:** Cross-Cutting Concern — Error Strategy for all Skills and Workflows  
-**Version:** 2026-05-19  
+**Status:** FOUNDATIONAL SPECIFICATION
+**Type:** Cross-Cutting Concern — Error Strategy for all Skills and Workflows
+**Version:** 2026-05-19
 **Scope:** Applies to all `/spek.*` skills, enrichment layers, and integration points  
 
 ---
@@ -96,11 +102,11 @@ Action: Check vault permissions: `chmod -R 755 vault/`
 
 ### Category 3: Graph/Code Index Errors (TRANSIENT or RECOVERABLE)
 
-**Definition:** Code graph (graphify output) is corrupted, stale, or export fails
+**Definition:** Code graph (CodeGraph output) is corrupted, stale, or export fails
 
 **Errors:**
 - `vault/graph/nodes.jsonl` corrupted (invalid JSON)
-- graphify crashed or hung
+- CodeGraph crashed or hung
 - Obsidian export API failure
 - Graph merge failed
 - No symbols found (empty graph)
@@ -381,7 +387,7 @@ while attempt <= 3:
 
 #### Error 2: Graph Export Timeout
 - Time: 2026-05-19 14:45:22
-- Component: /spek.map (graphify)
+- Component: /spek.map (CodeGraph)
 - Severity: MEDIUM
 - Action: Fallback to cached graph (2h old)
 - Recovery: AUTO (retried after 30s)
@@ -411,7 +417,7 @@ while attempt <= 3:
 
 **Category 3: Graph Errors**
 - [ ] Test: `nodes.jsonl` corrupted → Warn + fallback to old graph
-- [ ] Test: graphify hung → Timeout after 2 min, offer async refresh
+- [ ] Test: CodeGraph hung → Timeout after 2 min, offer async refresh
 - [ ] Test: Obsidian export fails → Warn + fallback
 - [ ] Validation: Graph error doesn't block workflow
 

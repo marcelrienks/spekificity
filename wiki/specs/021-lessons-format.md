@@ -1,3 +1,10 @@
+---
+title: "Per-Feature Lessons Format"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-21"
+---
+
 # Spec: Per-Feature Lessons Format
 
 **Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
@@ -148,14 +155,14 @@ Implementation:
 1. Define orchestration/enrichment pattern for `/spek.plan` phases and `/spek.implement`
 2. Implement /spek.context loader (vault → session memory)
 3. Implement /spek.prepare + /spek.conclude workflows
-4. Integrate graphify + Obsidian export into /spek.map
+4. Integrate CodeGraph + Obsidian export into /spek.map
 5. Create caveman compression at prepare + post steps
 
 Tech stack:
 - TypeScript (cli + skills)
 - Python (graph merge scripts)
 - Obsidian (vault storage)
-- Graphify (code indexing)
+- CodeGraph (code indexing)
 ```
 
 ---

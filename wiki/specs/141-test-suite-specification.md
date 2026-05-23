@@ -1,3 +1,10 @@
+---
+title: "Spekificity Test Suite & Validation Strategy"
+status: "COMPLETE"
+date: "2026-05-20"
+coverage_target: "80%"
+---
+
 # Spekificity Test Suite & Validation Strategy
 
 **Status:** COMPLETE  
@@ -119,7 +126,7 @@ tests/
 - ✅ All 10 tests pass
 - ✅ No network calls (fully mocked)
 - ✅ < 100ms per test (total < 1s)
-- ✅ Coverage: enrichment_layer.py = 95%+
+- ✅ Coverage: enrichment_layer.py — target 95%+ where practical (adjust per component)
 
 ---
 
@@ -153,7 +160,7 @@ tests/
 - ✅ All 10 tests pass
 - ✅ No disk writes to real vault (temp dirs only)
 - ✅ < 50ms per test (total < 500ms)
-- ✅ Coverage: memory_layer.py = 95%+
+-- ✅ Coverage: memory_layer.py — target 95%+ where practical (adjust per component)
 
 ---
 
@@ -185,7 +192,7 @@ tests/
 **Success Criteria:**
 - ✅ All 10 tests pass
 - ✅ < 50ms per test (total < 500ms)
-- ✅ Coverage: feature_state.py = 95%+
+-- ✅ Coverage: feature_state.py — target 95%+ where practical (adjust per component)
 
 ---
 
@@ -218,7 +225,7 @@ tests/
 **Success Criteria:**
 - ✅ All 10 tests pass
 - ✅ < 100ms per test (total < 1s)
-- ✅ Coverage: decorator_wrapper.py = 95%+
+-- ✅ Coverage: decorator_wrapper.py — target 95%+ where practical (adjust per component)
 
 ---
 
@@ -251,7 +258,7 @@ tests/
 **Success Criteria:**
 - ✅ All 10 tests pass
 - ✅ < 100ms per test (total < 1s)
-- ✅ Coverage: context_injection.py = 95%+
+-- ✅ Coverage: context_injection.py — target 95%+ where practical (adjust per component)
 
 ---
 
@@ -283,7 +290,7 @@ tests/
 **Success Criteria:**
 - ✅ All 10 tests pass
 - ✅ < 50ms per test (total < 500ms)
-- ✅ Coverage: compression.py = 95%+
+-- ✅ Coverage: compression.py — target 95%+ where practical (adjust per component)
 - ✅ Preserved correctness: 100% (no meaning loss, code intact, URLs alive)
 
 ---
@@ -479,7 +486,7 @@ Integration tests use real Spekificity code but mock external tools (SpecKit, Co
 **Success Criteria:**
 - ✅ All 8 tests pass
 - ✅ < 10s per test (total < 80s for full pipeline)
-- ✅ Coverage: integration of all workflows = 95%+
+-- ✅ Coverage: integration of all workflows — target 95%+ where practical (adjust per component)
 - ✅ End-to-end validation: feature lifecycle complete, no data loss
 
 ---

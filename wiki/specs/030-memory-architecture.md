@@ -1,3 +1,11 @@
+---
+title: "Memory Architecture"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+type: "memory"
+---
+
 # Memory Architecture: Persistent Memories, Session Context, and Load Lifecycle
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)

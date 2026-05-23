@@ -1,9 +1,17 @@
+---
+title: "Lessons Command (C4.6)"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+type: "skill"
+---
+
 # ATOMIC SPECIFICATION: Lessons Command (C4.6)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Skill — /spek.lessons (manual lesson extraction + query interface)  
 **Depends On:** lessons-format.md, memory-architecture.md, post-processing.md  
-**Requires:** Obsidian CLI (mandatory) for all vault/lessons/ operations and persistent memory management
+**Requires:** Obsidian CLI (recommended) for automated vault/lessons operations and persistent memory management
 **Used By:** `/spek.conclude` (automatic), CLI entry point (manual queries)  
 
 ---

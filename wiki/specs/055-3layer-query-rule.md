@@ -1,7 +1,7 @@
 # C.3.3 3-Layer Query Rule: Documentation & Enforcement
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Priority:** MUST (Phase 1)  
+**Priority:** RECOMMENDED (Phase 1)  
 **Effort:** 2-3 hours  
 **Adoption Source:** B.9 (claude-code-memory-setup, cited as motivation for large token savings)
 
@@ -494,4 +494,4 @@ When loading session context:
 
 - **Production Source:** https://github.com/lucasrosati/claude-code-memory-setup (external reference for large token-savings patterns)
 - **Cost Analysis:** Based on real-world token measurements from session data
-- **Query Patterns:** Derived from successful context loading patterns in Obsidian + graphify workflows
+- **Query Patterns:** Derived from successful context loading patterns in Obsidian + CodeGraph workflows

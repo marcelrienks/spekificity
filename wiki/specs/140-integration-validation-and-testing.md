@@ -1,3 +1,9 @@
+---
+title: "Integration Validation and Testing (V1.0)"
+status: "ATOMIC SPECIFICATION"
+version: "2026-05-19"
+---
+
 # SPECIFICATION: Integration Validation and Testing (V1.0)
 
 **Status:** ATOMIC SPECIFICATION  
@@ -257,7 +263,7 @@ pytest tests/memory/test_cross_session_context.py
 ## Phase 5: Code Graph Integration
 
 **Deliverables:**
-- graphify integration (code indexing)
+- CodeGraph integration (code indexing)
 - Obsidian export (document graph extraction)
 - Graph merge (combine code + doc nodes)
 - Graph refresh strategy (incremental updates)
@@ -267,7 +273,7 @@ pytest tests/memory/test_cross_session_context.py
 
 | Criterion | Validation | Success Criteria |
 |-----------|-----------|------------------|
-| Code indexing | graphify indexes all code symbols | ≥100 symbols in spekificity codebase |
+| Code indexing | CodeGraph indexes all code symbols | ≥100 symbols in spekificity codebase |
 | Doc extraction | Obsidian export extracts all document nodes | ≥20 document nodes from wiki/ |
 | Graph merge | Code + doc nodes merged correctly | No duplicate nodes, correct hierarchy |
 | Incremental sync | Graph updates only changed files | Refresh time <30s for small changes |
@@ -277,8 +283,8 @@ pytest tests/memory/test_cross_session_context.py
 **Validation (Automated Tests):**
 
 ```bash
-# graphify integration tests
-pytest tests/graph/test_graphify_integration.py
+# CodeGraph integration tests
+pytest tests/graph/test_codegraph_integration.py
 
 # Obsidian export tests
 pytest tests/graph/test_obsidian_export.py

@@ -1,3 +1,9 @@
+---
+title: "Small CLI Contract Integration Test (SpecKit / CodeGraph)"
+status: "DRAFT"
+date: "2026-05-21"
+---
+
 # Small CLI Contract Integration Test (SpecKit / CodeGraph)
 
 Status: DRAFT

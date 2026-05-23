@@ -1,7 +1,15 @@
+---
+title: "Zettelkasten Conventions for Vault Notes"
+status: "Specification"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+priority: "High"
+---
+
 # C.3.1 Zettelkasten Conventions for Vault Notes
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Priority:** MUST (Phase 1)  
+**Priority:** High (Phase 1 recommended)  
 **Effort:** 3-4 hours  
 **Adoption Source:** B.9 (claude-code-memory-setup, production-validated)
 
@@ -41,9 +49,10 @@ Define and enforce Zettelkasten conventions for all vault notes (decisions, patt
 
 ## Zettelkasten Schema
 
-### Mandatory YAML Frontmatter
 
-All vault notes MUST include frontmatter with these fields:
+### Recommended YAML Frontmatter
+
+All vault notes should include frontmatter with these fields to enable tooling and automation. Projects can adopt this progressively; tooling will function with partial metadata but automation (auto-tagging, graph exports, and reliable context extraction) works best when frontmatter is present.
 
 ```yaml
 ---
@@ -75,10 +84,10 @@ related: ["[[note-name]]", "[[other-note]]"]
 
 **Format:** `<kebab-case-title>.md`
 
-**Rules:**
+- **Rules:**
 - Use lowercase letters, numbers, hyphens only
 - Maximum 50 characters (including extension)
-- Must be globally unique within `wiki/vault/` directory
+ - Should be globally unique within `wiki/vault/` directory
 - Spaces → hyphens: "Singleton Pattern" → `singleton-pattern.md`
 - Abbreviations OK: "DI Pattern" → `di-pattern.md`
 
@@ -148,7 +157,7 @@ We decided to use [[dependency-injection]] over service locators
 because [[service-locator-anti-pattern]] violates testability constraints.
 ```
 
-**Validation Rule:** Every wikilink MUST reference an existing note in `wiki/vault/` (except external links, which use standard Markdown `[text](url)`).
+**Validation Rule:** Every wikilink should reference an existing note in `wiki/vault/` (except external links, which use standard Markdown `[text](url)`).
 
 ---
 

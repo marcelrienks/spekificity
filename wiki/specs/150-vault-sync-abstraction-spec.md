@@ -1,3 +1,9 @@
+---
+title: "Vault Sync Abstraction Specification"
+status: "DRAFT"
+date: "2026-05-21"
+---
+
 # Vault Sync Abstraction Specification
 
 Status: DRAFT
@@ -18,6 +24,7 @@ Adapter Interface (required methods)
 - `write_file(path: str, content: str) -> None` — write file contents (atomic write recommended).
 - `sync_pull() -> None` — ensure local mirror matches remote (no-op for git-only local operations if not configured).
 - `sync_push(commit_message: str) -> None` — push local changes; commit when necessary.
+
 - `is_available() -> bool` — returns True if adapter runtime dependencies are available.
 
 Selection Rules
@@ -30,8 +37,8 @@ Error Semantics
 - `SyncError`: transient sync failure; should be retried twice with exponential backoff by caller.
 - `WriteConflictError`: when a target file changed on disk between read→write; adapter should provide merge hints (e.g., `.orig` file) and raise the error.
 
-Security & Safety
-- File writes must be atomic (write to temp file + rename).
+- Security & Safety
+- File writes should be atomic (write to temp file + rename).
 - Avoid executing arbitrary shell commands; use subprocess with argument arrays.
 
 Testing & Validation

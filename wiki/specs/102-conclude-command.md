@@ -1,3 +1,10 @@
+---
+title: "Conclude Command (C4.2)"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-21"
+---
+
 # ATOMIC SPECIFICATION: Conclude Command (C4.2)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)

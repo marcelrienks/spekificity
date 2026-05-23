@@ -117,7 +117,7 @@ Example:
 
 **Errors:**
 - Code graph corrupted
-- Graphify export fails
+- CodeGraph index refresh fails
 - Node index missing
 - Edge computation failed
 

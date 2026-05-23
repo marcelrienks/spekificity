@@ -1,3 +1,9 @@
+---
+title: "Tool Version Pinning & CLI Contract Tests"
+status: "DRAFT"
+date: "2026-05-21"
+---
+
 # Tool Version Pinning & CLI Contract Tests
 
 Status: DRAFT

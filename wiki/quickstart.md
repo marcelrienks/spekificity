@@ -8,7 +8,7 @@
 
 ## Welcome!
 
-This guide walks you through building a **complete feature** using Spekificity's 5-phase workflow. By the end, you'll understand:
+This guide walks you through building a **complete feature** using Spekificity's 4-stage workflow (Prepare → Specify & Plan → Implement → Close). By the end, you'll understand:
 
 - How to prepare your workspace
 - How to write specs that agents can understand

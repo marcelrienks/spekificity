@@ -1,3 +1,9 @@
+---
+title: "CLI Orchestration (C2.0)"
+status: "ATOMIC SPECIFICATION"
+version: "2026-05-19"
+---
+
 # SPECIFICATION: CLI Orchestration (C2.0)
 
 **Status:** ATOMIC SPECIFICATION  
@@ -91,7 +97,7 @@ spek plan [options]
 ```
 
 **Behavior:**
-1. Validate feature state exists (must run `/spek.prepare` first)
+1. Validate feature state exists (should run `/spek.prepare` first)
 2. Get feature description (interactive or from `--description`)
 3. Load or refresh project context required for orchestration
 4. Call `/speckit.specify`
@@ -201,7 +207,7 @@ spek map [options]
 ```
 
 **Behavior:**
-1. Run graphify to index code symbols
+1. CodeGraph indexes code symbols via automatic file watcher
 2. Export Obsidian document nodes
 3. Merge code + doc nodes
 4. Write to `wiki/vault/graph/nodes.jsonl`
@@ -317,8 +323,8 @@ Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
 
 **Rule 1: Strict Ordering (Most Strict)**
 ```
-Must run in order: prepare → specify → plan → tasks → implement → post
-Cannot skip steps. Must complete each before proceeding.
+Recommended order: prepare → specify → plan → tasks → implement → post
+Avoid skipping steps; complete each before proceeding when practical.
 ```
 
 **Rule 2: Resume Within Session (Flexible)**

@@ -1,3 +1,10 @@
+---
+title: "Obsidian Graph Export Protocol"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+---
+
 # Spec: Obsidian Graph Export Protocol
 
 **Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
@@ -112,11 +119,11 @@ FROM ""
 
 ---
 
-### Obsidian CLI Tool (Mandatory)
+### Obsidian CLI Tool (Recommended)
 
 **What it is:**
-- Obsidian CLI is the only supported and required tool for all vault operations, export, and graph extraction in Spekificity.
-- All persistent memory and vault management must be performed via Obsidian CLI at runtime.
+- Obsidian CLI is the recommended tool for automated vault operations, export, and graph extraction in Spekificity.
+- Automated persistent memory and vault management is best performed via the Obsidian CLI at runtime to enable scriptable CI workflows; however, manual markdown-based workflows and cache-based exports are supported when the CLI is unavailable.
 
 **Setup:**
 ```bash

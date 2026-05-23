@@ -1,3 +1,11 @@
+---
+title: "/spek.map Command (C5.3)"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+type: "skill"
+---
+
 # ATOMIC SPECIFICATION: /spek.map Command (C5.3)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
@@ -28,7 +36,7 @@
 4. Validate: check schema + node count
 5. Write: wiki/vault/graph/nodes.jsonl + edges.jsonl + config.json
 
-**Cost:** 1-3 seconds (CodeGraph queries are 20x faster than graphify)
+**Cost:** 1-3 seconds (CodeGraph queries include incremental auto-sync; no manual refresh needed)
 
 **When to use:** After major refactoring, or to refresh cached snapshot
 

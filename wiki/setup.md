@@ -188,120 +188,6 @@ CodeGraph (SQLite + MCP) is the recommended primary tool for Spekificity. It pro
 
 See [wiki/specs/codegraph-setup-and-integration.md](../specs/codegraph-setup-and-integration.md) for complete CodeGraph setup and integration details.
 
-### Alternative: Graphify (Transition Reference)
-
-Graphify is an alternative multi-language code indexing tool (legacy/transition reference). The CodeGraph approach is recommended for Spekificity integration.
-
-#### Graphify Installation (If Chosen)
-
-If you explicitly choose Graphify for your project:
-
-1. **Check Python version:**
-   ```bash
-   python3 --version
-   # Expected: 3.11 or higher
-   ```
-
-2. **Install via uv:**
-   ```bash
-   uv tool install graphifyy
-   ```
-
-3. **Verify installation:**
-   ```bash
-   graphify --version
-   # Expected output: graphifyy x.x.x
-   ```
-
-4. **Initialize vault graph directory:**
-   ```bash
-   mkdir -p wiki/vault/graph/nodes
-   mkdir -p wiki/vault/graph/cache
-   ```
-
-5. **Run initial full build:**
-   ```bash
-   graphify . --output jsonl --obsidian-dir wiki/vault/graph/nodes/
-   ```
-
-   This generates:
-   - `wiki/vault/graph/nodes.jsonl` — Queryable graph
-   - `wiki/vault/graph/graph.html` — Interactive visualization
-   - `wiki/vault/graph/GRAPH_REPORT.md` — Human-readable summary
-
-6. **Verify graph generated:**
-   ```bash
-   wc -l wiki/vault/graph/nodes.jsonl
-   # Expected: 50+ lines (depends on codebase size)
-   ```
-
-#### Graphify Git Hook (Optional)
-
-Auto-refresh the graph on every commit:
-
-```bash
-graphify hook install
-```
-
-This installs `.git/hooks/post-commit` that runs `graphify . --update` after each commit.
-
-#### Graphify Configuration
-
-Copy this template into `.spekificity/config.yaml` for Graphify:
-
-```yaml
-graphify:
-  installation:
-    mode: global  # "global" = uv tool; "local" = pip in venv
-  
-  code_generation:
-    languages:
-      - python
-      - typescript
-      - javascript
-      - go
-      - rust
-    
-    exclude:
-      - "node_modules/**"
-      - "venv/**"
-      - ".venv/**"
-      - "__pycache__/**"
-      - "dist/**"
-  
-  caching:
-    enabled: true
-    cache_dir: graph/cache/
-  
-  output:
-    primary_format: jsonl
-    generate_html: true
-  
-  refresh:
-    enable_git_hook: true
-    watch_debounce_ms: 1000
-  
-  performance:
-    parallel_enabled: true
-    max_workers: 4
-```
-
-#### Graphify Usage
-
-```bash
-# Incremental refresh (only changed files)
-graphify .
-
-# Full rebuild (expensive, rarely needed)
-graphify . --full
-
-# Watch mode (auto-refresh on file save)
-graphify . --watch
-
-# Query the graph using jq:
-jq '.[] | select(.name == "authenticate")' wiki/vault/graph/nodes.jsonl
-```
-
 ---
 
 ## Post-Installation Verification
@@ -320,12 +206,7 @@ After installing all tools:
    ```
 
 3. **Verify Code Analysis Tool:**
-   - If CodeGraph: See CodeGraph setup docs
-   - If Graphify:
-     ```bash
-     graphify --version
-     ls wiki/vault/graph/
-     ```
+   See CodeGraph setup docs for complete verification.
 
 4. **Commit to Git:**
    ```bash
@@ -357,7 +238,7 @@ tools:
   
   code_analysis:
     enabled: true
-    tool: codegraph  # or "graphify"
+    tool: codegraph
     mode: global
   
   vault:

@@ -15,7 +15,7 @@
 - This guarantees that outcomes are reproducible and auditable.
 
 ## 3. Persistence
-- Obsidian CLI is the mandatory runtime dependency for all persistent memory and vault operations.
+- Obsidian CLI is the recommended runtime interface for automated vault and persistent memory operations. Spekificity uses the Obsidian CLI to perform scripted vault syncs, exports, and metadata extractions that enable automated context loading and lesson extraction; see `setup.sh` for verification and install instructions. If the Obsidian CLI is not available, manual vault workflows (git-backed markdown, manual export) are supported but will reduce automation.
 - All session states, decisions, patterns, lessons, and architectural context (from CodeGraph source and wiki indexing) are managed and stored in the Obsidian vault.
 - The vault serves as the single source of truth for all project knowledge, ensuring long-term durability and accessibility.
 
@@ -28,7 +28,7 @@
 
 ## Architectural Viability
 - The above principles are enforced in the project’s specifications, implementation roadmap, and workflow documentation.
-- All critical dependencies (CodeGraph, SpecKit, Obsidian CLI, Caveman skill) are required and integrated at the architectural level.
+- All critical dependencies (CodeGraph, SpecKit, Obsidian CLI, Caveman skill) are recommended and integrated at the architectural level to enable full automation and the four-pillar guarantees. Alternative tools may be used where constraints require them; see the decision matrix in `decision.md` for guidance and migration paths.
 - This structure ensures the project’s goals of efficiency, determinism, persistence, and autonomy are met.
 
 ---

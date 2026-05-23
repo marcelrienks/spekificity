@@ -1,3 +1,9 @@
+---
+title: "Multi-Developer & Concurrent Feature Work Strategy"
+status: "COMPLETE"
+date: "2026-05-20"
+---
+
 # Multi-Developer & Concurrent Feature Work Strategy
 
 **Status:** COMPLETE  
@@ -130,7 +136,7 @@ Feature Branch (spek-<feature>-<initials>):
 
 **Example:**
 ```
-Developer A: "Use CodeGraph over Graphify for code intelligence"
+Developer A: "Use CodeGraph for code intelligence (auto-syncing, MCP-integrated)"
 Developer B: "Implement caveman compression for lessons"
 Result: Both added to vault/decision.md (no conflict)
 ```

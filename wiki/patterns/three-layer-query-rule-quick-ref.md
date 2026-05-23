@@ -12,22 +12,22 @@
 Hierarchical query strategy that prioritizes efficiency:
 
 ```
-QUERY HIERARCHY
+QUERY HIERARCHY (CodeGraph-Based)
 
-Layer 1: Code Graph (FAST, FREE)
-├─ Cost: ~50-100 tokens
+Layer 1: CodeGraph MCP Tools (FAST, FREE)
+├─ Cost: 0 tokens
 ├─ Latency: <100ms
-├─ Query: grep + jq on vault/graph/nodes.jsonl
+├─ Query: MCP tool calls (codegraph_symbols, codegraph_references, codegraph_callers, etc.)
 ├─ Examples:
-│  - "Who calls function X?"
-│  - "What does module Y depend on?"
-│  - "Find all classes in file Z"
+│  - "Who calls function X?" → codegraph_callers
+│  - "What does module Y depend on?" → codegraph_callees
+│  - "Find all classes in file Z" → codegraph_symbols
 └─ Success rate: 95% of queries
 
 Layer 2: Vault/Decisions (MEDIUM, CHEAP)
 ├─ Cost: ~200-300 tokens
 ├─ Latency: <1s
-├─ Query: grep + jq on vault files
+├─ Query: grep + jq on vault files (decisions, patterns)
 ├─ Examples:
 │  - "What decisions affect authentication?"
 │  - "What patterns exist for error handling?"
@@ -73,45 +73,48 @@ Only escalate when necessary.
 
 ---
 
-## Layer 1: Code Graph Queries
+## Layer 1: CodeGraph MCP Tools
 
 **Setup:**
-```bash
-# Code graph pre-indexed in vault/graph/nodes.jsonl
-# One JSON per line; queryable with grep + jq
+```
+CodeGraph indexing active. Access via MCP tool calls.
+Seven built-in tools available: codegraph_symbols, codegraph_definition, 
+codegraph_references, codegraph_callers, codegraph_callees, codegraph_impact, codegraph_query
 ```
 
-**Examples:**
+**Examples (MCP tool calls):**
 
-```bash
-# Query 1: Find all nodes in a file
-grep '"file": "src/services/auth.py"' vault/graph/nodes.jsonl
+```python
+# Query 1: Find all symbols in a file
+symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+# Returns: [AuthService, authenticate, refresh_token, ...]
 
-# Query 2: Find all methods in a class
-grep '"scope": "AuthService"' vault/graph/nodes.jsonl | \
-grep '"type": "method"'
+# Query 2: Find all callers of a function
+callers = call_mcp_tool("codegraph_callers", symbol="authenticate")
+# Returns: [handlers.login_handler, commands.cli_login, ...]
 
-# Query 3: Find all nodes of a type
-grep '"type": "function"' vault/graph/nodes.jsonl | \
-grep '"language": "python"'
+# Query 3: Find all references to a symbol
+refs = call_mcp_tool("codegraph_references", symbol="authenticate")
+# Returns: [handlers.py:42, commands.py:18, tests/test_auth.py:101]
 
-# Query 4: Find nodes by name
-grep '"name": "authenticate"' vault/graph/nodes.jsonl
+# Query 4: Find definition of symbol
+definition = call_mcp_tool("codegraph_definition", symbol="authenticate", context="AuthService")
+# Returns: {file: "src/services/auth.py", line: 25, signature: "def authenticate(...)"}
 
-# Query 5: Find all callers of a function
-NODE_ID=$(grep '"name": "query_user"' vault/graph/nodes.jsonl | \
-          grep '"file": "src/database' | jq -r '.id')
-grep "\"to_node\": \"$NODE_ID\"" vault/graph/edges.jsonl
+# Query 5: Find what this function calls (dependencies)
+callees = call_mcp_tool("codegraph_callees", symbol="authenticate")
+# Returns: [database.query_user, security.verify_password, ...]
 
-# Query 6: Find all dependencies of a module
-grep '"file": "src/services/' vault/graph/nodes.jsonl | \
-jq -r '.id' | \
-while read NODE_ID; do
-  grep "\"from_node\": \"$NODE_ID\"" vault/graph/edges.jsonl
-done
+# Query 6: Estimate change impact
+impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="authenticate")
+# Returns: {direct_callers: 2, indirect_callers: 5, affected_tests: 8, risk_level: "medium"}
+
+# Query 7: Custom graph query (advanced)
+result = call_mcp_tool("codegraph_query", query="find all methods returning bool")
+# Returns: [authenticate(...), is_valid_token(...), ...]
 ```
 
-**Cost:** 0-100 tokens (mostly depends on result size)
+**Cost:** 0 tokens per query
 
 ---
 

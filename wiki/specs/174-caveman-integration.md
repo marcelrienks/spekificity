@@ -1,3 +1,9 @@
+---
+title: "Caveman Integration (C4.3)"
+status: "ATOMIC SPECIFICATION"
+version: "2026-05-19"
+---
+
 # SPECIFICATION: Caveman Integration (C4.3)
 
 **Status:** ATOMIC SPECIFICATION  
@@ -376,7 +382,7 @@ Both capture the same decision information; compression just removes verbosity.
 
 ### Limitation 3: No Auto-Decompression
 
-**Issue:** User must know which compression mode was used
+**Issue:** User should know which compression mode was used
 
 **Workaround:** Always store mode in lesson metadata (`caveman-mode: full` in frontmatter)
 

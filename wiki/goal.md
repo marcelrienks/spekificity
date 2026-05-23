@@ -98,7 +98,7 @@ Spekificity is a **specification-driven agent development framework** built arou
   - Deterministic analysis, not emergent reasoning
 
 - **Skill Chaining:** Multi-agent workflows are explicit, composable
-  - Five core skills form a deterministic pipeline (see "Spekificity Skills" section for details)
+  - Core skills form a deterministic pipeline (see "Spekificity Skills" section for details). These skills map to the four workflow stages (Prepare → Specify & Plan → Implement → Conclude).
 
 ---
 
@@ -108,7 +108,7 @@ The framework is implemented through a set of reusable, composable skills. All s
 
 ### Core Skills (Usage Order)
 
-These five skills form the primary workflow. Each is required; each has a specific place in the cycle:
+These core skills form the primary workflow and map to the four stages (Prepare → Specify & Plan → Implement → Conclude). Each skill has a specific role in the cycle:
 
 | Order | Skill | Purpose | Input | Output |
 |-------|-------|---------|-------|--------|
@@ -149,7 +149,7 @@ These five skills form the primary workflow. Each is required; each has a specif
 │  /spek.implement                                            │
 │  ├─ Tasks executed sequentially/parallel                    │
 │  ├─ Code written per spec                                   │
-│  ├─ Tests written (95%+ coverage)                           │
+│  ├─ Tests written (aim for high coverage — target 95%+ where practical) │
 │  ├─ Docs updated                                            │
 │  └─ Changes committed to git                                │
 │       ↓                                                      │
@@ -661,7 +661,7 @@ Spekificity is working when:
 
 **When Fully Implemented, Spekificity Provides:**
 
-- ✅ 5-phase workflow (Prepare → Specify → Plan → Implement → Close)
+- ✅ 4-stage workflow (Prepare → Specify & Plan → Implement → Close)
 - ✅ CodeGraph integration (pre-indexed queries, multiple languages)
 - ✅ SpecKit orchestration (deterministic pipeline)
 - ✅ Obsidian vault (Git-backed knowledge store)
@@ -689,7 +689,7 @@ Spekificity is working when:
 | [wiki/vision.md](../vision.md) | Why Spekificity exists (problems + philosophy) |
 | [wiki/intention.md](../intention.md) | Core principles and design tenets |
 | [wiki/architecture.md](../architecture.md) | Technical architecture and components |
-| [wiki/workflow.md](../workflow.md) | 5-phase workflow details (reference during development) |
+| [wiki/workflow.md](../workflow.md) | 4-stage workflow details (reference during development) |
 | [wiki/quickstart.md](../quickstart.md) | Hands-on walkthrough of first feature (30 min tutorial) |
 
 ---

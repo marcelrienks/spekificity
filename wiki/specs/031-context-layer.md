@@ -1,3 +1,11 @@
+---
+title: "Context Layer (C3.1)"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+type: "integration"
+---
+
 # ATOMIC SPECIFICATION: Context Layer (C3.1)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)

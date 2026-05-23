@@ -82,18 +82,24 @@ def load_context(phase="specify"):
             context["patterns"] = []
             log_warning("No decisions found; proceeding with minimal context")
     
-    # Code graph (for plan/implement phases)
+    # Code graph via MCP tools (for plan/implement phases)
     if phase in ["plan", "implement"]:
         try:
-            context["graph"] = load_code_graph("vault/graph/nodes.jsonl")
-            context["recent_files"] = get_git_log(--oneline -20)
-        except FileNotFoundError:
+            # Query code graph structure via MCP tools (0 tokens)
+            recent_files = get_git_log(limit=20)
+            graph_context = []
+            for file in recent_files:
+                symbols = call_mcp_tool("codegraph_symbols", file_path=file)
+                graph_context.append({"file": file, "symbols": symbols})
+            context["graph"] = graph_context
+            context["recent_files"] = recent_files
+        except Exception as e:
             context["graph"] = None
             context["recent_files"] = None
-            log_warning("Code graph unavailable; using grep instead")
+            log_warning(f"Code graph unavailable: {e}; using vault context only")
     
     return context
-```
+``````
 
 ---
 

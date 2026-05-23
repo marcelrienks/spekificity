@@ -92,7 +92,7 @@ Real-time, pre-indexed code analysis via CodeGraph MCP. No file scanning.
 - CodeGraph automatically syncs on every file change
 - Queries are deterministic (impact analysis, caller chains, definitions)
 - Agents use CodeGraph for code context, not file grep
-- Graphify (Markdown vault docs) is legacy; CodeGraph is the modern standard
+- CodeGraph is the modern standard for agent-driven code analysis
 
 **Implication:** Agent queries stay fast and token-cheap, even in large codebases.
 

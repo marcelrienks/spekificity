@@ -69,8 +69,8 @@ Create natural interconnection, enable discovery, validate lessons against patte
 **S3: 3-Layer Query Rule** (Graph → Vault → Code priority)  
 Reduce token waste, already planned. Dependencies: None.
 
-**S4: Graphify Git Hooks** (Auto-sync on commits)  
-Keep graph fresh, prevent stale queries, already planned. Dependencies: CodeGraph setup spec.
+**S4: CodeGraph File Watcher** (Auto-sync on file changes)  
+Keep graph fresh, prevent stale queries. CodeGraph automatically syncs on file saves via file watcher. Dependencies: CodeGraph setup spec.
 
 **S5: Session Logs as Vault Artifacts** (Archive session memory)  
 Provide audit trail, enable cross-feature discovery. Dependencies: S1, S2 (auto-linking).
@@ -457,16 +457,16 @@ Automated 10-step post-processing:
 Agent queries cost tokens. Naive approach: read all files (expensive). Better approach: tier queries by cost.
 
 ### Solution
-Three-tier query hierarchy (cost increases, but Layer 1-2 cover 90% of use cases):
+Three-tier query hierarchy (cost increases, but Layer 1-2 cover 95% of use cases):
 
-**Layer 1: Code Graph (~50-100 tokens)**
-- Query: grep + jq on indexed code graph
+**Layer 1: Code Graph MCP Tools (0 tokens)**
+- Query: CodeGraph MCP tools (codegraph_symbols, codegraph_references, codegraph_callers, etc.)
 - Examples: "Who calls function X?", "What does module Y depend on?"
 - Cost: 0 API tokens (local index)
 - Latency: <100ms
 
 **Layer 2: Vault/Decisions (~200-300 tokens)**
-- Query: grep + jq on vault files
+- Query: grep + jq on vault files (or MCP query tool)
 - Examples: "What decisions affect authentication?", "What patterns exist for error handling?"
 - Cost: ~100 tokens (searching structured docs)
 - Latency: <1s
@@ -517,36 +517,40 @@ Three-tier query hierarchy (cost increases, but Layer 1-2 cover 90% of use cases
 Code structure needs to be queryable (who calls this function? what does this module depend on?). Reading all source files is expensive.
 
 ### Solution
-Use pre-indexed code graph (nodes.jsonl) with grep + jq queries:
+Use CodeGraph MCP tools for pre-indexed queries:
 
-```bash
-# Layer 1: Direct grep
-grep '"file": "src/services/auth.py"' vault/graph/nodes.jsonl
+```python
+# Layer 1: Direct MCP tool calls (built-in, <100ms each)
+symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+callers = call_mcp_tool("codegraph_callers", symbol="authenticate")
+impact = call_mcp_tool("codegraph_impact", file="src/services/auth.py", symbol="authenticate")
 
-# Layer 2: Composed grep + shell
-NODE_ID=$(grep '"name": "authenticate"' vault/graph/nodes.jsonl | jq -r '.id')
-grep "\"to_node\": \"$NODE_ID\"" vault/graph/edges.jsonl
+# Layer 2: Complex query composition (multiple tool calls)
+# Agent chains multiple queries to answer complex questions
 
-# Layer 3: Complex reasoning (fallback to LLM)
-# "What modules would be affected by changing API?"
+# Layer 3: Complex reasoning (fallback to LLM if needed)
+# "Design refactoring considering all dependencies"
 ```
 
 ### When to Use
-- Finding callers/callees (queries 1-6 in spec)
-- Dependency analysis (impact analysis)
-- Scope impact estimation (code graph shows breadth)
+- Finding callers/callees (use codegraph_callers, codegraph_callees)
+- Dependency analysis (use codegraph_impact for change scope)
+- Code structure exploration (use codegraph_symbols, codegraph_references)
+- Impact estimation (use codegraph_impact for built-in analysis)
 
 ### When NOT to Use
-- Semantic reasoning ("What does this code do?" → need to read source)
+- Semantic reasoning ("What does this code do?" → need source code reading)
 - Logic understanding (code graph doesn't understand behavior)
+- Complex refactoring reasoning (may need LLM synthesis)
 
 ### Example Code / Integration
-- **Query 1:** Find all nodes in a file
-- **Query 2:** Find all methods in a class
-- **Query 3:** Find all nodes of a type
-- **Query 4:** Find nodes by name
-- **Query 5:** Find all callers of a function
-- **Query 6:** Find all dependencies of a module
+- **Tool 1:** codegraph_symbols — Find all symbols in a file
+- **Tool 2:** codegraph_definition — Find where a symbol is defined
+- **Tool 3:** codegraph_references — Find all uses of a symbol
+- **Tool 4:** codegraph_callers — Find functions calling this function
+- **Tool 5:** codegraph_callees — Find functions called by this function
+- **Tool 6:** codegraph_impact — Estimate change impact radius
+- **Tool 7:** codegraph_query — Free-form graph queries
 
 ### Related Patterns
 - Three-Layer Query Rule (code graph = Layer 1)
@@ -893,8 +897,8 @@ POST-EXECUTION:
 
 ### Example Code / Integration
 - **Integration Point:** Decorator wrapper PRE layer
-- **Context sources:** vault/decision.md, vault/patterns.md, vault/graph/nodes.jsonl
-- **Injection format:** Prompt text ("IMPORTANT: Adhere to these decisions: ...")
+- **Context sources:** vault/decision.md, vault/patterns.md, CodeGraph MCP tools
+- **Injection format:** Prompt text ("IMPORTANT: Adhere to these decisions: ...") + MCP tool results
 
 ### Related Patterns
 - Decorator Wrapper Pattern (PRE layer mechanism)
@@ -944,7 +948,7 @@ Classify errors into categories; apply category-specific recovery:
 - Recovery: Async retry (30s intervals, max 3 retries)
 
 **Category 3: Graph/Code Index Errors (TRANSIENT or RECOVERABLE)**
-- Issue: Code graph corrupted, graphify export fails
+- Issue: Code graph corrupted, CodeGraph index rebuild fails
 - Severity: MEDIUM
 - Action: WARN + FALLBACK (continue with stale graph or grep)
 - Recovery: Re-trigger `/spek.map` on next run
@@ -1016,9 +1020,9 @@ Layer 3 (MINIMAL): Continue with empty context (log warning)
 
 **Example: Code Graph Query Fallback**
 ```
-Layer 1 (PRIMARY): Query pre-indexed code graph (vault/graph/nodes.jsonl)
-  ↓ (if fails)
-Layer 2 (FALLBACK): Fall back to grep on source files
+Layer 1 (PRIMARY): Query via CodeGraph MCP tools (codegraph_symbols, codegraph_references, etc.)
+  ↓ (if unavailable)
+Layer 2 (FALLBACK): Fall back to vault grep or file reading
   ↓ (if fails)
 Layer 3 (MINIMAL): Skip context injection (log warning, continue)
 ```
@@ -1364,31 +1368,38 @@ Step 4: Remediation
 **Status:** ACTIVE  
 
 ### Problem
-Code lives in graphify output; documentation lives in Obsidian vault. Separate queries make context loading expensive (query code graph + query vault separately).
+Code lives in CodeGraph index; documentation lives in Obsidian vault. Separate queries make context loading expensive (query code graph + query vault separately).
 
 ### Solution
-Merge code and doc nodes into hybrid graph:
+Access unified code + doc graph via CodeGraph MCP tools:
 
 ```
-vault/graph/nodes.jsonl combines:
-├─ Code nodes (from graphify)
+CodeGraph SQLite database (vault/graph/codegraph.db) contains:
+├─ Code nodes (from CodeGraph indexing)
 │  └─ Functions, classes, modules, variables
 ├─ Doc nodes (from Obsidian export)
 │  └─ Decisions, patterns, lessons, specs
 └─ Skill nodes (file-level)
   └─ `/spek.prepare`, `/spek.conclude`, etc.
+
+Query via MCP tools:
+├─ codegraph_symbols → Find all code/doc in file
+├─ codegraph_references → Find all uses of code or doc reference
+├─ codegraph_callers → Find code calling this code
+├─ codegraph_impact → Estimate impact of change (code + doc scope)
+└─ codegraph_query → Custom graph queries (advanced)
 ```
 
-**Node Types:**
-- **Code:** `type: "code"` → function/class/variable
-- **Doc (file-level):** `type: "doc", level: "file"` → decision.md
-- **Doc (heading-level):** `type: "doc", level: "h2"` → decision.md#heading
-- **Skill:** `type: "skill"` → spek-prepare/SKILL.md
+**Node Types (in CodeGraph):**
+- **Code:** language="python" or other → function/class/variable
+- **Doc (file-level):** language="markdown", type="documentation" → decision.md
+- **Doc (heading-level):** type="documentation", heading=true → decision.md#heading
+- **Skill:** language="yaml", type="skill" → spek-prepare/SKILL.md
 
 **Benefits:**
-- Single query finds related code + docs
-- Impact analysis across code/doc boundary
-- Reduced query overhead
+- MCP tools find related code + docs in <100ms
+- Impact analysis across code/doc boundary (via codegraph_impact)
+- Zero token cost for queries
 
 ### When to Use
 - Large codebases with extensive documentation
@@ -1401,8 +1412,8 @@ vault/graph/nodes.jsonl combines:
 
 ### Example Code / Integration
 - **Build process:** `/spek.map` generates hybrid graph (code pass + doc pass + merge)
-- **Query interface:** Single vault/graph/nodes.jsonl for all query types
-- **Storage:** vault/graph/nodes.jsonl + vault/graph/edges.jsonl
+- **Query interface:** MCP tools (all 7 tools support hybrid queries)
+- **Storage:** vault/graph/codegraph.db (SQLite) + optional vault/graph/exports/ (JSONL exports)
 
 ### Related Patterns
 - Graph Merge Integration Pattern (merge algorithm)
@@ -1424,7 +1435,7 @@ vault/graph/nodes.jsonl combines:
 **Status:** ACTIVE  
 
 ### Problem
-Code nodes (from graphify) and doc nodes (from Obsidian) are generated separately with different schemas. Merging requires deduplication, link discovery, and backreference computation.
+Code nodes (from CodeGraph) and doc nodes (from Obsidian) are generated separately with different schemas. Merging requires deduplication, link discovery, and backreference computation.
 
 ### Solution
 Merge process (5 steps):
@@ -1439,7 +1450,7 @@ Step 2: Deduplication
   └─ Output: unique code_nodes[], unique doc_nodes[]
 
 Step 3: Link discovery
-  ├─ Code → Code (already in graphify edges)
+  ├─ Code → Code (already in CodeGraph edges)
   ├─ Doc → Doc (from markdown links)
   ├─ Code → Doc (from code comments referencing decisions)
   └─ Doc → Code (from decision.md affecting module.py)

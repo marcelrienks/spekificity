@@ -1,3 +1,10 @@
+---
+title: "Code and Document Maps"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-21"
+---
+
 # Spec: Code and Document Maps (extracted spec)
 
 **Status:** ATOMIC SPECIFICATION | **Version:** 1.0.0-alpha.1 (2026-05-20)
@@ -6,9 +13,9 @@
 
 **Problem:** The vault graph currently targets source code only. Documentation (specs, plans, skills, architectural decisions) exists in Obsidian vault outside the queryable graph, so AI-assisted steps (specify, plan, implement) cannot easily discover what documentation already exists. This leads to duplicated specs, contradictory plans, and missed opportunities to reuse patterns.
 
-**Solution:** Unify code and documentation graphs by querying Obsidian's built-in graph API for documentation nodes and integrating them with code nodes from graphify.
+**Solution:** Unify code and documentation graphs by querying Obsidian's built-in graph API for documentation nodes and integrating them with code nodes from CodeGraph.
 
-**Outcome:** A single `/spek.map` command that indexes both code (via graphify) and documentation (via Obsidian graph export), enabling context-aware specification, planning, and implementation.
+**Outcome:** A single `/spek.map` command that indexes both code (via CodeGraph) and documentation (via Obsidian graph export), enabling context-aware specification, planning, and implementation.
 
 ---
 
@@ -80,7 +87,7 @@ Skill node (file-level): {
 }
 ```
 
-**Storage:** All nodes stored in `wiki/vault/graph/nodes.jsonl` (one JSON object per line for streaming)
+**Storage:** Primary storage in CodeGraph SQLite database (`wiki/vault/graph/codegraph.db`); optional JSONL export in `wiki/vault/graph/exports/nodes.jsonl` for compatibility with external tools
 
 ---
 
@@ -118,9 +125,12 @@ Skill node (file-level): {
 
 ```bash
 # In spek.map workflow:
-spek.map step 1: graphify index-code → wiki/vault/graph/nodes-code.jsonl
-spek.map step 2: obsidian export-graph (via CLI or plugin) → wiki/vault/graph/nodes-docs.jsonl
-spek.map step 3: merge both → wiki/vault/graph/nodes.jsonl
+spek.map step 1: CodeGraph index-code → SQLite (wiki/vault/graph/codegraph.db)
+spek.map step 2: obsidian export-graph (via CLI or plugin) → wiki/vault/graph/nodes-docs.jsonl (temporary)
+spek.map step 3: merge both → SQLite (permanent storage) + optional JSONL export (wiki/vault/graph/exports/nodes.jsonl)
+
+# Result: All data stored in CodeGraph SQLite database
+# JSONL files are intermediate format during merge; optional exports for external tools
 ```
 
 (Obsidian can export via CLI, plugin API, or metadata.json cache depending on setup)
@@ -183,7 +193,7 @@ Content here.
 ### Question 5: How are references/links discovered?
 
 **Code references:**
-- Graphify's AST analysis: `import Foo from "path/to/foo"` → code node link
+- CodeGraph's AST analysis: `import Foo from "path/to/foo"` → code node link
 - Cross-file function calls: `foo()` → link to `Foo` definition
 
 **Doc references:**
@@ -207,7 +217,7 @@ Content here.
 
 ## Node Schema (Final)
 
-### Code Nodes (from Graphify)
+### Code Nodes (from CodeGraph)
 
 ```typescript
 interface CodeNode {
@@ -276,19 +286,33 @@ interface DocNodeFile {
 
 ```
 vault/graph/
-├── config.json         # Obsidian export configuration (which folders, metadata rules)
-├── nodes.jsonl         # Final merged index (one JSON object per line)
-├── nodes-code.jsonl    # Code nodes from graphify (intermediate)
-├── nodes-docs.jsonl    # Doc nodes from Obsidian export (intermediate)
-└── metadata.json       # Timestamp, Obsidian version, source file hashes
+├── codegraph.db         # PRIMARY: SQLite database with all code + doc nodes
+├── cache/               # Query cache (TTL-based, auto-expiring)
+├── config.json          # CodeGraph configuration metadata
+├── exports/             # OPTIONAL: JSONL exports for external tools
+│   ├── nodes.jsonl      # All nodes (code + doc) in JSONL format
+│   ├── nodes-code.jsonl # Code nodes only
+│   └── nodes-docs.jsonl # Doc nodes only
+└── metadata.json        # Timestamp, versions, source file hashes
 ```
+
+**Primary Storage:** SQLite database (`codegraph.db`)
+- Contains all code nodes (indexed via CodeGraph)
+- Contains all doc nodes (merged from Obsidian export)
+- Maintained via MCP tools (codegraph_symbols, codegraph_references, etc.)
+- Queried via CodeGraph MCP tools (zero token cost)
+
+**Optional Exports:** JSONL files in `exports/` subdirectory
+- Generated on-demand for external tool compatibility
+- Not meant for direct agent queries (use MCP tools instead)
+- Can be regenerated from SQLite via `codegraph export` command
 
 **Obsidian export format to use:**
 - Obsidian's `dataview` plugin export (most structured)
 - Or Obsidian's native `.obsidian/cache.json` (metadata cache)
 - Or custom Obsidian CLI tool that exports graph as JSONL
 
-**nodes.jsonl format (one line per node):**
+**nodes.jsonl format (one line per node, OPTIONAL export):**
 
 ```jsonl
 {"type":"code","id":"src/prepare/prepare.ts:Prepare",...}
@@ -296,17 +320,17 @@ vault/graph/
 {"type":"doc","id":"skills/spek-prepare/SKILL.md",...}
 ```
 
-**Query examples:**
+**Query examples (via MCP tools):**
 
-```bash
-# Find all decisions (from Obsidian graph)
-grep '"docType":"decision"' wiki/vault/graph/nodes.jsonl
+```python
+# Find all decisions (from CodeGraph hybrid index)
+decisions = call_mcp_tool("codegraph_query", query="find all nodes with type=doc and docType=decision")
 
 # Find all code that references wiki/vault/decision.md
-grep '"wiki/vault/decision.md"' wiki/vault/graph/nodes.jsonl | grep '"references"'
+refs = call_mcp_tool("codegraph_references", symbol="decision.md#api-versioning-strategy")
 
-# Find all active docs (metadata from Obsidian frontmatter)
-grep '"status":"active"' wiki/vault/graph/nodes.jsonl
+# Find all active docs (via query on metadata)
+active_docs = call_mcp_tool("codegraph_query", query="find all nodes with status=active and type=doc")
 ```
 
 ---
@@ -373,7 +397,7 @@ Export Obsidian graph (via dataview, cache, or CLI tool) → wiki/vault/graph/no
 
 ```
 1. Load config from wiki/vault/graph/config.json
-2. Run graphify on code paths → wiki/vault/graph/nodes-code.jsonl
+2. Run CodeGraph on code paths → wiki/vault/graph/nodes-code.jsonl
 3. Run spek-doc-parser on doc paths → wiki/vault/graph/nodes-docs.jsonl
 4. Merge both into wiki/vault/graph/nodes.jsonl (deduplicate, compute backreferences)
 5. Update wiki/vault/graph/metadata.json (timestamp, file hashes, version)
@@ -383,7 +407,7 @@ Export Obsidian graph (via dataview, cache, or CLI tool) → wiki/vault/graph/no
 ### Input/Output Contract
 
 **Input:**
-- Source code files (all languages supported by graphify)
+- Source code files (all languages supported by CodeGraph)
 - Documentation files (markdown, YAML frontmatter optional)
 - Config file (wiki/vault/graph/config.json)
 
@@ -461,10 +485,10 @@ When loading vault context:
 
 - [x] Node schema is defined for both code and doc nodes
 - [x] Hybrid granularity approach chosen (heading-level for content, file-level for config)
-- [x] Separate parsing passes defined (graphify for code, custom for docs)
+- [x] Separate parsing passes defined (CodeGraph for code, custom for docs)
 - [x]Choose Obsidian export method** — Dataview plugin, native cache.json, or custom CLI tool
 2. **Implement Obsidian export integration** — Script or plugin that exports Obsidian graph to JSONL format
-3. **Update `/spek.map` skill** — Integrate graphify + Obsidian export into unified command
+3. **Update `/spek.map` skill** — Integrate CodeGraph + Obsidian export into unified command
 4. **Create config.json template** — Place in `.spekificity/config/graph-config.json`
 5. **Integrate with `/spek.prepare` and `/spek.conclude`** — Add graph refresh steps (watch Obsidian cache for changes)
 6. **Document query patterns** — Create a guide for agents on how to query the merged graph
@@ -473,9 +497,9 @@ When loading vault context:
 
 ## References
 
-- **Decision:** Use Obsidian's graph export as authoritative source for doc nodes; merge with graphify code nodes
+- **Decision:** Use Obsidian's graph export as authoritative source for doc nodes; merge with CodeGraph code nodes
 - **Node schema:** Unified structure for code and doc nodes with references; docs sourced from Obsidian
-- **Storage:** JSONL in `wiki/vault/graph/nodes.jsonl` derived from Obsidian vault + graphify code output
+- **Storage:** JSONL in `wiki/vault/graph/nodes.jsonl` derived from Obsidian vault + CodeGraph code output
 - **Integration:** `/spek.map`, `/spek.prepare`, `/spek.conclude`, `/spek.context`
 - **Config:** `wiki/vault/graph/config.json` specifies Obsidian export method, indexing rules, refresh policy
 - **Authority:** Obsidian vault is single source of truth for documentation; graph is derived

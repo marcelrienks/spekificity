@@ -1,9 +1,16 @@
+---
+title: "Patterns Library (C2.3)"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-21"
+---
+
 # ATOMIC SPECIFICATION: Patterns Library (C2.3)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Type:** Memory Layer 2 — Patterns Library  
 **Depends On:** lessons-format.md  
-**Used By:** /spek.context (read at session start), `/spek.plan` plan phase (suggest patterns during planning)  
+**Used By:** /spek.context (read at session start), `/spek.plan` plan phase (suggest patterns during planning)   
 
 ---
 
@@ -36,7 +43,7 @@ Permanent collection of reusable patterns from all features; queryable by domain
 
 **When to Use:**
 - **Context:** Situations where this pattern applies
-- **Prerequisites:** What must be true for pattern to work
+- **Prerequisites:** What should be true for pattern to work
 - **Benefits:** Why use this pattern over alternatives
 - **Drawbacks:** When NOT to use; trade-offs
 

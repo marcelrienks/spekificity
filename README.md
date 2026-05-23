@@ -30,8 +30,9 @@ Spekificity is a **specification-driven framework for rapid AI agent development
     - [Download Obsidian](https://obsidian.md/download)
     - macOS: `brew install obsidian`
     - Windows: `choco install obsidian`
-- **Obsidian CLI** (required) — all vault operations and persistent memory management are performed via the Obsidian CLI
-    - Install: `npm install -g @obsidianmd/obsidian-cli`
+- **Obsidian CLI** (required) — used to automate vault syncs, export vault structure/metadata, and run scripted exports that enable automated context loading, graph generation, and lesson extraction.
+    - Why required: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports) that are provided by the Obsidian CLI. These automated features require a scriptable CLI to run reliably in CI and developer workflows.
+    - Install CLI: `npm install -g @obsidianmd/obsidian-cli`
     - See [Obsidian CLI documentation](https://github.com/obsidianmd/obsidian-cli) for usage
 
 ### Installation & Setup (Recommended)
@@ -56,7 +57,7 @@ This automatically:
 - ✅ Creates project directories (`.spek/`, `vault/`, `wiki/`)
 - ✅ Initializes CodeGraph database
 - ✅ Runs `specify init .` to initialize SpecKit
-- ✅ **Requires Obsidian CLI for all persistent memory and vault operations**
+- ✅ **Obsidian CLI is required for automated vault and persistent memory operations** — the `setup.sh` script verifies the CLI is present and will abort with clear instructions if it is missing; manual install: `npm install -g @obsidianmd/obsidian-cli`.
 
 ### Alternative: Manual Installation
 
@@ -81,7 +82,7 @@ spek init
 ✅ **Spec-Driven Workflow** — All work starts with a structured specification  
 ✅ **Persistent Memory** — Decisions, patterns, lessons stored in Git-backed vault  
 ✅ **Token Efficiency** — Pre-indexed code analysis (CodeGraph) + Caveman compression  
-✅ **Deterministic Sequencing** — 5-phase workflow (Prepare → Specify → Plan → Implement → Close)  
+✅ **Deterministic Sequencing** — 4-stage workflow (Prepare → Specify & Plan → Implement → Close)  
 ✅ **Composable Skills** — `/spek.*` commands can be chained or run independently  
 
 ---
@@ -104,10 +105,10 @@ Spekificity is built around four pillars:
 
 - **SpecKit / Specify** — Spec-driven workflow engine
 - **CodeGraph** — Code intelligence & impact analysis
-- **Obsidian Vault (with Obsidian CLI)** — Mandatory knowledge store and runtime interface for specs, decisions, patterns, lessons. **All persistent memory operations require Obsidian CLI.**
+- **Obsidian Vault (with Obsidian CLI)** — Recommended knowledge store and runtime interface for specs, decisions, patterns, lessons. Automated persistent-memory operations (scripted vault syncs, exports, metadata extraction) rely on the Obsidian CLI for reliable CI and developer automation. See `setup.sh` for verification and installation guidance; manual vault workflows are still supported when the CLI is unavailable.
 - **Caveman Mode** — Response compression for token control
 
-Spekificity defines how these tools work together—it doesn't replace them. **Obsidian CLI is a required runtime dependency for all vault and persistent memory management.**
+Spekificity defines how these tools work together—it doesn't replace them. **Obsidian CLI is recommended for automated vault and persistent memory management; if it's unavailable, Spekificity supports manual workflows with reduced automation.**
 
 ---
 
@@ -145,7 +146,7 @@ Start with this reading order—each doc builds on the previous:
 
 | Document | Purpose |
 |----------|---------|
-| [wiki/workflow.md](wiki/workflow.md) | 5-phase workflow details (reference during development) |
+| [wiki/workflow.md](wiki/workflow.md) | 4-stage workflow details (reference during development) |
 | [wiki/conventions.md](wiki/conventions.md) | Command naming and skill invocation |
 | [.spekificity/skill-index.md](.spekificity/skill-index.md) | Complete `/spek.*` command reference |
 
@@ -173,7 +174,7 @@ Start with this reading order—each doc builds on the previous:
 
 | Term | Canonical Usage | Aliases | Definition |
 |------|-----------------|---------|-----------|
-| **Phase** | "Phase 1: Prepare", "Phase 2: Specify", etc. (5 total) | "stage", "step" | One of five deterministic workflow stages in feature development |
+| **Stage** | "Stage 1: Prepare", "Stage 2: Specify & Plan", etc. (4 total) | "phase", "step" | One of four deterministic workflow stages in feature development |
 | **Closeout** | "Phase 5: Post-Feature Closeout" | "Close", "post-processing", "archive phase" | Final phase where artifacts are archived and lessons extracted |
 | **Lessons Learned** | "lessons learned", "lessons" (in context of `/spek.conclude` output) | "reflection", "retrospective", "what we learned" | Structured insights captured at feature end (what worked, what didn't, patterns) |
 | **CodeGraph** | "CodeGraph" (always capitalized, never "code graph") | "code intelligence tool", "code analysis" | Pre-indexed SQLite code analysis tool; primary source of code intelligence |
@@ -244,6 +245,8 @@ Vanilla SpecKit commands remain part of the underlying model:
 - `/speckit.implement`
 
 Use the `/spek.*` surface when following the Spekificity workflow. **Enrichment** means context injection: `/spek.plan` loads decisions and patterns from the knowledge vault before calling `/speckit.specify`, `/speckit.plan`, etc., so those commands operate with project-specific constraints already in scope. This guides spec and plan generation toward existing patterns without requiring manual context setup.
+
+Note on notation: `/spek.*` denotes the agent/skill namespace used in skill specifications and agent-invoked flows. The user-facing CLI command is `spek` (for example `spek prepare` or `spek plan --phase=specify`). Both forms refer to the same underlying actions; the slash-prefixed form is the skill identifier used in documentation and agent skills, while the plain `spek` form is the shell/CLI invocation.
 
 Vanilla SpecKit commands remain the execution layer; Spekificity adds context loading, orchestration, and post-processing around them.
 

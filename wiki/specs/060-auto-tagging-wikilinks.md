@@ -1,7 +1,14 @@
+---
+title: "Auto-Tagging + Auto-Wikilink Insertion for Lessons"
+status: "Specification"
+version: "1.0.0-alpha.1"
+date: "2026-05-21"
+---
+
 # C.3.2 Auto-Tagging + Auto-Wikilink Insertion for Lessons
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Priority:** MUST (Phase 1)  
+**Priority:** RECOMMENDED (Phase 1)  
 **Effort:** 4-6 hours  
 **Adoption Source:** B.9 (claude-code-memory-setup, chat import pipeline pattern)  
 **Depends On:** C.3.1 Zettelkasten Conventions
@@ -53,7 +60,7 @@ Automate the process of:
 
 ## Related Specs
 
-- C.3.1: Zettelkasten conventions (MUST exist first; defines frontmatter)
+- C.3.1: Zettelkasten conventions (should exist first; defines frontmatter)
 - B.8.4: Post Command (Step 3 lesson generation; where auto-linking is integrated)
 - B.8.2: Persistent Memories (vault structure; source of linking targets)
 

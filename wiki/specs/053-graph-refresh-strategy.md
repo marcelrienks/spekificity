@@ -1,3 +1,10 @@
+---
+title: "Graph Refresh Strategy (C5.4)"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-21"
+---
+
 # ATOMIC SPECIFICATION: Graph Refresh Strategy (C5.4)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
@@ -100,7 +107,7 @@ Graph refresh strategy uses SHA256 caching and incremental sync to keep code gra
 
 **Config:**
 ```yaml
-graphify:
+codegraph:
   performance:
     parallel: true
     max_workers: 4
@@ -114,7 +121,7 @@ graphify:
 
 **Config:**
 ```yaml
-graphify:
+codegraph:
   caching:
     cache_expiry_hours: 24
 ```
@@ -129,7 +136,7 @@ graphify:
 
 **Config:**
 ```yaml
-graphify:
+codegraph:
   refresh:
     watch_debounce_ms: 1000
 ```
@@ -145,7 +152,7 @@ graphify:
 
 **Config:**
 ```yaml
-graphify:
+codegraph:
   caching:
     cache_expiry_hours: 24
 ```

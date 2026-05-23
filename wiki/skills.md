@@ -11,10 +11,12 @@
 Spekificity exposes a set of CLI skills and AI agent commands for specification-driven development. All skills follow the decorator pattern — they wrap SpecKit base commands without replacing them.
 
 **Quick Reference:**
-- Workflow commands: `/spek.*` namespace
+- Workflow commands: `/spek.*` namespace (agent/skill identifiers)
 - Context commands: `/context.*` namespace
 - Analysis commands: `/cg.*` (CodeGraph) namespace
 - Compression: `/caveman` mode commands
+
+Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers used in agent skill files and documentation. The equivalent user-facing CLI commands are the plain `spek` invocations (for example, `spek prepare` or `spek plan --mode=specify`). Both refer to the same operations; use the CLI form when running commands locally and the slash-prefixed form when referring to skills in docs or agent prompts.
 
 ---
 

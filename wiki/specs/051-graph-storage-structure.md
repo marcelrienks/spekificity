@@ -1,3 +1,11 @@
+---
+title: "Graph Storage Structure (C5.2)"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+type: "data-schema"
+---
+
 # ATOMIC SPECIFICATION: Graph Storage Structure (C5.2)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
@@ -9,7 +17,7 @@
 
 ## Overview
 
-Code graph stored in `vault/graph/` with nodes.jsonl (JSONL), edges.jsonl, config.json, and cache files. This spec defines directory layout and file schemas.
+Code graph stored in `vault/graph/` as SQLite database with optional export formats. CodeGraph maintains a queryable index via MCP tools and optional JSONL exports for integration with external systems.
 
 ---
 
@@ -17,98 +25,126 @@ Code graph stored in `vault/graph/` with nodes.jsonl (JSONL), edges.jsonl, confi
 
 ```
 vault/graph/
+├── codegraph.db             # SQLite database (primary store — code + doc nodes + edges)
 ├── config.json              # Metadata (version, generation timestamp, stats)
-├── nodes.jsonl              # MERGED nodes (code + doc) — agent queryable
-├── nodes-code.jsonl         # Code symbols from graphify
-├── nodes-docs.jsonl         # Document nodes from Obsidian
-├── edges.jsonl              # Relationships (calls, inheritance, depends-on)
 ├── cache/
-│   ├── sha256.json          # File hash cache for incremental updates
-│   └── node-index.json      # Symbol → node ID lookup table
-├── nodes/                   # Obsidian notes (optional output)
-│   ├── functions/
-│   ├── classes/
-│   └── modules/
+│   ├── query-cache.db       # Query result cache (TTL-based)
+│   └── sha256.json          # File hash cache for incremental updates
+├── exports/                 # Optional JSONL exports (for integration)
+│   ├── nodes.jsonl          # Exported nodes (for external tools)
+│   ├── edges.jsonl          # Exported edges (for external tools)
+│   └── timestamp.txt        # Export generation time
 ├── graph.html               # Interactive visualization
 ├── GRAPH_REPORT.md          # Human-readable analysis + metrics
 └── refresh-log.md           # Refresh history + timestamps
 ```
 
+**Primary Interface:** Agents query CodeGraph via **MCP tools** (codegraph_symbols, codegraph_references, codegraph_callers, codegraph_impact, etc.), not JSONL files.
+
+**Export Format:** JSONL exports available in `vault/graph/exports/` for compatibility with external systems (updated on each `/spek.map` run).
+
 ---
 
 ## File Schemas
 
-### config.json
+### config.json (CodeGraph Metadata)
+
+Metadata file created by CodeGraph init:
 
 ```json
 {
   "version": "1.0",
   "generated_at": "2026-05-19T14:00:00Z",
+  "database": "codegraph.db",
+  "database_format": "SQLite3",
   "graph_type": "hybrid",
   "sources": [
     {
       "type": "code",
-      "tool": "graphify",
-      "languages": ["python", "typescript"],
+      "tool": "CodeGraph",
+      "languages": ["python", "typescript", "yaml", "markdown"],
       "file_count": 156,
-      "node_count": 423
+      "indexed_symbols": 2847,
+      "references": 12450
     },
     {
       "type": "documentation",
       "tool": "obsidian-export",
+      "vault_path": "vault/",
       "file_count": 89,
-      "node_count": 45
+      "doc_nodes": 145
     }
+  ],
+  "mcp_tools": [
+    "codegraph_symbols",
+    "codegraph_definition", 
+    "codegraph_references",
+    "codegraph_callers",
+    "codegraph_callees",
+    "codegraph_impact",
+    "codegraph_query"
   ],
   "performance": {
     "cache_enabled": true,
+    "cache_ttl": 3600,
     "last_full_rebuild": "2026-05-18T14:00:00Z",
-    "last_incremental_sync": "2026-05-19T14:00:00Z"
+    "last_incremental_sync": "2026-05-19T14:00:00Z",
+    "last_full_rebuild_time_seconds": 47,
+    "typical_query_time_ms": 150
   }
 }
 ```
 
-### nodes.jsonl (Agent-Queryable)
+**Key:** Agents do **not** read JSONL files directly. Instead, they use the **MCP tools** listed above (codegraph_symbols, codegraph_references, etc.) to query the SQLite database.
 
-One JSON per line:
+### Node & Edge Storage (SQLite - Internal)
 
-```json
-{
-  "id": "python:src/services/auth.py:AuthService:authenticate",
-  "type": "method",
-  "name": "authenticate",
-  "language": "python",
-  "file": "src/services/auth.py",
-  "line_start": 42,
-  "scope": "AuthService",
-  "signature": "def authenticate(self, username: str, password: str) -> bool",
-  "complexity": "medium",
-  "source": "code",
-  "indexed_at": "2026-05-19T14:00:00Z"
-}
+CodeGraph stores nodes and edges in `codegraph.db` (SQLite format). Agents interact with this database via MCP tool calls:
+
+**Example MCP Tool Call (Agent → CodeGraph):**
+```python
+# Agent queries: "Find all methods in AuthService"
+result = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+# Returns: List of symbols (classes, methods, functions) in that file
 ```
 
-### edges.jsonl
-
+**Response Format:**
 ```json
-{
-  "id": "edge:auth_authenticate->database_query_user",
-  "from_node": "python:src/services/auth.py:AuthService:authenticate",
-  "to_node": "python:src/database/queries.py:query_user",
-  "relationship": "calls",
-  "context": "Line 45: user = query_user(username)"
-}
+[
+  {
+    "name": "AuthService",
+    "type": "class",
+    "line": 12,
+    "signature": "class AuthService"
+  },
+  {
+    "name": "authenticate",
+    "type": "method",
+    "line": 25,
+    "signature": "def authenticate(self, username: str, password: str) -> bool",
+    "parent": "AuthService"
+  }
+]
 ```
 
-### sha256.json (Cache)
+### JSONL Exports (Optional - External Integration)
 
+For integration with external systems, CodeGraph can export data to JSONL format (in `vault/graph/exports/`). This is optional and generated on-demand:
+
+**nodes.jsonl (Example):**
 ```json
-{
-  "src/services/auth.py": "abc123def456...",
-  "src/api/handlers.py": "ghi789jkl012...",
-  "...": "..."
-}
+{"id":"python:src/services/auth.py:AuthService","type":"class","name":"AuthService","file":"src/services/auth.py","line":12}
+{"id":"python:src/services/auth.py:AuthService:authenticate","type":"method","name":"authenticate","file":"src/services/auth.py","line":25,"parent":"AuthService"}
 ```
+
+**edges.jsonl (Example):**
+```json
+{"from":"python:src/services/auth.py:AuthService:authenticate","to":"python:src/database/queries.py:query_user","relationship":"calls","context":"Line 45"}
+```
+
+**Use:** These exports are for integration with external analysis tools or custom workflows, not for agent queries.
+
+### Query Cache (SQLite - Internal)
 
 ### node-index.json (Lookup)
 
@@ -134,19 +170,33 @@ One JSON per line:
 
 ## Query Patterns
 
-**Find all nodes in module:**
-```bash
-grep '"file": "src/services/auth.py"' vault/graph/nodes.jsonl
+**Query via MCP Tools (Recommended):**
+
+```python
+# Find all symbols in module
+symbols = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+
+# Find all methods in class
+methods = call_mcp_tool("codegraph_symbols", file_path="src/services/auth.py")
+# Filter result: [s for s in symbols if s["parent"] == "AuthService"]
+
+# Find all callers
+callers = call_mcp_tool("codegraph_callers", symbol="authenticate")
 ```
 
-**Find all methods in class:**
-```bash
-grep '"scope": "AuthService"' vault/graph/nodes.jsonl
-```
+**Optional: JSONL Export Queries (External Tools)**
 
-**Find all callers:**
+If using optional JSONL exports (wiki/vault/graph/exports/nodes.jsonl):
+
 ```bash
-grep '"to_node": "[target-id]"' vault/graph/edges.jsonl
+# Find all symbols in module (NOT RECOMMENDED - use MCP tools instead)
+grep '"file": "src/services/auth.py"' wiki/vault/graph/exports/nodes.jsonl
+
+# Find all methods in class (NOT RECOMMENDED - use MCP tools instead)
+grep '"scope": "AuthService"' wiki/vault/graph/exports/nodes.jsonl
+
+# Find all callers (NOT RECOMMENDED - use MCP tools instead)
+grep '"to_node": "[target-id]"' wiki/vault/graph/exports/edges.jsonl
 ```
 
 ---
@@ -155,8 +205,8 @@ grep '"to_node": "[target-id]"' vault/graph/edges.jsonl
 
 ✅ Directory structure matches layout  
 ✅ All files in correct location  
-✅ nodes.jsonl is valid JSONL (one JSON per line)  
-✅ edges.jsonl is valid JSONL  
+✅ SQLite database is accessible and contains nodes
+✅ MCP tools can query the database (<100ms per query)  
 ✅ config.json is valid JSON  
 ✅ Cache files exist and are valid JSON  
 

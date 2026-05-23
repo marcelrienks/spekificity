@@ -1,9 +1,15 @@
+---
+title: "spek.plan — SpecKit Workflow Orchestration (C.2.0)"
+status: "ATOMIC SPECIFICATION"
+version: "2026-05-19"
+---
+
 # SPECIFICATION: spek.plan — SpecKit Workflow Orchestration (C.2.0)
 
 **Status:** ATOMIC SPECIFICATION  
 **Type:** Skill — Autonomous SpecKit Workflow Orchestration  
 **Version:** 2026-05-19  
-**Depends On:** speckit-integration-contract.md, error-handling-and-recovery.md, context-layer.md  
+**Depends On:** speckit-integration-contract.md, error-handling-and-recovery.md, context-layer.md   
 **Related:** cli-orchestration.md (lower-level CLI commands)
 
 ---

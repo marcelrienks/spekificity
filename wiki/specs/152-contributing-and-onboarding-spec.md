@@ -1,3 +1,9 @@
+---
+title: "Contributing & Onboarding Specification"
+status: "DRAFT"
+date: "2026-05-21"
+---
+
 # CONTRIBUTING & Onboarding Specification
 
 Status: DRAFT

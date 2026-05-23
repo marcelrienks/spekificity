@@ -1,9 +1,15 @@
+---
+title: "CodeGraph Setup & Integration (C5.0)"
+status: "ATOMIC SPECIFICATION"
+version: "2026-05-20"
+---
+
 # ATOMIC SPECIFICATION: CodeGraph Setup & Integration (C5.0)
 
 **Status:** ATOMIC SPECIFICATION  
 **Type:** Infrastructure — CodeGraph Installation, Configuration, and `/spek.map` Integration  
 **Version:** 2026-05-20  
-**Replaces:** graphify-installation.md, graphify-git-hooks.md (Graphify specs archived as legacy)  
+**Replaces:** graphify-installation.md, graphify-git-hooks.md (Graphify specs archived as legacy)   
 **Depends On:** spek-map-command.md, graph-refresh-strategy.md, node-schema-design.md  
 **Used By:** `/spek.prepare` (freshness check), `/spek.conclude` (incremental sync), `/spek.plan` (context queries)  
 
@@ -21,7 +27,7 @@
 
 ## Executive Summary
 
-CodeGraph is Spekificity's primary code analysis tool: pre-indexed, MCP-integrated, built for agent workflows. This spec covers complete setup, integration, and refresh strategy. Graphify is legacy; unsupported for new projects.
+CodeGraph is Spekificity's sole code analysis tool: pre-indexed, MCP-integrated, auto-syncing, built for agent workflows. This spec covers complete setup, integration, and auto-sync strategy.
 
 ---
 

@@ -38,7 +38,7 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 
 **Graphify (Legacy)**
 - Generates markdown vault docs (high token cost per query)
-- Manual sync required (stale between runs)
+- Manual sync required (stale between runs) — this behavior describes legacy Graphify; CodeGraph (the supported tool) provides file-watcher auto-sync and incremental updates by default.
 - No built-in impact analysis
 - No MCP integration
 - Requires user to run graphify commands manually
@@ -362,7 +362,9 @@ Each tool rated on:
 
 ### Decision
 
-**All vault notes MUST follow Zettelkasten conventions: atomic notes (one concept per file), YAML frontmatter with metadata (title, type, tags, status, created, updated, source, related), mandatory filename kebab-case, and minimum wikilink density (2-4 links per note).**
+**Recommendation:** We strongly recommend adopting Zettelkasten conventions for vault notes: atomic notes (one concept per file), YAML frontmatter with metadata (title, type, tags, status, created, updated, source, related), filename kebab-case, and a suggested wikilink density (2-4 links per note). These conventions enable reliable automation (auto-tagging, graph exports, and AI-friendly context injection).
+
+If a project cannot adopt the full convention immediately, the automation features will still work with less-structured markdown, but some tooling (auto-tagging, graph visualizations, and automated lesson extraction) may be degraded. We provide migration guidance and helper scripts for teams that want to progressively adopt these conventions.
 
 ---
 
@@ -579,11 +581,12 @@ Without hierarchy:
 
 #### Problem: Stale Code Graph
 
-Without hooks:
-- Code graph becomes stale after edits (user must manually refresh)
-- `/spek.context` queries return outdated structure
-- Agent makes decisions based on stale code state
-- Manual refresh required between implementation cycles
+If auto-sync (file-watcher) and git hooks are disabled:
+- The code graph may become stale after edits (user must manually refresh)
+- `/spek.context` queries may return outdated structure
+- An agent could make decisions based on stale code state
+
+Note: Spekificity's supported default, CodeGraph, provides a file-watcher-based auto-sync and supports the optional git post-commit hook described below; enabling either ensures `/spek.context` Layer 1 queries reflect current code state. Manual refresh is only required when auto-sync and hooks are intentionally disabled.
 
 #### Git Hook Solution
 

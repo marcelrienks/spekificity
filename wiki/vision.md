@@ -291,7 +291,7 @@ Skills are placed in `.agents/skills/` — the canonical, agent-agnostic locatio
 **Recommended:** Commit the vault to git with the project.
 
 - **Rationale:** Vault entries (lessons learnt, decisions, patterns) are project artifacts with long-term value. Version-controlling them preserves history and enables team sharing.
-- **Exception:** Generated code-analysis indexes (e.g., `.codegraph/graph.db` or Graphify cache output) should be gitignored and regenerated per machine via `/map-codebase`. The vault itself (lessons + context) is always small and should always be committed.
+- **Exception:** Generated code-analysis indexes (e.g., `.codegraph/graph.db`) should be gitignored and regenerated per machine via `/map-codebase`. The vault itself (lessons + context) is always small and should always be committed.
 
 A `.gitignore` template covering this exception is included in the init workflow.
 

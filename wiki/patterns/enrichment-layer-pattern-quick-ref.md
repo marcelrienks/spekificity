@@ -103,10 +103,17 @@ def specify_enriched(feature_description):
 def plan_enriched(spec):
     """PRE → CORE → POST for plan phase"""
     
-    # PRE: Load context
+    # PRE: Load context (via MCP tools, 0 tokens)
     decisions = load_from_vault("vault/decision.md")
     patterns = load_from_vault("vault/patterns.md")
-    graph = load_code_graph("vault/graph/nodes.jsonl")
+    
+    # Query code graph structure (MCP tool calls)
+    changed_files = extract_files_from_spec(spec)  # e.g., ["src/services/auth.py"]
+    graph_context = []
+    for file in changed_files:
+        symbols = call_mcp_tool("codegraph_symbols", file_path=file)
+        impact = call_mcp_tool("codegraph_impact", file=file)
+        graph_context.append({"file": file, "symbols": symbols, "impact": impact})
     
     # Validate inputs
     assert os.path.exists("spec.md"), "Spec must exist before planning"
@@ -121,8 +128,8 @@ def plan_enriched(spec):
     Proven patterns to apply:
     {format_patterns(patterns)}
     
-    Relevant code structure:
-    {format_graph_context(graph)}
+    Relevant code structure (via CodeGraph):
+    {format_graph_context(graph_context)}
     """
     
     # CORE: Call SpecKit
@@ -147,14 +154,31 @@ def plan_enriched(spec):
 def implement_enriched(tasks):
     """PRE → CORE → POST for implement phase"""
     
-    # PRE: Load context
+    # PRE: Load context (via MCP tools, 0 tokens)
     decisions = load_from_vault("vault/decision.md")
     patterns = load_from_vault("vault/patterns.md")
-    graph = load_code_graph("vault/graph/nodes.jsonl")
     
-    # Inject context (same as plan)
+    # Query code graph for each task (MCP tool calls)
+    graph_context = []
+    for task in tasks:
+        affected_symbols = task.get("affected_code", [])
+        for symbol in affected_symbols:
+            # Find definition
+            definition = call_mcp_tool("codegraph_definition", symbol=symbol)
+            # Find callers
+            callers = call_mcp_tool("codegraph_callers", symbol=symbol)
+            # Estimate impact
+            impact = call_mcp_tool("codegraph_impact", symbol=symbol)
+            graph_context.append({
+                "symbol": symbol,
+                "definition": definition,
+                "callers": callers,
+                "impact": impact
+            })
+    
+    # Inject context (MCP tools have zero token cost)
     enriched_context = format_enrichment_context(
-        decisions, patterns, graph
+        decisions, patterns, graph_context
     )
     
     # CORE: Call SpecKit (task by task)
@@ -183,22 +207,28 @@ def implement_enriched(tasks):
 def load_enrichment_context(phase):
     """Load context for enrichment PRE layer"""
     
-    # Load from vault
+    # Load from vault (vault queries)
     decisions = load_from_vault("vault/decision.md")
     patterns = load_from_vault("vault/patterns.md")
     
-    # Load code graph (if plan/implement phase)
+    # Load code graph via MCP tools (if plan/implement phase)
     if phase in ["plan", "implement"]:
-        graph = load_code_graph("vault/graph/nodes.jsonl")
+        # Query code graph structure via MCP tools (0 tokens each)
+        # Example: for each changed file, query its symbols and impact
+        graph_queries = []
         recent_changes = get_git_log(limit=20)
+        for file in extract_changed_files(recent_changes):
+            symbols = call_mcp_tool("codegraph_symbols", file_path=file)
+            impact = call_mcp_tool("codegraph_impact", file=file)
+            graph_queries.append({"file": file, "symbols": symbols, "impact": impact})
     else:
-        graph = None
+        graph_queries = None
         recent_changes = None
     
     return {
         "decisions": decisions,
         "patterns": patterns,
-        "graph": graph,
+        "graph_queries": graph_queries,
         "recent_changes": recent_changes,
     }
 ```

@@ -1,3 +1,11 @@
+---
+title: "Decorator Wrapper Pattern (C3.2)"
+status: "ATOMIC SPECIFICATION"
+version: "1.0.0-alpha.1"
+date: "2026-05-20"
+type: "pattern"
+---
+
 # ATOMIC SPECIFICATION: Decorator Wrapper Pattern (C3.2)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
@@ -75,7 +83,7 @@ def spek_enriched_command(command_name, *args, **kwargs):
 1. Load context (decisions, patterns, lessons, code graph)
 2. Validate inputs are present and well-formed
 3. Inject context into SpecKit command arguments
-4. Check preconditions (e.g., spec must exist before plan)
+4. Check preconditions (e.g., spec should exist before plan)
 5. Log command invocation
 
 **Output:**
