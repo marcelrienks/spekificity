@@ -24,12 +24,12 @@ created-at: 2026-05-21T10:30:00Z
 ## Key Decisions (Accumulated)
 - [Decision 1 from Session 1]
 - [Decision 2 from Session 2]
-[...]
+[...] 
 
 ## Patterns Used (Accumulated)
 - [Pattern 1 discovered Session 1]
 - [Pattern 2 discovered Session 2]
-[...]
+[...] 
 
 ## Metrics
 - Duration: 1.5 hours

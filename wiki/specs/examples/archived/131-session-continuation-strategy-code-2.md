@@ -14,7 +14,7 @@ Validation Checklist (/spek.prepare --resume):
   └─ Different: Warn user about branch drift
 
 ✓ Spec file exists in vault?
-  └─ No: Missing artifact; can't resume; start over
+ └─ No: Missing artifact; can't resume; start over
 
 ✓ Plan file exists in vault?
   └─ No: Missing artifact; can't resume; start over
