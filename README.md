@@ -1,6 +1,6 @@
 # Spekificity
 
-> **Status:** Design/specification. These documents describe the intended future state and planned behavior; implementation is pending.
+> **Status:** Init-first wrapper model. Spekificity is intended to be installed globally via `uv`, then initialized per-project with `spek init` which scaffolds `.spek` skills/functions and configures dependent tools.
 >
 > **Documentation Structure:** `/wiki/` contains philosophy, architecture, and workflow guidance. `/specs/` contains detailed specifications and implementation contracts.
 
@@ -68,6 +68,8 @@ spek init
 
 **Full guide:** See [wiki/install.md](wiki/install.md) for detailed setup options.
 
+**Testing local branch code before merge:** See [wiki/local.md](wiki/local.md) for a local-only pre-merge workflow using editable installs.
+
 ---
 
 ## Key Features
@@ -109,19 +111,23 @@ Spekificity defines how these tools work together—it doesn't replace them. **T
 ## Core Workflow
 
 ```
-FEATURE START
+GLOBAL INSTALL
     ↓
-/spek.prepare (workspace ready)
+uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
     ↓
-/spek.plan --phase=specify (spec generation)
+PROJECT INIT
     ↓
-/spek.plan --phase=plan (planning + task breakdown)
+spek init [target-dir]
     ↓
-/spek.implement (execute)
+INIT ACTIONS
+    ├─ scaffold .spek skills/functions/prompts
+    ├─ install/verify dependencies (specify, obsidian CLI, lat.md, caveman)
+    ├─ run specify init under the covers
+    └─ link workflow between all tools
     ↓
-/spek.conclude (archive lessons, refresh state)
+AGENT EXECUTION
     ↓
-FEATURE COMPLETE
+Use generated /spek.* skills from .spek (or direct underlying tools when needed)
 ```
 
 ---
@@ -182,8 +188,9 @@ Start with this reading order—each doc builds on the previous:
 **New to Spekificity?** Start here:
 
 1. Read [wiki/quickstart.md](wiki/quickstart.md)
-2. Run `/spek.prepare` to initialize your workspace
-3. Create your first feature spec with `/spek.plan --phase=specify`
+2. Install globally via `uv tool install ... --from git+...`
+3. Run `spek init` in your project directory to scaffold `.spek`
+4. Run generated skills through your agent workflow
 
 **Questions?** See [wiki/faq.md](wiki/faq.md).
 
@@ -211,23 +218,19 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 The intended Spekificity workflow is:
 
-1. Run `/spek.plan` to load project context and orchestrate spec generation.
-2. Let `/spek.plan` drive the upstream SpecKit flow through specify, clarify (if needed), plan, tasks, analyze, and remediation.
-3. Review resulting artifacts.
-4. Run `/spek.implement` to execute against approved spec, plan, tasks, and code context.
-5. Capture lessons and refresh durable project memory.
+1. Install Spekificity globally via `uv tool install ... --from git+...`.
+2. Run `spek init` in a target directory.
+3. Let `spek init` scaffold `.spek` skills/functions and initialize SpecKit (`specify init`) under the covers.
+4. Execute the generated `/spek.*` skills from your agent (or call underlying tools directly when needed).
+5. Capture lessons and refresh durable project memory through the generated workflow.
 
 Canonical user-facing command surface is:
 
-- `/spek.prepare` — initialize workspace, git state, graph freshness, and feature state
-- `/spek.context` — load or reload project context into session
-- `/spek.map` — build or refresh code/document graph
-- `/spek.plan` — orchestrate spec-first flow through task generation
-- `/spek.implement` — execute implementation after automation has prepared artifacts
-- `/spek.conclude` — archive feature outcomes, lessons, vault updates, and graph refresh
-- `/spek.lessons` — extract structured lessons explicitly when needed
+- `spek init` — per-project bootstrap command (primary runtime CLI command)
+- `spek doctor` / `spek tools` (optional helpers) — dependency checks/status
+- Generated `/spek.*` skills in `.spek/` — primary execution interface for agents
 
-Primary workflow commands are `/spek.plan` and `/spek.implement`. Support commands remain user-facing and may also be called internally when orchestration needs them.
+Primary workflow is skill-first (agent execution), not direct CLI-phase execution.
 
 Vanilla SpecKit commands remain part of the underlying model:
 
@@ -238,9 +241,9 @@ Vanilla SpecKit commands remain part of the underlying model:
 - `/speckit.tasks`
 - `/speckit.implement`
 
-Use the `/spek.*` surface when following the Spekificity workflow. **Enrichment** means context injection: `/spek.plan` loads decisions and patterns from the knowledge vault before calling `/speckit.specify`, `/speckit.plan`, etc., so those commands operate with project-specific constraints already in scope. This guides spec and plan generation toward existing patterns without requiring manual context setup.
+Use the generated `/spek.*` skills when following the Spekificity workflow. **Enrichment** means context injection and tool coordination: skills load decisions/patterns from Obsidian + lat.md and then call `/speckit.*` phases with project-specific constraints already in scope.
 
-Note on notation: `/spek.*` denotes the agent/skill namespace used in skill specifications and agent-invoked flows. The user-facing CLI command is `spek` (for example `spek prepare` or `spek plan --phase=specify`). Both forms refer to the same underlying actions; the slash-prefixed form is the skill identifier used in documentation and agent skills, while the plain `spek` form is the shell/CLI invocation.
+Note on notation: `/spek.*` denotes generated agent skills placed in `.spek/` by `spek init`. The user-facing setup CLI is `spek` (primarily `spek init`).
 
 Vanilla SpecKit commands remain the execution layer; Spekificity adds context loading, orchestration, and post-processing around them.
 

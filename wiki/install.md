@@ -1,7 +1,9 @@
 
 # Spekificity Installation & One-Stop Setup Guide
 
-This guide covers fully automated setup for Spekificity, including all system and Python dependencies.
+> **Execution model note:** `spek` CLI is used for install/bootstrap (`spek init`). Runtime `/spek.*` flows are generated skills under `.spek/` and are intended for agent execution.
+
+This guide covers the intended setup model: install Spekificity globally with `uv`, then run `spek init` per project to scaffold `.spek` and initialize all dependent tools.
 
 ## One-Stop Setup (Recommended)
 
@@ -20,8 +22,11 @@ This script will:
 - Check for Git (install if missing)
 - Check for Obsidian (install via Homebrew, Chocolatey, or prompt manual install)
 - Verify Obsidian CLI availability (bundled with the Obsidian app). The script checks that the `obsidian` command is registered in PATH and will print guidance to enable it if missing. For CI/headless alternatives see: https://obsidian.md/help/headless
-- Install Spekificity and all Python dependencies via `uv tool install`
-- Initialize your project with `spek init`
+- Install Spekificity globally via `uv tool install --from git+...`
+- Run `spek init` in the target project directory
+- Scaffold `.spek/` skills + helper functions
+- Run `specify init` under the covers
+- Verify dependencies are linked (`specify`, `obsidian` CLI, `lat.md`, caveman)
 
 **No manual steps required.**
 
@@ -55,25 +60,15 @@ spek tools --help
 ### 4. Start Using Spekificity
 
 ```bash
-# 1. Prepare workspace
+# 1. Initialize project runtime (scaffolds .spek + runs specify init)
+spek init /path/to/your/project
 
-# 2. Load project context
-spek context
+# 2. Open generated .spek skills and run via your agent
+#    (skills wrap speckit + obsidian + lat.md + caveman workflow)
 
-# 3. Plan a feature
-spek plan "Add user authentication"
-
-# 4. Analyze code graph
-spek map --symbol UserService
-
-# 5. Execute tasks
-spek implement
-
-# 6. Archive outcomes
-spek conclude
-
-# 7. Extract lessons
-spek lessons
+# 3. Use underlying tools directly when needed
+specify --help
+obsidian --help
 ```
 ---
 
@@ -125,12 +120,12 @@ pip install git+https://github.com/marcelrienks/spekificity.git
 spek init
 ```
 
-This interactive setup wizard:
-1. Creates necessary directories
-2. Initializes the lat.md index
-3. Detects SpecKit installation
-4. Initializes SpecKit if available
-5. Provides next steps
+This setup command is intended to:
+1. Create `.spek/` scaffolding in target directory
+2. Install/verify tool dependencies
+3. Initialize `lat.md` index and glue configuration
+4. Run `specify init` automatically
+5. Output agent-ready skills/functions for workflow execution
 
 ### Manual Setup
 
