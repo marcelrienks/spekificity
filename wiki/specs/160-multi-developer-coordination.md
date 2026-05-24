@@ -1,7 +1,7 @@
 # Multi-Developer & Concurrent Feature Work Strategy
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Date:** 2026-05-20  
 **Current Model:** Solo developer (defer full concurrency; use foundation pattern)  
 **Future Model:** Async team with merge-based conflict resolution  
@@ -257,19 +257,13 @@ Merge Result: Apply both changes
 
 **Before merging any feature branch to main:**
 
-```bash
-# 1. Detect vault files changed in feature branch
-git diff main.. --name-only | grep vault/
-
-# 2. If any vault files changed, run conflict check
-spek check-conflicts main..
-
-# 3. Report: no conflicts | merge-safe | manual-review-required
+```
+Examples consolidated: see [wiki/specs/examples/160-multi-developer-coordination-examples.md](examples/160-multi-developer-coordination-examples.md)
 ```
 
-
-## 3.2.2 Conflict Check Algorithm
-
+**Branch Naming Rules:**
+Always include developer initials (enables `spek check-conflicts` to attribute conflicts)
+Feature name: kebab-case, descriptive, < 30 chars
 ```python
 def check_conflicts(main_branch, feature_branch):
     """Detect vault conflicts before merge."""

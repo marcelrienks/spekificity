@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Feature State Tracking (C4.4)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** memory-architecture.md  
 **Used By:** /spek.prepare (create), /spek.conclude (update), all commands (read)  
 

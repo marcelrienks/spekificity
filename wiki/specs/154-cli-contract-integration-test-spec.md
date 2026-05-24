@@ -1,7 +1,7 @@
 # Small CLI Contract Integration Test (SpecKit / lat.md)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 Date: 2026-05-21
 
 Goal

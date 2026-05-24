@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Graph Query Patterns (C5.5)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** graph-storage-structure.md  
 **Used By:** /spek.context, `/spek.plan` plan phase, enrichment layers  
 

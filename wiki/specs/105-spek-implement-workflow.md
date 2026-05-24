@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Implement Command (C4.5)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** speckit-integration-contract.md, enrichment-layer.md, feature-state-tracking.md  
 **Used By:** `/spek.plan` (after task generation), CLI entry point  
 
@@ -49,18 +49,18 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - ✅ Feature state updated (phase = completing, %90)
 - ✅ User can proceed to `/spek.conclude`
 - ## Error Handling
-- **Error Category 1: Missing Artifacts (Blockers)**
-- Action: HALT + GUIDE
-- Example: "tasks.md not found. Run `/spek.plan` first."
-- **Error Category 2: Task Execution Failures (Resilient)**
-- Action: Log error, output status, continue to next task
-- Example: "Task 3 failed (syntax error). Proceeding to Task 4."
-- **Error Category 3: Code Validation Warnings (Continue)**
-- Action: Log warning, continue (may need manual review)
-- Example: "Task 2 generated code with complexity warning. Continuing."
-- **Error Category 4: System Errors (Graceful Degradation)**
-- Action: Attempt retry (1x), if fails → log exception, continue
-- Example: "Code graph query timeout. Attempting without context. Proceeding."
+**Error Category 1: Missing Artifacts (Blockers)**
+Action: HALT + GUIDE
+- Examples consolidated: see [wiki/specs/examples/105-spek-implement-workflow-examples.md](examples/105-spek-implement-workflow-examples.md)
+**Error Category 2: Task Execution Failures (Resilient)**
+Action: Log error, output status, continue to next task
+- Examples consolidated: see [wiki/specs/examples/105-spek-implement-workflow-examples.md](examples/105-spek-implement-workflow-examples.md)
+**Error Category 3: Code Validation Warnings (Continue)**
+Action: Log warning, continue (may need manual review)
+- Examples consolidated: see [wiki/specs/examples/105-spek-implement-workflow-examples.md](examples/105-spek-implement-workflow-examples.md)
+**Error Category 4: System Errors (Graceful Degradation)**
+Action: Attempt retry (1x), if fails → log exception, continue
+- Examples consolidated: see [wiki/specs/examples/105-spek-implement-workflow-examples.md](examples/105-spek-implement-workflow-examples.md)
 - ## Flags & Options
 - ```bash
 - spek implement [options]

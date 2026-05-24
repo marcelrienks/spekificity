@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Graph Refresh Strategy (C5.4)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** graph-storage-structure.md, spek-map-command.md  
 **Used By:** /spek.map  
 

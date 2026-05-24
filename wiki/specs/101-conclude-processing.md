@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Conclude-Processing (C3.6)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** lessons-format.md, architectural-decisions.md, patterns-library.md  
 
 ---

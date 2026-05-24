@@ -1,7 +1,7 @@
 # C.3.3 3-Layer Query Rule: Documentation & Enforcement
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Priority:** RECOMMENDED (Phase 1)  
 **Effort:** moderate (team-defined)  
 **Adoption Source:** B.9 (claude-code-memory-setup, cited as motivation for large token savings)

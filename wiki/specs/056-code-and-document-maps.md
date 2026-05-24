@@ -1,7 +1,7 @@
 # Spec: Code and Document Maps (extracted spec)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 
 ## Overview
 

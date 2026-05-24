@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Patterns Library (C2.3)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** lessons-format.md  
 **Used By:** /spek.context (read at session start), `/spek.plan` plan phase (suggest patterns during planning)   
 

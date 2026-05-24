@@ -1,7 +1,7 @@
 # Spec: Node Schema Design
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Concern:** JSON schema for code and documentation nodes in the knowledge graph  
 **Extracted from:** extracted spec Questions 1 & 4  
 **Used by:** obsidian-graph-export, graph-merge-integration, graph-storage-structure  

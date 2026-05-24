@@ -1,7 +1,7 @@
 # C.3.10 Token Budget Allocation & Tracking
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Priority:** MEDIUM (phasing and prioritization)  
 **Effort:** effort estimate omitted / configurable
 **Adoption Source:** B.10 (Pilot Shell)  

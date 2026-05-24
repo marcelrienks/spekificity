@@ -1,7 +1,7 @@
 # Implementation Roadmap
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Date:** 2026-05-20 | ---
 
 

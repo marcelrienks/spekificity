@@ -1,7 +1,7 @@
 # C.3.2 Auto-Tagging + Auto-Wikilink Insertion for Lessons
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Priority:** RECOMMENDED (Phase 1)  
 **Effort:** Implementation effort to be estimated by the project team
 **Adoption Source:** B.9 (claude-code-memory-setup, chat import pipeline pattern)  

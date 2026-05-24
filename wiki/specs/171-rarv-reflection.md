@@ -1,7 +1,7 @@
 # ⚠️ REDIRECT: RARV Reflection Cycles: Reason-Act-Reflect-Verify
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **This specification has been consolidated into a single archive file.**
 
 **Original ID:** C.3.7  

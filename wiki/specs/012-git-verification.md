@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Git Verification (C4.3)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** None  
 **Used By:** /spek.prepare (Step 1), /spek.implement (precondition)  
 

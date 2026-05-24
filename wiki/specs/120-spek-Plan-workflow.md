@@ -1,7 +1,7 @@
 # SPECIFICATION: spek.plan — SpecKit Workflow Orchestration (C.2.0)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** speckit-integration-contract.md, error-handling-and-recovery.md, context-layer.md   
 **Related:** cli-orchestration.md (lower-level CLI commands)
 

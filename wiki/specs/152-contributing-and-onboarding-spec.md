@@ -1,13 +1,13 @@
 # CONTRIBUTING & Onboarding Specification
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 Date: 2026-05-21
 
 Purpose
 - Provide an approachable guide for contributors: setup, common workflows, testing, and branching strategy.
 
-Contents (to be rendered as `CONTRIBUTING.md`)
+Contents (canonical contributing & onboarding guide)
 - Quick start: environment setup, `pip install -e .[dev]`, running tests locally.
 - Branching: feature branches named `feature/<short-desc>`, PRs target `main`, small focused PRs.
 - Commit message format: short summary + body; conventional commits recommended (optional).
@@ -18,4 +18,4 @@ Contents (to be rendered as `CONTRIBUTING.md`)
 - How to run CLI locally and emulate vault: `scripts/run-local-ci.sh` examples.
 
 Acceptance Criteria
-- `CONTRIBUTING.md` exists in repo root with the above sections and copyable commands for macOS/Linux dev environment.
+- The contributing & onboarding guidance is canonical in this spec; no separate contributing guide file is required in the repo root.

@@ -1,7 +1,7 @@
 # Spec: Per-Feature Lessons Format
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Concern:** Template and lifecycle for lessons learned files written at feature end  
 **Extracted from:** extracted spec Type 1 (Per-Feature Lessons)  
 **Used by:** conclude-command, /spek.conclude skill  

@@ -1,7 +1,7 @@
 # extracted spec — SpecKit Integration Contract
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Feature:** spekificity feature 003 — Full Workflow CLI  
 **Related:** [Spekificity Workflow](../workflow.md), [Memory Architecture](030-memory-architecture.md)
 

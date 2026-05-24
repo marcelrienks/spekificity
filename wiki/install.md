@@ -312,7 +312,7 @@ rm -rf wiki/lessons
 ---
 
 ## Support & Documentation
-- **Contributing:** See CONTRIBUTING.md
+- **Contributing:** See [wiki/specs/152-contributing-and-onboarding-spec.md](specs/152-contributing-and-onboarding-spec.md)
 
 ## Architecture Overview
 
@@ -379,4 +379,4 @@ uv tool upgrade spekificity
 
 - 📢 Share your workflows
 
-See CONTRIBUTING.md for details.
+See [wiki/specs/152-contributing-and-onboarding-spec.md](specs/152-contributing-and-onboarding-spec.md) for details.

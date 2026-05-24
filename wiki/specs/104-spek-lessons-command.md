@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Lessons Command (C4.6)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** lessons-format.md, memory-architecture.md, 101-conclude-processing.md  
 **Requires:** Obsidian CLI (recommended) for automated vault/lessons operations and persistent memory management
 **Used By:** `/spek.conclude` (automatic), CLI entry point (manual queries)  

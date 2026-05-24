@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Graph Storage Structure (C5.2)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** node-schema-design.md  
 **Used By:** /spek.map, /spek.context, all enrichment layers  
 

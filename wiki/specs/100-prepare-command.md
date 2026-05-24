@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Prepare Command (C4.1)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** context-layer.md, git-verification.md  
 
 ---

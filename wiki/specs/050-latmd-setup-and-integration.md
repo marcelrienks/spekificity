@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: lat.md Setup & Integration (C5.0)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Replaces:** legacy graph installation spec (archived)
 **Depends On:** spek-map-command.md, graph-refresh-strategy.md, node-schema-design.md  
 **Used By:** `/spek.prepare` (freshness check), `/spek.conclude` (incremental sync), `/spek.plan` (context queries)

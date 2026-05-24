@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Conclude Command (C4.2)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** lessons-format.md, architectural-decisions.md, conclude-processing.md  
 
 ---

@@ -1,7 +1,7 @@
 # SPECIFICATION: Caveman Integration (C4.3)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** error-handling-and-recovery.md, lessons-format.md, 102-conclude-command.md, 101-conclude-processing.md  
 
 ---

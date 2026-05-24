@@ -1,7 +1,7 @@
 # SPECIFICATION: Integration Validation and Testing (V1.0)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** All workflow specs (prepare, post, enrichments, cli, etc.)  
 
 ---

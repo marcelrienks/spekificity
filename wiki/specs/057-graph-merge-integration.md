@@ -1,7 +1,7 @@
 # Spec: Graph Merge and Integration
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Concern:** Merging code nodes (lat.md) and doc nodes (Obsidian export) into unified graph  
 **Extracted from:** extracted spec Questions 2, 3, 5  
 **Depends on:** obsidian-graph-export, node-schema-design  

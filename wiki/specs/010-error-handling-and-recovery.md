@@ -1,7 +1,7 @@
 # FOUNDATIONAL SPECIFICATION: Error Handling and Recovery (F1.0)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 
 ## Overview
 

@@ -1,7 +1,7 @@
 # CONSOLIDATED: Validation & Reflection Patterns Library
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Consolidated From:** 4 separate specifications (C.3.6, C.3.7, C.3.8, C.3.9)  
 **Used By:** `/spek.conclude` steps 3, 7, 8b; `/spek.plan` phases  
 

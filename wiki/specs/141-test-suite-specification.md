@@ -1,7 +1,7 @@
 # Spekificity Test Suite & Validation Strategy
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Date:** 2026-05-20  
 **Coverage Target:** high (good baseline; team-defined)  
 **Test Fixtures:** Small synthetic project (faster, controlled)  

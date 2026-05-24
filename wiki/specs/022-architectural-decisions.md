@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Architectural Decisions (C2.2)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** lessons-format.md, memory-architecture.md  
 **Used By:** /spek.context (read at session start), /spek.conclude (write at feature end)  
 

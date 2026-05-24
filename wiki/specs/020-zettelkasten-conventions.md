@@ -1,7 +1,7 @@
 # C.3.1 Zettelkasten Conventions for Vault Notes
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Priority:** High (Phase 1 recommended)  
 **Effort:** team-estimated  
 **Adoption Source:** B.9 (claude-code-memory-setup, production-validated)
@@ -56,13 +56,7 @@ Define and enforce Zettelkasten conventions for all vault notes (decisions, patt
 - [ ] Can be understood without reading related notes
 - [ ] Wikilinks enhance (don't require) understanding
 - [ ] Not a summary of multiple patterns or decisions
-- **Bad Examples (violates atomicity):**
-- "Service Layer Patterns and Error Handling" (two concepts)
-- "All Architecture Decisions from 2026" (too broad)
-- **Good Examples (respects atomicity):**
-- "Singleton Pattern for Service Management" (one pattern)
-- "Use Dependency Injection over Service Locator" (one decision)
-- "Async Error Recovery in Event Loops" (one pattern)
+**Examples consolidated:** see [wiki/specs/examples/020-zettelkasten-conventions-examples.md](examples/020-zettelkasten-conventions-examples.md)
 - ## Wikilink Density Requirements
 - **Minimum density:** a small number of wikilinks per note (depending on length)
 - **Guidelines:**

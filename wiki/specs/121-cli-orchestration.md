@@ -1,7 +1,7 @@
 # SPECIFICATION: CLI Orchestration (C2.0)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** speckit-integration-contract.md, 100-prepare-command.md, 102-conclude-command.md, feature-state-tracking.md  
 
 ---
@@ -134,9 +134,8 @@ The CLI is the user-facing entry point to Spekificity. `spek plan` is the primar
 - ## Exit Codes
 - Code | Meaning | User Action | ------|---------|------------- | **0** | Success | None (continue to next step) | **1** | Error (recoverable) | Check logs, run command again | **2** | Validation error | Fix input parameters, retry | **3** | User action required | Follow guidance in error message, then retry | **127** | Command not found | Check spek installation
 - **Example Exit Sequences:**
-- `spek prepare` → Exit 0 → User runs `spek specify` → Exit 0 → Continue
-- `spek prepare` → Exit 3 (git dirty) → User runs `git add .` → User runs `spek prepare` → Exit 0
-- `spek specify` → Exit 1 (speckit error) → Run `spek specify` again (retry) → Exit 0
+**Examples consolidated:** see [wiki/specs/examples/121-cli-orchestration-examples.md](examples/121-cli-orchestration-examples.md)
+**Examples consolidated:** see [wiki/specs/examples/121-cli-orchestration-examples.md](examples/121-cli-orchestration-examples.md)
 - ## Workflow Sequencing Rules
 - **Rule 1: Strict Ordering (Most Strict)**
 - Recommended order: prepare → specify → plan → tasks → implement → post
@@ -144,10 +143,7 @@ The CLI is the user-facing entry point to Spekificity. `spek plan` is the primar
 - **Rule 2: Resume Within Session (Flexible)**
 - If restarting within same session: Can re-run prepare with --skip-context (avoid context reload)
 - Example: /spek.prepare → specify → plan → (pause) → prepare --skip-context → plan → tasks
-- **Rule 3: Anytime Map (Flexible)**
-- Can run /spek.map anytime (doesn't affect feature state)
-- Use to refresh code graph without blocking feature work
-- **Rule 4: Manual Context Override (Flexible)**
+Examples consolidated: see [wiki/specs/examples/121-cli-orchestration-examples.md](examples/121-cli-orchestration-examples.md)
 - Can run /spek.context --force to reload context mid-feature
 - Use if vault was updated externally or context feels stale
 - **Rule 5: Dry-Run Validation (No-Op)**

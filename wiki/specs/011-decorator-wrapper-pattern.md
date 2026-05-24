@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Decorator Wrapper Pattern (C3.2)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** None (foundational pattern)  
 **Used By:** enrichment-layer.md (all three phases: specify, plan, implement)  
 

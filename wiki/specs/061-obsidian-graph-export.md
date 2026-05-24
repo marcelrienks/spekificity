@@ -1,7 +1,7 @@
 # Spec: Obsidian Graph Export Protocol
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Concern:** How to extract documentation nodes from Obsidian vault for graph indexing  
 **Extracted from:** extracted spec Question 2  
 **Depends on:** node-schema-design  

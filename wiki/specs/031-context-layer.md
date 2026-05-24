@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: Context Layer (C3.1)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** memory-architecture.md  
 **Used By:** All enrichment layers (enrichment-layer.md)  
 

@@ -1,7 +1,7 @@
 # Enrichment Layer: Context Injection Into SpecKit Workflow
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Replaces:** specify-enrichment.md, plan-enrichment.md, implement-enrichment.md  
 **Used By:** `/spek.plan` (all phases)  
 

@@ -1,7 +1,7 @@
 # ATOMIC SPECIFICATION: /spek.map Command (C5.3)
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Depends On:** 050-latmd-setup-and-integration.md, graph-storage-structure.md
 **Used By:** /spek.prepare (Step 4), /spek.conclude (Step 8)  
 

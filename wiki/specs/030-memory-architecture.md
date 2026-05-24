@@ -1,7 +1,7 @@
 # Memory Architecture: Persistent Memories, Session Context, and Load Lifecycle
 
 
-See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
+
 **Replaces:** context-load-lifecycle.md, session-memory.md, persistent-memories-and-lessons.md  
 **Used By:** /spek.context, /spek.prepare, /spek.conclude (all enrichment layers read context)  
 
