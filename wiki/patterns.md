@@ -1808,7 +1808,7 @@ Each pattern follows this verification checklist:
 ### For Extension
 1. **Identify gap:** What recurring problem exists without a pattern?
 2. **Check if pattern exists:** Search document + related specs
-3. **If new pattern needed:** Document in wiki/patterns/<PATTERN-NAME>-quick-ref.md (see next section)
+3. **If new pattern needed:** Document in wiki/specs/patterns/<PATTERN-NAME>-quick-ref.md (see next section)
 4. **Update this file:** Add to Pattern Catalog + Index
 
 ---

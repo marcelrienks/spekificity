@@ -99,7 +99,7 @@ def load_context(phase="specify"):
             log_warning(f"Code graph unavailable: {e}; using vault context only")
     
     return context
-``````
+```
 
 ---
 

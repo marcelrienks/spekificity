@@ -382,8 +382,9 @@ Next Steps:
 4. When done, type: /spek.implement --next
 
 Questions? See nearby patterns in vault:
-  → wiki/patterns/error-categorization-pattern-quick-ref.md
-  → wiki/patterns/decorator-wrapper-pattern-quick-ref.md
+Questions? See nearby patterns in vault:
+  → wiki/specs/patterns/error-categorization-pattern-quick-ref.md
+  → wiki/specs/patterns/decorator-wrapper-pattern-quick-ref.md
 ```
 
 ### Step 4b: Execute Each Task

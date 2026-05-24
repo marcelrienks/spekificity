@@ -55,7 +55,7 @@ COMPLETE
 - ✅ Auditable (session log records all transitions)
 
 ---
-  /spek.conclude → 100% (completing)
+
 ## When to Use
 
 ✅ Multi-phase workflows with dependencies  

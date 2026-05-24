@@ -262,7 +262,6 @@ def load_enrichment_context(phase):
 - [ ] POST layer validates alignment?
 - [ ] Contradiction detection working?
 - [ ] Logging clear (what decisions were checked)?
-- [ ] Error messages helpful (suggest alignment)?
 
 ---
 
