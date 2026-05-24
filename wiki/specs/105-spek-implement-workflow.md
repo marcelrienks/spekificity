@@ -1,15 +1,104 @@
 # ATOMIC SPECIFICATION: Implement Command (C4.5)
 
+
+See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Depends On:** speckit-integration-contract.md, enrichment-layer.md, feature-state-tracking.md  
 **Used By:** `/spek.plan` (after task generation), CLI entry point  
 
 ---
+
 
 ## Overview
 
 `/spek.implement` executes approved implementation tasks from task list, enriched with project context (code graph, vault decisions, patterns). Tasks run sequentially with error resilience; final code diff captured for `/spek.conclude` artifact collection.
 
 ---
+
+
+## Success Criteria
+
+- ✅ Feature state validated (spec, plan, tasks exist and phase correct)
+- ✅ Context loaded for enrichment (decisions, patterns, code graph injected)
+- ✅ Tasks execute sequentially (one after another, with error resilience)
+- ✅ Code changes captured (git diff collected for each task)
+- ✅ Artifacts collected (execution trace includes all task results)
+- ✅ Session state updated (feature marked implementing, progress tracked)
+- ✅ Errors don't stop workflow (failed tasks don't block subsequent tasks)
+- ## Implementation Checklist
+- [ ] Implement Step 1 (validate feature state)
+- [ ] Implement Step 2 (load enrichment context)
+- [ ] Implement Step 3 (execute tasks sequentially)
+- [ ] Implement Step 4 (collect artifacts)
+- [ ] Implement Step 5 (update state + report)
+- [ ] Add error handling + continue-on-error
+- [ ] Add execution trace logging
+- [ ] Add git diff collection
+- ## References
+- **Related Specs:**
+- [speckit-integration-contract.md](110-speckit-integration-contract.md) — SpecKit integration details
+- [enrichment-layer.md](032-enrichment-layer.md) — Context injection strategy
+- [feature-state-tracking.md](040-feature-state-tracking.md) — Feature state machine
+- [conclude-processing.md](101-conclude-processing.md) — Conclude-feature workflow
+- **External:**
+- [extracted spec /spek.implement](110-speckit-integration-contract.md#spekimplement)
+- ✅ All artifacts valid (feature state, spec, plan, tasks)
+- ✅ Context loaded (decisions, patterns, code graph)
+- ✅ All tasks attempted (continue-on-error behavior)
+- ✅ Code diff collected (final unified diff for all tasks)
+- ✅ Execution trace saved (JSON + human-readable summary)
+- ✅ Feature state updated (phase = completing, %90)
+- ✅ User can proceed to `/spek.conclude`
+- ## Error Handling
+- **Error Category 1: Missing Artifacts (Blockers)**
+- Action: HALT + GUIDE
+- Example: "tasks.md not found. Run `/spek.plan` first."
+- **Error Category 2: Task Execution Failures (Resilient)**
+- Action: Log error, output status, continue to next task
+- Example: "Task 3 failed (syntax error). Proceeding to Task 4."
+- **Error Category 3: Code Validation Warnings (Continue)**
+- Action: Log warning, continue (may need manual review)
+- Example: "Task 2 generated code with complexity warning. Continuing."
+- **Error Category 4: System Errors (Graceful Degradation)**
+- Action: Attempt retry (1x), if fails → log exception, continue
+- Example: "Code graph query timeout. Attempting without context. Proceeding."
+- ## Flags & Options
+- ```bash
+- spek implement [options]
+- --tasks=<list>         # Run specific tasks by ID (e.g., "1,3,5")
+- # Default: all tasks in order
+- --skip-tests           # Don't run post-task validation/tests
+- # Default: validate after each task
+- --dry-run              # Preview changes, don't write to disk
+- # Default: write changes
+- --verbose              # Show full task output + context
+- # Default: one-line progress per task
+- --context-only         # Don't execute; just load/report context
+- # Default: execute all tasks
+- ```
+- ## Integration Points
+- **With `/speckit.implement`:**
+- Calls `/speckit.implement` per task (core execution layer)
+- Provides enriched context (vault + code graph)
+- Captures output (code diff)
+- Handles errors independently (resilience)
+- **With Feature State (feature-state-tracking.md):**
+- Read: current feature name, check phase
+- Write: update phase to `completing`, increment % to 90
+- **With Execution Tracing (conclude-processing.md):**
+- Generate execution trace (JSON + human summary)
+- Pass to `/spek.conclude` Step 1 (collect artifacts)
+- **With Enrichment Layer (enrichment-layer.md):**
+- Load context (decisions, patterns, code graph)
+- Inject into task prompts (pre-execution)
+- No post-execution validation loop (unlike plan phase)
+- ## Related Specifications
+- [CLI Orchestration](121-cli-orchestration.md) — `/spek implement` command definition
+- [SpecKit Integration Contract](110-speckit-integration-contract.md) — Integration with `/speckit.implement`
+- [Enrichment Layer](032-enrichment-layer.md) — Context injection pattern
+- [Feature State Tracking](040-feature-state-tracking.md) — State transitions
+- [Conclude Processing](101-conclude-processing.md) — Artifact collection workflow
+- [Memory Architecture](030-memory-architecture.md) — Context loading lifecycle
+
 
 ## Execution Sequence
 
@@ -28,9 +117,11 @@
 
 ---
 
+
 ## Step Details
 
-### Step 1: Validate Feature State & Artifacts
+
+## Step 1: Validate Feature State & Artifacts
 
 **Checks:**
 - Feature state file exists (`vault/session/`)
@@ -45,7 +136,8 @@
 
 ---
 
-### Step 2: Load Enrichment Context
+
+## Step 2: Load Enrichment Context
 
 **Load from vault:**
 - Recent decisions (top 5, active only) → `vault/session/`
@@ -76,11 +168,13 @@ RELATED CODE CHANGES:
 
 ---
 
-### Step 3: Execute Tasks Sequentially
+
+## Step 3: Execute Tasks Sequentially
 
 **For each task in tasks.md (parsed, ordered by ID):**
 
-#### Pre-Execution: Context Injection
+
+## Pre-Execution: Context Injection
 
 ```
 1. Extract task description + requirements
@@ -89,7 +183,8 @@ RELATED CODE CHANGES:
 4. Output: "Task N/M: [task-name]" (one-line progress)
 ```
 
-#### Core Execution: Call SpecKit
+
+## Core Execution: Call SpecKit
 
 ```
 /speckit.implement <enriched-task>
@@ -101,7 +196,8 @@ RELATED CODE CHANGES:
 
 **Timing:** Record start + end time per task (for metrics)
 
-#### Post-Execution: Validate + Collect
+
+## Post-Execution: Validate + Collect
 
 ```
 1. Check git status: What files changed?
@@ -125,7 +221,8 @@ RELATED CODE CHANGES:
 
 ---
 
-### Step 4: Collect Execution Artifacts
+
+## Step 4: Collect Execution Artifacts
 
 **Artifact structure:**
 
@@ -165,7 +262,8 @@ Execution Trace:
 
 ---
 
-### Step 5: Update Feature State + Report
+
+## Step 5: Update Feature State + Report
 
 **Update `vault/session/`:**
 - Phase: `implementing` → `completing`
@@ -195,122 +293,3 @@ Next: Review staged changes, then run /spek.conclude to archive lessons
 
 ---
 
-## Success Criteria
-
-- ✅ Feature state validated (spec, plan, tasks exist and phase correct)
-- ✅ Context loaded for enrichment (decisions, patterns, code graph injected)
-- ✅ Tasks execute sequentially (one after another, with error resilience)
-- ✅ Code changes captured (git diff collected for each task)
-- ✅ Artifacts collected (execution trace includes all task results)
-- ✅ Session state updated (feature marked implementing, progress tracked)
-- ✅ Errors don't stop workflow (failed tasks don't block subsequent tasks)
-
----
-
-## Implementation Checklist
-
-- [ ] Implement Step 1 (validate feature state)
-- [ ] Implement Step 2 (load enrichment context)
-- [ ] Implement Step 3 (execute tasks sequentially)
-- [ ] Implement Step 4 (collect artifacts)
-- [ ] Implement Step 5 (update state + report)
-- [ ] Add error handling + continue-on-error
-- [ ] Add execution trace logging
-- [ ] Add git diff collection
-
----
-
-## References
-
-**Related Specs:**
-- [speckit-integration-contract.md](speckit-integration-contract.md) — SpecKit integration details
-- [enrichment-layer.md](enrichment-layer.md) — Context injection strategy
-- [feature-state-tracking.md](feature-state-tracking.md) — Feature state machine
-- [conclude-processing.md](conclude-processing.md) — Conclude-feature workflow
-
-**External:**
-- [extracted spec /spek.implement](speckit-integration-contract.md#spekimplement)
-
-✅ All artifacts valid (feature state, spec, plan, tasks)  
-✅ Context loaded (decisions, patterns, code graph)  
-✅ All tasks attempted (continue-on-error behavior)  
-✅ Code diff collected (final unified diff for all tasks)  
-✅ Execution trace saved (JSON + human-readable summary)  
-✅ Feature state updated (phase = completing, %90)  
-✅ User can proceed to `/spek.conclude`  
-
----
-
-## Error Handling
-
-**Error Category 1: Missing Artifacts (Blockers)**
-- Action: HALT + GUIDE
-- Example: "tasks.md not found. Run `/spek.plan` first."
-
-**Error Category 2: Task Execution Failures (Resilient)**
-- Action: Log error, output status, continue to next task
-- Example: "Task 3 failed (syntax error). Proceeding to Task 4."
-
-**Error Category 3: Code Validation Warnings (Continue)**
-- Action: Log warning, continue (may need manual review)
-- Example: "Task 2 generated code with complexity warning. Continuing."
-
-**Error Category 4: System Errors (Graceful Degradation)**
-- Action: Attempt retry (1x), if fails → log exception, continue
-- Example: "Code graph query timeout. Attempting without context. Proceeding."
-
----
-
-## Flags & Options
-
-```bash
-spek implement [options]
-  --tasks=<list>         # Run specific tasks by ID (e.g., "1,3,5")
-                         # Default: all tasks in order
-  
-  --skip-tests           # Don't run post-task validation/tests
-                         # Default: validate after each task
-  
-  --dry-run              # Preview changes, don't write to disk
-                         # Default: write changes
-  
-  --verbose              # Show full task output + context
-                         # Default: one-line progress per task
-  
-  --context-only         # Don't execute; just load/report context
-                         # Default: execute all tasks
-```
-
----
-
-## Integration Points
-
-**With `/speckit.implement`:**
-- Calls `/speckit.implement` per task (core execution layer)
-- Provides enriched context (vault + code graph)
-- Captures output (code diff)
-- Handles errors independently (resilience)
-
-**With Feature State (feature-state-tracking.md):**
-- Read: current feature name, check phase
-- Write: update phase to `completing`, increment % to 90
-
-**With Execution Tracing (conclude-processing.md):**
-- Generate execution trace (JSON + human summary)
-- Pass to `/spek.conclude` Step 1 (collect artifacts)
-
-**With Enrichment Layer (enrichment-layer.md):**
-- Load context (decisions, patterns, code graph)
-- Inject into task prompts (pre-execution)
-- No post-execution validation loop (unlike plan phase)
-
----
-
-## Related Specifications
-
-- [CLI Orchestration](cli-orchestration.md) — `/spek implement` command definition
-- [SpecKit Integration Contract](speckit-integration-contract.md) — Integration with `/speckit.implement`
-- [Enrichment Layer](enrichment-layer.md) — Context injection pattern
-- [Feature State Tracking](feature-state-tracking.md) — State transitions
-- [Conclude Processing](conclude-processing.md) — Artifact collection workflow
-- [Memory Architecture](memory-architecture.md) — Context loading lifecycle

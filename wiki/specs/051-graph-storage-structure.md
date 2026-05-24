@@ -1,15 +1,72 @@
 # ATOMIC SPECIFICATION: Graph Storage Structure (C5.2)
 
+
+See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Depends On:** node-schema-design.md  
 **Used By:** /spek.map, /spek.context, all enrichment layers  
 
 ---
+
 
 ## Overview
 
 Code graph stored in `vault/graph/` as SQLite database with optional export formats. `lat.md` maintains a queryable index via MCP tools and optional JSONL exports for integration with external systems.
 
 ---
+
+
+## Success Criteria
+
+- ✅ Directory structure matches spec layout (all folders + files present)
+- ✅ All files in correct location (nodes.jsonl, edges.jsonl, cache/ at right paths)
+- ✅ nodes.jsonl is valid JSONL (one JSON per line, no parsing errors)
+- ✅ edges.jsonl is valid JSONL (relationship entries complete)
+- ✅ config.json is valid JSON (version, sources, performance metadata present)
+- ✅ Cache files exist and valid (sha256.json, node-index.json readable)
+- ✅ Storage handles large graphs (100K+ symbols supported)
+- ## Query Patterns
+- **Query via MCP Tools (Recommended):**
+- ```python
+- # Find all symbols in module
+- symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
+- # Find all methods in class
+- methods = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
+- # Filter result: [s for s in symbols if s["parent"] == "AuthService"]
+- # Find all callers
+- callers = call_mcp_tool("lat_callers", symbol="authenticate")
+- ```
+- **Optional: JSONL Export Queries (External Tools)**
+- If using optional JSONL exports (wiki/vault/graph/exports/nodes.jsonl):
+- ```bash
+- # Find all symbols in module (NOT RECOMMENDED - use MCP tools instead)
+- grep '"file": "src/services/auth.py"' wiki/vault/graph/exports/nodes.jsonl
+- # Find all methods in class (NOT RECOMMENDED - use MCP tools instead)
+- grep '"scope": "AuthService"' wiki/vault/graph/exports/nodes.jsonl
+- # Find all callers (NOT RECOMMENDED - use MCP tools instead)
+- grep '"to_node": "[target-id]"' wiki/vault/graph/exports/edges.jsonl
+- ## Success Criteria
+- ✅ Directory structure matches layout
+- ✅ All files in correct location
+- ✅ SQLite database is accessible and contains nodes
+- ✅ MCP tools can query the database (<100ms per query)
+- ✅ config.json is valid JSON
+- ✅ Cache files exist and are valid JSON
+- ## Implementation Checklist
+- [ ] Create vault/graph/ directory
+- [ ] Create subdirectories (cache/, nodes/)
+- [ ] Validate nodes.jsonl format
+- [ ] Validate edges.jsonl format
+- [ ] Generate config.json
+- [ ] Implement cache file updates
+- [ ] Test query patterns
+- ## References
+- **Related Specs:**
+- [node-schema-design.md](052-node-schema-design.md) — Node schema details
+- [spek-map-command.md](103-spek-map-command.md) — /spek.map generates these
+- [graph-refresh-strategy.md](053-graph-refresh-strategy.md) — Cache strategy
+- **External:**
+- [graph-setup Part 2](050-latmd-setup-and-integration.md#part-2-vault-structure-for-graphs)
+
 
 ## Directory Structure
 
@@ -37,59 +94,22 @@ _Note:_ `lat.md` manages its own internal index/store (implementation-specific).
 
 ---
 
+
 ## File Schemas
 
-### config.json (lat.md Metadata)
+
+## config.json (lat.md Metadata)
 
 Metadata file created by lat.md init:
 
-```json
-{
-  "version": "1.0",
-  "generated_at": "2026-05-19T14:00:00Z",
-  "database": "lat_index.db",
-  "database_format": "SQLite3",
-  "graph_type": "hybrid",
-  "sources": [
-    {
-      "type": "code",
-      "tool": "lat.md",
-      "languages": ["python", "typescript", "yaml", "markdown"],
-      "file_count": 156,
-      "indexed_symbols": 2847,
-      "references": 12450
-    },
-    {
-      "type": "documentation",
-      "tool": "obsidian-export",
-      "vault_path": "vault/",
-      "file_count": 89,
-      "doc_nodes": 145
-    }
-  ],
-  "mcp_tools": [
-    "adapter:lat_symbols -> lat section/lat locate",
-    "adapter:lat_definition -> lat section/lat refs",
-    "adapter:lat_references -> lat refs",
-    "adapter:lat_callers -> derived via lat refs/graph traversal",
-    "adapter:lat_callees -> derived via lat refs/graph traversal",
-    "adapter:lat_impact -> derived (lat refs + traversal)",
-    "adapter:lat_query -> lat search / lat mcp"
-  ],
-  "performance": {
-    "cache_enabled": true,
-    "cache_ttl": 3600,
-    "last_full_rebuild": "2026-05-18T14:00:00Z",
-    "last_incremental_sync": "2026-05-19T14:00:00Z",
-    "last_full_rebuild_time_seconds": 47,
-    "typical_query_time_ms": 150
-  }
-}
-```
+
+> Example moved to [Example: 051-graph-storage-structure-code-1.md](./examples/051-graph-storage-structure-code-1.md)
+
 
 **Key:** Agents do **not** read JSONL files directly. Instead, they use the **MCP tools** listed above (lat_symbols, lat_references, etc.) to query the SQLite database.
 
-### Node & Edge Storage (SQLite - Internal)
+
+## Node & Edge Storage (SQLite - Internal)
 
 lat.md stores nodes and edges in `lat_index.db` (SQLite format). Agents interact with this database via MCP tool calls:
 
@@ -119,7 +139,8 @@ result = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
 ]
 ```
 
-### JSONL Exports (Optional - External Integration)
+
+## JSONL Exports (Optional - External Integration)
 
 For integration with external systems, lat.md can export data to JSONL format (in `vault/graph/exports/`). This is optional and generated on-demand:
 
@@ -136,9 +157,11 @@ For integration with external systems, lat.md can export data to JSONL format (i
 
 **Use:** These exports are for integration with external analysis tools or custom workflows, not for agent queries.
 
-### Query Cache (SQLite - Internal)
 
-### node-index.json (Lookup)
+## Query Cache (SQLite - Internal)
+
+
+## node-index.json (Lookup)
 
 ```json
 {
@@ -148,80 +171,3 @@ For integration with external systems, lat.md can export data to JSONL format (i
 }
 ```
 
-## Success Criteria
-
-- ✅ Directory structure matches spec layout (all folders + files present)
-- ✅ All files in correct location (nodes.jsonl, edges.jsonl, cache/ at right paths)
-- ✅ nodes.jsonl is valid JSONL (one JSON per line, no parsing errors)
-- ✅ edges.jsonl is valid JSONL (relationship entries complete)
-- ✅ config.json is valid JSON (version, sources, performance metadata present)
-- ✅ Cache files exist and valid (sha256.json, node-index.json readable)
-- ✅ Storage handles large graphs (100K+ symbols supported)
-
----
-
-## Query Patterns
-
-**Query via MCP Tools (Recommended):**
-
-```python
-# Find all symbols in module
-symbols = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
-
-# Find all methods in class
-methods = call_mcp_tool("lat_symbols", file_path="src/services/auth.py")
-# Filter result: [s for s in symbols if s["parent"] == "AuthService"]
-
-# Find all callers
-callers = call_mcp_tool("lat_callers", symbol="authenticate")
-```
-
-**Optional: JSONL Export Queries (External Tools)**
-
-If using optional JSONL exports (wiki/vault/graph/exports/nodes.jsonl):
-
-```bash
-# Find all symbols in module (NOT RECOMMENDED - use MCP tools instead)
-grep '"file": "src/services/auth.py"' wiki/vault/graph/exports/nodes.jsonl
-
-# Find all methods in class (NOT RECOMMENDED - use MCP tools instead)
-grep '"scope": "AuthService"' wiki/vault/graph/exports/nodes.jsonl
-
-# Find all callers (NOT RECOMMENDED - use MCP tools instead)
-grep '"to_node": "[target-id]"' wiki/vault/graph/exports/edges.jsonl
-```
-
----
-
-## Success Criteria
-
-✅ Directory structure matches layout  
-✅ All files in correct location  
-✅ SQLite database is accessible and contains nodes
-✅ MCP tools can query the database (<100ms per query)  
-✅ config.json is valid JSON  
-✅ Cache files exist and are valid JSON  
-
----
-
-## Implementation Checklist
-
-- [ ] Create vault/graph/ directory
-- [ ] Create subdirectories (cache/, nodes/)
-- [ ] Validate nodes.jsonl format
-- [ ] Validate edges.jsonl format
-- [ ] Generate config.json
-- [ ] Implement cache file updates
-- [ ] Test query patterns
-
----
-
-## References
-
-**Related Specs:**
-- [node-schema-design.md](node-schema-design.md) — Node schema details
-- [spek-map-command.md](spek-map-command.md) — /spek.map generates these
-- [graph-refresh-strategy.md](graph-refresh-strategy.md) — Cache strategy
-
-**External:**
-- [graph-setup Part 2](050-latmd-setup-and-integration.md#part-2-vault-structure-for-graphs)

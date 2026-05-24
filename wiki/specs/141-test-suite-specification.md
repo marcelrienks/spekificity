@@ -1,5 +1,7 @@
 # Spekificity Test Suite & Validation Strategy
 
+
+See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Date:** 2026-05-20  
 **Coverage Target:** high (good baseline; team-defined)  
 **Test Fixtures:** Small synthetic project (faster, controlled)  
@@ -9,9 +11,49 @@
 
 ---
 
+
+## 7. Success Criteria
+
+✅ **Test Coverage:**
+- Unit tests: 60% of total (40+ tests)
+- Integration tests: 30% of total (15+ tests)
+- E2E tests: 10% of total (5+ tests)
+- Overall coverage: 80%+
+
+✅ **Test Speed:**
+- Unit: < 10s
+- Integration: < 60s
+- E2E: < 300s (optional, slow)
+- Full suite: < 370s
+
+✅ **Error Handling:**
+- All error paths tested
+- Recovery scenarios validated
+- State corruption prevented
+
+✅ **Resilience:**
+- Tests pass consistently (no flakiness)
+- Mocks are deterministic
+- Fixtures are isolated (no cross-test pollution)
+
+✅ **CI/CD Integration:**
+- Local pre-commit hooks enforce unit tests
+- GitHub Actions run on every PR
+- Coverage reports generated
+
+---
+
+
+## 8. References
+
+- **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
+- **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
+- **Spek Implement Workflow:** [specs/spek-implement-workflow.md](../specs/105-spek-implement-workflow.md)
+
 ## 1. Test Architecture & Layers
 
-### 1.1 Three-Layer Test Pyramid
+
+## 1.1 Three-Layer Test Pyramid
 
 ```
       E2E Tests (representative scenarios)
@@ -24,61 +66,15 @@
         largest portion of tests
 ```
 
-### 1.2 Test Organization by Component
 
-```
-tests/
-├── unit/                          # majority of tests, fastest, fully mocked
-│   ├── test_enrichment_layer.py
- │   ├── test_feature_state.py
- │   ├── test_context_injection.py
- │
- │   ├── test_prepare_workflow.py
- │   ├── test_plan_workflow.py
- │   ├── test_post_workflow.py
- │   └── test_full_pipeline.py
-│
-├── e2e/                           # small portion of tests, slowest, synthetic fixtures
-│   ├── test_full_workflow.py
-│   ├── test_error_scenarios.py
-│   ├── test_multi_feature.py
-│   ├── test_state_persistence.py
-│   └── test_performance_baseline.py
-│
-├── fixtures/                      # Shared test data & synthetic projects
-│   ├── synthetic_project/        # Small 5-file repo for E2E testing
-│   │   ├── src/
-│   │   │   ├── main.py
-│   │   │   ├── utils.py
-│   │   │   └── config.py
-│   │   ├── tests/
-│   │   │   └── test_main.py
-│   │   └── .spek/
-│   │       └── config.yaml
-│   │
-│   ├── mock_specs/               # Pre-built spec JSONs for fixtures
-│   │   ├── complete_spec.json
-│   │   ├── partial_spec.json
-│   │   └── invalid_spec.json
-│   │
-│   ├── mock_plans/               # Pre-built plan JSONs
-│   │   ├── complete_plan.json
-│   │   └── error_plan.json
-│   │
-│   └── conftest.py              # pytest fixtures (mocks, temp dirs, etc.)
-│
-└── ci/                           # CI/CD configuration
-    ├── .github/workflows/
-    │   ├── test-pr.yaml         # Run on PR, full suite
-    │   ├── test-local.yaml      # Optional GitHub-hosted runner job
-    │   └── performance.yaml     # Performance tracking (monthly)
-    │
-    └── pre-commit-hooks/
-        ├── run-unit-tests.sh    # Local pre-commit hook (unit tests only)
-        └── run-quick-tests.sh   # Local quick check (critical path)
-```
+## 1.2 Test Organization by Component
+
+
+> Example moved to [Example: 141-test-suite-specification-code-5.md](./examples/141-test-suite-specification-code-5.md)
+
 
 ---
+
 
 ## 2. Unit Tests (coverage guidance)
 
@@ -102,7 +98,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 2.2 Memory Layer Unit Tests
+
+## 2.2 Memory Layer Unit Tests
 
 **File:** `tests/unit/test_memory_layer.py`
 
@@ -121,7 +118,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 2.3 Feature State Unit Tests
+
+## 2.3 Feature State Unit Tests
 
 **File:** `tests/unit/test_feature_state.py`
 
@@ -138,7 +136,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 2.4 Decorator Wrapper Unit Tests
+
+## 2.4 Decorator Wrapper Unit Tests
 
 **File:** `tests/unit/test_decorator_wrapper.py`
 
@@ -156,7 +155,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 2.5 Context Injection Unit Tests
+
+## 2.5 Context Injection Unit Tests
 
 **File:** `tests/unit/test_context_injection.py`
 
@@ -174,7 +174,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 2.6 Compression Unit Tests
+
+## 2.6 Compression Unit Tests
 
 **File:** `tests/unit/test_compression.py`
 
@@ -192,15 +193,18 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
+
 ## 3. Integration Tests (30% Coverage)
 
-### 3.1 Test Organization
+
+## 3.1 Test Organization
 
 Integration tests use real Spekificity code but mock external tools (SpecKit, lat.md, vault file I/O). Each test exercises one complete workflow step.
 
 **File:** `tests/integration/test_prepare_workflow.py`
 
-### 3.2 Prepare Workflow Integration Test
+
+## 3.2 Prepare Workflow Integration Test
 
 **Fixtures:**
 - `mock_speckit`: Real prepare logic, mocked I/O
@@ -216,7 +220,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 3.3 Specify Workflow Integration Test
+
+## 3.3 Specify Workflow Integration Test
 
 **File:** `tests/integration/test_specify_workflow.py`
 
@@ -235,7 +240,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 3.4 Plan Workflow Integration Test
+
+## 3.4 Plan Workflow Integration Test
 
 **File:** `tests/integration/test_plan_workflow.py`
 
@@ -254,7 +260,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 3.5 Implement Workflow Integration Test
+
+## 3.5 Implement Workflow Integration Test
 
 **File:** `tests/integration/test_implement_workflow.py`
 
@@ -274,7 +281,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 3.6 Post Workflow Integration Test
+
+## 3.6 Post Workflow Integration Test
 
 **File:** `tests/integration/test_post_workflow.py`
 
@@ -292,7 +300,8 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
-### 3.7 Full Pipeline Integration Test
+
+## 3.7 Full Pipeline Integration Test
 
 **File:** `tests/integration/test_full_pipeline.py`
 
@@ -311,9 +320,11 @@ Test ID | Test Name | Setup | Assertion | ---------|-----------|-------|--------
 
 ---
 
+
 ## 4. End-to-End Tests (10% Coverage)
 
-### 4.1 Test Organization
+
+## 4.1 Test Organization
 
 E2E tests use the synthetic project fixture (real file I/O, real lat.md queries, real Spekificity code). No mocks. Validate entire workflow on a small Python project.
 
@@ -340,7 +351,8 @@ synthetic_project/
 
 ---
 
-### 4.2 Full Workflow E2E Test
+
+## 4.2 Full Workflow E2E Test
 
 **File:** `tests/e2e/test_full_workflow.py`
 
@@ -354,7 +366,8 @@ Test ID | Test Name | Expected Outcome | ---------|-----------|-----------------
 
 ---
 
-### 4.3 Error Scenarios E2E Test
+
+## 4.3 Error Scenarios E2E Test
 
 **File:** `tests/e2e/test_error_scenarios.py`
 
@@ -367,7 +380,8 @@ Test ID | Test Name | Error | Expected Behavior | ---------|-----------|-------|
 
 ---
 
-### 4.4 Multi-Feature E2E Test
+
+## 4.4 Multi-Feature E2E Test
 
 **File:** `tests/e2e/test_multi_feature.py`
 
@@ -380,7 +394,8 @@ Test ID | Test Name | Expected Outcome | ---------|-----------|-----------------
 
 ---
 
-### 4.5 State Persistence E2E Test
+
+## 4.5 State Persistence E2E Test
 
 **File:** `tests/e2e/test_state_persistence.py`
 
@@ -393,7 +408,8 @@ Test ID | Test Name | Scenario | Expected Outcome | ---------|-----------|------
 
 ---
 
-### 4.6 Performance Baseline E2E Test
+
+## 4.6 Performance Baseline E2E Test
 
 **File:** `tests/e2e/test_performance_baseline.py`
 
@@ -406,147 +422,44 @@ Test ID | Test Name | Measurement | Expected Baseline | ---------|-----------|--
 
 ---
 
+
 ## 5. Mock Objects & Fixtures
 
-### 5.1 Mock SpecKit
+
+## 5.1 Mock SpecKit
 
 **File:** `tests/fixtures/conftest.py` → `mock_speckit` fixture
 
-```python
-class MockSpecKitAdapter:
-    """Simulates SpecKit command responses for testing."""
-    
-    def prepare(self, feature_name, config):
-        """Return success."""
-        return {"status": "success", "feature": feature_name}
-    
-    def specify(self, constitution, enriched_context):
-        """Return mock spec JSON."""
-        return {
-            "feature_name": "add-logging",
-            "requirements": ["Add logging to main.py", "Add logging to utils.py"],
-            "scope": "core",
-            "status": "specified"
-        }
-    
-    def plan(self, spec, enriched_context):
-        """Return mock plan JSON (3 tasks)."""
-        return {
-            "feature_name": "add-logging",
-            "tasks": [
-                {"id": 1, "name": "Add logging imports", "file": "main.py"},
-                {"id": 2, "name": "Add logging calls", "file": "utils.py"},
-                {"id": 3, "name": "Update config", "file": "config.py"}
-            ],
-            "status": "planned"
-        }
-    
-    def implement(self, task, enriched_context):
-        """Return mock implementation result."""
-        return {
-            "task_id": task["id"],
-            "status": "success",
-            "code_generated": f"# Logging added to {task['file']}",
-            "diff": "mock diff here"
-        }
-    
-    def post(self, feature_state):
-        """Return success."""
-        return {"status": "success", "feature_complete": True}
-```
+
+> Example moved to [Example: 141-test-suite-specification-code-4.md](./examples/141-test-suite-specification-code-4.md)
+
 
 ---
 
-### 5.2 Mock lat.md (adapter)
+
+## 5.2 Mock lat.md (adapter)
 
 **File:** `tests/fixtures/conftest.py` → `mock_lat_adapter` fixture
 
-```python
-class MockLatAdapter:
-    """Simulates the lat.md adapter: maps spec tool names to lat.md CLI/MCP semantics."""
-    
-    def __init__(self):
-        self.symbols = [
-            {"name": "main", "type": "function", "file": "main.py", "line": 10},
-            {"name": "log_output", "type": "function", "file": "utils.py", "line": 5},
-            {"name": "Config", "type": "class", "file": "config.py", "line": 1},
-            # ... 47 more mock symbols
-        ]
-    
-    def lat_symbols(self, file_path):
-        """Return symbols in file."""
-        return [s for s in self.symbols if s["file"] == file_path]
-    
-    def lat_definition(self, symbol_name):
-        """Return symbol definition."""
-        sym = next((s for s in self.symbols if s["name"] == symbol_name), None)
-        return sym or {"error": "Symbol not found"}
-    
-    def lat_references(self, symbol_name):
-        """Return all references to symbol."""
-        return [{"file": "main.py", "line": 15}, {"file": "utils.py", "line": 8}]
-    
-    def lat_impact(self, symbol_name):
-        """Return impact radius (affected symbols)."""
-        return {
-            "direct": ["caller1", "caller2"],
-            "transitive": ["indirect1", "indirect2"],
-            "estimate_impact": "medium"
-        }
-    
-    def lat_query(self, query):
-        """Return results from free-form query."""
-        if "timeout" in query:
-            raise TimeoutError("Query timeout (3s)")
-        return {"results": self.symbols[:5]}
-```
+
+> Example moved to [Example: 141-test-suite-specification-code-3.md](./examples/141-test-suite-specification-code-3.md)
+
 
 ---
 
-### 5.3 Mock Vault
+
+## 5.3 Mock Vault
 
 **File:** `tests/fixtures/conftest.py` → `mock_vault` fixture
 
-```python
-class MockVault:
-    """Simulates Obsidian vault file I/O."""
-    
-    def __init__(self, temp_dir):
-        self.root = temp_dir
-        self.decisions = []
-        self.patterns = []
-        self.specs = {}
-        self.plans = {}
-        self.lessons = {}
-    
-    def read_decisions(self):
-        """Return vault decisions."""
-        return self.decisions
-    
-    def read_patterns(self):
-        """Return vault patterns."""
-        return self.patterns
-    
-    def write_spec(self, feature_id, spec_dict):
-        """Save spec JSON."""
-        self.specs[feature_id] = spec_dict
-    
-    def write_plan(self, feature_id, plan_dict):
-        """Save plan JSON."""
-        self.plans[feature_id] = plan_dict
-    
-    def write_lesson(self, feature_id, lesson_dict):
-        """Save lesson markdown."""
-        self.lessons[feature_id] = lesson_dict
-    
-    def file_not_found_error(self, path):
-        """Raise error if file not found."""
-        raise FileNotFoundError(f"Vault file not found: {path}")
-```
+
+> Example moved to [Example: 141-test-suite-specification-code-2.md](./examples/141-test-suite-specification-code-2.md)
+
 
 ---
 
-### 5.4 Fixtures: Synthetic Project
+
+## 5.4 Fixtures: Synthetic Project
 
 **File:** `tests/fixtures/synthetic_project/src/main.py`
 
@@ -593,7 +506,8 @@ class Config:
 
 ---
 
-### 5.5 Fixtures: Pre-built Specs/Plans
+
+## 5.5 Fixtures: Pre-built Specs/Plans
 
 **File:** `tests/fixtures/mock_specs/complete_spec.json`
 
@@ -648,9 +562,11 @@ class Config:
 
 ---
 
+
 ## 6. Test Execution & CI/CD
 
-### 6.1 Local Test Execution
+
+## 6.1 Local Test Execution
 
 **Unit Tests:**
 ```bash
@@ -684,7 +600,8 @@ pytest tests/unit/ tests/integration/test_full_pipeline.py -v
 
 ---
 
-### 6.2 Local Pre-commit Hook
+
+## 6.2 Local Pre-commit Hook
 
 **File:** `.git/hooks/pre-commit`
 
@@ -718,90 +635,14 @@ exit 0
 
 ---
 
-### 6.3 GitHub Actions CI/CD
+
+## 6.3 GitHub Actions CI/CD
 
 **File:** `.github/workflows/test-pr.yaml`
 
-```yaml
-name: Test on PR
 
-on:
-  pull_request:
-    branches: [main]
+> Example moved to [Example: 141-test-suite-specification-code-1.md](./examples/141-test-suite-specification-code-1.md)
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.9', '3.10', '3.11']
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      
-      - name: Install dependencies
-        run:
-          pip install -e .
-          pip install pytest pytest-cov pytest-mock
-      
-      - name: Run unit tests
-        run: pytest tests/unit/ -v --cov=src --cov-report=xml
-      
-      - name: Run integration tests
-        run: pytest tests/integration/ -v --cov=src --cov-report=xml --cov-append
-      
-      - name: Run E2E tests (quick subset)
-        run: pytest tests/e2e/test_full_workflow.py -v --cov=src --cov-report=xml --cov-append
-        timeout-minutes: 5
-      
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-```
 
 ---
 
-## 7. Success Criteria
-
-✅ **Test Coverage:**
-- Unit tests: 60% of total (40+ tests)
-- Integration tests: 30% of total (15+ tests)
-- E2E tests: 10% of total (5+ tests)
-- Overall coverage: 80%+
-
-✅ **Test Speed:**
-- Unit: < 10s
-- Integration: < 60s
-- E2E: < 300s (optional, slow)
-- Full suite: < 370s
-
-✅ **Error Handling:**
-- All error paths tested
-- Recovery scenarios validated
-- State corruption prevented
-
-✅ **Resilience:**
-- Tests pass consistently (no flakiness)
-- Mocks are deterministic
-- Fixtures are isolated (no cross-test pollution)
-
-✅ **CI/CD Integration:**
-- Local pre-commit hooks enforce unit tests
-- GitHub Actions run on every PR
-- Coverage reports generated
-
----
-
-## 8. References
-
-- **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
-- **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
-- **Spek Implement Workflow:** [specs/spek-implement-workflow.md](../specs/105-spek-implement-workflow.md)

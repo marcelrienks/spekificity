@@ -1,8 +1,11 @@
 # SPECIFICATION: CLI Orchestration (C2.0)
 
+
+See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Depends On:** speckit-integration-contract.md, prepare-command.md, post-command.md, feature-state-tracking.md  
 
 ---
+
 
 ## Overview
 
@@ -16,9 +19,232 @@ The CLI is the user-facing entry point to Spekificity. `spek plan` is the primar
 
 ---
 
+
+## Success Criteria
+
+- ✅ All CLI commands execute without crashing (robust error handling)
+- ✅ Feature state tracked correctly (phase transitions accurate)
+- ✅ Workflow sequencing enforced (can't skip required steps)
+- ✅ Parameters validated (clear errors for invalid flags/args)
+- ✅ Exit codes correct (0=success, 1=error, 2=validation, 3=user-action)
+- ✅ Help + version work (`--help`, `--version` flags)
+- ✅ Integration seamless (users think in workflow, not technical layers)
+- Support in-place remediation loop when findings require changes
+- Call `/speckit.tasks`
+- Update feature state (`current-feature.md`)
+- **Output:**
+- `specs/spec.md` created/updated
+- `specs/plan.md` created/updated
+- `specs/tasks.md` created/updated
+- Feature state updated (automation complete)
+- Ready for `/spek.implement`
+- **Error Handling:** Per [error-handling-and-recovery.md](010-error-handling-and-recovery.md)
+- **Related:** [Speckit Integration Contract](110-speckit-integration-contract.md), [spek.plan Workflow](spek-plan-workflow.md)
+- ### 3. `spek implement` — Execute Tasks
+- **Purpose:** Execute implementation tasks from task list.
+- ```bash
+- spek implement [options]
+- --dry-run                   # Preview changes, don't write
+- --tasks <list>              # Specific tasks to run (e.g., "1,3,5")
+- --skip-tests                # Skip test execution
+- ```
+- **Behavior:**
+- Validate feature state, spec, plan, and tasks exist
+- Call `/speckit.implement` to execute tasks
+- Log execution trace (all commands, outputs, timing)
+- Update feature state (mark tasks complete, capture trace)
+- Tasks executed
+- Execution trace logged
+- Code changes recorded
+- Feature state updated (implement complete)
+- Ready for `/spek.conclude`
+- **Related:** [Speckit Integration Contract](110-speckit-integration-contract.md), [Enrichment Layer](032-enrichment-layer.md)
+- ### 4. `spek conclude` — Archive and Persist
+- **Purpose:** Extract lessons, update vault, archive feature state.
+- spek conclude [options]
+- --caveman-mode <mode>       # Compression level (lite|full|ultra)
+- Validate feature state complete (all prior steps done)
+- Extract lessons from artifacts (spec, plan, tasks, code, trace)
+- Update vault (decisions, patterns)
+- Sync repo memory (`vault/repo/`)
+- Refresh code graph via `/spek.map`
+- Archive feature state
+- Report completion
+- `wiki/vault/lessons/<date>-<feature>.md` created
+- `wiki/vault/decision.md` updated
+- `wiki/vault/patterns.md` updated
+- `vault/repo/` synced
+- Code graph refreshed
+- Session memory archived
+- Ready for next feature
+- **Related:** [Post Command](post-command.md), [Post Processing](post-processing.md)
+- ### 5. `spek map` — Refresh lat.md index
+- **Purpose:** Generate or update code graph (code + documentation index).
+- spek map [options]
+- --force                     # Force full rebuild (don't use cache)
+- --incremental               # Incremental sync (only changed files)
+- lat.md indexes code symbols via automatic file watcher
+- Export Obsidian document nodes
+- Merge code + doc nodes
+- Write to `wiki/vault/graph/nodes.jsonl`
+- Update graph metadata (`wiki/vault/graph/config.json`)
+- `wiki/vault/graph/nodes.jsonl` created/updated
+- `wiki/vault/graph/config.json` created/updated
+- Context available for refreshing
+- **Related:** [/spek.map Command](103-spek-map-command.md)
+- ### 6. `spek context` — Load Context
+- **Purpose:** Load vault decisions, patterns, lessons, and code graph into session memory.
+- spek context [options]
+- --force                     # Reload context (don't use cache)
+- --minimal                   # Load minimal context (code graph only)
+- Load decisions from `wiki/vault/decision.md` (or cache)
+- Load patterns from `wiki/vault/patterns.md` (or cache)
+- Load recent lessons (top 3-5) from `wiki/vault/lessons/`
+- Load code graph from `wiki/vault/graph/nodes.jsonl`
+- Compose into session context (`vault/session/`)
+- `vault/session/` created
+- Full context available for skills
+- **Related:** [Context Layer](031-context-layer.md), [Memory Architecture](030-memory-architecture.md)
+- ## Feature State Machine
+- **State tracking via `vault/session/`:**
+- [IDLE] → /spek.prepare → [PREPARED]
+- [PREPARED] → /spek.plan → [TASKED]
+- [TASKED] → /spek.implement → [IMPLEMENTED]
+- [IMPLEMENTED] → /spek.conclude → [ARCHIVED]
+- [ARCHIVED] → (ready for next feature)
+- Or: [ANY_STATE] --skip-context--> [ANY_STATE] (reuse context within session)
+- Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
+- **State File Format (`vault/session/`):**
+- ```markdown
+- # Current Feature State
+- **Feature:** feature-003-spek-workflow-cli
+- **Date:** recorded (omitted)
+- **Last Updated:** recorded (omitted)
+- ## Workflow Progress
+- Step | Command | Status | Timestamp | Output | ------|---------|--------|-----------|-------- | 1 | /spek.prepare | ✓ COMPLETE | recorded (omitted) | Context loaded | 2 | /spek.plan | ✓ COMPLETE | recorded (omitted) | spec.md, plan.md, tasks.md | 3 | /spek.implement | ✓ COMPLETE | recorded (omitted) | code changes recorded (details omitted) | 4 | /spek.conclude | ⏳ PENDING | — | Ready to run
+- ## Artifacts
+- Spec: specs/spec.md (lines omitted)
+- Plan: specs/plan.md (lines omitted)
+- Tasks: specs/tasks.md (count omitted)
+- Code changes: files/lines recorded (details omitted)
+- ## Context Status
+- Context loaded: recorded (omitted)
+- Graph version: recorded (omitted)
+- Vault accessible: ✓ YES
+- ## Exit Codes
+- Code | Meaning | User Action | ------|---------|------------- | **0** | Success | None (continue to next step) | **1** | Error (recoverable) | Check logs, run command again | **2** | Validation error | Fix input parameters, retry | **3** | User action required | Follow guidance in error message, then retry | **127** | Command not found | Check spek installation
+- **Example Exit Sequences:**
+- `spek prepare` → Exit 0 → User runs `spek specify` → Exit 0 → Continue
+- `spek prepare` → Exit 3 (git dirty) → User runs `git add .` → User runs `spek prepare` → Exit 0
+- `spek specify` → Exit 1 (speckit error) → Run `spek specify` again (retry) → Exit 0
+- ## Workflow Sequencing Rules
+- **Rule 1: Strict Ordering (Most Strict)**
+- Recommended order: prepare → specify → plan → tasks → implement → post
+- Avoid skipping steps; complete each before proceeding when practical.
+- **Rule 2: Resume Within Session (Flexible)**
+- If restarting within same session: Can re-run prepare with --skip-context (avoid context reload)
+- Example: /spek.prepare → specify → plan → (pause) → prepare --skip-context → plan → tasks
+- **Rule 3: Anytime Map (Flexible)**
+- Can run /spek.map anytime (doesn't affect feature state)
+- Use to refresh code graph without blocking feature work
+- **Rule 4: Manual Context Override (Flexible)**
+- Can run /spek.context --force to reload context mid-feature
+- Use if vault was updated externally or context feels stale
+- **Rule 5: Dry-Run Validation (No-Op)**
+- All commands support --dry-run: Preview changes without writing
+- Use to test workflow or validate parameters before commit
+- ## Integration with SpecKit
+- **Orchestration Boundary:**
+- Spekificity CLI calls SpecKit commands but **does not modify** SpecKit behavior
+- SpecKit defines spec/plan/tasks/implement logic
+- Spekificity CLI adds: context injection, vault persistence, graph management, lesson extraction
+- **Command Flow:**
+- User: spek specify --description "..."
+- ↓
+- Spekificity CLI:
+- ├─ Load context from vault + repo memory + graph
+- ├─ Call /speckit.specify with (context + description)
+- ├─ Receive spec.md from SpecKit
+- ├─ Write spec.md to workspace
+- └─ Update feature state
+- **For details:** [Speckit Integration Contract](110-speckit-integration-contract.md)
+- ## Status Reporting
+- **On Success:**
+- ✓ /spek.prepare complete
+- Workspace: /Users/.../spekificity
+- Feature: 003-spek-full-workflow-cli
+- Context loaded: 5 decisions, 8 patterns, 2 recent lessons, 3421 code symbols
+- Ready for: spek specify
+- **On Error:**
+- ✗ /spek.prepare failed
+- Error: Git working tree is dirty
+- Unstaged: src/main.py, src/utils.py
+- Fix: git add . && git commit -m "checkpoint"
+- Then: spek prepare
+- (Exit code: 3)
+- **On Warning (Recoverable):**
+- ⚠ /spek.conclude warning
+- Vault not accessible (permissions): Using cached decisions (2h old)
+- Tip: Check vault permissions: chmod 755 wiki/vault/
+- Continuing: Feature archival with stale context
+- (Exit code: 0, proceeding)
+- ## Configuration
+- **Config file:** `.spek/config.yaml`
+- ```yaml
+- workspace:
+- root: ${PWD}  # Git root of project
+- vault: wiki/vault/
+- specs: specs/
+- memory:
+- repo: vault/repo/
+- session: vault/session/
+- graph:
+- cache_dir: wiki/vault/graph/
+- refresh_interval_hours: 24
+- force_refresh_on_prepare: false
+- speckit:
+- timeout_seconds: 300
+- verbose: false
+- caveman:
+- default_mode: full
+- enabled: true
+- error:
+- log_file: .spek/error-log.md
+- retry_transient_errors: true
+- retry_backoff_seconds: [10, 30, 60]
+- ## Testing & Validation
+- **CLI Integration Tests:**
+- [ ] Test 1: Full happy path (prepare → specify → plan → tasks → implement → post)
+- [ ] Test 2: Resume within session (`prepare --skip-context`)
+- [ ] Test 3: Force graph refresh (`prepare --force-graph-refresh`)
+- [ ] Test 4: Dry-run all commands (preview changes, don't write)
+- [ ] Test 5: Invalid feature state (e.g., try `specify` without `prepare`) → Fail + guidance
+- [ ] Test 6: SpecKit timeout → Retry + eventual success
+- [ ] Test 7: Vault inaccessible → Fallback + warning
+- [ ] Test 8: Exit codes match expected values
+- **Feature State Tests:**
+- [ ] Feature state created after `/spek.prepare`
+- [ ] Feature state transitions correctly (IDLE → PREPARED → ... → ARCHIVED)
+- [ ] Feature state survives session restart (when archive incomplete)
+- [ ] Feature state correctly reflects command status
+- **Parameter Tests:**
+- [ ] `--feature-name` override works
+- [ ] `--dry-run` prevents file writes
+- [ ] `--verbose` enables debug logging
+- [ ] Global `--workspace` override works
+- ## Final Notes
+- This spec defines the **CLI orchestration layer** — the user-facing command interface and workflow sequencing. Implementation details for individual commands (e.g., 7 steps of `prepare`) are in dedicated command specs.
+- **Implementation Reference:**
+- [Prepare Command](100-prepare-command.md) — 7-step detail
+- [Post Command](post-command.md) — 10-step detail
+- [Speckit Integration Contract](110-speckit-integration-contract.md) — Integration details
+- [Error Handling and Recovery](010-error-handling-and-recovery.md) — Error strategy
+
+
 ## Entry Points
 
-### Command: `spek`
+
+## Command: `spek`
 
 **Base command for all Spekificity operations.**
 
@@ -41,9 +267,11 @@ spek [global-options] <command> [command-options]
 
 ---
 
+
 ## Command Reference
 
-### 1. `spek prepare` — Start Feature
+
+## 1. `spek prepare` — Start Feature
 
 **Purpose:** Initialize workspace and load context for a new feature.
 
@@ -68,13 +296,14 @@ spek prepare [options]
 - Context loaded and available
 - Ready for `/spek.plan`
 
-**Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
+**Error Handling:** Per [error-handling-and-recovery.md](010-error-handling-and-recovery.md)
 
-**Related:** [Prepare Command](prepare-command.md)
+**Related:** [Prepare Command](100-prepare-command.md)
 
 ---
 
-### 2. `spek plan` — Orchestrate SpecKit Workflow
+
+## 2. `spek plan` — Orchestrate SpecKit Workflow
 
 **Purpose:** Orchestrate the pre-implementation workflow from feature description through approved task list.
 
@@ -94,367 +323,3 @@ spek plan [options]
 6. Call `/speckit.plan`
 7. Call `/speckit.analyze` and surface findings
 
-## Success Criteria
-
-- ✅ All CLI commands execute without crashing (robust error handling)
-- ✅ Feature state tracked correctly (phase transitions accurate)
-- ✅ Workflow sequencing enforced (can't skip required steps)
-- ✅ Parameters validated (clear errors for invalid flags/args)
-- ✅ Exit codes correct (0=success, 1=error, 2=validation, 3=user-action)
-- ✅ Help + version work (`--help`, `--version` flags)
-- ✅ Integration seamless (users think in workflow, not technical layers)
-8. Support in-place remediation loop when findings require changes
-9. Call `/speckit.tasks`
-10. Update feature state (`current-feature.md`)
-
-**Output:**
-- `specs/spec.md` created/updated
-- `specs/plan.md` created/updated
-- `specs/tasks.md` created/updated
-- Feature state updated (automation complete)
-- Ready for `/spek.implement`
-
-**Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
-
-**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [spek.plan Workflow](spek-plan-workflow.md)
-
----
-
-### 3. `spek implement` — Execute Tasks
-
-**Purpose:** Execute implementation tasks from task list.
-
-```bash
-spek implement [options]
-  --dry-run                   # Preview changes, don't write
-  --tasks <list>              # Specific tasks to run (e.g., "1,3,5")
-  --skip-tests                # Skip test execution
-```
-
-**Behavior:**
-1. Validate feature state, spec, plan, and tasks exist
-2. Call `/speckit.implement` to execute tasks
-3. Log execution trace (all commands, outputs, timing)
-4. Update feature state (mark tasks complete, capture trace)
-
-**Output:**
-- Tasks executed
-- Execution trace logged
-- Code changes recorded
-- Feature state updated (implement complete)
-- Ready for `/spek.conclude`
-
-**Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
-
-**Related:** [Speckit Integration Contract](speckit-integration-contract.md), [Enrichment Layer](enrichment-layer.md)
-
----
-
-### 4. `spek conclude` — Archive and Persist
-
-**Purpose:** Extract lessons, update vault, archive feature state.
-
-```bash
-spek conclude [options]
-  --caveman-mode <mode>       # Compression level (lite|full|ultra)
-  --dry-run                   # Preview changes, don't write
-```
-
-**Behavior:**
-1. Validate feature state complete (all prior steps done)
-2. Extract lessons from artifacts (spec, plan, tasks, code, trace)
-3. Update vault (decisions, patterns)
-4. Sync repo memory (`vault/repo/`)
-5. Refresh code graph via `/spek.map`
-6. Archive feature state
-7. Report completion
-
-**Output:**
-- `wiki/vault/lessons/<date>-<feature>.md` created
-- `wiki/vault/decision.md` updated
-- `wiki/vault/patterns.md` updated
-- `vault/repo/` synced
-- Code graph refreshed
-- Session memory archived
-- Ready for next feature
-
-**Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
-
-**Related:** [Post Command](post-command.md), [Post Processing](post-processing.md)
-
----
-
-### 5. `spek map` — Refresh lat.md index
-
-**Purpose:** Generate or update code graph (code + documentation index).
-
-```bash
-spek map [options]
-  --force                     # Force full rebuild (don't use cache)
-  --incremental               # Incremental sync (only changed files)
-  --dry-run                   # Preview changes, don't write
-```
-
-**Behavior:**
-1. lat.md indexes code symbols via automatic file watcher
-2. Export Obsidian document nodes
-3. Merge code + doc nodes
-4. Write to `wiki/vault/graph/nodes.jsonl`
-5. Update graph metadata (`wiki/vault/graph/config.json`)
-
-**Output:**
-- `wiki/vault/graph/nodes.jsonl` created/updated
-- `wiki/vault/graph/config.json` created/updated
-- Context available for refreshing
-
-**Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
-
-**Related:** [/spek.map Command](spek-map-command.md)
-
----
-
-### 6. `spek context` — Load Context
-
-**Purpose:** Load vault decisions, patterns, lessons, and code graph into session memory.
-
-```bash
-spek context [options]
-  --force                     # Reload context (don't use cache)
-  --minimal                   # Load minimal context (code graph only)
-```
-
-**Behavior:**
-1. Load decisions from `wiki/vault/decision.md` (or cache)
-2. Load patterns from `wiki/vault/patterns.md` (or cache)
-3. Load recent lessons (top 3-5) from `wiki/vault/lessons/`
-4. Load code graph from `wiki/vault/graph/nodes.jsonl`
-5. Compose into session context (`vault/session/`)
-
-**Output:**
-- `vault/session/` created
-- Full context available for skills
-
-**Error Handling:** Per [error-handling-and-recovery.md](error-handling-and-recovery.md)
-
-**Related:** [Context Layer](context-layer.md), [Memory Architecture](memory-architecture.md)
-
----
-
-## Feature State Machine
-
-**State tracking via `vault/session/`:**
-
-```
-[IDLE] → /spek.prepare → [PREPARED]
-[PREPARED] → /spek.plan → [TASKED]
-[TASKED] → /spek.implement → [IMPLEMENTED]
-[IMPLEMENTED] → /spek.conclude → [ARCHIVED]
-[ARCHIVED] → (ready for next feature)
-
-Or: [ANY_STATE] --skip-context--> [ANY_STATE] (reuse context within session)
-Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
-```
-
-**State File Format (`vault/session/`):**
-
-```markdown
-# Current Feature State
-
-**Feature:** feature-003-spek-workflow-cli
-**Date:** recorded (omitted)
-**Last Updated:** recorded (omitted)
-
-## Workflow Progress
-Step | Command | Status | Timestamp | Output | ------|---------|--------|-----------|-------- | 1 | /spek.prepare | ✓ COMPLETE | recorded (omitted) | Context loaded | 2 | /spek.plan | ✓ COMPLETE | recorded (omitted) | spec.md, plan.md, tasks.md | 3 | /spek.implement | ✓ COMPLETE | recorded (omitted) | code changes recorded (details omitted) | 4 | /spek.conclude | ⏳ PENDING | — | Ready to run
-## Artifacts
-
-- Spec: specs/spec.md (lines omitted)
-- Plan: specs/plan.md (lines omitted)
-- Tasks: specs/tasks.md (count omitted)
-- Code changes: files/lines recorded (details omitted)
-
-## Context Status
-
-- Context loaded: recorded (omitted)
-- Graph version: recorded (omitted)
-- Vault accessible: ✓ YES
-```
-
----
-
-## Exit Codes
-Code | Meaning | User Action | ------|---------|------------- | **0** | Success | None (continue to next step) | **1** | Error (recoverable) | Check logs, run command again | **2** | Validation error | Fix input parameters, retry | **3** | User action required | Follow guidance in error message, then retry | **127** | Command not found | Check spek installation
-**Example Exit Sequences:**
-
-- `spek prepare` → Exit 0 → User runs `spek specify` → Exit 0 → Continue
-- `spek prepare` → Exit 3 (git dirty) → User runs `git add .` → User runs `spek prepare` → Exit 0
-- `spek specify` → Exit 1 (speckit error) → Run `spek specify` again (retry) → Exit 0
-
----
-
-## Workflow Sequencing Rules
-
-**Rule 1: Strict Ordering (Most Strict)**
-```
-Recommended order: prepare → specify → plan → tasks → implement → post
-Avoid skipping steps; complete each before proceeding when practical.
-```
-
-**Rule 2: Resume Within Session (Flexible)**
-```
-If restarting within same session: Can re-run prepare with --skip-context (avoid context reload)
-Example: /spek.prepare → specify → plan → (pause) → prepare --skip-context → plan → tasks
-```
-
-**Rule 3: Anytime Map (Flexible)**
-```
-Can run /spek.map anytime (doesn't affect feature state)
-Use to refresh code graph without blocking feature work
-```
-
-**Rule 4: Manual Context Override (Flexible)**
-```
-Can run /spek.context --force to reload context mid-feature
-Use if vault was updated externally or context feels stale
-```
-
-**Rule 5: Dry-Run Validation (No-Op)**
-```
-All commands support --dry-run: Preview changes without writing
-Use to test workflow or validate parameters before commit
-```
-
----
-
-## Integration with SpecKit
-
-**Orchestration Boundary:**
-- Spekificity CLI calls SpecKit commands but **does not modify** SpecKit behavior
-- SpecKit defines spec/plan/tasks/implement logic
-- Spekificity CLI adds: context injection, vault persistence, graph management, lesson extraction
-
-**Command Flow:**
-```
-User: spek specify --description "..."
-  ↓
-Spekificity CLI:
-  ├─ Load context from vault + repo memory + graph
-  ├─ Call /speckit.specify with (context + description)
-  ├─ Receive spec.md from SpecKit
-  ├─ Write spec.md to workspace
-  └─ Update feature state
-```
-
-**For details:** [Speckit Integration Contract](speckit-integration-contract.md)
-
----
-
-## Status Reporting
-
-**On Success:**
-```
-✓ /spek.prepare complete
-  - Workspace: /Users/.../spekificity
-  - Feature: 003-spek-full-workflow-cli
-  - Context loaded: 5 decisions, 8 patterns, 2 recent lessons, 3421 code symbols
-  - Ready for: spek specify
-```
-
-**On Error:**
-```
-✗ /spek.prepare failed
-  Error: Git working tree is dirty
-  Unstaged: src/main.py, src/utils.py
-  
-  Fix: git add . && git commit -m "checkpoint"
-  Then: spek prepare
-  
-  (Exit code: 3)
-```
-
-**On Warning (Recoverable):**
-```
-⚠ /spek.conclude warning
-  Vault not accessible (permissions): Using cached decisions (2h old)
-  
-  Tip: Check vault permissions: chmod 755 wiki/vault/
-  
-  Continuing: Feature archival with stale context
-  (Exit code: 0, proceeding)
-```
-
----
-
-## Configuration
-
-**Config file:** `.spek/config.yaml`
-
-```yaml
-workspace:
-  root: ${PWD}  # Git root of project
-  vault: wiki/vault/
-  specs: specs/
-  
-memory:
-  repo: vault/repo/
-  session: vault/session/
-  
-graph:
-  cache_dir: wiki/vault/graph/
-  refresh_interval_hours: 24
-  force_refresh_on_prepare: false
-  
-speckit:
-  timeout_seconds: 300
-  verbose: false
-  
-caveman:
-  default_mode: full
-  enabled: true
-  
-error:
-  log_file: .spek/error-log.md
-  retry_transient_errors: true
-  retry_backoff_seconds: [10, 30, 60]
-```
-
----
-
-## Testing & Validation
-
-**CLI Integration Tests:**
-
-- [ ] Test 1: Full happy path (prepare → specify → plan → tasks → implement → post)
-- [ ] Test 2: Resume within session (`prepare --skip-context`)
-- [ ] Test 3: Force graph refresh (`prepare --force-graph-refresh`)
-- [ ] Test 4: Dry-run all commands (preview changes, don't write)
-- [ ] Test 5: Invalid feature state (e.g., try `specify` without `prepare`) → Fail + guidance
-- [ ] Test 6: SpecKit timeout → Retry + eventual success
-- [ ] Test 7: Vault inaccessible → Fallback + warning
-- [ ] Test 8: Exit codes match expected values
-
-**Feature State Tests:**
-
-- [ ] Feature state created after `/spek.prepare`
-- [ ] Feature state transitions correctly (IDLE → PREPARED → ... → ARCHIVED)
-- [ ] Feature state survives session restart (when archive incomplete)
-- [ ] Feature state correctly reflects command status
-
-**Parameter Tests:**
-
-- [ ] `--feature-name` override works
-- [ ] `--dry-run` prevents file writes
-- [ ] `--verbose` enables debug logging
-- [ ] Global `--workspace` override works
-
----
-
-## Final Notes
-
-This spec defines the **CLI orchestration layer** — the user-facing command interface and workflow sequencing. Implementation details for individual commands (e.g., 7 steps of `prepare`) are in dedicated command specs.
-
-**Implementation Reference:**
-- [Prepare Command](prepare-command.md) — 7-step detail
-- [Post Command](post-command.md) — 10-step detail
-- [Speckit Integration Contract](speckit-integration-contract.md) — Integration details
-- [Error Handling and Recovery](error-handling-and-recovery.md) — Error strategy

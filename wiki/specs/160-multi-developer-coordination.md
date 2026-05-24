@@ -1,5 +1,7 @@
 # Multi-Developer & Concurrent Feature Work Strategy
 
+
+See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Date:** 2026-05-20  
 **Current Model:** Solo developer (defer full concurrency; use foundation pattern)  
 **Future Model:** Async team with merge-based conflict resolution  
@@ -8,9 +10,88 @@
 
 ---
 
+
+## Dependencies
+- Feature A: "Add logging" (merged 2026-05-21)
+  - Code dependency: Uses logging from main.py
+  - Decision dependency: Respects "Logging Decision" from Feature A
+  - Wikilink: [[feature-a-lessons]]
+```
+
+---
+
+
+## 1.2 Solo Developer Success Criteria
+
+✅ Feature isolation via git feature branches  
+✅ No vault conflicts (sequential changes, manual review before merge)  
+✅ Session memory ephemeral (archived post-feature)  
+✅ Vault grows incrementally (one feature → lesson + decisions + patterns per cycle)  
+✅ Repo memory updated post-feature (compressed summaries)
+
+---
+
+
+## 8.2 Success Criteria (Solo)
+
+✅ Feature branch naming: `spek-<feature>-<initials>`  
+✅ No vault conflicts (solo, sequential)  
+✅ Vault grows per feature (decisions + patterns + lessons)  
+✅ Sessions archived post-feature  
+✅ Main branch always stable
+
+---
+
+
+## 9.2 Team Success Criteria
+
+✅ No vault conflicts (checked pre-merge)  
+✅ All decisions annotated (new + superceded)  
+✅ Patterns deduplicated + verified  
+✅ Checkins logged (async coordination)  
+✅ Branches deleted post-merge (cleanup)  
+✅ Main always stable
+
+---
+
+
+## 13. Success Criteria
+
+✅ **Solo Developer (Current):**
+- Feature isolation via git branches
+- No vault conflicts (sequential work)
+- Sessions archived post-feature
+- Main always stable
+
+✅ **Team Developer (Future):**
+- Conflict detection via `spek check-conflicts`
+- Manual review before vault merge
+- Decisions annotated (new + superceded)
+- Patterns deduplicated + verified
+- Async coordination via checkins.md
+- Branches cleaned up post-merge
+
+✅ **Scaling (2→5+ Developers):**
+- Pair features supported (combined initials)
+- Dependent features chained via main
+- Conflict escalation to sync meetings
+- Decision records archived
+- Patterns become team knowledge base
+## 12. References
+
+- **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
+- **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
+- **Git Verification:** [specs/git-verification.md](../specs/012-git-verification.md)
+- **Spek Conclude Command:** [specs/conclude-command.md](../specs/102-conclude-command.md)
+- **Prepare Command:** [specs/prepare-command.md](../specs/100-prepare-command.md)
+
+---
+
+
 ## 1. Current State: Solo Developer Model
 
-### 1.1 Solo Workflow (No Concurrent Features)
+
+## 1.1 Solo Workflow (No Concurrent Features)
 
 **Assumption:** One developer, one feature at a time, sequential feature work.
 
@@ -42,58 +123,18 @@
 
 ---
 
-### 1.2 Solo Developer Success Criteria
-
-✅ Feature isolation via git feature branches  
-✅ No vault conflicts (sequential changes, manual review before merge)  
-✅ Session memory ephemeral (archived post-feature)  
-✅ Vault grows incrementally (one feature → lesson + decisions + patterns per cycle)  
-✅ Repo memory updated post-feature (compressed summaries)
-
----
 
 ## 2. Future State: Team Model (2+ Developers)
 
-### 2.1 Team Workflow: Feature Branches + Async Checkins
+
+## 2.1 Team Workflow: Feature Branches + Async Checkins
 
 **Assumption:** Multiple developers, potentially overlapping feature work, async coordination via git + vault.
 
 **Feature Lifecycle (Team Version):**
-```
-Feature Start (Developer A):
-1. /spek.prepare
-   ├─ Git: create feature branch (spek-<feature>-<dev-initials>)
-   ├─ Git: pull latest main (ensure fresh vault context)
-   ├─ Vault: load vault context (from main)
-   ├─ Memory: create vault/session/current-feature-a.md
-   └─ Notification: Post feature start in vault/coordination/checkins.md
 
-Feature Work (Developer A):
-2. /spek.plan → /spek.implement
-   ├─ Work on feature branch (isolated from other devs)
-   ├─ Memory: update vault/session/current-feature-a.md
-   └─ Vault: NO writes during feature (avoid conflicts)
+> Example moved to [Example: 160-multi-developer-coordination-code-2.md](./examples/160-multi-developer-coordination-code-2.md)
 
-Feature End (Developer A):
-3. /spek.conclude
-   ├─ Lessons: generate vault/lessons/<date>-<feature>-a.md (LOCAL only, not in vault yet)
-   ├─ NEW: Draft decisions/patterns additions (vault-update-draft.md, LOCAL)
-   └─ Git: commit everything to feature branch (branch contains: code + lessons + draft updates)
-
-Feature Review + Merge (Team Lead or Async):
-4a. Code review: `/spek.implement` output + code diff
-4b. Vault review: Check draft decisions/patterns for conflicts
-4c. Conflict resolution (if needed):
-   - Manual review: Compare Developer A's new decisions vs. main's recent decisions
-   - Merge strategy: Accept, reject, or modify + annotate
-4d. Merge to main:
-   - Git: squash feature branch → main
-   - Git: also merge lessons + any draft updates → vault/
-   - Vault: append new decisions/patterns (with conflict annotations if any)
-
-Feature Archive:
-5. vault/session/current-feature-a.md archived → vault/sessions/<date>-<feature>-a.md
-```
 
 **State Per Developer:**
 ```
@@ -113,11 +154,14 @@ Feature Branch (spek-<feature>-<initials>):
 
 ---
 
+
 ## 3. Vault Conflict Resolution Strategy
 
-### 3.1 Conflict Types
 
-#### 3.1.1 Type A: New Decision in Parallel (Low Risk)
+## 3.1 Conflict Types
+
+
+## 3.1.1 Type A: New Decision in Parallel (Low Risk)
 
 **Scenario:** Developer A adds decision D1 while Developer B adds D2 (unrelated topics).
 
@@ -135,7 +179,8 @@ Result: Both added to vault/decision.md (no conflict)
 
 ---
 
-#### 3.1.2 Type B: Contradicting Decisions (Medium Risk)
+
+## 3.1.2 Type B: Contradicting Decisions (Medium Risk)
 
 **Scenario:** Developer A says "Use pattern X", Developer B says "Avoid pattern X".
 
@@ -158,7 +203,8 @@ wiki/vault/decision.md:
 
 ---
 
-#### 3.1.3 Type C: Pattern Discovery Overlap (Low-Medium Risk)
+
+## 3.1.3 Type C: Pattern Discovery Overlap (Low-Medium Risk)
 
 **Scenario:** Developer A discovers "Error Handling with Fallback", Developer B also discovers same pattern independently.
 
@@ -176,7 +222,8 @@ Evidence: [link to code, link to code]
 
 ---
 
-#### 3.1.4 Type D: Vault File Format Conflict (Rare)
+
+## 3.1.4 Type D: Vault File Format Conflict (Rare)
 
 **Scenario:** Developer A adds lessons to vault/lessons/, Developer B reorganizes vault/lessons/ structure.
 
@@ -202,9 +249,11 @@ Merge Result: Apply both changes
 
 ---
 
-### 3.2 Conflict Detection & Prevention
 
-#### 3.2.1 Pre-Merge Check (Async Pipeline)
+## 3.2 Conflict Detection & Prevention
+
+
+## 3.2.1 Pre-Merge Check (Async Pipeline)
 
 **Before merging any feature branch to main:**
 
@@ -218,7 +267,8 @@ spek check-conflicts main..
 # 3. Report: no conflicts | merge-safe | manual-review-required
 ```
 
-#### 3.2.2 Conflict Check Algorithm
+
+## 3.2.2 Conflict Check Algorithm
 
 ```python
 def check_conflicts(main_branch, feature_branch):
@@ -241,53 +291,22 @@ def check_conflicts(main_branch, feature_branch):
     return "merge-safe"
 ```
 
-#### 3.2.3 Communication: Coordination Checkins
+
+## 3.2.3 Communication: Coordination Checkins
 
 **File:** `wiki/vault/coordination/checkins.md` (shared, human-readable log)
 
-```markdown
-# Team Coordination Checkins
 
-## 2026-05-20
+> Example moved to [Example: 160-multi-developer-coordination-code-1.md](./examples/160-multi-developer-coordination-code-1.md)
 
-### Feature Start: "Add Logging" (Developer A, spek-add-logging-da)
-- Scope: Core features (main.py, utils.py, config.py)
-- Estimated duration: 3-4 hours
-- Affected patterns: Error Handling, Code Organization
-- Status: IN PROGRESS
-- Link: https://github.com/...
-
-### Feature Complete: "Add Tests" (Developer B, spek-add-tests-db)
-- Scope: Test infrastructure (pytest setup)
-- New decisions: Test coverage target = 80%
-- New patterns: Mock strategy for SpecKit + lat.md
-- Code review: Pending
-- Status: AWAITING MERGE REVIEW
-- Link: https://github.com/...
-
-### Potential Conflicts Detected
-- None flagged
 
 ---
 
-## 2026-05-21
-
-### Merge Complete: "Add Tests" (Developer B)
-- Decisions merged: ✓ (test coverage 80% + mock strategy added)
-- Patterns merged: ✓ (2 patterns + evidence links added)
-- Lessons: vault/lessons/2026-05-21-add-tests-db.md
-- Status: ✓ MERGED TO MAIN
-
-### Feature In Progress: "Add Logging" (Developer A)
-- Status: Awaiting implementation
-- Code review ready: 2026-05-21 EOD expected
-```
-
----
 
 ## 4. Git Strategy: Feature Branches & Merge
 
-### 4.1 Branch Naming Convention
+
+## 4.1 Branch Naming Convention
 
 ```
 spek-<feature-name>-<developer-initials>
@@ -303,7 +322,8 @@ Examples:
 - Feature name: kebab-case, descriptive, < 30 chars
 - Example INVALID: `feature/logging` (missing initials), `add_logging` (wrong separator)
 
-### 4.2 Branch Isolation
+
+## 4.2 Branch Isolation
 
 **Goal:** Minimize merge conflicts by isolating feature work.
 
@@ -321,9 +341,11 @@ Examples:
 - Merge other features into your branch (rebase on latest main instead)
 - Force-push to main (breaks team workflow)
 
-### 4.3 Merge Workflow
 
-#### 4.3.1 Merge to Main (Decision Point)
+## 4.3 Merge Workflow
+
+
+## 4.3.1 Merge to Main (Decision Point)
 
 **Before merge, answer these questions:**
 
@@ -360,7 +382,8 @@ Examples:
    git merge spek-<feature>-<initials> -m "Feature: <Name> (conflicts resolved: ...)"
    ```
 
-#### 4.3.2 Archive Feature Branch
+
+## 4.3.2 Archive Feature Branch
 
 **After merge:**
 
@@ -375,9 +398,11 @@ git push origin --delete spek-<feature>-<initials>
 
 ---
 
+
 ## 5. Feature Plan/Spec Ownership
 
-### 5.1 Isolation: Each Feature Owns Its Artifacts
+
+## 5.1 Isolation: Each Feature Owns Its Artifacts
 
 **Principle:** Specs and plans are feature-scoped, not shared.
 
@@ -402,7 +427,8 @@ vault/
 - Each feature's work is self-contained + reviewable
 - Decisions/patterns are "stable"; specs are "working"
 
-### 5.2 No Cross-Feature Plan Sharing
+
+## 5.2 No Cross-Feature Plan Sharing
 
 **Principle:** If features overlap, don't merge plans. Document dependency instead.
 
@@ -429,20 +455,14 @@ If Developer A finishes first:
 **Dependency Notation in Specs:**
 
 ```markdown
+
 ## Feature B Specification
 
-### Dependencies
-- Feature A: "Add logging" (merged 2026-05-21)
-  - Code dependency: Uses logging from main.py
-  - Decision dependency: Respects "Logging Decision" from Feature A
-  - Wikilink: [[feature-a-lessons]]
-```
-
----
 
 ## 6. Decision Coordination: Async Checkins
 
-### 6.1 Feature Checkins Ritual
+
+## 6.1 Feature Checkins Ritual
 
 **Timing:** Feature start + feature end (2 checkins per feature)
 
@@ -451,9 +471,11 @@ If Developer A finishes first:
 **Format:**
 
 ```markdown
+
 ## [DATE]
 
-### Feature Start: "[Feature Name]" (Developer [Initials], branch: spek-...)
+
+## Feature Start: "[Feature Name]" (Developer [Initials], branch: spek-...)
 - Scope: [1-3 sentence summary]
 - Estimated duration: [X-Y hours]
 - Affected code areas: [main.py, utils.py, ...]
@@ -461,7 +483,8 @@ If Developer A finishes first:
 - Link: [GitHub link to feature branch]
 - Status: IN PROGRESS
 
-### Feature Complete: "[Feature Name]" (Developer [Initials])
+
+## Feature Complete: "[Feature Name]" (Developer [Initials])
 - Duration: [actual time]
 - New decisions: [bullet list]
 - New patterns: [bullet list]
@@ -474,7 +497,8 @@ If Developer A finishes first:
 
 If decision changes or conflict emerges mid-feature:
 ```markdown
-### Decision Change (Developer [Initials], spek-[feature]-[initials])
+
+## Decision Change (Developer [Initials], spek-[feature]-[initials])
 - Old decision: [from decision.md]
 - New decision: [updated rationale]
 - Reason: [why changed]
@@ -484,11 +508,14 @@ If decision changes or conflict emerges mid-feature:
 
 ---
 
+
 ## 7. Scaling: 2→5+ Developers
 
-### 7.1 Scaling Patterns
 
-#### 7.1.1 Pair Features (2 Devs, Same Feature)
+## 7.1 Scaling Patterns
+
+
+## 7.1.1 Pair Features (2 Devs, Same Feature)
 
 **Scenario:** Feature too large for one developer.
 
@@ -509,7 +536,8 @@ Feature "Add Comprehensive Logging"
 3. Code review within pair
 4. One PR to main (attributed to primary)
 
-#### 7.1.2 Dependent Features (Feature → Feature)
+
+## 7.1.2 Dependent Features (Feature → Feature)
 
 **Scenario:** Feature B depends on Feature A code.
 
@@ -525,7 +553,8 @@ Dependency Doc:
 Feature B spec: "Depends on Feature A: Add Logging (merged 2026-05-20)"
 ```
 
-#### 7.1.3 Conflict Escalation (3+ Conflicts)
+
+## 7.1.3 Conflict Escalation (3+ Conflicts)
 
 **Scenario:** Multiple decisions contradict or 3+ devs contributing simultaneously.
 
@@ -539,10 +568,12 @@ date: 2026-05-22
 attendees: [Developer A, B, C]
 ---
 
+
 ## Conflicts Discussed
 1. Logging approach (A vs B) → Decision: Use approach A, annotate B's reasoning
 2. Test coverage target (75% vs 80%) → Decision: 80%, defer lower later
 3. Pattern conflict (Builder vs Factory) → Decision: Use Builder for config only
+
 
 ## Outcomes
 - Decisions updated: 3 records
@@ -552,9 +583,11 @@ attendees: [Developer A, B, C]
 
 ---
 
+
 ## 8. Solo Developer (Current): Quick Reference
 
-### 8.1 Workflow: 4 Steps
+
+## 8.1 Workflow: 4 Steps
 
 ```
 1. /spek.prepare
@@ -576,19 +609,11 @@ attendees: [Developer A, B, C]
    → Merge feature branch
 ```
 
-### 8.2 Success Criteria (Solo)
-
-✅ Feature branch naming: `spek-<feature>-<initials>`  
-✅ No vault conflicts (solo, sequential)  
-✅ Vault grows per feature (decisions + patterns + lessons)  
-✅ Sessions archived post-feature  
-✅ Main branch always stable
-
----
 
 ## 9. Team Coordination (Future): Quick Reference
 
-### 9.1 Conflict Resolution Flow
+
+## 9.1 Conflict Resolution Flow
 
 ```
 Feature branch created
@@ -610,20 +635,11 @@ Merged to main + vault updated
 vault/session/ → vault/sessions/
 ```
 
-### 9.2 Team Success Criteria
-
-✅ No vault conflicts (checked pre-merge)  
-✅ All decisions annotated (new + superceded)  
-✅ Patterns deduplicated + verified  
-✅ Checkins logged (async coordination)  
-✅ Branches deleted post-merge (cleanup)  
-✅ Main always stable
-
----
 
 ## 10. Troubleshooting
 
-### 10.1 "Two Devs Changed Same Decision"
+
+## 10.1 "Two Devs Changed Same Decision"
 
 **Symptom:** vault/decision.md merge conflict (text lines overlap).
 
@@ -637,7 +653,8 @@ vault/session/ → vault/sessions/
    - Merge (no annotation needed)
 4. Commit: Document decision in checkins.md
 
-### 10.2 "Feature Branch Behind Main (Merge Churn)"
+
+## 10.2 "Feature Branch Behind Main (Merge Churn)"
 
 **Symptom:** Feature branch is 10+ commits behind main; risky merge.
 
@@ -654,7 +671,8 @@ vault/session/ → vault/sessions/
    git push -f origin spek-<feature>-<initials>
    ```
 
-### 10.3 "Vault Conflict Not Detected by spek check-conflicts"
+
+## 10.3 "Vault Conflict Not Detected by spek check-conflicts"
 
 **Symptom:** Merge tool missed a conflict; discovered post-merge.
 
@@ -669,9 +687,11 @@ vault/session/ → vault/sessions/
 
 ---
 
+
 ## 11. Integration with Spekificity Commands
 
-### 11.1 Updated `/spek.prepare` (Team Mode)
+
+## 11.1 Updated `/spek.prepare` (Team Mode)
 
 ```
 Step 1: Git state verification + feature branch creation
@@ -688,7 +708,8 @@ Step 8: Notify (NEW)
     → Post to vault/coordination/checkins.md "Feature Start: ..."
 ```
 
-### 11.2 Updated `/spek.conclude` (Team Mode)
+
+## 11.2 Updated `/spek.conclude` (Team Mode)
 
 ```
 Step 1-3: [same as before]
@@ -706,7 +727,8 @@ Step 9: Archive + Notify (NEW)
   → Create git PR (if team mode) or direct merge (if solo)
 ```
 
-### 11.3 New Command: `/spek check-conflicts`
+
+## 11.3 New Command: `/spek check-conflicts`
 
 ```bash
 spek check-conflicts [main_branch] [feature_branch]
@@ -725,35 +747,3 @@ Exit codes:
 
 ---
 
-## 12. References
-
-- **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
-- **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
-- **Git Verification:** [specs/git-verification.md](../specs/012-git-verification.md)
-- **Spek Conclude Command:** [specs/conclude-command.md](../specs/102-conclude-command.md)
-- **Prepare Command:** [specs/prepare-command.md](../specs/100-prepare-command.md)
-
----
-
-## 13. Success Criteria
-
-✅ **Solo Developer (Current):**
-- Feature isolation via git branches
-- No vault conflicts (sequential work)
-- Sessions archived post-feature
-- Main always stable
-
-✅ **Team Developer (Future):**
-- Conflict detection via `spek check-conflicts`
-- Manual review before vault merge
-- Decisions annotated (new + superceded)
-- Patterns deduplicated + verified
-- Async coordination via checkins.md
-- Branches cleaned up post-merge
-
-✅ **Scaling (2→5+ Developers):**
-- Pair features supported (combined initials)
-- Dependent features chained via main
-- Conflict escalation to sync meetings
-- Decision records archived
-- Patterns become team knowledge base

@@ -1,9 +1,12 @@
 # ATOMIC SPECIFICATION: /spek.map Command (C5.3)
 
+
+See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Depends On:** 050-latmd-setup-and-integration.md, graph-storage-structure.md
 **Used By:** /spek.prepare (Step 4), /spek.conclude (Step 8)  
 
 ---
+
 
 ## Overview
 
@@ -11,9 +14,43 @@
 
 ---
 
+
+## Success Criteria
+
+- ✅ Code pass queries lat.md for all symbols (or recent changes)
+- ✅ Doc pass exports Obsidian nodes
+- ✅ Merge combines into unified graph
+- ✅ lat.md optional file-watching enables near-real-time updates
+- ✅ Validation checks schema compliance
+- ✅ Graph is queryable (nodes.jsonl, edges.jsonl)
+- ✅ Query mode can answer "what calls this symbol?" via lat.md
+- ## Implementation Checklist
+- [ ] Implement Phase 1 (setup + lat.md availability check)
+- [ ] Implement Phase 2 (code pass via lat.md MCP queries)
+- [ ] Implement Phase 3 (doc pass via Obsidian export)
+- [ ] Implement Phase 4 (merge + deduplication)
+- [ ] Implement Phase 5 (validation)
+- [ ] Implement Phase 6 (finalize + report)
+- [ ] Add --full, --query modes
+- [ ] Add error handling + recovery
+- [ ] Add lat.md timeout handling (graceful fallback)
+- ## References
+- **Related Specs:**
+- [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) — lat.md MCP setup + tool contract
+- [graph-storage-structure.md](051-graph-storage-structure.md) — Output formats
+- [graph-refresh-strategy.md](053-graph-refresh-strategy.md) — Refresh strategy (lat.md auto-watches; /spek.map syncs on demand)
+- [graph-merge-integration.md](057-graph-merge-integration.md) — Merge logic
+- **lat.md MCP Tool Contract:**
+- `lat_symbols(file: str | None)` — Query all symbols (all if file=None, else filter by file)
+- `lat_references(symbol: str)` — Get all references to symbol
+- `lat_impact(symbol: str)` — Get transitive impact (affected symbols)
+- `lat_definition(symbol: str)` — Get symbol definition details
+
+
 ## Modes
 
-### Mode 1: Full Refresh
+
+## Mode 1: Full Refresh
 
 ```bash
 /spek.map --full
@@ -30,7 +67,8 @@
 
 **When to use:** After major refactoring, or to refresh cached snapshot
 
-### Mode 2: Incremental Sync (Default)
+
+## Mode 2: Incremental Sync (Default)
 
 ```bash
 /spek.map
@@ -46,7 +84,8 @@
 
 **When to use:** Normal workflow (after /spek.prepare, end of feature)
 
-### Mode 3: Query-Only (No Sync)
+
+## Mode 3: Query-Only (No Sync)
 
 ```bash
 /spek.map --query [symbol|file]
@@ -61,6 +100,7 @@
 **When to use:** During implementation when you need to explore code structure without updating graph
 
 ---
+
 
 ## Command Sequence
 
@@ -97,6 +137,7 @@
 
 ---
 
+
 ## Output
 
 **Files Created/Updated:**
@@ -119,42 +160,3 @@
 
 ---
 
-## Success Criteria
-
-✅ Code pass queries lat.md for all symbols (or recent changes)  
-✅ Doc pass exports Obsidian nodes  
-✅ Merge combines into unified graph  
-✅ lat.md optional file-watching enables near-real-time updates  
-✅ Validation checks schema compliance  
-✅ Graph is queryable (nodes.jsonl, edges.jsonl)  
-✅ Query mode can answer "what calls this symbol?" via lat.md
-
----
-
-## Implementation Checklist
-
-- [ ] Implement Phase 1 (setup + lat.md availability check)
-- [ ] Implement Phase 2 (code pass via lat.md MCP queries)
-- [ ] Implement Phase 3 (doc pass via Obsidian export)
-- [ ] Implement Phase 4 (merge + deduplication)
-- [ ] Implement Phase 5 (validation)
-- [ ] Implement Phase 6 (finalize + report)
-- [ ] Add --full, --query modes
-- [ ] Add error handling + recovery
-- [ ] Add lat.md timeout handling (graceful fallback)
-
----
-
-## References
-
-**Related Specs:**
-- [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) — lat.md MCP setup + tool contract
-- [graph-storage-structure.md](graph-storage-structure.md) — Output formats
-- [graph-refresh-strategy.md](graph-refresh-strategy.md) — Refresh strategy (lat.md auto-watches; /spek.map syncs on demand)
-- [graph-merge-integration.md](graph-merge-integration.md) — Merge logic
-
-**lat.md MCP Tool Contract:**
-- `lat_symbols(file: str | None)` — Query all symbols (all if file=None, else filter by file)
-- `lat_references(symbol: str)` — Get all references to symbol
-- `lat_impact(symbol: str)` — Get transitive impact (affected symbols)
-- `lat_definition(symbol: str)` — Get symbol definition details

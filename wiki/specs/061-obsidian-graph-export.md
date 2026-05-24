@@ -1,11 +1,14 @@
 # Spec: Obsidian Graph Export Protocol
 
+
+See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Concern:** How to extract documentation nodes from Obsidian vault for graph indexing  
 **Extracted from:** extracted spec Question 2  
 **Depends on:** node-schema-design  
 **Used by:** /spek.map, extracted spec graph merge step  
 
 ---
+
 
 ## Overview
 
@@ -17,9 +20,34 @@
 
 ---
 
+
+## Success Criteria
+
+- [x] Export method chosen and documented (cache.json recommended)
+- [x] Conversion script converts cache.json → nodes-docs.jsonl format
+- [x] Heading-to-ID conversion handles special characters
+- [x] Link discovery extracts all markdown link types
+- [x] Backreferences computed and stored
+- [x] Configuration templated for different export methods
+- [x] Integration with `/spek.map` Step 2 documented
+- ## Implementation Checklist
+- [ ] Create `obsidian-export.py` script in `.spek/bin/`
+- [ ] Test export on real vault (validate cache.json parsing)
+- [ ] Verify nodes-docs.jsonl format matches schema (node-schema-design)
+- [ ] Add config template to `vault/graph/config.json`
+- [ ] Document export troubleshooting in guide
+- [ ] Test link discovery (verify backreferences computed correctly)
+- ## References
+- **Obsidian cache format:** [Obsidian Plugin Development Docs](https://docs.obsidian.md/Reference/TypeScript+API/CachedMetadata)
+- **Cache monitoring:** Watch `.obsidian/cache.json` for real-time vault changes
+- **Dataview plugin:** [Obsidian Dataview](https://github.com/blacksmithgu/obsidian-dataview)
+- **Related specs:** node-schema-design, spek-map-command
+
+
 ## Obsidian Export Methods (Priority Order)
 
-### Method 1: Dataview Plugin Export (Recommended)
+
+## Method 1: Dataview Plugin Export (Recommended)
 
 **What it is:**
 - Obsidian's Dataview plugin can export query results to structured format
@@ -57,7 +85,8 @@ FROM ""
 
 ---
 
-### Method 2: Obsidian Native Cache (cache.json)
+
+## Method 2: Obsidian Native Cache (cache.json)
 
 **What it is:**
 - Obsidian stores metadata in `.obsidian/cache.json` 
@@ -111,7 +140,8 @@ FROM ""
 
 ---
 
-### Obsidian CLI (Recommended)
+
+## Obsidian CLI (Recommended)
 
 **What it is:**
 - The Obsidian CLI is the `obsidian` command bundled with the Obsidian desktop app. It provides programmatic access to a running Obsidian instance and can be used to script exports, run JS in-app, and invoke plugin commands when the app is running.
@@ -144,9 +174,11 @@ obsidian eval code="JSON.stringify(app.vault.getFiles().map(f=>f.path))"
 
 ---
 
+
 ## Export to JSONL Conversion
 
-### Input: Obsidian cache.json
+
+## Input: Obsidian cache.json
 
 ```json
 {
@@ -166,101 +198,28 @@ obsidian eval code="JSON.stringify(app.vault.getFiles().map(f=>f.path))"
 }
 ```
 
-### Output: nodes-docs.jsonl (one line per heading)
+
+## Output: nodes-docs.jsonl (one line per heading)
 
 ```jsonl
 {"type":"doc","id":"vault/decision.md#api-versioning-strategy","file":"vault/decision.md","heading":"API Versioning Strategy","level":2,"docType":"decision","tags":["api","versioning"],"status":"active","description":"Rationale for versioning strategy...","references":[],"referencedBy":[]}
 {"type":"doc","id":"vault/decision.md","file":"vault/decision.md","title":"Decision Index","level":"file","docType":"decision","tags":["decision"],"status":"active","description":"Index of all architectural decisions","references":[],"referencedBy":[]}
 ```
 
-### Conversion Process
 
-```bash
-# Python script: obsidian-export.py
-import json
-import re
-from pathlib import Path
+## Conversion Process
 
-def convert_heading_to_id(heading_text):
-    """Convert 'API Versioning Strategy' → 'api-versioning-strategy'"""
-    return heading_text.lower().replace(" ", "-").replace("--", "-")
 
-def parse_obsidian_cache(cache_file):
-    """Read cache.json and yield doc nodes"""
-    
-    with open(cache_file, 'r') as f:
-        cache = json.load(f)
-    
-    for file_path, file_data in cache['files'].items():
-        # Skip non-markdown files
-        if not file_path.endswith('.md'):
-            continue
-        
-        # Extract file-level metadata
-        fm = file_data.get('frontmatter', {})
-        doc_type = fm.get('type', 'guide')
-        status = fm.get('status', 'active')
-        tags = fm.get('tags', [])
-        
-        # Skip files outside documentation paths
-        doc_paths = ['vault/decision.md', 'vault/intention.md', 'vault/patterns.md', 
-                     'vault/lessons/', 'specs/', 'wiki/', '.github/agents/skills/']
-        if not any(file_path.startswith(p) for p in doc_paths):
-            continue
-        
-        # Create file-level node
-        yield {
-            "type": "doc",
-            "id": file_path,
-            "file": file_path,
-            "level": "file",
-            "title": fm.get('title') or Path(file_path).stem.replace('-', ' ').title(),
-            "docType": doc_type,
-            "status": status,
-            "tags": tags,
-            "description": fm.get('description', ''),
-            "references": [],
-            "referencedBy": []
-        }
-        
-        # Create heading-level nodes (only for content-heavy files)
-        if file_path in ['vault/decision.md', 'vault/patterns.md', 'specs/', 'wiki/']:
-            for heading in file_data.get('headings', []):
-                heading_text = heading['heading']
-                heading_id = convert_heading_to_id(heading_text)
-                node_id = f"{file_path}#{heading_id}"
-                
-                yield {
-                    "type": "doc",
-                    "id": node_id,
-                    "file": file_path,
-                    "heading": heading_text,
-                    "level": heading['level'],
-                    "docType": doc_type,
-                    "status": status,
-                    "tags": tags,
-                    "description": f"See {file_path}#{heading_id}",  # placeholder
-                    "references": [],
-                    "referencedBy": [],
-                    "parent": file_path
-                }
+> Example moved to [Example: 061-obsidian-graph-export-code-1.md](./examples/061-obsidian-graph-export-code-1.md)
 
-# Usage
-cache_file = ".obsidian/cache.json"
-output_file = "vault/graph/nodes-docs.jsonl"
-
-with open(output_file, 'w') as out:
-    for node in parse_obsidian_cache(cache_file):
-        out.write(json.dumps(node) + '\n')
-
-print(f"Exported {output_file}")
-```
 
 ---
 
+
 ## Link Discovery & Reference Extraction
 
-### Markdown Link Parsing
+
+## Markdown Link Parsing
 
 **Pattern:** `[text](vault/decision.md#api-versioning)`
 
@@ -275,7 +234,8 @@ grep -o '\[[^\]]*\]([^)]*)\|{{\s*\[\[' vault/decision.md | sed 's/^.*\[\[\|.*\[\
 3. `[[vault/decision.md]]` — Obsidian wiki-link syntax (also in cache.json)
 4. `![[image.png]]` — embedded links (skip images)
 
-### Reference Computation
+
+## Reference Computation
 
 After exporting all nodes, compute backreferences:
 
@@ -287,6 +247,7 @@ for each node_id in nodes-docs.jsonl:
 ```
 
 ---
+
 
 ## Configuration (vault/graph/config.json)
 
@@ -321,9 +282,11 @@ for each node_id in nodes-docs.jsonl:
 
 ---
 
+
 ## Integration with /spek.map
 
-### In `/spek.map` Workflow
+
+## In `/spek.map` Workflow
 
 **Step 2 (export doc nodes):**
 ```bash
@@ -347,32 +310,3 @@ obsidian-dataview-export \
 
 ---
 
-## Success Criteria
-
-- [x] Export method chosen and documented (cache.json recommended)
-- [x] Conversion script converts cache.json → nodes-docs.jsonl format
-- [x] Heading-to-ID conversion handles special characters
-- [x] Link discovery extracts all markdown link types
-- [x] Backreferences computed and stored
-- [x] Configuration templated for different export methods
-- [x] Integration with `/spek.map` Step 2 documented
-
----
-
-## Implementation Checklist
-
-- [ ] Create `obsidian-export.py` script in `.spek/bin/`
-- [ ] Test export on real vault (validate cache.json parsing)
-- [ ] Verify nodes-docs.jsonl format matches schema (node-schema-design)
-- [ ] Add config template to `vault/graph/config.json`
-- [ ] Document export troubleshooting in guide
-- [ ] Test link discovery (verify backreferences computed correctly)
-
----
-
-## References
-
-- **Obsidian cache format:** [Obsidian Plugin Development Docs](https://docs.obsidian.md/Reference/TypeScript+API/CachedMetadata)
-- **Cache monitoring:** Watch `.obsidian/cache.json` for real-time vault changes
-- **Dataview plugin:** [Obsidian Dataview](https://github.com/blacksmithgu/obsidian-dataview)
-- **Related specs:** node-schema-design, spek-map-command

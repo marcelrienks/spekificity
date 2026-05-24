@@ -1,14 +1,18 @@
 # ATOMIC SPECIFICATION: Conclude-Processing (C3.6)
 
+
+See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Depends On:** lessons-format.md, architectural-decisions.md, patterns-library.md  
 
 ---
+
 
 ## Overview
 
 `/spek.conclude` extracts lessons from completed feature work, updates vault with decisions and patterns, syncs repo memory, and archives session state.
 
 ---
+
 
 ## Scope & Relationship
 
@@ -19,14 +23,61 @@
 - **INTEGRATION** — Detailed integration points (vault file formats, repo memory structure, graph refresh)
 
 **Related specs define orchestration and high-level design:**
-- [Conclude Command](conclude-command.md) orchestrates the workflow and defines the 10-step sequence
-- [Conclude Processing](conclude-processing.md) (THIS SPEC) provides implementation details for each step
+- [Conclude Command](102-conclude-command.md) orchestrates the workflow and defines the 10-step sequence
+- [Conclude Processing](101-conclude-processing.md) (THIS SPEC) provides implementation details for each step
 
 **Use together:**
 - For *overall workflow sequence, integration points*: Start with conclude-command.md
 - For *implementation details, error recovery, validation*: Consult this spec (conclude-processing.md)
 
 ---
+
+
+## Success Criteria
+
+- ✅ All 10 steps complete in <30 seconds (fast execution)
+- ✅ Lessons extracted + compressed (caveman mode applied)
+- ✅ Vault updated (decisions + patterns appended correctly)
+- ✅ Repo memory synced (compressed cache updated)
+- ✅ Code graph refreshed (incremental sync completes)
+- ✅ Session state archived (ephemeral memory cleaned up)
+- ✅ User informed of all changes (completion report clear + actionable)
+- ## Error Handling
+- **If any step fails:**
+- Log error
+- Continue to next step (don't fail midway)
+- Report which steps succeeded/failed
+- **Fallback:**
+- If vault write fails → Archive to temp location + suggest manual move
+- If lessons generation fails → Report error, offer retry
+- If graph sync fails → Report warning, use last-known state
+- ## Success Criteria
+- ✅ Lessons extracted and written to vault
+- ✅ Decisions de-duplicated and appended
+- ✅ Patterns updated with frequency
+- ✅ Repo memory synced (recent decisions + patterns)
+- ✅ Code graph refreshed (incremental)
+- ✅ Session state archived
+- ✅ Completion reported to user
+- ## Implementation Checklist
+- [ ] Collect feature artifacts
+- [ ] Generate lessons using lessons-format
+- [ ] Extract + append decisions to vault/decision.md
+- [ ] Update patterns in vault/patterns.md
+- [ ] Sync to vault/repo/ (decisions + patterns)
+- [ ] Call /spek.map (incremental sync)
+- [ ] Archive vault/session/
+- [ ] Report completion
+- ## References
+- **Related Specs:**
+- [lessons-format.md](021-lessons-format.md) — Lessons template
+- [architectural-decisions.md](022-architectural-decisions.md) — Decisions structure
+- [patterns-library.md](023-patterns-library.md) — Patterns structure
+- [conclude-command.md](102-conclude-command.md) — Full /spek.conclude spec
+- [spek-map-command.md](103-spek-map-command.md) — Code graph refresh
+- **External:**
+- [extracted spec Layer 3](110-speckit-integration-contract.md#layer-3-conclude-processing-layer-spekconclude)
+
 
 ## Execution Sequence
 
@@ -61,13 +112,16 @@
 
 ---
 
+
 ## Step Details
 
-### Steps 1-3: Collect + Generate Lessons
 
-See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-command.md) for detailed specs.
+## Steps 1-3: Collect + Generate Lessons
 
-### Step 4: Update Vault
+See [lessons-format.md](021-lessons-format.md) and [conclude-command.md](102-conclude-command.md) for detailed specs.
+
+
+## Step 4: Update Vault
 
 **Decision Update:**
 1. Extract decisions from lessons
@@ -81,7 +135,8 @@ See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-co
 3. If new: Add with "First Used" = current feature
 4. If existing: Update "Last Used" + increment frequency
 
-### Step 5: Sync Repo Memory
+
+## Step 5: Sync Repo Memory
 
 **Decisions Sync:**
 1. Read vault/decision.md (all active decisions)
@@ -102,7 +157,8 @@ See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-co
 3. Update vault/repo/codebase-map.md
 4. Mark changes + timestamp
 
-### Step 6: Refresh Code Graph
+
+## Step 6: Refresh Code Graph
 
 **Process:**
 - Call `/spek.map` (incremental mode)
@@ -112,14 +168,16 @@ See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-co
 
 **Benefit:** Graph stays fresh without full rebuild
 
-### Step 7: Archive Session Memory
+
+## Step 7: Archive Session Memory
 
 **Archive vault/session/:**
 1. Copy to vault/session/archive/<date>-<feature>.md (for reference)
 2. Delete from vault/session/ (ephemeral cleanup)
 3. Note: vault/lessons/ contains permanent record
 
-### Step 8: Report Completion
+
+## Step 8: Report Completion
 
 **Report:**
 ```
@@ -134,65 +192,3 @@ See [lessons-format.md](lessons-format.md) and [conclude-command.md](conclude-co
 
 ---
 
-## Success Criteria
-
-- ✅ All 10 steps complete in <30 seconds (fast execution)
-- ✅ Lessons extracted + compressed (caveman mode applied)
-- ✅ Vault updated (decisions + patterns appended correctly)
-- ✅ Repo memory synced (compressed cache updated)
-- ✅ Code graph refreshed (incremental sync completes)
-- ✅ Session state archived (ephemeral memory cleaned up)
-- ✅ User informed of all changes (completion report clear + actionable)
-
----
-
-## Error Handling
-
-**If any step fails:**
-- Log error
-- Continue to next step (don't fail midway)
-- Report which steps succeeded/failed
-
-**Fallback:**
-- If vault write fails → Archive to temp location + suggest manual move
-- If lessons generation fails → Report error, offer retry
-- If graph sync fails → Report warning, use last-known state
-
----
-
-## Success Criteria
-
-✅ Lessons extracted and written to vault  
-✅ Decisions de-duplicated and appended  
-✅ Patterns updated with frequency  
-✅ Repo memory synced (recent decisions + patterns)  
-✅ Code graph refreshed (incremental)  
-✅ Session state archived  
-✅ Completion reported to user  
-
----
-
-## Implementation Checklist
-
-- [ ] Collect feature artifacts
-- [ ] Generate lessons using lessons-format
-- [ ] Extract + append decisions to vault/decision.md
-- [ ] Update patterns in vault/patterns.md
-- [ ] Sync to vault/repo/ (decisions + patterns)
-- [ ] Call /spek.map (incremental sync)
-- [ ] Archive vault/session/
-- [ ] Report completion
-
----
-
-## References
-
-**Related Specs:**
-- [lessons-format.md](lessons-format.md) — Lessons template
-- [architectural-decisions.md](architectural-decisions.md) — Decisions structure
-- [patterns-library.md](patterns-library.md) — Patterns structure
-- [conclude-command.md](conclude-command.md) — Full /spek.conclude spec
-- [spek-map-command.md](spek-map-command.md) — Code graph refresh
-
-**External:**
-- [extracted spec Layer 3](speckit-integration-contract.md#layer-3-conclude-processing-layer-spekconclude)
