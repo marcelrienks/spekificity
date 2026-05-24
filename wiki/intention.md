@@ -12,7 +12,7 @@ Spekificity is a **specification-driven agent development framework** designed t
 
 **Core Problem:** AI agents often produce code without clear, durable specifications. Knowledge gets lost between sessions. Context is rebuilt from scratch. Token budgets explode.
 
-**Core Solution:** Keep specifications in a persistent Obsidian vault, tie code analysis to lat.md, route work through a deterministic SpecKit pipeline, and expose all workflows as repeatable agent skills (`/spek.*` commands).
+**Core Solution:** Install Spekificity globally (`uv tool install ...`), run `spek init` per project to scaffold `.spek` skills/functions, then execute a deterministic SpecKit pipeline enriched by Obsidian + lat.md + caveman.
 
 **Outcome:** Teams can build features faster, audit decisions, extract lessons, and reuse context across sessions without token waste or knowledge loss.
 
@@ -162,7 +162,7 @@ Consistent naming makes the system intuitive:
 
 4. **AI Model Selection:** Spekificity doesn't recommend models. Users choose their own (OpenAI, Anthropic, etc.). Skills are model-agnostic.
 
-5. **Project Initialization:** Spekificity assumes an existing codebase and Obsidian vault. It's not a project generator or template system.
+5. **Custom Project Generation:** Spekificity is not a full application/framework generator; `spek init` only bootstraps integration assets (`.spek`, tool wiring, and setup logic) for an existing project directory.
 
 6. **Execution Guarantees:** Spekificity provides structure, not guarantees. Agents can still fail, hallucinate, or produce incorrect code. Specs reduce risk; they don't eliminate it.
 

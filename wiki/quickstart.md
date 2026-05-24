@@ -1,5 +1,7 @@
 # Spekificity Quick Start Guide
 
+> **Execution model note:** In this guide, `/spek.*` examples refer to skills generated in `.spek/` by `spek init` and run by an agent runtime.
+
 > 
 > **Skill Level:** Beginner  
 > **Outcome:** Complete your first feature using the Spekificity workflow
@@ -8,13 +10,12 @@
 
 ## Welcome!
 
-This guide walks you through building a **complete feature** using Spekificity's 4-stage workflow (Prepare → Specify & Plan → Implement → Close). By the end, you'll understand:
+This guide walks you through the intended Spekificity bootstrap model: global CLI install + `spek init` scaffold + agent-run skills. By the end, you'll understand:
 
-- How to prepare your workspace
-- How to write specs that agents can understand
-- How to plan implementation without guessing
-- How to execute with full context
-- How to capture lessons learned
+- How global installation works
+- How `spek init` scaffolds `.spek` in a target directory
+- How Spekificity wraps SpecKit/Obsidian/lat.md/Caveman into one linked workflow
+- How to run generated skills through your agent
 
 
 **One-Stop Setup:**
@@ -32,41 +33,41 @@ See [install.md](install.md) for details.
 
 ---
 
-## Prepare Your Workspace
+## Initialize Your Project
 
 ### Purpose
 
-Validate that your workspace is ready: git is clean, vault is current, code analysis tools are fresh, and session context is loaded.
+Create the full Spekificity runtime in a project directory, including generated `.spek` skills and dependent tool setup.
 
-### Step 1a: Quick Verification
+### Step 1a: Global Installation
 
 Use this quick checklist (detailed verification in [setup.md](setup.md)):
 
 ```bash
-python3 --version   # 3.11 or higher
-git status          # Working tree clean; on main or feature branch (create feature branch for new features)
-specify --version   # Global SpecKit installed
+python3 --version
+uv --version
+uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
 ```
 
-### Step 1b: Run /spek.prepare
+### Step 1b: Run spek init
 
 ```bash
-/spek.prepare
+spek init /path/to/target-project
 ```
 
-This command:
-1. ✅ Checks git working tree (should be clean; feature branch recommended for new work)
-2. ✅ Pulls latest vault updates (from Obsidian sync)
-3. ✅ Refreshes lat.md index from current code
-4. ✅ Loads session memory (decisions, patterns, lessons)
+This command is expected to:
+1. ✅ Scaffold `.spek/` skills, functions, and orchestration assets in the target directory
+2. ✅ Install/verify dependencies (`specify`, `obsidian` CLI, `lat.md`, caveman)
+3. ✅ Run `specify init` under the covers
+4. ✅ Link tools so SpecKit workflow uses Obsidian memory + lat.md context + caveman compression
 
-**Expected Output:**
+**Expected Output (high-level):**
 ```
-✓ Git working tree clean
-✓ Vault synced (updated from origin)
-✓ lat.md index refreshed
-✓ Session context loaded
-READY: Workspace prepared for feature development
+✓ Spekificity installed globally
+✓ Dependencies available (or installed)
+✓ specify init completed in target directory
+✓ .spek scaffold generated (skills + functions)
+READY: Agent can execute generated /spek.* skills
 ```
 
 **Troubleshooting:**

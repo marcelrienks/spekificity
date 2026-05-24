@@ -16,6 +16,12 @@ This contract defines how **spekificity** enriches the canonical **SpecKit** wor
 2. **Workflow Orchestration Layer** — Use `/spek.plan` to orchestrate specify/clarify/plan/analyze/remediate/tasks, then `/spek.implement` for execution
 3. **Conclusion Layer** — Extract lessons and update vault after feature end (`/spek.conclude`)
 
+Initialization model:
+- Spekificity is installed globally via `uv tool install ... --from git+...`
+- `spek init <target-dir>` scaffolds `.spek` skills/functions in the target directory
+- `spek init` executes `specify init` under the covers
+- Generated `/spek.*` skills are the intended runtime interface; direct CLI phase execution is secondary
+
 The contract clarifies:
 - **Who owns what** (speckit vs. spekificity responsibilities)
 - **Integration pattern** (workflow orchestration plus targeted execution wrapper)

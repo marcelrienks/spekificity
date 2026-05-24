@@ -6,8 +6,16 @@
 
 ## Quick Reference
 
+## Runtime Model
+
+- `spek` CLI is primarily for installation/bootstrap (`spek init`) and diagnostics.
+- `spek init` scaffolds `.spek/` skills/functions in a target directory.
+- Generated `/spek.*` skills are the primary runtime interface for agents.
+- Underlying tools (`specify`, `obsidian` CLI, `lat.md`, caveman) remain directly usable.
+
 **Command Prefixes:**
-- `spek.*` — Spekificity user-facing commands (prepare, specify, plan, implement, post, lessons)
+- `spek` — setup/bootstrap CLI (`init` + diagnostics)
+- `/spek.*` — generated skill commands under `.spek/` (agent execution surface)
 - `speckit.*` — SpecKit wrapped commands (constitution, specify, clarify, plan, tasks, analyze)
 - `context.*` — Context loading and injection (load, inject)
  - `lat.*` — Indexing queries (lat.md: query, sync)

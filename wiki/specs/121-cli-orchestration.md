@@ -9,7 +9,7 @@
 
 ## Overview
 
-The CLI is the user-facing entry point to Spekificity. `spek plan` is the primary orchestration command for pre-implementation flow, `spek implement` is the primary execution command after review, and support commands such as `spek prepare`, `spek context`, `spek map`, `spek conclude`, and `spek lessons` remain user-facing while also being callable internally when needed.
+The CLI is the user-facing installation/bootstrap entry point. `spek init` is the primary command: it prepares a target directory by scaffolding `.spek` skills/functions, installing/verifying dependencies, and running `specify init` under the covers. Runtime feature execution is intended to happen through generated `/spek.*` skills in `.spek`, not direct phase-by-phase CLI invocation.
 
 - Workflow sequencing (required order of operations)
 - Flag/parameter handling
@@ -22,13 +22,12 @@ The CLI is the user-facing entry point to Spekificity. `spek plan` is the primar
 
 ## Success Criteria
 
-- ✅ All CLI commands execute without crashing (robust error handling)
-- ✅ Feature state tracked correctly (phase transitions accurate)
-- ✅ Workflow sequencing enforced (can't skip required steps)
-- ✅ Parameters validated (clear errors for invalid flags/args)
-- ✅ Exit codes correct (0=success, 1=error, 2=validation, 3=user-action)
-- ✅ Help + version work (`--help`, `--version` flags)
-- ✅ Integration seamless (users think in workflow, not technical layers)
+- ✅ `spek init` bootstraps `.spek` runtime assets in target directory
+- ✅ Dependencies are installed/verified (`specify`, `obsidian` CLI, `lat.md`, caveman)
+- ✅ `specify init` runs successfully during initialization
+- ✅ Generated skills/functions are executable by agent runtime
+- ✅ CLI remains stable for setup/diagnostics (`--help`, `--version`)
+- ✅ Underlying tools remain directly accessible for power users
 - Support in-place remediation loop when findings require changes
 - Call `/speckit.tasks`
 - Update feature state (`current-feature.md`)
