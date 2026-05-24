@@ -118,7 +118,7 @@ Permanent archive of all architectural decisions; source of truth for understand
 - Prune older decisions to keep file size <10KB
 - ## Integration with Other Systems
 - ### Lessons Format (lessons-format.md)
-- Decisions made during a feature are extracted in the "Decisions Made" section of wiki/vault/lessons/ files. The post-processing phase (post-command.md) converts these to formal decision entries.
+- Decisions made during a feature are extracted in the "Decisions Made" section of wiki/vault/lessons/ files. The post-processing phase (101-conclude-processing.md) converts these to formal decision entries.
 - ### Context Loading (memory-architecture.md)
 - Decision context is loaded at session start via `/spek.context`, compressed, and added to vault/session/ for agent awareness.
 - ### SpecKit Integration (enrichment-layer.md)
@@ -143,7 +143,7 @@ Permanent archive of all architectural decisions; source of truth for understand
 - [lessons-format.md](021-lessons-format.md) — Decisions captured here first
 - [memory-architecture.md](030-memory-architecture.md) — Decisions loaded at session start
 - [enrichment-layer.md](032-enrichment-layer.md) — Decisions injected into spec/plan/implement phases
-- [post-command.md](post-command.md) — Decisions synced to vault here
+- [102-conclude-command.md](102-conclude-command.md) — Decisions synced to vault here
 - **External:**
 - [extracted spec Memory Architecture](030-memory-architecture.md) — Original spec
 

@@ -289,8 +289,8 @@ Context injection pattern (spec-002). Pre/core/post validation. Total effort rec
 
 - **Primary:** [caveman-integration.md](../specs/caveman-integration.md)
 - **Integration points:**
-  - [post-command.md](../specs/post-command.md) (Step 2)
-  - [post-processing.md](../specs/post-processing.md)
+   - [102-conclude-command.md](../specs/102-conclude-command.md) (Step 2)
+   - [101-conclude-processing.md](../specs/101-conclude-processing.md)
   - [lessons-format.md](../specs/lessons-format.md)
 
 ---

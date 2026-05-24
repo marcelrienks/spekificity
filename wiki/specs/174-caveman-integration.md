@@ -2,7 +2,7 @@
 
 
 See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
-**Depends On:** error-handling-and-recovery.md, lessons-format.md, post-command.md, post-processing.md  
+**Depends On:** error-handling-and-recovery.md, lessons-format.md, 102-conclude-command.md, 101-conclude-processing.md  
 
 ---
 
@@ -423,7 +423,7 @@ Mode | Token Reduction | Readability | Use Case | ------|-----------------|-----
 ## Related Specs
 
 - [Lessons Format](021-lessons-format.md) — How lessons are structured
-- [Post Processing](post-processing.md) — When lessons are generated
+- [Post Processing](101-conclude-processing.md) — When lessons are generated
 - [Architectural Decisions](022-architectural-decisions.md) — Decision archival
 - [Patterns Library](023-patterns-library.md) — Pattern storage
 - [Error Handling and Recovery](010-error-handling-and-recovery.md) — Error logging

@@ -197,7 +197,7 @@ uv, speckit, pygments, click, pydantic, sqlalchemy, gitpython, loguru
 - tasks.md with executable task list ✓
 - All artifacts committed ✓
 
-**Spec Reference:** [110-speckit-integration-contract.md](110-speckit-integration-contract.md), [102-post-command.md](102-post-command.md)
+**Spec Reference:** [110-speckit-integration-contract.md](110-speckit-integration-contract.md), [102-conclude-command.md](102-conclude-command.md)
 
 -#### 4d. /spek.map (lat.md Wrapper)
 **Deliverable:** lat.md query interface + impact analysis
@@ -256,7 +256,7 @@ uv, speckit, pygments, click, pydantic, sqlalchemy, gitpython, loguru
 - Vault synced to origin ✓
 - Branch merged or marked for merge ✓
 
-**Spec Reference:** [102-post-command.md](102-post-command.md)
+**Spec Reference:** [102-conclude-command.md](102-conclude-command.md)
 
 
 ## 4g. /spek.lessons (Retrospective)

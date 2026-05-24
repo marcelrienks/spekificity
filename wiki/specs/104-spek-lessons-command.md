@@ -2,7 +2,7 @@
 
 
 See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
-**Depends On:** lessons-format.md, memory-architecture.md, post-processing.md  
+**Depends On:** lessons-format.md, memory-architecture.md, 101-conclude-processing.md  
 **Requires:** Obsidian CLI (recommended) for automated vault/lessons operations and persistent memory management
 **Used By:** `/spek.conclude` (automatic), CLI entry point (manual queries)  
 
@@ -220,7 +220,7 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - ## Related Specifications
 - [Lessons Format](021-lessons-format.md) — Template + validation
 - [Memory Architecture](030-memory-architecture.md) — Lesson loading + lifecycle
-- [Post Processing](post-processing.md) — Lesson generation workflow (Step 3)
+- [Post Processing](101-conclude-processing.md) — Lesson generation workflow (Step 3)
 - [Zettelkasten Conventions](020-zettelkasten-conventions.md) — Frontmatter + wikilinks
 
 

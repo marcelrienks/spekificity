@@ -49,8 +49,8 @@ Feature state tracks progress through feature lifecycle (initialized → specify
 - ## References
 - **Related Specs:**
 - [memory-architecture.md](030-memory-architecture.md) — Session memory structure
-- [prepare-command.md](100-prepare-command.md) — State creation (Step 6)
-- [post-command.md](post-command.md) — State archival (Step 9)
+- [100-prepare-command.md](100-prepare-command.md) — State creation (Step 6)
+- [102-conclude-command.md](102-conclude-command.md) — State archival (Step 9)
 - **External:**
 - [extracted spec Feature State Tracking](prepare-and-post-skills.md)
 

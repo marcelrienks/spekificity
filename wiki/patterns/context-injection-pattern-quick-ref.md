@@ -70,12 +70,12 @@ def load_context(phase="specify"):
     except FileNotFoundError:
         # Layer 2: Repo cache (compressed)
         try:
-            context["decisions"] = load_from_cache(
-                "/memories/repo/architectural-decisions.md"
-            )
-            context["patterns"] = load_from_cache(
-                "/memories/repo/patterns-index.md"
-            )
+                context["decisions"] = load_from_cache(
+                    "../specs/022-architectural-decisions.md"
+                )
+                context["patterns"] = load_from_cache(
+                    "../specs/023-patterns-library.md"
+                )
         except FileNotFoundError:
             # Layer 3: Minimal (continue without)
             context["decisions"] = []

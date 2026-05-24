@@ -2,7 +2,7 @@
 
 
 See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
-**Depends On:** speckit-integration-contract.md, prepare-command.md, post-command.md, feature-state-tracking.md  
+**Depends On:** speckit-integration-contract.md, 100-prepare-command.md, 102-conclude-command.md, feature-state-tracking.md  
 
 ---
 
@@ -77,7 +77,7 @@ The CLI is the user-facing entry point to Spekificity. `spek plan` is the primar
 - Code graph refreshed
 - Session memory archived
 - Ready for next feature
-- **Related:** [Post Command](post-command.md), [Post Processing](post-processing.md)
+- **Related:** [Post Command](102-conclude-command.md), [Post Processing](101-conclude-processing.md)
 - ### 5. `spek map` — Refresh lat.md index
 - **Purpose:** Generate or update code graph (code + documentation index).
 - spek map [options]
@@ -236,7 +236,7 @@ The CLI is the user-facing entry point to Spekificity. `spek plan` is the primar
 - This spec defines the **CLI orchestration layer** — the user-facing command interface and workflow sequencing. Implementation details for individual commands (e.g., 7 steps of `prepare`) are in dedicated command specs.
 - **Implementation Reference:**
 - [Prepare Command](100-prepare-command.md) — 7-step detail
-- [Post Command](post-command.md) — 10-step detail
+- [Post Command](102-conclude-command.md) — 10-step detail
 - [Speckit Integration Contract](110-speckit-integration-contract.md) — Integration details
 - [Error Handling and Recovery](010-error-handling-and-recovery.md) — Error strategy
 

@@ -66,8 +66,8 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 
 - **Memory Architecture:** [specs/memory-architecture.md](../specs/030-memory-architecture.md)
 - **Feature State Tracking:** [specs/feature-state-tracking.md](../specs/040-feature-state-tracking.md)
-- **Prepare Command:** [specs/prepare-command.md](../specs/100-prepare-command.md)
-- **Conclude Command:** [specs/conclude-command.md](../specs/102-conclude-command.md)
+- **Prepare Command:** [100-prepare-command.md](../specs/100-prepare-command.md)
+- **Conclude Command:** [102-conclude-command.md](../specs/102-conclude-command.md)
 - **Spek Implement Workflow:** [specs/spek-implement-workflow.md](../specs/105-spek-implement-workflow.md)
 - **Token Budget (Phase 2):** [specs/token-budget.md](../specs/130-token-budget.md)
 

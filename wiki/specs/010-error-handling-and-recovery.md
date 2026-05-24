@@ -269,7 +269,7 @@ Spekificity operates in autonomous mode with limited user intervention. This spe
 - [Graph Refresh Strategy](053-graph-refresh-strategy.md)
 - **Skills:**
 - [Prepare Command](100-prepare-command.md)
-- [Post Command](post-command.md)
+- [Post Command](102-conclude-command.md)
 - [Enrichment Layer](032-enrichment-layer.md)
 - **Integration:**
 - [Speckit Integration Contract](110-speckit-integration-contract.md)

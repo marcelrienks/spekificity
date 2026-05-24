@@ -413,8 +413,8 @@ Alert: "Scope grew; confirm intended"
 - **Memory Architecture:**
 - memory-architecture.md (vault storage for lessons, decisions, patterns)
 - **Command Specs:**
-- spek-post-command.md (Step 3, 7, 8b integration)
-- spek-conclude-command.md (Step 3, 7, 8b integration)
+- 102-conclude-command.md (Step 3, 7, 8b integration)
+- 102-conclude-command.md (Step 3, 7, 8b integration)
 - spek-plan-workflow.md (specify/plan phase integration)
 - **Quality & Learning:**
 - lessons-format.md (lesson document format)

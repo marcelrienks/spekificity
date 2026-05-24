@@ -173,10 +173,10 @@ def run_specify_phase(feature_name):
 
 - **Primary:** [cli-orchestration.md](../specs/cli-orchestration.md)
 - **Implemented in:**
-  - [prepare-command.md](../specs/prepare-command.md)
+  - [100-prepare-command.md](../specs/100-prepare-command.md)
   - [spek-automate-workflow.md](../specs/spek-automate-workflow.md)
   - [spek-implement-workflow.md](../specs/spek-implement-workflow.md)
-  - [post-command.md](../specs/post-command.md)
+  - [102-conclude-command.md](../specs/102-conclude-command.md)
 - **Tracked in:**
   - [feature-state-tracking.md](../specs/feature-state-tracking.md)
 

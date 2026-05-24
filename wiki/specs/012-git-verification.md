@@ -28,7 +28,7 @@ Validates git repository state (clean working dir, valid branch, repo exists).
 - [ ] Handle conflicts gracefully
 - ## References
 - **Related Specs:**
-- [prepare-command.md](100-prepare-command.md) — Used in Step 1
+- [100-prepare-command.md](100-prepare-command.md) — Used in Step 1
 - [feature-state-tracking.md](040-feature-state-tracking.md) — Feature state after validation
 - **External:**
 - [extracted spec Git State Verification](prepare-and-post-skills.md#step-1-verify-git-state)

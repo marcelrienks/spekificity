@@ -101,7 +101,7 @@ Permanent collection of reusable patterns from all features; queryable by domain
 - Metrics section helps predict effort for similar features
 - Lessons should be written while memory is fresh (at feature end, not later)
 - Features: spec-001, spec-002, spec-003
-- Workflow spec: prepare-and-post-skills.md / post-command.md (lesson generation path)
+- Workflow spec: prepare-and-post-skills.md / 102-conclude-command.md (lesson generation path)
 - Lesson template: specs/lessons-format.md
 - ## Repo Memory Pattern Index (vault/repo/patterns-index.md)
 - ### Purpose
@@ -203,7 +203,7 @@ Permanent collection of reusable patterns from all features; queryable by domain
 - [lessons-format.md](021-lessons-format.md) — Patterns captured here first
 - [memory-architecture.md](030-memory-architecture.md) — Patterns loaded at session start
 - [enrichment-layer.md](032-enrichment-layer.md) — Patterns injected into planning + specification
-- [post-command.md](post-command.md) — Patterns synced to vault here
+- [102-conclude-command.md](102-conclude-command.md) — Patterns synced to vault here
 - **External:**
 - [extracted spec Memory Architecture](030-memory-architecture.md) — Original spec
 

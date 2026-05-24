@@ -26,8 +26,8 @@ MEMORY ARCHITECTURE
 │ Layer 2: REPO MEMORY (Copilot)           │
 │ Persistent, Project-Scoped               │
 │ └─ /memories/repo/architectural-*.md     │
-│ └─ /memories/repo/patterns-index.md      │
-│ └─ /memories/repo/codebase-map.md        │
+│ └─ [023-patterns-library.md](../specs/023-patterns-library.md)      │
+│ └─ [056-code-and-document-maps.md](../specs/056-code-and-document-maps.md)        │
 └──────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────┐
@@ -114,7 +114,7 @@ def load_context():
     
     # Try Layer 2 (compressed cache)
     try:
-        layer2 = read_file("/memories/repo/architectural-decisions.md")
+        layer2 = read_file("../specs/022-architectural-decisions.md")
         cache_layer3 = layer2  # Use cache as Layer 3
         return cache_layer3
     except FileNotFoundError:
@@ -147,10 +147,10 @@ def load_context():
 - **Primary:** [memory-architecture.md](../specs/memory-architecture.md)
 - **Read in:**
   - [context-layer.md](../specs/context-layer.md)
-  - [spek-prepare-command.md](../specs/prepare-command.md)
+  - [100-prepare-command.md](../specs/100-prepare-command.md)
 - **Written in:**
-  - [post-processing.md](../specs/post-processing.md)
-  - [spek-post-command.md](../specs/post-command.md)
+  - [101-conclude-processing.md](../specs/101-conclude-processing.md)
+  - [102-conclude-command.md](../specs/102-conclude-command.md)
 
 ---
 
