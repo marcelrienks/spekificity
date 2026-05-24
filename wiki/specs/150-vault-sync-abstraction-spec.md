@@ -1,9 +1,3 @@
----
-title: "Vault Sync Abstraction Specification"
-status: "DRAFT"
-date: "2026-05-21"
----
-
 # Vault Sync Abstraction Specification
 
 Status: DRAFT

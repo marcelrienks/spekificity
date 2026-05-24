@@ -1,10 +1,3 @@
----
-title: "Per-Feature Lessons Format"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "omitted"
----
-
 # Spec: Per-Feature Lessons Format
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1

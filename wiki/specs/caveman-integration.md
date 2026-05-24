@@ -1,9 +1,3 @@
----
-title: "Caveman Integration Specification"
-status: "DRAFT"
-date: "2026-05-23"
----
-
 # Caveman Integration Specification
 
 Status: DRAFT

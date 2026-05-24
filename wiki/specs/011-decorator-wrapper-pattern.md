@@ -1,11 +1,3 @@
----
-title: "Decorator Wrapper Pattern (C3.2)"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
-type: "pattern"
----
-
 # ATOMIC SPECIFICATION: Decorator Wrapper Pattern (C3.2)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)

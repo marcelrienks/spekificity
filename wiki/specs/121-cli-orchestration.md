@@ -1,9 +1,3 @@
----
-title: "CLI Orchestration (C2.0)"
-status: "ATOMIC SPECIFICATION"
-version: "2026-05-19"
----
-
 # SPECIFICATION: CLI Orchestration (C2.0)
 
 **Status:** ATOMIC SPECIFICATION  

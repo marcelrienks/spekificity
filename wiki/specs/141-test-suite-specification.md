@@ -1,10 +1,3 @@
----
-title: "Spekificity Test Suite & Validation Strategy"
-status: "COMPLETE"
-date: "2026-05-20"
-coverage_target: "omitted"
----
-
 # Spekificity Test Suite & Validation Strategy
 
 **Status:** COMPLETE  

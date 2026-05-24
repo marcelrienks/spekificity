@@ -1,9 +1,3 @@
----
-title: "Integration Validation and Testing (V1.0)"
-status: "ATOMIC SPECIFICATION"
-version: "2026-05-19"
----
-
 # SPECIFICATION: Integration Validation and Testing (V1.0)
 
 **Status:** ATOMIC SPECIFICATION  

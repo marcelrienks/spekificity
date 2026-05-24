@@ -1,9 +1,3 @@
----
-title: "CI & Validation Workflow Specification"
-status: "DRAFT"
-date: "2026-05-21"
----
-
 # CI & Validation Workflow Specification
 
 Status: DRAFT

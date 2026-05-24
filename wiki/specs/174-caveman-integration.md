@@ -1,9 +1,3 @@
----
-title: "Caveman Integration (C4.3)"
-status: "ATOMIC SPECIFICATION"
-version: "2026-05-19"
----
-
 # SPECIFICATION: Caveman Integration (C4.3)
 
 **Status:** ATOMIC SPECIFICATION  

@@ -1,10 +1,3 @@
----
-title: "Implementation Roadmap"
-status: "APPROVED FOR IMPLEMENTATION"
-date: "2026-05-20"
-version: "1.0.0-alpha.1"
----
-
 # Implementation Roadmap
 
 **Status:** APPROVED FOR IMPLEMENTATION | **Date:** 2026-05-20 | **Version:** 1.0.0-alpha.1

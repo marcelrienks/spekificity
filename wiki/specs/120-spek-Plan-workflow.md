@@ -1,9 +1,3 @@
----
-title: "spek.plan — SpecKit Workflow Orchestration (C.2.0)"
-status: "ATOMIC SPECIFICATION"
-version: "2026-05-19"
----
-
 # SPECIFICATION: spek.plan — SpecKit Workflow Orchestration (C.2.0)
 
 **Status:** ATOMIC SPECIFICATION  

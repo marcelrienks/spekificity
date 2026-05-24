@@ -1,10 +1,3 @@
----
-title: "Code and Document Maps"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-21"
----
-
 # Spec: Code and Document Maps (extracted spec)
 
 **Status:** ATOMIC SPECIFICATION | **Version:** 1.0.0-alpha.1 (2026-05-20)

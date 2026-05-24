@@ -1,9 +1,3 @@
----
-title: "Multi-Developer & Concurrent Feature Work Strategy"
-status: "COMPLETE"
-date: "2026-05-20"
----
-
 # Multi-Developer & Concurrent Feature Work Strategy
 
 **Status:** COMPLETE  

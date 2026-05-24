@@ -1,10 +1,3 @@
----
-title: "Anti-Sycophancy Validation Rules (Redirect)"
-status: "REDIRECTED"
-date: "2026-05-20"
-original_id: "C.3.8"
----
-
 # ⚠️ REDIRECT: Anti-Sycophancy Validation Rules
 
 **This specification has been consolidated into a single archive file.**

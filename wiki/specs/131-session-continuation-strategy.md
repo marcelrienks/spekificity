@@ -1,9 +1,3 @@
----
-title: "Session Continuation & Token Budget Management"
-status: "COMPLETE"
-date: "2026-05-20"
----
-
 # Session Continuation & Token Budget Management
 
 **Status:** COMPLETE  

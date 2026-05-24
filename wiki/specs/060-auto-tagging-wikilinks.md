@@ -1,10 +1,3 @@
----
-title: "Auto-Tagging + Auto-Wikilink Insertion for Lessons"
-status: "Specification"
-version: "1.0.0-alpha.1"
-date: "2026-05-21"
----
-
 # C.3.2 Auto-Tagging + Auto-Wikilink Insertion for Lessons
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)

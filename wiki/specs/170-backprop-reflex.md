@@ -1,10 +1,3 @@
----
-title: "Backprop Reflex: Test Failures → Vault Updates (Redirect)"
-status: "REDIRECTED"
-date: "2026-05-20"
-original_id: "C.3.6"
----
-
 # ⚠️ REDIRECT: Backprop Reflex: Test Failures → Vault Updates
 
 **This specification has been consolidated into a single archive file.**

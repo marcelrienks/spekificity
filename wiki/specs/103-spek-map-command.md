@@ -1,11 +1,3 @@
----
-title: "/spek.map Command (C5.3)"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
-type: "skill"
----
-
 # ATOMIC SPECIFICATION: /spek.map Command (C5.3)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)

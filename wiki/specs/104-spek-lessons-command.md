@@ -1,11 +1,3 @@
----
-title: "Lessons Command (C4.6)"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "omitted"
-type: "skill"
----
-
 # ATOMIC SPECIFICATION: Lessons Command (C4.6)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1

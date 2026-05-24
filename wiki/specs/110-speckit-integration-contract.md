@@ -1,10 +1,3 @@
----
-title: "SpecKit Integration Contract"
-status: "SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-18"
----
-
 # extracted spec — SpecKit Integration Contract
 
 **Status:** SPECIFICATION (2026-05-18) | **Version:** 1.0.0-alpha.1 (2026-05-20)  
@@ -688,4 +681,3 @@ vault/
 - Decorator pattern over hook system (this spec)
 - Two-tool system: Obsidian (knowledge) + lat.md (code analysis) (extracted spec)
 - Three-layer memory: Vault + Repo + Session (extracted spec)
-

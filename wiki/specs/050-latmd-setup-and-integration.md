@@ -1,9 +1,3 @@
----
-title: "lat.md Setup & Integration (C5.0)"
-status: "ATOMIC SPECIFICATION"
-version: "2026-05-23"
----
-
 # ATOMIC SPECIFICATION: lat.md Setup & Integration (C5.0)
 
 **Status:** ATOMIC SPECIFICATION  

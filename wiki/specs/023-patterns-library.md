@@ -1,10 +1,3 @@
----
-title: "Patterns Library (C2.3)"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-21"
----
-
 # ATOMIC SPECIFICATION: Patterns Library (C2.3)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)

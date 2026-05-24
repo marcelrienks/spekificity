@@ -1,17 +1,9 @@
----
-title: "Error Handling and Recovery (F1.0)"
-status: "FOUNDATIONAL SPECIFICATION"
-version: "2026-05-19"
----
-
 # FOUNDATIONAL SPECIFICATION: Error Handling and Recovery (F1.0)
 
 **Status:** FOUNDATIONAL SPECIFICATION
 **Type:** Cross-Cutting Concern — Error Strategy for all Skills and Workflows
 **Version:** 2026-05-19
 **Scope:** Applies to all `/spek.*` skills, enrichment layers, and integration points  
-
----
 
 ## Overview
 

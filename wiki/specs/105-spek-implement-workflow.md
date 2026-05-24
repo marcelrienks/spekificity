@@ -1,11 +1,3 @@
----
-title: "Implement Command (C4.5)"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
-type: "skill"
----
-
 # ATOMIC SPECIFICATION: Implement Command (C4.5)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)

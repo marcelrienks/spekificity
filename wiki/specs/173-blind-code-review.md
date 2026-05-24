@@ -1,10 +1,3 @@
----
-title: "Blind Code Review (Redirect)"
-status: "REDIRECTED"
-date: "2026-05-20"
-original_id: "C.3.9"
----
-
 # ⚠️ REDIRECT: Blind Code Review
 
 **This specification has been consolidated into a single archive file.**

@@ -1,11 +1,3 @@
----
-title: "Graph Storage Structure (C5.2)"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
-type: "data-schema"
----
-
 # ATOMIC SPECIFICATION: Graph Storage Structure (C5.2)
 
 **Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)

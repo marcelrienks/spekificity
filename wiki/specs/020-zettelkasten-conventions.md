@@ -1,11 +1,3 @@
----
-title: "Zettelkasten Conventions for Vault Notes"
-status: "Specification"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
-priority: "High"
----
-
 # C.3.1 Zettelkasten Conventions for Vault Notes
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)

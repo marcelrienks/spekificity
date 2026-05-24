@@ -1,11 +1,3 @@
----
-title: "Token Budget Allocation & Tracking"
-status: "Specification"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
-priority: "MEDIUM"
----
-
 # C.3.10 Token Budget Allocation & Tracking
 
 **Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)

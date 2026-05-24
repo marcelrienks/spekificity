@@ -1,10 +1,3 @@
----
-title: "Node Schema Design"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
----
-
 # Spec: Node Schema Design
 
 **Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
