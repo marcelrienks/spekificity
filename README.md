@@ -26,14 +26,9 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 
 - Python 3.11+
 - `uv` package manager ([install](https://docs.astral.sh/uv/))
-- **Obsidian** (required) — for persistent memory management and vault operations
-    - [Download Obsidian](https://obsidian.md/download)
-    - macOS: `brew install obsidian`
-    - Windows: `choco install obsidian`
-- **Obsidian CLI** (required) — used to automate vault syncs, export vault structure/metadata, and run scripted exports that enable automated context loading, graph generation, and lesson extraction.
-    - Why: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports). Having the Obsidian CLI available simplifies reliable automation in developer workflows and CI.
-    - Install / enable CLI: The Obsidian CLI is bundled with the Obsidian desktop app — enable it in Obsidian Settings → General → Command line interface, then follow the on-screen prompt to register the `obsidian` command in your PATH. See https://obsidian.md/help/cli for details.
-    - Note: The Obsidian app must be installed (https://obsidian.md/download) and running for many CLI commands to work. For CI/headless scenarios, see Obsidian Headless: https://obsidian.md/help/headless
+-- **Obsidian CLI** (required) — primary integration for vault automation: syncs, exports, and scripted operations that enable context loading, graph generation, and lesson extraction.
++    - Why: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports). Having the `obsidian` CLI in PATH simplifies reliable automation in developer workflows and CI.
++    - Install / enable CLI: Register the `obsidian` command in your PATH. The CLI is typically provided by the Obsidian desktop app, but the CLI is the primary required integration point — the desktop app is optional (used for visualization and interactive workflows). See https://obsidian.md/help/cli and https://obsidian.md/help/headless for platform-specific guidance.
 
 ### Installation & Setup (Recommended)
 
@@ -104,6 +99,7 @@ Spekificity is built around four pillars:
 - **SpecKit / Specify** — Spec-driven workflow engine
 - **lat.md** — Indexing and doc-code linkage (preferred)
 - **Obsidian Vault (with Obsidian CLI)** — Required knowledge store and runtime interface for specs, decisions, patterns, and lessons. The automation described in these documents depends on the `obsidian` CLI being available and registered in PATH.
+- **Obsidian Vault (with Obsidian CLI)** — Required knowledge store and runtime interface for specs, decisions, patterns, and lessons. The automation described here depends on the `obsidian` CLI being available and registered in PATH. The Obsidian CLI is the required integration; the desktop app is optional and used primarily for visualization and interactive workflows.
 - **Caveman Mode** — Response compression for token control
 
 Spekificity defines how these tools work together—it doesn't replace them. **The toolset described (SpecKit, lat.md, Obsidian + Obsidian CLI, Caveman) is required for the intended automation and behavior described in this documentation.**
@@ -291,8 +287,8 @@ Use these documents first:
 - [wiki/specs/persistent-memories-and-lessons.md](wiki/specs/persistent-memories-and-lessons.md)
 - [wiki/specs/decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md)
 - [wiki/specs/cli-orchestration.md](wiki/specs/cli-orchestration.md)
-- [wiki/specs/prepare-command.md](wiki/specs/prepare-command.md)
-- [wiki/specs/post-command.md](wiki/specs/post-command.md)
+- [wiki/specs/100-prepare-command.md](wiki/specs/100-prepare-command.md)
+- [wiki/specs/102-conclude-command.md](wiki/specs/102-conclude-command.md)
 - [wiki/specs/specify-enrichment.md](wiki/specs/specify-enrichment.md)
 - [wiki/specs/plan-enrichment.md](wiki/specs/plan-enrichment.md)
 - [wiki/specs/implement-enrichment.md](wiki/specs/implement-enrichment.md)
@@ -342,7 +338,7 @@ The docs in this repository consistently assume:
 - the enriched command surface uses `spek.*`
 - Spekificity wraps SpecKit rather than forking it
 - durable knowledge lives in markdown, not opaque runtime state
-- **preferred automation path:** Obsidian CLI (the `obsidian` command bundled with the desktop app) is recommended for persistent memory and vault operations; fallback options (cache.json, Dataview/plugin exports, or manual workflows) are supported when the CLI is not available.
+- **Obsidian CLI is required:** The `obsidian` command must be available in PATH and enabled in Obsidian Settings → General → Command line interface. The Obsidian CLI is the primary integration point for core automation (vault syncs, metadata exports, lesson extraction, and graph exports); the desktop app is optional. Fallback alternatives are not supported.
 - code intelligence should come from indexed graph tooling rather than repeated file scans
 - post-feature lessons are part of the system, not optional afterthoughts
 

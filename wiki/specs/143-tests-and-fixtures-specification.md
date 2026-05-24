@@ -1,12 +1,7 @@
----
-title: "Tests & Fixtures Specification"
-status: "DRAFT"
-date: "2026-05-21"
----
-
 # Tests & Fixtures Specification
 
-Status: DRAFT
+
+
 Date: 2026-05-21
 
 Purpose

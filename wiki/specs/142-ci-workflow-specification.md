@@ -1,12 +1,7 @@
----
-title: "CI & Validation Workflow Specification"
-status: "DRAFT"
-date: "2026-05-21"
----
-
 # CI & Validation Workflow Specification
 
-Status: DRAFT
+
+
 Date: 2026-05-21
 
 Purpose
@@ -40,7 +35,7 @@ Failure Modes & Actions
 - Long-running tests: timeouts set per job (default 20m), with alert to maintainers.
 
 Migration Notes
-- Add `.github/workflows/test-pr.yaml` to enable PR checks. Provide local `scripts/run-local-ci.sh` for contributors (see CONTRIBUTING.md).
+- Add `.github/workflows/test-pr.yaml` to enable PR checks. Provide local `scripts/run-local-ci.sh` for contributors (see [wiki/specs/152-contributing-and-onboarding-spec.md](152-contributing-and-onboarding-spec.md)).
 
 Acceptance Tests (for the spec)
 - Try opening a PR that changes only a README → CI should pass quickly (lint only).

@@ -34,7 +34,7 @@ This document catalogs all reusable architectural, workflow, and optimization pa
 | 9 | Caveman Compression Mode | Compression | Reduce token usage substantially | [caveman-integration.md](wiki/specs/caveman-integration.md) | HIGH | ✅ ACTIVE |
 | 10 | Auto-Tagging + Auto-Wikilink Pattern | Memory | Automate knowledge interconnection | [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md) | MEDIUM | 🟢 S2 |
 | 11 | Skill Chaining Pattern | Integration | Sequential execution with dependencies | [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md) | HIGH | ✅ ACTIVE |
-| 12 | Post-Processing Pattern | Workflow | Artifact collection → compression → archive | [post-processing.md](wiki/specs/post-processing.md) | HIGH | ✅ ACTIVE |
+| 12 | Post-Processing Pattern | Workflow | Artifact collection → compression → archive | [101-conclude-processing.md](wiki/specs/101-conclude-processing.md) | HIGH | ✅ ACTIVE |
 | 13 | Hybrid Graph Pattern | Graph | Unify code + doc + skill nodes | [code-and-document-maps.md](wiki/specs/code-and-document-maps.md) | MEDIUM | 📅 FUTURE |
 | 14 | Graph Merge Integration Pattern | Graph | Combine heterogeneous node types | [graph-merge-integration.md](wiki/specs/graph-merge-integration.md) | MEDIUM | 📅 FUTURE |
 | 15 | Incremental Sync Pattern | Graph | Cache + file watching for efficient updates | [graph-refresh-strategy.md](wiki/specs/graph-refresh-strategy.md) | MEDIUM | 🟢 S4 |
@@ -177,9 +177,9 @@ Layer 1: Vault (Obsidian) — Persistent, Authoritative
 └── vault/lessons/<YYYY-MM-DD>-<feature>-*.md
 
 Layer 2: Repo Memory (Copilot) — Persistent, Project-Scoped
-├── /memories/repo/codebase-map.md
-├── /memories/repo/architectural-decisions.md
-└── /memories/repo/patterns-index.md
+├── [056-code-and-document-maps.md](wiki/specs/056-code-and-document-maps.md)
+├── [022-architectural-decisions.md](wiki/specs/022-architectural-decisions.md)
+└── [023-patterns-library.md](wiki/specs/023-patterns-library.md)
 
 Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 ├── /memories/session/context-loaded.md
@@ -209,7 +209,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 
 ### Specs Using This Pattern
 - Primary: [memory-architecture.md](wiki/specs/memory-architecture.md)
-- Supporting: [context-layer.md](wiki/specs/context-layer.md), [post-processing.md](wiki/specs/post-processing.md)
+- Supporting: [context-layer.md](wiki/specs/context-layer.md), [101-conclude-processing.md](wiki/specs/101-conclude-processing.md)
 
 ---
 
@@ -331,7 +331,7 @@ Each phase:
 
 ### Specs Using This Pattern
 - Primary: [cli-orchestration.md](wiki/specs/cli-orchestration.md)
-- Supporting: [feature-state-tracking.md](wiki/specs/feature-state-tracking.md), [prepare-command.md](wiki/specs/prepare-command.md), [post-command.md](wiki/specs/post-command.md)
+- Supporting: [feature-state-tracking.md](wiki/specs/feature-state-tracking.md), [100-prepare-command.md](wiki/specs/100-prepare-command.md), [102-conclude-command.md](wiki/specs/102-conclude-command.md)
 
 ---
 
@@ -392,7 +392,7 @@ Chain skills with explicit dependency management:
 
 **Category:** Workflow  
 **Solves:** Extract, compress, and archive feature artifacts  
-**Primary Spec:** [post-processing.md](wiki/specs/post-processing.md)  
+**Primary Spec:** [101-conclude-processing.md](wiki/specs/101-conclude-processing.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -430,8 +430,8 @@ Automated post-processing performs a sequence of archival and indexing steps aft
 - Session-to-Vault Archival Pattern (ephemeral → permanent)
 
 ### Specs Using This Pattern
-- Primary: [post-processing.md](wiki/specs/post-processing.md)
-- Supporting: [post-command.md](wiki/specs/post-command.md), [lessons-format.md](wiki/specs/lessons-format.md)
+- Primary: [101-conclude-processing.md](wiki/specs/101-conclude-processing.md)
+- Supporting: [102-conclude-command.md](wiki/specs/102-conclude-command.md), [lessons-format.md](wiki/specs/lessons-format.md)
 
 ---
 
@@ -683,7 +683,7 @@ auto_linking:
 
 ### Specs Using This Pattern
 - Primary: [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md)
-- Supporting: [zettelkasten-conventions.md](wiki/specs/zettelkasten-conventions.md), [post-command.md](wiki/specs/post-command.md)
+- Supporting: [zettelkasten-conventions.md](wiki/specs/zettelkasten-conventions.md), [102-conclude-command.md](wiki/specs/102-conclude-command.md)
 
 ---
 
@@ -731,7 +731,7 @@ Archive session logs to vault with Zettelkasten format:
 
 ### Specs Using This Pattern
 - Primary: [session-logs-vault-artifacts.md](wiki/specs/session-logs-vault-artifacts.md)
-- Supporting: [post-processing.md](wiki/specs/post-processing.md), [lessons-format.md](wiki/specs/lessons-format.md)
+- Supporting: [101-conclude-processing.md](wiki/specs/101-conclude-processing.md), [lessons-format.md](wiki/specs/lessons-format.md)
 
 ---
 
@@ -787,7 +787,7 @@ Ultra-compressed communication style (caveman mode) preserving technical accurac
 
 ### Specs Using This Pattern
 - Primary: [caveman-integration.md](wiki/specs/caveman-integration.md)
-- Supporting: [lessons-format.md](wiki/specs/lessons-format.md), [post-command.md](wiki/specs/post-command.md)
+- Supporting: [lessons-format.md](wiki/specs/lessons-format.md), [102-conclude-command.md](wiki/specs/102-conclude-command.md)
 
 ---
 
@@ -843,7 +843,7 @@ token_budget:
 
 ### Specs Using This Pattern
 - Primary: [token-budget.md](wiki/specs/token-budget.md)
-- Supporting: [post-command.md](wiki/specs/post-command.md), [caveman-integration.md](wiki/specs/caveman-integration.md)
+- Supporting: [102-conclude-command.md](wiki/specs/102-conclude-command.md), [caveman-integration.md](wiki/specs/caveman-integration.md)
 
 ---
 
@@ -938,8 +938,8 @@ Classify errors into categories; apply category-specific recovery:
 **Category 2: Vault Access Errors (TRANSIENT or FATAL)**
 - Issue: Vault missing, JSON parse error, permission denied
 - Severity: MEDIUM-HIGH
-- Action: WARN + FALLBACK (continue with cache or empty vault)
-- Recovery: Async retry (30s intervals, max 3 retries)
+- Action: FAIL + GUIDANCE (do not fallback for core automation; surface actionable error)
+- Recovery: Manual intervention or CI provisioning (do not auto-fallback to cache for core flows)
 
 **Category 3: Graph/Code Index Errors (TRANSIENT or RECOVERABLE)**
 - Issue: lat.md index corrupted, lat.md index rebuild fails
@@ -998,7 +998,9 @@ Classify errors into categories; apply category-specific recovery:
 **Status:** ACTIVE  
 
 ### Problem
-When primary systems fail (vault inaccessible, graph stale), workflow should degrade gracefully, not crash.
+When primary systems fail (graph stale, non-vault services), workflow should degrade gracefully, not crash.
+
+Exception: For Obsidian vault exports, Spekificity requires the Obsidian CLI; vault export failures are considered authoritative failures for core automation and must fail-fast (no automatic fallback to cache/plugin exports).
 
 ### Solution
 Implement fallback hierarchy (Layer 1 primary, Layer 2-3 fallbacks):
@@ -1007,7 +1009,7 @@ Implement fallback hierarchy (Layer 1 primary, Layer 2-3 fallbacks):
 ```
 Layer 1 (PRIMARY): Load from vault (vault/decision.md)
   ↓ (if fails)
-Layer 2 (FALLBACK): Load from repo cache (/memories/repo/architectural-decisions.md)
+Layer 2 (FALLBACK): Load from repo cache ([022-architectural-decisions.md](wiki/specs/022-architectural-decisions.md))
   ↓ (if fails)
 Layer 3 (MINIMAL): Continue with empty context (log warning)
 ```
@@ -1236,7 +1238,7 @@ Phase 4: VERIFY
 
 ### Specs Using This Pattern
 - Primary: [rarv-reflection.md](wiki/specs/rarv-reflection.md)
-- Supporting: [post-processing.md](wiki/specs/post-processing.md), [context-layer.md](wiki/specs/context-layer.md)
+- Supporting: [101-conclude-processing.md](wiki/specs/101-conclude-processing.md), [context-layer.md](wiki/specs/context-layer.md)
 
 ---
 
@@ -1285,7 +1287,7 @@ End-of-Feature Test Failure Analysis:
 
 ### Specs Using This Pattern
 - Primary: [backprop-reflex.md](wiki/specs/backprop-reflex.md)
-- Supporting: [post-processing.md](wiki/specs/post-processing.md), [lessons-format.md](wiki/specs/lessons-format.md)
+- Supporting: [101-conclude-processing.md](wiki/specs/101-conclude-processing.md), [lessons-format.md](wiki/specs/lessons-format.md)
 
 ---
 
@@ -1603,7 +1605,7 @@ completion: progress-indicator
 
 ### Specs Using This Pattern
 - Primary: [feature-state-tracking.md](wiki/specs/feature-state-tracking.md)
-- Supporting: [cli-orchestration.md](wiki/specs/cli-orchestration.md), [prepare-command.md](wiki/specs/prepare-command.md)
+- Supporting: [cli-orchestration.md](wiki/specs/cli-orchestration.md), [100-prepare-command.md](wiki/specs/100-prepare-command.md)
 
 ---
 
@@ -1674,27 +1676,27 @@ completion: progress-indicator
 | Pattern | Primary Spec | Supporting Specs | Use Phase | Frequency |
 |---------|---|---|---|---|
 | 1. Decorator Wrapper | decorator-wrapper-pattern.md | enrichment-layer.md, speckit-integration-contract.md | 1-2 | HIGH |
-| 2. Three-Layer Memory | memory-architecture.md | context-layer.md, post-processing.md, session-logs-vault-artifacts.md | 1-2 | HIGH |
+| 2. Three-Layer Memory | memory-architecture.md | context-layer.md, 101-conclude-processing.md, session-logs-vault-artifacts.md | 1-2 | HIGH |
 | 3. Three-Layer Query | 3layer-query-rule.md | graph-query-patterns.md, context-layer.md | 1-2 | HIGH |
 | 4. Enrichment Layer | enrichment-layer.md | context-layer.md, speckit-integration-contract.md, decorator-wrapper-pattern.md | 1-2 | HIGH |
 | 5. Context Injection | context-layer.md | enrichment-layer.md, decorator-wrapper-pattern.md, memory-architecture.md | 1-2 | HIGH |
-| 6. Feature Lifecycle | cli-orchestration.md | prepare-command.md, post-command.md, feature-state-tracking.md | 1-2 | HIGH |
+| 6. Feature Lifecycle | cli-orchestration.md | 100-prepare-command.md, 102-conclude-command.md, feature-state-tracking.md | 1-2 | HIGH |
 | 7. Error Categorization | error-handling-and-recovery.md | All workflow specs | 1-2 | HIGH |
 | 8. Zettelkasten | zettelkasten-conventions.md | auto-tagging-wikilinks.md, session-logs-vault-artifacts.md | 1-2 | MEDIUM |
-| 9. Caveman Compression | caveman-integration.md | lessons-format.md, post-command.md, post-processing.md | 1-2 | HIGH |
-| 10. Auto-Tagging | auto-tagging-wikilinks.md | zettelkasten-conventions.md, post-command.md | 2+ | MEDIUM |
+| 9. Caveman Compression | caveman-integration.md | lessons-format.md, 102-conclude-command.md, 101-conclude-processing.md | 1-2 | HIGH |
+| 10. Auto-Tagging | auto-tagging-wikilinks.md | zettelkasten-conventions.md, 102-conclude-command.md | 2+ | MEDIUM |
 | 11. Skill Chaining | spek-automate-workflow.md | cli-orchestration.md, error-handling-and-recovery.md | 1-2 | HIGH |
-| 12. Post-Processing | post-processing.md | post-command.md, lessons-format.md, caveman-integration.md | 1-2 | HIGH |
+| 12. Post-Processing | 101-conclude-processing.md | 102-conclude-command.md, lessons-format.md, caveman-integration.md | 1-2 | HIGH |
 | 13. Hybrid Graph | code-and-document-maps.md | graph-merge-integration.md, node-schema-design.md, spek-map-command.md | 1-2 | MEDIUM |
 | 14. Graph Merge | graph-merge-integration.md | hybrid-graph (code-and-document-maps.md), graph-storage-structure.md | 1 | MEDIUM |
 | 15. Incremental Sync | graph-refresh-strategy.md | spek-map-command.md, graph-storage-structure.md | 1-2 | MEDIUM |
-| 16. Feature State | feature-state-tracking.md | cli-orchestration.md, prepare-command.md, post-command.md | 1-2 | HIGH |
-| 17. Session-to-Vault | session-logs-vault-artifacts.md | post-processing.md, zettelkasten-conventions.md, lessons-format.md | 2+ | MEDIUM |
+| 16. Feature State | feature-state-tracking.md | cli-orchestration.md, 100-prepare-command.md, 102-conclude-command.md | 1-2 | HIGH |
+| 17. Session-to-Vault | session-logs-vault-artifacts.md | 101-conclude-processing.md, zettelkasten-conventions.md, lessons-format.md | 2+ | MEDIUM |
 | 18. Anti-Sycophancy | anti-sycophancy.md | context-layer.md, enrichment-layer.md | 2+ | LOW |
-| 19. Blind Review | blind-code-review.md | integration-validation-and-testing.md, post-command.md | 2+ | LOW |
-| 20. Backprop Reflex | backprop-reflex.md | post-command.md, lessons-format.md | 2+ | MEDIUM |
-| 21. RARV Reflection | rarv-reflection.md | post-processing.md, context-layer.md, anti-sycophancy.md | 2+ | LOW |
-| 22. Token Budget | token-budget.md | post-command.md, caveman-integration.md, 3layer-query-rule.md | 2+ | MEDIUM |
+| 19. Blind Review | blind-code-review.md | integration-validation-and-testing.md, 102-conclude-command.md | 2+ | LOW |
+| 20. Backprop Reflex | backprop-reflex.md | 102-conclude-command.md, lessons-format.md | 2+ | MEDIUM |
+| 21. RARV Reflection | rarv-reflection.md | 101-conclude-processing.md, context-layer.md, anti-sycophancy.md | 2+ | LOW |
+| 22. Token Budget | token-budget.md | 102-conclude-command.md, caveman-integration.md, 3layer-query-rule.md | 2+ | MEDIUM |
 | 23. Fallback Hierarchy | error-handling-and-recovery.md | context-layer.md, graph-query-patterns.md | 1-2 | HIGH |
 | 24. Sequential Recovery | error-handling-and-recovery.md | All workflow specs, decorator-wrapper-pattern.md | 1-2 | HIGH |
 | 25. Code Graph Query | graph-query-patterns.md | graph-storage-structure.md, code-and-document-maps.md | 1-2 | HIGH |
@@ -1806,7 +1808,7 @@ Each pattern follows this verification checklist:
 ### For Extension
 1. **Identify gap:** What recurring problem exists without a pattern?
 2. **Check if pattern exists:** Search document + related specs
-3. **If new pattern needed:** Document in wiki/patterns/<PATTERN-NAME>-quick-ref.md (see next section)
+3. **If new pattern needed:** Document in wiki/specs/patterns/<PATTERN-NAME>-quick-ref.md (see next section)
 4. **Update this file:** Add to Pattern Catalog + Index
 
 ---

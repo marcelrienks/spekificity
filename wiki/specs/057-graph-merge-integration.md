@@ -1,19 +1,14 @@
----
-title: "Graph Merge and Integration"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
----
-
 # Spec: Graph Merge and Integration
 
-**Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
+
+
 **Concern:** Merging code nodes (lat.md) and doc nodes (Obsidian export) into unified graph  
 **Extracted from:** extracted spec Questions 2, 3, 5  
 **Depends on:** obsidian-graph-export, node-schema-design  
 **Used by:** spek-map-command, graph-storage-structure  
 
 ---
+
 
 ## Overview
 
@@ -25,134 +20,31 @@ date: "2026-05-20"
 
 ---
 
-## Merge Process
 
-### Step 1: Load Source Node Sets
+## Success Criteria
 
-**Input:**
-- `vault/graph/nodes-code.jsonl` (from lat.md export or adapter)
-- `vault/graph/nodes-docs.jsonl` (from Obsidian export)
-- `vault/graph/config.json` (merge strategy config)
+- [x] Deduplication removes redundant nodes
+- [x] Link discovery finds code↔doc cross-references
+- [x] Backreferences are computed and symmetric
+- [x] Merged graph is validated (no duplicates, consistent references)
+- [x] Output format is JSONL (streaming-friendly)
+- [x] Metadata tracks merge history and validation
+- [x] Problematic cases (broken links, missing files) are handled gracefully
+- ## Implementation Checklist
+- [ ] Create `merge-graphs.py` script in `.spek/bin/`
+- [ ] Implement deduplication logic
+- [ ] Implement link discovery patterns (code→doc, doc→code)
+- [ ] Implement backreference computation
+- [ ] Add validation checks (duplicates, symmetry, file existence)
+- [ ] Test on real graph (validate merging works correctly)
+- [ ] Add error reporting for broken references
+- [ ] Integrate into `/spek.map` workflow (Step 3)
+- ## References
+- **Input specs:** obsidian-graph-export, node-schema-design
+- **Output specs:** spek-map-command, graph-storage-structure, graph-query-patterns
 
-**Output:** Two in-memory node sets (code_nodes[], doc_nodes[])
 
-```python
-def load_nodes(file_path):
-    nodes = []
-    with open(file_path, 'r') as f:
-        for line in f:
-            nodes.append(json.loads(line))
-    return nodes
-
-code_nodes = load_nodes('vault/graph/nodes-code.jsonl')
-doc_nodes = load_nodes('vault/graph/nodes-docs.jsonl')
-```
-
----
-
-### Step 2: Deduplication
-
-**Problem:** Same file might be indexed as both code node (if executable) and doc node (if has markdown). Remove duplicates.
-
-**Strategy:**
-- Code nodes: deduplicate by (file, symbol, symbolType)
-- Doc nodes: deduplicate by (file, heading, level)
-- Cross-type: If a file is both .ts and referenced as doc, keep separate (different node types)
-
-```python
-def deduplicate(nodes):
-    seen = {}
-    unique = []
-    for node in nodes:
-        key = (node['type'], node['file'], 
-               node.get('symbol') or node.get('heading'))
-        if key not in seen:
-            seen[key] = node
-            unique.append(node)
-    return unique
-
-code_nodes = deduplicate(code_nodes)
-doc_nodes = deduplicate(doc_nodes)
-```
-
----
-
-### Step 3: Link Discovery
-
-**Goal:** Find cross-references between code and doc nodes (e.g., code imports doc, or code implements pattern).
-
-**Patterns:**
-
-1. **Code → Code references** (already in code_nodes from lat.md)
-   - Calls: `function_a` calls `function_b`
-   - Dependencies: `class_a` uses `class_b`
-   - Imports: `file_a` imports from `file_b`
-
-2. **Doc → Doc references** (already in doc_nodes from Obsidian)
-   - Markdown links: `[text](vault/decision.md#heading)`
-   - Related entries: "Related Decisions" section
-
-3. **Code → Doc references** (NEW: discover in this step)
-   - Pattern matches: `decision.md#caching-pattern` mentioned in `src/cache.ts` comments
-   - Skill references: `src/skills/prepare.ts` implements `/spek.prepare` skill definition
-   - Manual links: Code has comment `// See vault/decision.md#api-versioning`
-
-4. **Doc → Code references** (NEW: discover in this step)
-   - Lesson mentions: `vault/lessons/2026-05-18-003.md` references `src/prepare/prepare.ts`
-   - Decision affects: Decision doc lists affected components in frontmatter
-   - Spec implements: Spec document lists code files that implement it
-
-**Implementation:**
-
-```python
-def discover_code_to_doc_refs(code_node):
-    """Find doc references in code (comments, docstrings)"""
-    refs = []
-    file_path = code_node['file']
-    
-    with open(file_path, 'r') as f:
-        content = f.read()
-        
-    # Pattern 1: vault/path.md#heading comments
-    pattern = r'vault/[a-z-]+\.md#[a-z0-9-]+'
-    matches = re.findall(pattern, content, re.IGNORECASE)
-    refs.extend(matches)
-    
-    # Pattern 2: See decision/pattern named X
-    if 'caching' in content.lower() and 'See' in content:
-        refs.append('vault/patterns.md#caching-pattern')  # heuristic
-    
-    return refs
-
-def discover_doc_to_code_refs(doc_node):
-    """Find code references in docs (links to files, imports, etc)"""
-    refs = []
-    
-    # If doc mentions 'src/prepare/prepare.ts', link it
-    file_path = doc_node['file']
-    with open(file_path, 'r') as f:
-        content = f.read()
-    
-    # Pattern: Code file paths (e.g., src/prepare/prepare.ts)
-    pattern = r'src/[a-z0-9/_-]+\.(?:ts|py|js)'
-    matches = re.findall(pattern, content, re.IGNORECASE)
-    refs.extend(matches)
-    
-    return refs
-
-# Add discovered references to nodes
-for code_node in code_nodes:
-    discovered = discover_code_to_doc_refs(code_node)
-    code_node['references'].extend(discovered)
-
-for doc_node in doc_nodes:
-    discovered = discover_doc_to_code_refs(doc_node)
-    doc_node['references'].extend(discovered)
-```
-
----
-
-### Step 4: Compute Backreferences
+## Step 4: Compute Backreferences
 
 **Goal:** For each reference A→B, add B→A (referencedBy).
 
@@ -180,7 +72,97 @@ def compute_backreferences(all_nodes):
 
 ---
 
-### Step 5: Merge into Single Graph
+
+## Merge Process
+
+
+## Step 1: Load Source Node Sets
+
+**Input:**
+- `vault/graph/nodes-code.jsonl` (from lat.md export or adapter)
+- `vault/graph/nodes-docs.jsonl` (from Obsidian export)
+- `vault/graph/config.json` (merge strategy config)
+
+**Output:** Two in-memory node sets (code_nodes[], doc_nodes[])
+
+```python
+def load_nodes(file_path):
+    nodes = []
+    with open(file_path, 'r') as f:
+        for line in f:
+            nodes.append(json.loads(line))
+    return nodes
+
+code_nodes = load_nodes('vault/graph/nodes-code.jsonl')
+doc_nodes = load_nodes('vault/graph/nodes-docs.jsonl')
+```
+
+---
+
+
+## Step 2: Deduplication
+
+**Problem:** Same file might be indexed as both code node (if executable) and doc node (if has markdown). Remove duplicates.
+
+**Strategy:**
+- Code nodes: deduplicate by (file, symbol, symbolType)
+- Doc nodes: deduplicate by (file, heading, level)
+- Cross-type: If a file is both .ts and referenced as doc, keep separate (different node types)
+
+```python
+def deduplicate(nodes):
+    seen = {}
+    unique = []
+    for node in nodes:
+        key = (node['type'], node['file'], 
+               node.get('symbol') or node.get('heading'))
+        if key not in seen:
+            seen[key] = node
+            unique.append(node)
+    return unique
+
+code_nodes = deduplicate(code_nodes)
+doc_nodes = deduplicate(doc_nodes)
+```
+
+---
+
+
+## Step 3: Link Discovery
+
+**Goal:** Find cross-references between code and doc nodes (e.g., code imports doc, or code implements pattern).
+
+**Patterns:**
+
+1. **Code → Code references** (already in code_nodes from lat.md)
+   - Calls: `function_a` calls `function_b`
+   - Dependencies: `class_a` uses `class_b`
+   - Imports: `file_a` imports from `file_b`
+
+2. **Doc → Doc references** (already in doc_nodes from Obsidian)
+   - Markdown links: `[text](vault/decision.md#heading)`
+   - Related entries: "Related Decisions" section
+
+3. **Code → Doc references** (NEW: discover in this step)
+   - Pattern matches: `decision.md#caching-pattern` mentioned in `src/cache.ts` comments
+   - Skill references: `src/skills/prepare.ts` implements `/spek.prepare` skill definition
+   - Manual links: Code has comment `// See vault/decision.md#api-versioning`
+
+4. **Doc → Code references** (NEW: discover in this step)
+   - Lesson mentions: `vault/lessons/2026-05-18-003.md` references `src/prepare/prepare.ts`
+   - Decision affects: Decision doc lists affected components in frontmatter
+   - Spec implements: Spec document lists code files that implement it
+
+**Implementation:**
+
+
+> Example moved to [Example: 057-graph-merge-integration-code-2.md](./examples/057-graph-merge-integration-code-2.md)
+
+
+---
+
+
+## Step 5: Merge into Single Graph
 
 **Strategy:** Concatenate code + doc nodes into single nodes.jsonl.
 
@@ -214,7 +196,8 @@ print(f"Merged {total_nodes} nodes")
 
 ---
 
-### Step 6: Validate Merged Graph
+
+## Step 6: Validate Merged Graph
 
 **Checks:**
 
@@ -248,48 +231,20 @@ print(f"Merged {total_nodes} nodes")
 
 ---
 
+
 ## Configuration (vault/graph/config.json)
 
-```json
-{
-  "version": "1.0",
-  "merge": {
-    "strategy": "union-with-dedup",
-    "deduplication": {
-      "codeNodes": "by (file, symbol, symbolType)",
-      "docNodes": "by (file, heading, level)",
-      "crossType": "keep separate (code and doc are different)"
-    },
-    "linkDiscovery": {
-      "codeToDocPatterns": [
-        "vault/path#heading in comments/docstrings",
-        "decision/pattern name mentions",
-        "See [doc] comments"
-      ],
-      "docToCodePatterns": [
-        "src/path/file.ts code paths",
-        "import statements",
-        "function/class name mentions"
-      ]
-    },
-    "backreferenceComputation": "bidirectional mirrors (A→B means B←A)",
-    "sortOrder": ["code nodes by (file, symbol)", "doc nodes by (file, heading)", "skill nodes by command"]
-  },
-  "validation": {
-    "noDuplicateIds": true,
-    "backreferencesSymmetric": true,
-    "allFilesExist": true,
-    "noOrphanedNodes": false,
-    "nodeTypesValid": true
-  }
-}
-```
+
+> Example moved to [Example: 057-graph-merge-integration-code-1.md](./examples/057-graph-merge-integration-code-1.md)
+
 
 ---
 
+
 ## Problematic Cases
 
-### Case 1: File is both code and docs
+
+## Case 1: File is both code and docs
 
 Example: `src/config/vault-config.ts` is TypeScript code but has extensive comments that should be indexed as doc.
 
@@ -298,7 +253,8 @@ Example: `src/config/vault-config.ts` is TypeScript code but has extensive comme
 - Create doc node for the file comments: `src/config/vault-config.ts` (file-level doc)
 - Link them: code node references doc node (describes what the code does)
 
-### Case 2: Code comment mentions decision but link is wrong
+
+## Case 2: Code comment mentions decision but link is wrong
 
 Example: Comment says "See caching pattern" but file is `vault/patterns.md` (correct) but heading doesn't exist.
 
@@ -308,7 +264,8 @@ Example: Comment says "See caching pattern" but file is `vault/patterns.md` (cor
 - If not found, flag as "broken reference" in validation report
 - Proceed anyway (don't fail merge)
 
-### Case 3: Doc links to code that doesn't exist (yet)
+
+## Case 3: Doc links to code that doesn't exist (yet)
 
 Example: Spec mentions `src/new-feature/new-feature.ts` but feature not implemented yet.
 
@@ -319,9 +276,11 @@ Example: Spec mentions `src/new-feature/new-feature.ts` but feature not implemen
 
 ---
 
+
 ## Output Schema
 
-### vault/graph/nodes.jsonl
+
+## vault/graph/nodes.jsonl
 
 ```
 One node per line, no pretty-printing, in merge order:
@@ -331,7 +290,8 @@ One node per line, no pretty-printing, in merge order:
 {"type":"skill","id":"skills/spek-prepare/SKILL.md",...,"references":["vault/decision.md#git-workflow"],"referencedBy":[]}
 ```
 
-### vault/graph/metadata.json
+
+## vault/graph/metadata.json
 
 ```json
 {
@@ -360,9 +320,11 @@ One node per line, no pretty-printing, in merge order:
 
 ---
 
+
 ## Integration with /spek.map
 
-### In `/spek.map` Workflow
+
+## In `/spek.map` Workflow
 
 **Step 3 (merge):**
 ```bash
@@ -387,32 +349,3 @@ echo "Merged $(jq .nodeCount vault/graph/metadata.json) nodes"
 
 ---
 
-## Success Criteria
-
-- [x] Deduplication removes redundant nodes
-- [x] Link discovery finds code↔doc cross-references
-- [x] Backreferences are computed and symmetric
-- [x] Merged graph is validated (no duplicates, consistent references)
-- [x] Output format is JSONL (streaming-friendly)
-- [x] Metadata tracks merge history and validation
-- [x] Problematic cases (broken links, missing files) are handled gracefully
-
----
-
-## Implementation Checklist
-
-- [ ] Create `merge-graphs.py` script in `.spek/bin/`
-- [ ] Implement deduplication logic
-- [ ] Implement link discovery patterns (code→doc, doc→code)
-- [ ] Implement backreference computation
-- [ ] Add validation checks (duplicates, symmetry, file existence)
-- [ ] Test on real graph (validate merging works correctly)
-- [ ] Add error reporting for broken references
-- [ ] Integrate into `/spek.map` workflow (Step 3)
-
----
-
-## References
-
-- **Input specs:** obsidian-graph-export, node-schema-design
-- **Output specs:** spek-map-command, graph-storage-structure, graph-query-patterns

@@ -15,7 +15,7 @@
 - This guarantees that outcomes are reproducible and auditable.
 
 ## 3. Persistence
-`Obsidian` and the `obsidian` CLI are required runtime interfaces for automated vault and persistent memory operations. Spekificity uses the Obsidian CLI to perform scripted vault syncs, exports, and metadata extractions that enable automated context loading and lesson extraction; see `setup.sh` for verification and install instructions.
+The `obsidian` CLI is the required runtime interface for automated vault and persistent memory operations. Spekificity uses the Obsidian CLI to perform scripted vault syncs, exports, and metadata extractions that enable automated context loading and lesson extraction; see `setup.sh` for verification and install instructions. The Obsidian desktop app is optional and may be used for visualization or interactive workflows; where relevant, some export scenarios may require a running app depending on CLI capabilities and plugins.
 - All session states, decisions, patterns, lessons, and architectural context (from lat.md source and wiki indexing) are managed and stored in the Obsidian vault.
 - The vault serves as the single source of truth for all project knowledge, ensuring long-term durability and accessibility.
 
@@ -28,7 +28,7 @@
 
 ## Architectural Viability
 - The above principles are enforced in the project’s specifications, implementation roadmap, and workflow documentation.
-- All critical dependencies (`lat.md`, `SpecKit`, `Obsidian` + `obsidian` CLI, `Caveman` skill) are required and integrated at the architectural level to enable the automation and the four-pillar guarantees.
+- All critical dependencies (`lat.md`, `SpecKit`, `obsidian` CLI, `Caveman` skill) are required and integrated at the architectural level to enable the automation and the four-pillar guarantees. The Obsidian desktop app is optional for interactive use and visualization.
 - This structure ensures the project’s goals of efficiency, determinism, persistence, and autonomy are met.
 
 ---

@@ -267,11 +267,11 @@ def validate_preconditions(target_phase):
 ## Where It's Used
 
 - **Primary:** [feature-state-tracking.md](../specs/feature-state-tracking.md)
-- **Created in:** [prepare-command.md](../specs/prepare-command.md)
+- **Created in:** [100-prepare-command.md](../specs/100-prepare-command.md)
 - **Updated in:** 
   - [spek-automate-workflow.md](../specs/spek-automate-workflow.md)
   - [spek-implement-workflow.md](../specs/spek-implement-workflow.md)
-  - [post-command.md](../specs/post-command.md)
+  - [102-conclude-command.md](../specs/102-conclude-command.md)
 
 ---
 

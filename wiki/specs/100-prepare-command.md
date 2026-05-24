@@ -1,23 +1,44 @@
----
-title: "Prepare Command (C4.1)"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-21"
----
-
 # ATOMIC SPECIFICATION: Prepare Command (C4.1)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Skill — /spek.prepare (7-step workspace preparation)  
+
+
 **Depends On:** context-layer.md, git-verification.md  
 
 ---
+
 
 ## Overview
 
 `/spek.prepare` initializes the workspace for feature work (7 steps, ~2-5 seconds total).
 
 ---
+
+
+## Success Criteria
+
+- ✅ Git workspace verified clean
+- ✅ Feature name determined
+- ✅ Code graph checked/refreshed
+- ✅ Context loaded
+- ✅ Feature state created
+- ✅ Ready for /spek.plan
+- ## Implementation Checklist
+- [ ] Implement git verification (Step 1)
+- [ ] Implement feature name loading (Step 2)
+- [ ] Implement graph freshness check (Step 3)
+- [ ] Call /spek.map for refresh (Step 4)
+- [ ] Call /spek.context (Step 5)
+- [ ] Create feature state (Step 6)
+- [ ] Report completion (Step 7)
+- ## References
+- **Related Specs:**
+- [git-verification.md](012-git-verification.md) — Git state validation
+- [memory-architecture.md](030-memory-architecture.md) — Context loading and memory layers
+- [feature-state-tracking.md](040-feature-state-tracking.md) — Feature state
+- [spek-map-command.md](103-spek-map-command.md) — Code graph refresh
+- **External:**
+- [extracted spec /spek.prepare](prepare-and-post-skills.md#spekprepare)
+
 
 ## Execution Sequence
 
@@ -34,78 +55,53 @@ date: "2026-05-21"
 
 ---
 
+
 ## Step Details
 
-### Step 1: Git Verification
+
+## Step 1: Git Verification
 - Check repo exists
 - Verify working dir is clean (no uncommitted changes)
 - Verify on a feature branch (or main for new features)
 - **Output:** Git status ✓
 
-### Step 2: Feature Name
+
+## Step 2: Feature Name
 - Use `--feature-name` if provided
 - Else extract from branch name
 - Else prompt user
 - **Output:** Feature name (validated)
 
-### Step 3: Code Graph Freshness Check
+
+## Step 3: Code Graph Freshness Check
 - If `--force-graph-refresh`: skip to Step 4
 - Else check wiki/vault/graph/config.json mtime
 - If age > 1 hour: offer refresh to user
 - If age < 1 hour: skip Step 4
 
-### Step 4: Code Graph Refresh (Conditional)
+
+## Step 4: Code Graph Refresh (Conditional)
 - Call `/spek.map` if triggered
 - Validate merged nodes.jsonl
 - **Output:** Fresh graph or skipped
 
-### Step 5: Load Context
+
+## Step 5: Load Context
 - If `--skip-context`: reuse existing
 - Else call `/spek.context` (load vault + code graph + summarize)
 - **Output:** vault/session/
 
-### Step 6: Create Feature State
+
+## Step 6: Create Feature State
 - Create vault/session/
 - Write: feature name, status=initialized, phase=prepared
 - Add first session log entry
 - **Output:** Feature state file
 
-### Step 7: Report Status
+
+## Step 7: Report Status
 - Display summary: git ✓, graph ✓, context loaded, ready
 - Show next step: run `/spek.plan [description]`
 
 ---
 
-## Success Criteria
-
-✅ Git workspace verified clean  
-✅ Feature name determined  
-✅ Code graph checked/refreshed  
-✅ Context loaded  
-✅ Feature state created  
-✅ Ready for /spek.plan  
-
----
-
-## Implementation Checklist
-
-- [ ] Implement git verification (Step 1)
-- [ ] Implement feature name loading (Step 2)
-- [ ] Implement graph freshness check (Step 3)
-- [ ] Call /spek.map for refresh (Step 4)
-- [ ] Call /spek.context (Step 5)
-- [ ] Create feature state (Step 6)
-- [ ] Report completion (Step 7)
-
----
-
-## References
-
-**Related Specs:**
-- [git-verification.md](git-verification.md) — Git state validation
-- [memory-architecture.md](memory-architecture.md) — Context loading and memory layers
-- [feature-state-tracking.md](feature-state-tracking.md) — Feature state
-- [spek-map-command.md](spek-map-command.md) — Code graph refresh
-
-**External:**
-- [extracted spec /spek.prepare](prepare-and-post-skills.md#spekprepare)

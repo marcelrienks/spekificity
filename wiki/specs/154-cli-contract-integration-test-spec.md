@@ -1,12 +1,7 @@
----
-title: "Small CLI Contract Integration Test (SpecKit / lat.md)"
-status: "DRAFT"
-date: "2026-05-21"
----
-
 # Small CLI Contract Integration Test (SpecKit / lat.md)
 
-Status: DRAFT
+
+
 Date: 2026-05-21
 
 Goal

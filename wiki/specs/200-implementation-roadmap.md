@@ -1,40 +1,47 @@
----
-title: "Implementation Roadmap"
-status: "APPROVED FOR IMPLEMENTATION"
-date: "2026-05-20"
-version: "1.0.0-alpha.1"
----
-
 # Implementation Roadmap
 
-**Status:** APPROVED FOR IMPLEMENTATION | **Date:** 2026-05-20 | **Version:** 1.0.0-alpha.1
 
----
+
+**Date:** 2026-05-20 | ---
+
+
+## Dependencies & Blockers
+
+
+## Hard Dependencies
+- Python 3.11+
+- SpecKit CLI (GitHub: github/spec-kit)
+- Git (initialized project)
+- `uv` package manager
+
+
+## Soft Dependencies
+- Obsidian (for vault editing; not required for CLI to work)
+- lat.md MCP (can implement with simpler indexer first)
+
+
+## References
+
+- [Spekificity Vision](../vision.md)
+- [Spekificity Architecture](../architecture.md)
+- [Feature Development Workflow](../workflow.md)
+- [SpecKit Integration Contract](110-speckit-integration-contract.md)
+- [Test Suite Specification](141-test-suite-specification.md)
 
 ## Executive Summary
 
 Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All architectural decisions, integration contracts, and workflow specifications have been documented and validated. Implementation can begin immediately following this roadmap.
 
-### Readiness Checklist
 
-| Component | Status | Reference |
-|-----------|--------|-----------|
-| **Vision & Philosophy** | ✓ Complete | [vision.md](../vision.md), [intention.md](../intention.md) |
-| **Architectural Design** | ✓ Complete | [architecture.md](../architecture.md) |
-| **Workflow Definition** | ✓ Complete | [workflow.md](../workflow.md) |
-| **Integration Contracts** | ✓ Complete | [110-speckit-integration-contract.md](110-speckit-integration-contract.md) |
-| **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) |
-| **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) — `Obsidian` + `obsidian` CLI are required for the vault operations described in this roadmap. |
-| **lat.md Specification** | ✓ Complete | [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md) |
-| **Skill Specifications** | ✓ Complete | [100-prepare-command.md](100-prepare-command.md) through [105-spek-implement-workflow.md](105-spek-implement-workflow.md) |
-| **Automation Workflow** | ✓ Complete | [120-spek-automate-workflow.md](120-spek-automate-workflow.md), [121-cli-orchestration.md](121-cli-orchestration.md) |
-| **Testing & Validation** | ✓ Complete | [140-integration-validation-and-testing.md](140-integration-validation-and-testing.md), [141-test-suite-specification.md](141-test-suite-specification.md) |
-
+## Readiness Checklist
+Component | Status | Reference | -----------|--------|----------- | **Vision & Philosophy** | ✓ Complete | [vision.md](../vision.md), [intention.md](../intention.md) | **Architectural Design** | ✓ Complete | [architecture.md](../architecture.md) | **Workflow Definition** | ✓ Complete | [workflow.md](../workflow.md) | **Integration Contracts** | ✓ Complete | [110-speckit-integration-contract.md](110-speckit-integration-contract.md) | **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) | **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) — `Obsidian` + `obsidian` CLI are required for the vault operations described in this roadmap. | **lat.md Specification** | ✓ Complete | [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md) | **Skill Specifications** | ✓ Complete | [100-prepare-command.md](100-prepare-command.md) through [105-spek-implement-workflow.md](105-spek-implement-workflow.md) | **Automation Workflow** | ✓ Complete | [120-spek-automate-workflow.md](120-spek-automate-workflow.md), [121-cli-orchestration.md](121-cli-orchestration.md) | **Testing & Validation** | ✓ Complete | [140-integration-validation-and-testing.md](140-integration-validation-and-testing.md), [141-test-suite-specification.md](141-test-suite-specification.md)
 ---
+
 
 ## Technology Stack Decision
 
-### Language: Python 3.11+
+
+## Language: Python 3.11+
 
 
 **Rationale:**
@@ -51,63 +58,20 @@ Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All arch
 uv, speckit, pygments, click, pydantic, sqlalchemy, gitpython, loguru
 ```
 
-### Directory Structure
 
-```
-spekificity/
-├── src/
-│   ├── spekificity/
-│   │   ├── __init__.py
-│   │   ├── cli/
-│   │   │   ├── __init__.py
-│   │   │   ├── main.py                 # CLI entry point
-│   │   │   ├── prepare.py              # /spek.prepare skill
-│   │   │   ├── context.py              # /spek.context skill
-│   │   │   ├── plan.py                 # /spek.plan skill
-│   │   │   ├── map.py                  # /spek.map skill
-│   │   │   ├── implement.py            # /spek.implement skill
-│   │   │   ├── post.py                 # /spek.conclude skill
-│   │   │   └── lessons.py              # /spek.lessons skill
-│   │   ├── graph/
-│   │   │   ├── __init__.py
-│   │   │   ├── lat_index.py           # lat.md core
-│   │   │   ├── indexer.py              # File indexing
-│   │   │   ├── query.py                # Graph queries
-│   │   │   └── schema.py               # Node/edge schema
-│   │   ├── vault/
-│   │   │   ├── __init__.py
-│   │   │   ├── loader.py               # Vault context loading
-│   │   │   ├── sync.py                 # Git sync automation
-│   │   │   └── formatter.py            # Markdown formatting
-│   │   ├── memory/
-│   │   │   ├── __init__.py
-│   │   │   ├── session.py              # Session memory ops
-│   │   │   ├── context_layer.py        # 3-layer context
-│   │   │   └── enrichment.py           # Enrichment layers
-│   │   ├── orchestration/
-│   │   │   ├── __init__.py
-│   │   │   ├── speckit_wrapper.py      # SpecKit orchestration
-│   │   │   ├── workflow.py             # Feature workflow
-│   │   │   └── error_handling.py       # Error/recovery
-│   │   └── utils/
-│   │       ├── __init__.py
-│   │       ├── git_ops.py              # Git operations
-│   │       └── validators.py           # Input validation
-├── tests/
-│   ├── unit/
-│   ├── integration/
-│   └── e2e/
-├── .spek/
-│   └── lat_index.db
-├── wiki/
-└── pyproject.toml
-```
+## Directory Structure
+
+
+> Example moved to [Example: 200-implementation-roadmap-code-1.md](./examples/200-implementation-roadmap-code-1.md)
+
 
 ---
 
+
 ## Step-by-Step Implementation Plan
 
-### Step 1: Project Scaffolding
+
+## Step 1: Project Scaffolding
 **Deliverable:** Python project structure + `pyproject.toml` + entry point
 
 **Tasks:**
@@ -125,7 +89,8 @@ spekificity/
 
 ---
 
-### Step 2: Language Selection & Environment Setup
+
+## Step 2: Language Selection & Environment Setup
 **Deliverable:** Confirmed Python 3.11+ with `uv` configured
 
 **Tasks:**
@@ -144,7 +109,8 @@ spekificity/
 
 ---
 
-### Step 3: CLI Scaffolding
+
+## Step 3: CLI Scaffolding
 **Deliverable:** 7 CLI commands wired to placeholder implementations
 
 **Tasks:**
@@ -165,9 +131,11 @@ spekificity/
 
 ---
 
-### Step 4: Core Skills Implementation (Phase 1–7)
 
-#### 4a. /spek.prepare (Workspace Setup)
+## Step 4: Core Skills Implementation (Phase 1–7)
+
+
+## 4a. /spek.prepare (Workspace Setup)
 **Deliverable:** multi-step workspace initialization
 
 **Tasks:**
@@ -187,7 +155,8 @@ spekificity/
 
 **Spec Reference:** [100-prepare-command.md](100-prepare-command.md)
 
-#### 4b. /spek.context (Context Layer)
+
+## 4b. /spek.context (Context Layer)
 **Deliverable:** 3-layer context loading (user, session, repo)
 
 **Tasks:**
@@ -206,7 +175,8 @@ spekificity/
 
 **Spec Reference:** [030-memory-architecture.md](030-memory-architecture.md), [031-context-layer.md](031-context-layer.md), [032-enrichment-layer.md](032-enrichment-layer.md)
 
-#### 4c. /spek.plan (SpecKit Orchestration)
+
+## 4c. /spek.plan (SpecKit Orchestration)
 **Deliverable:** Orchestrated SpecKit workflow (specify → clarify → plan → analyze → tasks)
 
 **Tasks:**
@@ -227,7 +197,7 @@ spekificity/
 - tasks.md with executable task list ✓
 - All artifacts committed ✓
 
-**Spec Reference:** [110-speckit-integration-contract.md](110-speckit-integration-contract.md), [102-post-command.md](102-post-command.md)
+**Spec Reference:** [110-speckit-integration-contract.md](110-speckit-integration-contract.md), [102-conclude-command.md](102-conclude-command.md)
 
 -#### 4d. /spek.map (lat.md Wrapper)
 **Deliverable:** lat.md query interface + impact analysis
@@ -246,7 +216,8 @@ spekificity/
 
 **Spec Reference:** [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md)
 
-#### 4e. /spek.implement (Execution Coordinator)
+
+## 4e. /spek.implement (Execution Coordinator)
 **Deliverable:** Context-aware implementation execution
 
 **Tasks:**
@@ -266,7 +237,8 @@ spekificity/
 
 **Spec Reference:** [105-spek-implement-workflow.md](105-spek-implement-workflow.md)
 
-#### 4f. /spek.conclude (Outcome Archival)
+
+## 4f. /spek.conclude (Outcome Archival)
 **Deliverable:** Feature completion + lesson extraction
 
 **Tasks:**
@@ -284,9 +256,10 @@ spekificity/
 - Vault synced to origin ✓
 - Branch merged or marked for merge ✓
 
-**Spec Reference:** [102-post-command.md](102-post-command.md)
+**Spec Reference:** [102-conclude-command.md](102-conclude-command.md)
 
-#### 4g. /spek.lessons (Retrospective)
+
+## 4g. /spek.lessons (Retrospective)
 **Deliverable:** Pattern extraction + recommendation system
 
 **Tasks:**
@@ -305,7 +278,8 @@ spekificity/
 
 ---
 
-### Step 5: lat.md MCP Setup
+
+## Step 5: lat.md MCP Setup
 **Deliverable:** Indexed code analysis + real-time sync
 
 **Tasks:**
@@ -328,17 +302,14 @@ spekificity/
 
 ---
 
+
 ## Integration Validation & Testing
 
-### Test Phases
 
-| Phase | What | Where | Success Criteria |
-|-------|------|-------|------------------|
-| **Unit Tests** | Individual components (CLI, graph, vault, memory) | `tests/unit/` | Coverage adequate per module |
-| **Integration Tests** | Multi-step workflows (prepare → context → plan) | `tests/integration/` | Full workflow succeeds ✓ |
-| **E2E Tests** | Complete feature from intent → lessons | `tests/e2e/` | Feature completes end-to-end ✓ |
+## Test Phases
+Phase | What | Where | Success Criteria | -------|------|-------|------------------ | **Unit Tests** | Individual components (CLI, graph, vault, memory) | `tests/unit/` | Coverage adequate per module | **Integration Tests** | Multi-step workflows (prepare → context → plan) | `tests/integration/` | Full workflow succeeds ✓ | **E2E Tests** | Complete feature from intent → lessons | `tests/e2e/` | Feature completes end-to-end ✓
 
-### Validation Checklist
+## Validation Checklist
 
 - [ ] All CLI commands callable with `--help`
 - [ ] Context loads without errors (user, session, repo layers)
@@ -353,23 +324,13 @@ spekificity/
 
 ---
 
-## Dependencies & Blockers
 
-### Hard Dependencies
-- Python 3.11+
-- SpecKit CLI (GitHub: github/spec-kit)
-- Git (initialized project)
-- `uv` package manager
-
-### Soft Dependencies
-- Obsidian (for vault editing; not required for CLI to work)
-- lat.md MCP (can implement with simpler indexer first)
-
-### Potential Blockers
+## Potential Blockers
 - SpecKit API changes (mitigate: pin version in `pyproject.toml`)
 - Large codebase indexing performance (mitigate: incremental indexing, caching)
 
 ---
+
 
 ## Success Metrics
 
@@ -377,11 +338,13 @@ Success criteria and numeric targets are defined in implementation artifacts and
 
 ---
 
+
 ## Timeline
 
 Timeline and effort estimates are omitted from this specification. Implementation teams should create task-level estimates in their project management tooling.
 
 ---
+
 ## Next Steps
 
 1. ✓ Confirm readiness (this document)
@@ -391,10 +354,3 @@ Timeline and effort estimates are omitted from this specification. Implementatio
 
 ---
 
-## References
-
-- [Spekificity Vision](../vision.md)
-- [Spekificity Architecture](../architecture.md)
-- [Feature Development Workflow](../workflow.md)
-- [SpecKit Integration Contract](110-speckit-integration-contract.md)
-- [Test Suite Specification](141-test-suite-specification.md)

@@ -1,12 +1,7 @@
----
-title: "CLI Return-Code Policy"
-status: "DRAFT"
-date: "2026-05-21"
----
-
 # CLI Return-Code Policy
 
-Status: DRAFT
+
+
 Date: 2026-05-21
 
 Purpose

@@ -1,17 +1,11 @@
----
-title: "Caveman Integration (C4.3)"
-status: "ATOMIC SPECIFICATION"
-version: "2026-05-19"
----
-
 # SPECIFICATION: Caveman Integration (C4.3)
 
-**Status:** ATOMIC SPECIFICATION  
-**Type:** Optimization — Caveman Compression Mode Integration  
-**Version:** 2026-05-19  
-**Depends On:** error-handling-and-recovery.md, lessons-format.md, post-command.md, post-processing.md  
+
+
+**Depends On:** error-handling-and-recovery.md, lessons-format.md, 102-conclude-command.md, 101-conclude-processing.md  
 
 ---
+
 
 ## Overview
 
@@ -25,9 +19,22 @@ Caveman compression mode drastically reduces token usage (significant qualitativ
 
 ---
 
+
+## Success Criteria
+
+- ✅ Compression modes implemented (lite/full/ultra working)
+- ✅ Token reduction verified (30%/75%/90% targets achieved)
+- ✅ Meaning preserved (ultra compression still understandable to agent)
+- ✅ User control working (modes selectable per command/session)
+- ✅ Application transparent (users don't notice when caveman is active)
+- ✅ Integration seamless (applied to lessons, decisions, patterns)
+- ✅ Toggle mechanism working (can switch modes mid-session)
+
+
 ## Caveman Compression Modes
 
-### Mode 1: `lite` (Minimal Compression)
+
+## Mode 1: `lite` (Minimal Compression)
 
 **Compression Level:** modest token reduction
 
@@ -46,6 +53,7 @@ Caveman compression mode drastically reduces token usage (significant qualitativ
 
 **Example - Normal Text:**
 ```
+
 ## Decision: Use Obsidian for Vault
 
 We chose Obsidian as the persistent knowledge store for the following reasons:
@@ -60,6 +68,7 @@ This enables the 3-layer memory model where decisions + patterns are permanently
 
 **Example - Lite Caveman:**
 ```
+
 ## Decision: Obsidian for Vault
 
 Why: Graph visualization, YAML frontmatter, plugins, local storage, wide adoption.
@@ -68,7 +77,8 @@ Enables: 3-layer memory (decisions + patterns permanent storage).
 
 ---
 
-### Mode 2: `full` (Default Compression)
+
+## Mode 2: `full` (Default Compression)
 
 **Compression Level:** substantial token reduction
 
@@ -88,6 +98,7 @@ Enables: 3-layer memory (decisions + patterns permanent storage).
 
 **Example - Caveman Full:**
 ```
+
 ## Decision: Obsidian for Vault
 Reason: Graph viz, YAML, plugins, local-first storage, adoption.
 Use: 3-layer memory (decisions, patterns archived).
@@ -95,7 +106,8 @@ Use: 3-layer memory (decisions, patterns archived).
 
 ---
 
-### Mode 3: `ultra` (Maximum Compression)
+
+## Mode 3: `ultra` (Maximum Compression)
 
 **Compression Level:** maximal token reduction
 
@@ -114,6 +126,7 @@ Use: 3-layer memory (decisions, patterns archived).
 
 **Example - Caveman Ultra:**
 ```
+
 ## Decision: Obsidian Vault
 → Graph viz, YAML, plugins, local-first, adoption.
 ∴ 3-layer memory: decisions, patterns archival.
@@ -121,9 +134,11 @@ Use: 3-layer memory (decisions, patterns archived).
 
 ---
 
+
 ## Integration Points
 
-### Integration Point 1: Post-Feature Lesson Generation (`/spek.conclude`)
+
+## Integration Point 1: Post-Feature Lesson Generation (`/spek.conclude`)
 
 **When:** Feature completed, lessons extracted
 
@@ -144,7 +159,7 @@ spek conclude --caveman-mode=ultra --dry-run
 
 **Workflow:**
 1. Extract lessons from artifacts (spec, plan, tasks, execution)
-2. Format per [Lessons Format](lessons-format.md)
+2. Format per [Lessons Format](021-lessons-format.md)
 3. Apply compression mode (`full` by default)
 4. Write to `wiki/vault/lessons/<date>-<feature>-<name>.md`
 5. Log compression ratio to feature state (quantitative values omitted)
@@ -156,11 +171,12 @@ spek conclude --caveman-mode=ultra --dry-run
 
 ---
 
-### Integration Point 2: Architectural Decisions Archival
+
+## Integration Point 2: Architectural Decisions Archival
 
 **When:** New decisions captured during feature, archived to vault
 
-**Spec:** [Architectural Decisions](architectural-decisions.md)
+**Spec:** [Architectural Decisions](022-architectural-decisions.md)
 
 **Compression Rule:**
 - Primary storage (`wiki/vault/decision.md`): `lite` (preserve full reasoning)
@@ -170,11 +186,13 @@ spek conclude --caveman-mode=ultra --dry-run
 **Example:**
 ```markdown
 # wiki/vault/decision.md (LITE)
+
 ## Decision: Caveman Integration for Token Efficiency
 Reasoning: Token usage was critical constraint in autonomous workflows...
 [Full explanation, rationale, alternatives considered]
 
 # vault/repo/architectural-decisions.md (FULL)
+
 ## Decision: Caveman for Token Efficiency
 Why: Token constraint in autonomous workflows.
 Trade: Readability vs. efficiency (configurable).
@@ -185,11 +203,12 @@ Decisions applied: Caveman compression (lite/full/ultra modes).
 
 ---
 
-### Integration Point 3: Patterns Library Updates
+
+## Integration Point 3: Patterns Library Updates
 
 **When:** Reusable patterns captured during feature
 
-**Spec:** [Patterns Library](patterns-library.md)
+**Spec:** [Patterns Library](023-patterns-library.md)
 
 **Compression Rule:**
 - Pattern definition: `lite` (clarify pattern for reuse)
@@ -199,12 +218,14 @@ Decisions applied: Caveman compression (lite/full/ultra modes).
 **Example:**
 ```markdown
 # wiki/vault/patterns.md (LITE)
+
 ## Pattern: Decorator for Workflow Enrichment
 Description: Wrapper functions that inject context before calling external tools.
 Example: Specify enrichment wraps /speckit.specify to load architectural decisions.
 When: Used when adding contextual intelligence to stateless tools.
 
 # vault/repo/patterns-index.md (FULL)
+
 ## Pattern: Decorator for Enrichment
 Def: Wrapper injects context before calling tool.
 Ex: Specify enrichment → /speckit.specify with decisions.
@@ -216,7 +237,8 @@ Patterns: Use decorator-enrichment pattern for new tool.
 
 ---
 
-### Integration Point 4: Session Cleanup (`/spek.conclude` finale)
+
+## Integration Point 4: Session Cleanup (`/spek.conclude` finale)
 
 **When:** Feature complete, session memory archived
 
@@ -232,11 +254,12 @@ Patterns: Use decorator-enrichment pattern for new tool.
 
 ---
 
-### Integration Point 5: Error Logging
+
+## Integration Point 5: Error Logging
 
 **When:** Errors logged during any skill execution
 
-**Spec:** [Error Handling and Recovery](error-handling-and-recovery.md)
+**Spec:** [Error Handling and Recovery](010-error-handling-and-recovery.md)
 
 **Compression Rule:**
 - Error log entry: `lite` (preserve full details for debugging)
@@ -246,9 +269,11 @@ Patterns: Use decorator-enrichment pattern for new tool.
 
 ---
 
+
 ## User Control & Transparency
 
-### Flag: `--caveman-mode`
+
+## Flag: `--caveman-mode`
 
 **Options:**
 - `--caveman-mode=lite` — Minimal compression (readable, higher tokens)
@@ -267,13 +292,15 @@ Patterns: Use decorator-enrichment pattern for new tool.
 
 ---
 
-### Transparency & Reporting
+
+## Transparency & Reporting
 
 **Feature State Reports Compression:**
 
 ```markdown
 # Feature State (2026-05-19)
 ...
+
 ## Compression Applied
 - Lesson: caveman-full (50 lines, 80% reduction from 250)
 - Decisions: caveman-lite (vault) + caveman-full (cache)
@@ -284,6 +311,7 @@ Patterns: Use decorator-enrichment pattern for new tool.
 **Token Usage Tracking:**
 
 ```markdown
+
 ## Token Budget
 - Context loaded: 8.2K tokens
 - Lesson generation: 2.1K tokens
@@ -294,9 +322,11 @@ Patterns: Use decorator-enrichment pattern for new tool.
 
 ---
 
+
 ## Quality Assurance
 
-### Preservation Validation
+
+## Preservation Validation
 
 **Rule:** Caveman compression preserves 100% of **information content**, even if reducing tokens by 90%.
 
@@ -317,7 +347,8 @@ Both capture the same decision information; compression just removes verbosity.
 
 ---
 
-### Test Cases
+
+## Test Cases
 
 - [ ] Lesson generated in `lite` mode is more readable than `full`
 - [ ] Lesson generated in `full` mode saves ~75% tokens vs `lite`
@@ -329,6 +360,7 @@ Both capture the same decision information; compression just removes verbosity.
 - [ ] Token savings correctly reported in feature state
 
 ---
+
 
 ## Implementation Checklist
 
@@ -346,14 +378,9 @@ Both capture the same decision information; compression just removes verbosity.
 
 ---
 
+
 ## Performance Impact
-
-| Mode | Token Reduction | Readability | Use Case |
-|------|-----------------|-------------|----------|
-| `lite` | 30% | High | Onboarding, documentation |
-| `full` | 75% | Medium | Standard workflow |
-| `ultra` | 90% | Low | Token budget exhausted |
-
+Mode | Token Reduction | Readability | Use Case | ------|-----------------|-------------|---------- | `lite` | 30% | High | Onboarding, documentation | `full` | 75% | Medium | Standard workflow | `ultra` | 90% | Low | Token budget exhausted
 **Typical Session:**
 - Feature 1 (fresh context): lite mode (30% reduction) → 15K tokens
 - Feature 2-5 (reusing context): full mode (75% reduction) → 12K tokens each
@@ -362,9 +389,11 @@ Both capture the same decision information; compression just removes verbosity.
 
 ---
 
+
 ## Known Limitations
 
-### Limitation 1: Ultra Mode Requires Context
+
+## Limitation 1: Ultra Mode Requires Context
 
 **Issue:** Ultra-compressed lessons can be hard to understand without prior context
 
@@ -372,7 +401,8 @@ Both capture the same decision information; compression just removes verbosity.
 
 ---
 
-### Limitation 2: Search Difficulty
+
+## Limitation 2: Search Difficulty
 
 **Issue:** Ultra-compressed text harder to search/grep
 
@@ -380,7 +410,8 @@ Both capture the same decision information; compression just removes verbosity.
 
 ---
 
-### Limitation 3: No Auto-Decompression
+
+## Limitation 3: No Auto-Decompression
 
 **Issue:** User should know which compression mode was used
 
@@ -388,16 +419,18 @@ Both capture the same decision information; compression just removes verbosity.
 
 ---
 
+
 ## Related Specs
 
-- [Lessons Format](lessons-format.md) — How lessons are structured
-- [Post Processing](post-processing.md) — When lessons are generated
-- [Architectural Decisions](architectural-decisions.md) — Decision archival
-- [Patterns Library](patterns-library.md) — Pattern storage
-- [Error Handling and Recovery](error-handling-and-recovery.md) — Error logging
-- [Memory Architecture](memory-architecture.md) — 3-layer memory model
+- [Lessons Format](021-lessons-format.md) — How lessons are structured
+- [Post Processing](101-conclude-processing.md) — When lessons are generated
+- [Architectural Decisions](022-architectural-decisions.md) — Decision archival
+- [Patterns Library](023-patterns-library.md) — Pattern storage
+- [Error Handling and Recovery](010-error-handling-and-recovery.md) — Error logging
+- [Memory Architecture](030-memory-architecture.md) — 3-layer memory model
 
 ---
+
 
 ## Final Notes
 
@@ -422,12 +455,3 @@ Caveman compression is **optional but recommended** for Spekificity workflows. I
 
 ---
 
-## Success Criteria
-
-- ✅ Compression modes implemented (lite/full/ultra working)
-- ✅ Token reduction verified (30%/75%/90% targets achieved)
-- ✅ Meaning preserved (ultra compression still understandable to agent)
-- ✅ User control working (modes selectable per command/session)
-- ✅ Application transparent (users don't notice when caveman is active)
-- ✅ Integration seamless (applied to lessons, decisions, patterns)
-- ✅ Toggle mechanism working (can switch modes mid-session)

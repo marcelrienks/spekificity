@@ -1,25 +1,46 @@
----
-title: "Decorator Wrapper Pattern (C3.2)"
-status: "ATOMIC SPECIFICATION"
-version: "1.0.0-alpha.1"
-date: "2026-05-20"
-type: "pattern"
----
-
 # ATOMIC SPECIFICATION: Decorator Wrapper Pattern (C3.2)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Integration Pattern — Pre/Core/Post Layer Structure  
+
+
 **Depends On:** None (foundational pattern)  
 **Used By:** enrichment-layer.md (all three phases: specify, plan, implement)  
 
 ---
+
 
 ## Overview
 
 Decorator wrapper pattern structures spekificity enrichment as pre/core/post layers without modifying SpecKit internals. This spec defines the pattern, rationale, error handling, and testing strategy.
 
 ---
+
+
+## Success Criteria
+
+- ✅ Pre/core/post layers are independent and testable
+- ✅ Context is loaded without modifying SpecKit
+- ✅ Output is validated and memory updated
+- ✅ Errors are caught and handled gracefully
+- ✅ Fallback mechanism works when core fails
+- ✅ Pattern works with any SpecKit version
+- ## Implementation Checklist
+- [ ] Implement decorator wrapper base class
+- [ ] Implement pre-execution layer (context loading)
+- [ ] Implement core execution layer (call SpecKit)
+- [ ] Implement post-execution layer (validation + memory)
+- [ ] Add error handling and retry logic
+- [ ] Add fallback mechanisms
+- [ ] Write unit tests for each layer
+- [ ] Write integration tests for full wrapper
+- [ ] Document in wrapper skill files
+- ## References
+- **Related Specs:**
+- [context-layer.md](031-context-layer.md) — Context loading in pre-execution
+- [enrichment-layer.md](032-enrichment-layer.md) — Specific wrappers for all phases
+- **External:**
+- [extracted spec Decorator Pattern](110-speckit-integration-contract.md#integration-pattern-decorator-wrapper) — Original spec
+- Decorator Design Pattern — Gang of Four design patterns
+
 
 ## Pattern Structure
 
@@ -55,6 +76,7 @@ def spek_enriched_command(command_name, *args, **kwargs):
 
 ---
 
+
 ## Why Decorator, Not Hooks?
 
 **Rationale:**
@@ -73,9 +95,11 @@ def spek_enriched_command(command_name, *args, **kwargs):
 
 ---
 
+
 ## Layer Responsibilities
 
-### Pre-Execution Layer
+
+## Pre-Execution Layer
 
 **Responsibility:** Load context, validate inputs, enrich command
 
@@ -96,7 +120,8 @@ def spek_enriched_command(command_name, *args, **kwargs):
 
 ---
 
-### Core Execution Layer
+
+## Core Execution Layer
 
 **Responsibility:** Call SpecKit command unmodified
 
@@ -115,7 +140,8 @@ def spek_enriched_command(command_name, *args, **kwargs):
 
 ---
 
-### Post-Execution Layer
+
+## Post-Execution Layer
 
 **Responsibility:** Validate output, update memory, report status
 
@@ -137,9 +163,11 @@ def spek_enriched_command(command_name, *args, **kwargs):
 
 ---
 
+
 ## Error Handling Strategy
 
-### Error Propagation
+
+## Error Propagation
 
 ```
 Pre-Execution Error
@@ -156,7 +184,8 @@ Post-Execution Error
   → Continue (post-execution is optional)
 ```
 
-### Retry Strategy
+
+## Retry Strategy
 
 **Pre-Execution Errors:** No retry (environment issue, not transient)
 
@@ -167,7 +196,8 @@ Post-Execution Error
 
 **Post-Execution Errors:** No retry (memory is optional)
 
-### Fallback Strategy
+
+## Fallback Strategy
 
 **If Core Execution Fails:**
 
@@ -187,9 +217,11 @@ if result is None or result is Error:
 
 ---
 
+
 ## Testing Strategy
 
-### Unit Tests (Test Each Layer Independently)
+
+## Unit Tests (Test Each Layer Independently)
 
 **Pre-Execution Tests:**
 - Context loads successfully
@@ -207,7 +239,8 @@ if result is None or result is Error:
 - Memory is updated
 - Status is reported
 
-### Integration Tests (Test Full Wrapper)
+
+## Integration Tests (Test Full Wrapper)
 
 **Scenario 1: Happy Path**
 - Pre → Core → Post all succeed
@@ -230,9 +263,11 @@ if result is None or result is Error:
 
 ---
 
+
 ## Configuration
 
-### .spek/config.yaml
+
+## .spek/config.yaml
 
 ```yaml
 decorator_wrapper:
@@ -266,37 +301,3 @@ decorator_wrapper:
 
 ---
 
-## Success Criteria
-
-✅ Pre/core/post layers are independent and testable  
-✅ Context is loaded without modifying SpecKit  
-✅ Output is validated and memory updated  
-✅ Errors are caught and handled gracefully  
-✅ Fallback mechanism works when core fails  
-✅ Pattern works with any SpecKit version  
-
----
-
-## Implementation Checklist
-
-- [ ] Implement decorator wrapper base class
-- [ ] Implement pre-execution layer (context loading)
-- [ ] Implement core execution layer (call SpecKit)
-- [ ] Implement post-execution layer (validation + memory)
-- [ ] Add error handling and retry logic
-- [ ] Add fallback mechanisms
-- [ ] Write unit tests for each layer
-- [ ] Write integration tests for full wrapper
-- [ ] Document in wrapper skill files
-
----
-
-## References
-
-**Related Specs:**
-- [context-layer.md](context-layer.md) — Context loading in pre-execution
-- [enrichment-layer.md](enrichment-layer.md) — Specific wrappers for all phases
-
-**External:**
-- [extracted spec Decorator Pattern](speckit-integration-contract.md#integration-pattern-decorator-wrapper) — Original spec
-- Decorator Design Pattern — Gang of Four design patterns
