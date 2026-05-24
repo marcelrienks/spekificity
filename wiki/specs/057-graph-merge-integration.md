@@ -1,6 +1,5 @@
 # Spec: Graph Merge and Integration
 
-**Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Concern:** Merging code nodes (lat.md) and doc nodes (Obsidian export) into unified graph  
 **Extracted from:** extracted spec Questions 2, 3, 5  
 **Depends on:** obsidian-graph-export, node-schema-design  

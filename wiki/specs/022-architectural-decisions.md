@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Architectural Decisions (C2.2)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Memory Layer 2 — Architectural Decisions  
 **Depends On:** lessons-format.md, memory-architecture.md  
 **Used By:** /spek.context (read at session start), /spek.conclude (write at feature end)  
 
@@ -31,7 +29,7 @@ Permanent archive of all architectural decisions; source of truth for understand
 
 **Date:** YYYY-MM-DD  
 **Feature:** spec-[number] or "architecture"  
-**Status:** active | deprecated | superseded-by-[link]  
+deprecated | superseded-by-[link]  
 
 **Context:** Why this decision was needed  
 
@@ -63,7 +61,6 @@ Permanent archive of all architectural decisions; source of truth for understand
 - "architecture" = Foundational architecture decision
 - "pattern-xyz" = Decision about a specific pattern
 
-**Status:** One of:
 - `active` — Currently constrains behavior
 - `deprecated` — Old but kept for context
 - `superseded-by-[link]` — Replaced by newer decision
@@ -141,18 +138,11 @@ Compressed, recent-only summary of active decisions. Used for session startup co
 **Full Archive:** See vault/decision.md (permanent)  
 
 ## Recent Active Decisions (Last 3 Features)
-
-| Feature | Decision | Rationale | Impact |
-|---------|----------|-----------|--------|
-| spec-003 | [title] | [1-line rationale] | [high/medium/low] |
-| spec-002 | [title] | [1-line rationale] | [high/medium/low] |
-| spec-001 | [title] | [1-line rationale] | [high/medium/low] |
-
+Feature | Decision | Rationale | Impact | ---------|----------|-----------|-------- | spec-003 | [title] | [1-line rationale] | [high/medium/low] | spec-002 | [title] | [1-line rationale] | [high/medium/low] | spec-001 | [title] | [1-line rationale] | [high/medium/low]
 ## Decision Details (Compressed)
 
 ### [Decision Title 1]
 
-**Status:** active  
 **Feature:** spec-003  
 **Rationale:** [1-2 sentence compressed rationale]  
 **Impact:** [1 line compressed impact]  
@@ -161,7 +151,6 @@ Compressed, recent-only summary of active decisions. Used for session startup co
 
 ### [Decision Title 2]
 
-**Status:** active  
 **Feature:** spec-002  
 **Rationale:** [1-2 sentence compressed rationale]  
 **Impact:** [1 line compressed impact]  

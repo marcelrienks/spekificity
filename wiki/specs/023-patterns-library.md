@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Patterns Library (C2.3)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Memory Layer 2 — Patterns Library  
 **Depends On:** lessons-format.md  
 **Used By:** /spek.context (read at session start), `/spek.plan` plan phase (suggest patterns during planning)   
 
@@ -28,7 +26,7 @@ Permanent collection of reusable patterns from all features; queryable by domain
 **First Used:** spec-[number] (date)  
 **Last Used:** spec-[number] (date)  
 **Frequency:** used in N features  
-**Status:** active | archived | experimental  
+archived | experimental  
 
 **Tags:** #domain-1, #domain-2 (for searchability)  
 
@@ -91,7 +89,6 @@ Code examples:
 - "used in 3 features" = medium maturity
 - "used in 1 feature" = experimental
 
-**Status:** One of:
 - `active` — Proven and recommended
 - `archived` — Old, not recommended for new features
 - `experimental` — New, still learning
@@ -153,8 +150,6 @@ Code examples:
 **First Used:** spec-002  
 **Last Used:** spec-003  
 **Frequency:** used in 5+ features  
-**Status:** active  
-
 **Tags:** #architecture, #integration, #workflow  
 
 **Summary:** Wraps an existing service with pre/core/post processing layers without modifying the service itself. Enables flexible enhancement (logging, validation, context injection) while maintaining clean separation of concerns.
@@ -211,8 +206,6 @@ Step 2: Test each layer independently
 **First Used:** spec-001  
 **Last Used:** spec-003  
 **Frequency:** used in 3 features  
-**Status:** active  
-
 **Tags:** #documentation, #memory, #workflow  
 
 **Summary:** Capture structured lessons at feature end (what built, how built it, decisions, patterns, metrics) in vault/lessons/. This becomes permanent archive and feeds future features with proven approaches and cautions.
@@ -278,13 +271,7 @@ Compressed, recent-only index of top patterns. Used for quick lookup during plan
 **Full Archive:** See vault/patterns.md  
 
 ## Top Recent Patterns (By Usage)
-
-| Pattern | Frequency | Status | Tags |
-|---------|-----------|--------|------|
-| [Decorator Wrapper] | 5+ uses | active | #architecture, #integration |
-| [Lesson-Based Documentation] | 3 uses | active | #documentation, #memory |
-| [Pattern 3] | 2 uses | active | #testing |
-
+Pattern | Frequency | Status | Tags | ---------|-----------|--------|------ | [Decorator Wrapper] | 5+ uses | active | #architecture, #integration | [Lesson-Based Documentation] | 3 uses | active | #documentation, #memory | [Pattern 3] | 2 uses | active | #testing
 ## Patterns by Domain
 
 ### #architecture

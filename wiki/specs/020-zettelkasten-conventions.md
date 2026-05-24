@@ -1,6 +1,5 @@
 # C.3.1 Zettelkasten Conventions for Vault Notes
 
-**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** High (Phase 1 recommended)  
 **Effort:** team-estimated  
 **Adoption Source:** B.9 (claude-code-memory-setup, production-validated)
@@ -49,9 +48,7 @@ All vault notes should include frontmatter with these fields to enable tooling a
 ```yaml
 ---
 title: "<note-title>"
-type: "<decision|pattern|lesson|guide>"
 tags: ["<domain>", "<methodology>", "<tech-stack>"]
-status: "<active|deprecated|superseded>"
 created: "<YYYY-MM-DD>"
 updated: "<YYYY-MM-DD>"
 source: "<feature-name|external-link|manual>"
@@ -60,18 +57,7 @@ related: ["[[note-name]]", "[[other-note]]"]
 ```
 
 **Field Definitions:**
-
-| Field | Required | Type | Description | Example |
-|-------|----------|------|-------------|---------|
-| `title` | YES | string | Concise, unique note title | "Singleton Pattern for Service Management" |
-| `type` | YES | enum | Classification: decision, pattern, lesson, guide | "pattern" |
-| `tags` | YES | array | a small set of tags for searchability + organization | ["pattern/singleton", "architecture", "service-layer"] |
-| `status` | YES | enum | active, deprecated, superseded, archived | "active" |
-| `created` | YES | date | ISO 8601 creation date | "2026-05-10" |
-| `updated` | YES | date | ISO 8601 last update date | "2026-05-19" |
-| `source` | NO | string | Origin: feature name, external link, manual entry | "feature-auth-refactor" |
-| `related` | NO | array | Wikilinks to related vault entries | ["[[dependency-injection]]", "[[service-patterns]]"] |
-
+Field | Required | Type | Description | Example | -------|----------|------|-------------|--------- | `title` | YES | string | Concise, unique note title | "Singleton Pattern for Service Management" | `type` | YES | enum | Classification: decision, pattern, lesson, guide | "pattern" | `tags` | YES | array | a small set of tags for searchability + organization | ["pattern/singleton", "architecture", "service-layer"] | `status` | YES | enum | active, deprecated, superseded, archived | "active" | `created` | YES | date | ISO 8601 creation date | "2026-05-10" | `updated` | YES | date | ISO 8601 last update date | "2026-05-19" | `source` | NO | string | Origin: feature name, external link, manual entry | "feature-auth-refactor" | `related` | NO | array | Wikilinks to related vault entries | ["[[dependency-injection]]", "[[service-patterns]]"]
 ### Filename Convention
 
 **Format:** `<kebab-case-title>.md`
@@ -159,9 +145,7 @@ because [[service-locator-anti-pattern]] violates testability constraints.
 
 **Frontmatter:**
 ```yaml
-type: "decision"
 tags: ["decision", "<domain>", "<methodology>"]
-status: "active|superseded"
 ```
 
 **Structure:**
@@ -178,9 +162,7 @@ status: "active|superseded"
 
 **Frontmatter:**
 ```yaml
-type: "pattern"
 tags: ["pattern/<category>", "<tech-stack>", "<domain>"]
-status: "active|deprecated"
 ```
 
 **Structure:**
@@ -198,9 +180,7 @@ status: "active|deprecated"
 
 **Frontmatter:**
 ```yaml
-type: "lesson"
 tags: ["lesson/<feature>", "<domain>", "<methodology>"]
-status: "active"
 source: "<feature-name>"
 ```
 
@@ -220,9 +200,7 @@ source: "<feature-name>"
 
 **Frontmatter:**
 ```yaml
-type: "guide"
 tags: ["guide/<topic>", "<domain>"]
-status: "active"
 ```
 
 **Structure:**

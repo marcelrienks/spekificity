@@ -1,6 +1,5 @@
 # Tool Version Pinning & CLI Contract Tests
 
-Status: DRAFT
 Date: 2026-05-21
 
 Purpose

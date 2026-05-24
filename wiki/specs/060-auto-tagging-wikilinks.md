@@ -1,6 +1,5 @@
 # C.3.2 Auto-Tagging + Auto-Wikilink Insertion for Lessons
 
-**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** RECOMMENDED (Phase 1)  
 **Effort:** Implementation effort to be estimated by the project team
 **Adoption Source:** B.9 (claude-code-memory-setup, chat import pipeline pattern)  

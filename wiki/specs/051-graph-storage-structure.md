@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Graph Storage Structure (C5.2)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Data Schema — Code Graph Directory & File Formats  
 **Depends On:** node-schema-design.md  
 **Used By:** /spek.map, /spek.context, all enrichment layers  
 

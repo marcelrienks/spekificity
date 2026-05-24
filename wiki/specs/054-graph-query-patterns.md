@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Graph Query Patterns (C5.5)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Usage — Querying wiki/vault/graph/ for Code Context  
 **Depends On:** graph-storage-structure.md  
 **Used By:** /spek.context, `/spek.plan` plan phase, enrichment layers  
 
@@ -279,16 +277,7 @@ Prompt: "Changed: [files]. Test files that import these: [test_files].
 ---
 
 ## Query Performance
-
-| Query | Layer | Duration | Tokens |
-|-------|-------|----------|--------|
-| Find all in file | 1 | < 100ms | 0 |
-| Find all in class | 1 | < 100ms | 0 |
-| Find all callers | 2 | 500ms | 0 |
-| Find dependencies | 2 | 500ms | 0 |
-| Impact analysis | 3 | 10s | 1-2K |
-| Pattern lookup | 1 | < 100ms | 0 |
-
+Query | Layer | Duration | Tokens | -------|-------|----------|-------- | Find all in file | 1 | < 100ms | 0 | Find all in class | 1 | < 100ms | 0 | Find all callers | 2 | 500ms | 0 | Find dependencies | 2 | 500ms | 0 | Impact analysis | 3 | 10s | 1-2K | Pattern lookup | 1 | < 100ms | 0
 ---
 
 ## Best Practices

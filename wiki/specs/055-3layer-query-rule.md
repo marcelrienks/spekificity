@@ -1,6 +1,5 @@
 # C.3.3 3-Layer Query Rule: Documentation & Enforcement
 
-**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** RECOMMENDED (Phase 1)  
 **Effort:** moderate (team-defined)  
 **Adoption Source:** B.9 (claude-code-memory-setup, cited as motivation for large token savings)

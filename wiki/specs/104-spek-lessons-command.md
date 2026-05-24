@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Lessons Command (C4.6)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1
-**Type:** Skill — /spek.lessons (manual lesson extraction + query interface)  
 **Depends On:** lessons-format.md, memory-architecture.md, post-processing.md  
 **Requires:** Obsidian CLI (recommended) for automated vault/lessons operations and persistent memory management
 **Used By:** `/spek.conclude` (automatic), CLI entry point (manual queries)  
@@ -354,7 +352,6 @@ title: "Lesson: [Feature Name]"
 date: YYYY-MM-DD
 feature_id: NNN
 feature_name: name-from-branch
-status: complete | archived
 duration_days: X
 duration_sessions: Y
 spec_link: specs/NNN-feature-name.md
@@ -401,15 +398,7 @@ commit_range: abc123..def456
 ---
 
 ## Error Handling
-
-| Scenario | Error | Action |
-|----------|-------|--------|
-| No current feature | "No active feature" | Prompt: Run `/spek.prepare` first |
-| Feature already done | "Lessons immutable" | Suggest: Review existing lesson |
-| Missing artifacts | "tasks.md not found" | Prompt: Run `/spek.plan` first |
-| Pattern not found | "Pattern '[X]' not in library" | Show: Available patterns |
-| Search timeout | "Search timeout (short)" | Show: Partial results, suggest refinement |
-
+Scenario | Error | Action | ----------|-------|-------- | No current feature | "No active feature" | Prompt: Run `/spek.prepare` first | Feature already done | "Lessons immutable" | Suggest: Review existing lesson | Missing artifacts | "tasks.md not found" | Prompt: Run `/spek.plan` first | Pattern not found | "Pattern '[X]' not in library" | Show: Available patterns | Search timeout | "Search timeout (short)" | Show: Partial results, suggest refinement
 ---
 
 ## Related Specifications

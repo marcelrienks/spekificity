@@ -1,6 +1,5 @@
 # Small CLI Contract Integration Test (SpecKit / lat.md)
 
-Status: DRAFT
 Date: 2026-05-21
 
 Goal

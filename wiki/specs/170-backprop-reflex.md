@@ -2,7 +2,6 @@
 
 **This specification has been consolidated into a single archive file.**
 
-**Status:** REDIRECTED (Consolidated 2026-05-20)  
 **Original ID:** C.3.6  
 **See:** [Validation Patterns Archive](validation-patterns-archive.md#section-2-backprop-reflex-test-failures--vault-updates)
 
@@ -146,9 +145,7 @@ vault/failures/2026-05-15-auth-refactor-failures.md
 ```markdown
 ---
 title: "Test Failures: Auth Refactor Feature"
-type: "failure-log"
 tags: ["failure", "domain/authentication", "feature/auth-refactor"]
-status: "analyzed"
 created: "2026-05-15"
 related_decisions: ["[[use-singleton-pattern]]", "[[token-lifecycle-decision]]"]
 patterns_affected: ["concurrent-access", "async-performance"]
@@ -217,8 +214,6 @@ total_failures: 3
 
 **Test:** `should handle parallel logout + refresh`  
 **Error:** `AssertionError: token still valid after logout`  
-**Status:** Needs investigation
-
 **Investigation Needed:**
 - Verify test isolation (parallel tests not interfering)
 - Check if singleton state leaking between tests
@@ -236,7 +231,6 @@ When a failure is analyzed, backprop automatically updates related vault items:
 ```markdown
 ---
 title: "Singleton Pattern"
-type: "pattern"
 ...
 ---
 

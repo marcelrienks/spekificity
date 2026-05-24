@@ -1,6 +1,5 @@
 # extracted spec — SpecKit Integration Contract
 
-**Status:** SPECIFICATION (2026-05-18) | **Version:** 1.0.0-alpha.1 (2026-05-20)  
 **Feature:** spekificity feature 003 — Full Workflow CLI  
 **Related:** [Spekificity Workflow](../workflow.md), [Memory Architecture](030-memory-architecture.md)
 
@@ -389,22 +388,7 @@ Spekificity uses an orchestration pattern for `/spek.plan` and a targeted execut
 ---
 
 ## Division of Responsibility
-
-| Concern | SpecKit Owns | Spekificity Adds | Notes |
-|---------|--------------|------------------|-------|
-| **Spec generation** | ✓ Core logic | ✓ Context injection | Decisions/patterns guide options |
-| **Plan generation** | ✓ Core logic | ✓ Context injection | Architecture alignment check |
-| **Task generation** | ✓ Full ownership | — | No enrichment needed |
-| **Implementation** | ✓ Core logic | ✓ Artifact collection | Execution tracing, error reporting |
-| **Context loading** | — | ✓ Full ownership | Pre-session, mid-feature refresh |
-| **Workspace prep** | — | ✓ Full ownership | Git state, graph freshness |
-| **Lessons extraction** | — | ✓ Full ownership | Template, compression, vault update |
-| **Vault management** | — | ✓ Full ownership | Decisions, patterns, lessons |
-| **Memory management** | — | ✓ Full ownership | Session, repo, vault sync |
-| **Code graph** | — | ✓ Full ownership | Index creation, incremental sync |
-| **Token compression** | — | ✓ Full ownership | Caveman mode activation |
-| **Orchestration** | — | ✓ Optional | `/spek.plan` command |
-
+Concern | SpecKit Owns | Spekificity Adds | Notes | ---------|--------------|------------------|------- | **Spec generation** | ✓ Core logic | ✓ Context injection | Decisions/patterns guide options | **Plan generation** | ✓ Core logic | ✓ Context injection | Architecture alignment check | **Task generation** | ✓ Full ownership | — | No enrichment needed | **Implementation** | ✓ Core logic | ✓ Artifact collection | Execution tracing, error reporting | **Context loading** | — | ✓ Full ownership | Pre-session, mid-feature refresh | **Workspace prep** | — | ✓ Full ownership | Git state, graph freshness | **Lessons extraction** | — | ✓ Full ownership | Template, compression, vault update | **Vault management** | — | ✓ Full ownership | Decisions, patterns, lessons | **Memory management** | — | ✓ Full ownership | Session, repo, vault sync | **Code graph** | — | ✓ Full ownership | Index creation, incremental sync | **Token compression** | — | ✓ Full ownership | Caveman mode activation | **Orchestration** | — | ✓ Optional | `/spek.plan` command
 ---
 
 ## Data Flow Through Complete Lifecycle

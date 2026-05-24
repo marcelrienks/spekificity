@@ -1,7 +1,5 @@
 # Memory Architecture: Persistent Memories, Session Context, and Load Lifecycle
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Memory Layer — Three-layer model with lifecycle  
 **Replaces:** context-load-lifecycle.md, session-memory.md, persistent-memories-and-lessons.md  
 **Used By:** /spek.context, /spek.prepare, /spek.conclude (all enrichment layers read context)  
 
@@ -88,7 +86,6 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 ### Type 1: Per-Feature Lessons (Vault)
 
 **File:** `vault/lessons/<YYYY-MM-DD>-<feature-number>-<feature-name>.md`  
-**Scope:** Persists across all sessions  
 **Granularity:** One file per completed feature  
 **Ownership:** Written by `/spek.conclude` at feature end; read by `/spek.context` at session start
 
@@ -144,7 +141,6 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 
 **File (Vault):** `vault/decision.md`  
 **File (Repo Memory):** `vault/repo/architectural-decisions.md`  
-**Scope:** Persists across all sessions  
 **Granularity:** One entry per decision (heading per decision)  
 **Ownership:** Written by `/spek.conclude` when decisions emerge; read by `/spek.context` at session start
 
@@ -156,7 +152,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 
 **Date:** YYYY-MM-DD  
 **Feature:** spec-[number]  
-**Status:** active | deprecated | superceded-by-[link]
+deprecated | superceded-by-[link]
 
 **Context:** Why this decision was needed
 
@@ -174,11 +170,7 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 **Repo Memory Format (Summary):**
 ```markdown
 # Architectural Decisions
-
-| Date | Feature | Decision | Status | Impact |
-|------|---------|----------|--------|--------|
-| 2026-05-18 | 003 | [title] | active | [high/medium/low] |
-
+Date | Feature | Decision | Status | Impact | ------|---------|----------|--------|-------- | 2026-05-18 | 003 | [title] | active | [high/medium/low]
 ## Recent Active Decisions (Last 3 Features)
 
 [Most impactful 5-10 decisions with 1-line summary each]
@@ -199,7 +191,6 @@ Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
 ### Type 3: Patterns Library (Vault)
 
 **File:** `vault/patterns.md`  
-**Scope:** Persists across all sessions  
 **Granularity:** One entry per pattern (heading per pattern)  
 **Ownership:** Written by `/spek.conclude` when patterns emerge; read by `/spek.context` at session start and during planning
 
@@ -467,11 +458,7 @@ cache_hit: boolean
 ---
 
 ## Recent Decisions Loaded (Last 3 Features)
-
-| Feature | Decision | Rationale | Impact |
-|---------|----------|-----------|--------|
-| spec-003 | [title] | [1-line rationale] | [high/medium/low] |
-
+Feature | Decision | Rationale | Impact | ---------|----------|-----------|-------- | spec-003 | [title] | [1-line rationale] | [high/medium/low]
 [Full decision summaries]
 
 ---
@@ -532,7 +519,6 @@ cache_hit: boolean
 ---
 feature_name: "<feature-name>"
 feature_id: "<feature-number>"
-status: "initialized | specifying | planning | implementing | completing | abandoned"
 session_start: YYYY-MM-DDTHH:MM:SSZ
 session_count: 1
 phase: "prepared | specifying | planning | implementing | completing"
@@ -541,7 +527,6 @@ completion: 0
 
 # Feature [Number]: [Name]
 
-**Status:** initialized  
 **Branch:** feature-XXX-name  
 **Current Session:** Session 1  
 

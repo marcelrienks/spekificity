@@ -1,6 +1,5 @@
 # Session Continuation & Token Budget Management
 
-**Status:** COMPLETE  
 **Date:** 2026-05-20  
 **Session Restart Frequency:** regular (as needed)  
 **Feature Duration:** Single session (short, simple resume)  

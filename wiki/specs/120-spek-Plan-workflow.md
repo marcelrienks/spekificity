@@ -1,8 +1,5 @@
 # SPECIFICATION: spek.plan — SpecKit Workflow Orchestration (C.2.0)
 
-**Status:** ATOMIC SPECIFICATION  
-**Type:** Skill — Autonomous SpecKit Workflow Orchestration  
-**Version:** 2026-05-19  
 **Depends On:** speckit-integration-contract.md, error-handling-and-recovery.md, context-layer.md   
 **Related:** cli-orchestration.md (lower-level CLI commands)
 
@@ -584,19 +581,8 @@ spek.plan "Implement user auth" --verbose
 
 **Feature:** Implement user authentication system  
 **Started:** 2026-05-19 10:00:00 UTC  
-**Status:** IN PROGRESS  
-
 ## Workflow Steps
-
-| Step | Skill | Status | Attempts | Time | Output |
-|------|-------|--------|----------|------|--------|
-| 1 | /specify | ✓ PASS | 1 | 45s | spec.md (234 lines) |
-| 2 | /clarify | ✓ PASS | 1 | 30s | spec.md (updated, 250 lines) |
-| 3 | /plan | ✓ PASS | 1 | 60s | plan.md (412 lines) |
-| 4 | /tasks | ✓ PASS | 2 | 90s | tasks.md (8 tasks, regenerated due to analyze feedback) |
-| 5 | /analyze | ✓ PASS | 1 | 45s | analysis.json (3 issues detected, all resolved) |
-| 6 | /implement | ⏳ IN PROGRESS | 1 | — | — |
-
+Step | Skill | Status | Attempts | Time | Output | ------|-------|--------|----------|------|-------- | 1 | /specify | ✓ PASS | 1 | 45s | spec.md (234 lines) | 2 | /clarify | ✓ PASS | 1 | 30s | spec.md (updated, 250 lines) | 3 | /plan | ✓ PASS | 1 | 60s | plan.md (412 lines) | 4 | /tasks | ✓ PASS | 2 | 90s | tasks.md (8 tasks, regenerated due to analyze feedback) | 5 | /analyze | ✓ PASS | 1 | 45s | analysis.json (3 issues detected, all resolved) | 6 | /implement | ⏳ IN PROGRESS | 1 | — | —
 ## Issues & Resolutions
 
 **Issue 1:** Tasks missing OAuth error handling
@@ -624,8 +610,6 @@ For detailed execution logs, see: `vault/session/orchestration-trace.md`
 **Command:** /speckit.specify --constitution=.specify/constitution.md --description="Implement user authentication system"  
 **Context injected:** 5 architectural decisions, 8 patterns, 2 recent lessons, 3421 code symbols  
 **Output:** specs/spec.md (234 lines, 5 sections)  
-**Status:** ✓ PASS (spec well-formed, all required sections present)  
-
 ### Step 2: /clarify
 **Time:** 2026-05-19 10:01:00 UTC  
 **Duration:** 30s  
@@ -633,8 +617,6 @@ For detailed execution logs, see: `vault/session/orchestration-trace.md`
 **User choice:** Clarify  
 **Command:** /speckit.clarify specs/spec.md  
 **Output:** specs/spec.md (updated, 250 lines)  
-**Status:** ✓ PASS  
-
 ... (more steps)
 ```
 

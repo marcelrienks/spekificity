@@ -1,28 +1,13 @@
 # Implementation Roadmap
 
-**Status:** APPROVED FOR IMPLEMENTATION | **Date:** 2026-05-20 | **Version:** 1.0.0-alpha.1
-
----
+**Date:** 2026-05-20 | ---
 
 ## Executive Summary
 
 Spekificity specification is **COMPLETE AND READY FOR IMPLEMENTATION**. All architectural decisions, integration contracts, and workflow specifications have been documented and validated. Implementation can begin immediately following this roadmap.
 
 ### Readiness Checklist
-
-| Component | Status | Reference |
-|-----------|--------|-----------|
-| **Vision & Philosophy** | ✓ Complete | [vision.md](../vision.md), [intention.md](../intention.md) |
-| **Architectural Design** | ✓ Complete | [architecture.md](../architecture.md) |
-| **Workflow Definition** | ✓ Complete | [workflow.md](../workflow.md) |
-| **Integration Contracts** | ✓ Complete | [110-speckit-integration-contract.md](110-speckit-integration-contract.md) |
-| **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) |
-| **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) — `Obsidian` + `obsidian` CLI are required for the vault operations described in this roadmap. |
-| **lat.md Specification** | ✓ Complete | [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md) |
-| **Skill Specifications** | ✓ Complete | [100-prepare-command.md](100-prepare-command.md) through [105-spek-implement-workflow.md](105-spek-implement-workflow.md) |
-| **Automation Workflow** | ✓ Complete | [120-spek-automate-workflow.md](120-spek-automate-workflow.md), [121-cli-orchestration.md](121-cli-orchestration.md) |
-| **Testing & Validation** | ✓ Complete | [140-integration-validation-and-testing.md](140-integration-validation-and-testing.md), [141-test-suite-specification.md](141-test-suite-specification.md) |
-
+Component | Status | Reference | -----------|--------|----------- | **Vision & Philosophy** | ✓ Complete | [vision.md](../vision.md), [intention.md](../intention.md) | **Architectural Design** | ✓ Complete | [architecture.md](../architecture.md) | **Workflow Definition** | ✓ Complete | [workflow.md](../workflow.md) | **Integration Contracts** | ✓ Complete | [110-speckit-integration-contract.md](110-speckit-integration-contract.md) | **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) | **Memory Architecture** | ✓ Complete | [030-memory-architecture.md](030-memory-architecture.md) through [032-enrichment-layer.md](032-enrichment-layer.md) — `Obsidian` + `obsidian` CLI are required for the vault operations described in this roadmap. | **lat.md Specification** | ✓ Complete | [050-latmd-setup-and-integration.md](050-latmd-setup-and-integration.md) through [057-graph-merge-integration.md](057-graph-merge-integration.md) | **Skill Specifications** | ✓ Complete | [100-prepare-command.md](100-prepare-command.md) through [105-spek-implement-workflow.md](105-spek-implement-workflow.md) | **Automation Workflow** | ✓ Complete | [120-spek-automate-workflow.md](120-spek-automate-workflow.md), [121-cli-orchestration.md](121-cli-orchestration.md) | **Testing & Validation** | ✓ Complete | [140-integration-validation-and-testing.md](140-integration-validation-and-testing.md), [141-test-suite-specification.md](141-test-suite-specification.md)
 ---
 
 ## Technology Stack Decision
@@ -324,13 +309,7 @@ spekificity/
 ## Integration Validation & Testing
 
 ### Test Phases
-
-| Phase | What | Where | Success Criteria |
-|-------|------|-------|------------------|
-| **Unit Tests** | Individual components (CLI, graph, vault, memory) | `tests/unit/` | Coverage adequate per module |
-| **Integration Tests** | Multi-step workflows (prepare → context → plan) | `tests/integration/` | Full workflow succeeds ✓ |
-| **E2E Tests** | Complete feature from intent → lessons | `tests/e2e/` | Feature completes end-to-end ✓ |
-
+Phase | What | Where | Success Criteria | -------|------|-------|------------------ | **Unit Tests** | Individual components (CLI, graph, vault, memory) | `tests/unit/` | Coverage adequate per module | **Integration Tests** | Multi-step workflows (prepare → context → plan) | `tests/integration/` | Full workflow succeeds ✓ | **E2E Tests** | Complete feature from intent → lessons | `tests/e2e/` | Feature completes end-to-end ✓
 ### Validation Checklist
 
 - [ ] All CLI commands callable with `--help`

@@ -2,7 +2,6 @@
 
 **This specification has been consolidated into a single archive file.**
 
-**Status:** REDIRECTED (Consolidated 2026-05-20)  
 **Original ID:** C.3.8  
 **See:** [Validation Patterns Archive](validation-patterns-archive.md#section-1-anti-sycophancy-validation-rules)
 

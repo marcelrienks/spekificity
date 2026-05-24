@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Prepare Command (C4.1)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Skill — /spek.prepare (7-step workspace preparation)  
 **Depends On:** context-layer.md, git-verification.md  
 
 ---

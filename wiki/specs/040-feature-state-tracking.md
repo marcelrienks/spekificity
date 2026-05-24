@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Feature State Tracking (C4.4)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** State Schema — workflow-state.json Structure  
 **Depends On:** memory-architecture.md  
 **Used By:** /spek.prepare (create), /spek.conclude (update), all commands (read)  
 
@@ -21,7 +19,6 @@ Feature state tracks progress through feature lifecycle (initialized → specify
 ---
 feature_name: "spek-full-workflow-cli"
 feature_id: "003"
-status: "initialized | specifying | planning | implementing | completing"
 session_start: "2026-05-19T10:00:00Z"
   session_count: 1
   phase: "prepared | specifying | planning | implementing | completing"

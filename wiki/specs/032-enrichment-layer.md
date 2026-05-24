@@ -1,7 +1,5 @@
 # Enrichment Layer: Context Injection Into SpecKit Workflow
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Integration Layer — Context injection across all enrichment phases  
 **Replaces:** specify-enrichment.md, plan-enrichment.md, implement-enrichment.md  
 **Used By:** `/spek.plan` (all phases)  
 

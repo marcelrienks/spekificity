@@ -1,6 +1,5 @@
 # Caveman Integration Specification
 
-Status: DRAFT
 Date: 2026-05-23
 
 Purpose

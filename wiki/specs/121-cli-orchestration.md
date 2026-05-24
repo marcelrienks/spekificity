@@ -1,8 +1,5 @@
 # SPECIFICATION: CLI Orchestration (C2.0)
 
-**Status:** ATOMIC SPECIFICATION  
-**Type:** Workflow Orchestration — Command-Line Interface and Workflow Sequencing  
-**Version:** 2026-05-19  
 **Depends On:** speckit-integration-contract.md, prepare-command.md, post-command.md, feature-state-tracking.md  
 
 ---
@@ -11,8 +8,6 @@
 
 The CLI is the user-facing entry point to Spekificity. `spek plan` is the primary orchestration command for pre-implementation flow, `spek implement` is the primary execution command after review, and support commands such as `spek prepare`, `spek context`, `spek map`, `spek conclude`, and `spek lessons` remain user-facing while also being callable internally when needed.
 
-**Scope:**
-- Entry points and command routing
 - Workflow sequencing (required order of operations)
 - Flag/parameter handling
 - Feature state machine (tracking which skills have been run)
@@ -267,18 +262,10 @@ Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
 
 **Feature:** feature-003-spek-workflow-cli
 **Date:** recorded (omitted)
-**Status:** IMPLEMENTED
 **Last Updated:** recorded (omitted)
 
 ## Workflow Progress
-
-| Step | Command | Status | Timestamp | Output |
-|------|---------|--------|-----------|--------|
-| 1 | /spek.prepare | ✓ COMPLETE | recorded (omitted) | Context loaded |
-| 2 | /spek.plan | ✓ COMPLETE | recorded (omitted) | spec.md, plan.md, tasks.md |
-| 3 | /spek.implement | ✓ COMPLETE | recorded (omitted) | code changes recorded (details omitted) |
-| 4 | /spek.conclude | ⏳ PENDING | — | Ready to run |
-
+Step | Command | Status | Timestamp | Output | ------|---------|--------|-----------|-------- | 1 | /spek.prepare | ✓ COMPLETE | recorded (omitted) | Context loaded | 2 | /spek.plan | ✓ COMPLETE | recorded (omitted) | spec.md, plan.md, tasks.md | 3 | /spek.implement | ✓ COMPLETE | recorded (omitted) | code changes recorded (details omitted) | 4 | /spek.conclude | ⏳ PENDING | — | Ready to run
 ## Artifacts
 
 - Spec: specs/spec.md (lines omitted)
@@ -296,15 +283,7 @@ Or: [ANY_STATE] --force-graph-refresh--> re-run /spek.map, continue
 ---
 
 ## Exit Codes
-
-| Code | Meaning | User Action |
-|------|---------|-------------|
-| **0** | Success | None (continue to next step) |
-| **1** | Error (recoverable) | Check logs, run command again |
-| **2** | Validation error | Fix input parameters, retry |
-| **3** | User action required | Follow guidance in error message, then retry |
-| **127** | Command not found | Check spek installation |
-
+Code | Meaning | User Action | ------|---------|------------- | **0** | Success | None (continue to next step) | **1** | Error (recoverable) | Check logs, run command again | **2** | Validation error | Fix input parameters, retry | **3** | User action required | Follow guidance in error message, then retry | **127** | Command not found | Check spek installation
 **Example Exit Sequences:**
 
 - `spek prepare` → Exit 0 → User runs `spek specify` → Exit 0 → Continue

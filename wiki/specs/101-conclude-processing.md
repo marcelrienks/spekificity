@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Conclude-Processing (C3.6)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Integration Layer 3 — /spek.conclude Workflow  
 **Depends On:** lessons-format.md, architectural-decisions.md, patterns-library.md  
 
 ---

@@ -1,6 +1,5 @@
 # C.3.10 Token Budget Allocation & Tracking
 
-**Status:** Specification   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Priority:** MEDIUM (phasing and prioritization)  
 **Effort:** effort estimate omitted / configurable
 **Adoption Source:** B.10 (Pilot Shell)  

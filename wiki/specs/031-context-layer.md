@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Context Layer (C3.1)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Integration Layer 1 — Context Loading and Injection  
 **Depends On:** memory-architecture.md  
 **Used By:** All enrichment layers (enrichment-layer.md)  
 

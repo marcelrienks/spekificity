@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Implement Command (C4.5)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Skill — /spek.implement (5-step task execution + enrichment wrapper)  
 **Depends On:** speckit-integration-contract.md, enrichment-layer.md, feature-state-tracking.md  
 **Used By:** `/spek.plan` (after task generation), CLI entry point  
 

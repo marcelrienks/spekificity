@@ -1,8 +1,5 @@
 # SPECIFICATION: Integration Validation and Testing (V1.0)
 
-**Status:** ATOMIC SPECIFICATION  
-**Type:** Quality Assurance — End-to-End Testing and Release Readiness  
-**Version:** 2026-05-19  
 **Depends On:** All workflow specs (prepare, post, enrichments, cli, etc.)  
 
 ---
@@ -29,19 +26,8 @@ This spec defines acceptance criteria, validation strategies, and testing approa
 - Integration contract defined (Spekificity + SpecKit)
 
 **Acceptance Criteria:**
-
-| Criterion | Validation | Status |
-|-----------|-----------|--------|
-| All specs written | All 30+ specs completed and cross-linked | ✓ DONE (25/30 critical specs, 5 pending) |
-| No circular dependencies | Dependency graph acyclic | ✓ DONE (validated via spec audit) |
-| Completeness | All major workflows covered (prepare, post, enrichments, integration) | ✓ DONE |
-| Clarity | Each spec has clear "Scope & Relationship" section | ✓ IN PROGRESS (Phase 2 complete) |
-| Atomicity | Each spec is independent and non-duplicating | ✓ VALIDATED (Phase 1 consolidation complete) |
-| Foundation specs critical | error-handling-and-recovery.md exists and all others reference it | ✓ DONE (Phase 3.2 complete) |
-
+Criterion | Validation | Status | -----------|-----------|-------- | All specs written | All 30+ specs completed and cross-linked | ✓ DONE (25/30 critical specs, 5 pending) | No circular dependencies | Dependency graph acyclic | ✓ DONE (validated via spec audit) | Completeness | All major workflows covered (prepare, post, enrichments, integration) | ✓ DONE | Clarity | Each spec has clear "Scope & Relationship" section | ✓ IN PROGRESS (Phase 2 complete) | Atomicity | Each spec is independent and non-duplicating | ✓ VALIDATED (Phase 1 consolidation complete) | Foundation specs critical | error-handling-and-recovery.md exists and all others reference it | ✓ DONE (Phase 3.2 complete)
 **Validation:** Manual audit of all specs (completed, documented in `.spek/spec-audit.md`)
-
-**Status:** ✓ PHASE 0 COMPLETE (pending final consolidation of 5 remaining specs)
 
 ---
 
@@ -55,18 +41,7 @@ This spec defines acceptance criteria, validation strategies, and testing approa
 - `.spek/skills/` directory structure with all skill code
 
 **Acceptance Criteria:**
-
-| Criterion | Validation | Success Criteria |
-|-----------|-----------|------------------|
-| Skill execution | Each skill runs without crashing | No unhandled exceptions in any skill |
-| Git validation | `prepare` validates git state correctly | Reports clear error if dirty/no repo/no branch |
-| Context loading | `context` loads vault + repo memory + graph | Context available in session (5+ decisions, 10+ patterns) |
-| Graph refresh | `map` indexes code + docs correctly | nodes.jsonl created with ≥100 symbols |
-| Vault persistence | `post` updates vault correctly | Decisions + patterns + lessons archived |
-| Error handling | All errors logged per error-handling-and-recovery.md | All errors in error log with category + action |
-| Token tracking | Context loading within budget (~10K tokens) | Session memory <5 decisions + patterns, ~5K tokens |
-| Timing | Each skill completes within target time | prepare: <10s, context: <5s, post: <30s, map: <60s |
-
+Criterion | Validation | Success Criteria | -----------|-----------|------------------ | Skill execution | Each skill runs without crashing | No unhandled exceptions in any skill | Git validation | `prepare` validates git state correctly | Reports clear error if dirty/no repo/no branch | Context loading | `context` loads vault + repo memory + graph | Context available in session (5+ decisions, 10+ patterns) | Graph refresh | `map` indexes code + docs correctly | nodes.jsonl created with ≥100 symbols | Vault persistence | `post` updates vault correctly | Decisions + patterns + lessons archived | Error handling | All errors logged per error-handling-and-recovery.md | All errors in error log with category + action | Token tracking | Context loading within budget (~10K tokens) | Session memory <5 decisions + patterns, ~5K tokens | Timing | Each skill completes within target time | prepare: <10s, context: <5s, post: <30s, map: <60s
 **Validation (Automated Tests):**
 
 ```bash
@@ -90,8 +65,6 @@ pytest tests/performance/test_token_usage.py
 - [ ] Run `/spek.map` and verify code graph populated
 - [ ] Trigger error condition (git dirty), verify error message clear + actionable
 
-**Status:** ⏳ PHASE 1 PENDING (skill code not yet implemented)
-
 ---
 
 ## Success Criteria
@@ -113,15 +86,7 @@ pytest tests/performance/test_token_usage.py
 - `/spek.implement` enrichment wrapper (graph-aware `/speckit.implement`)
 
 **Acceptance Criteria:**
-
-| Criterion | Validation | Success Criteria |
-|-----------|-----------|------------------|
-| Context injection | Enrichments inject context into SpecKit calls | SpecKit receives full context (decisions, patterns, code) |
-| Output quality | Generated specs/plans/tasks are more context-aware than vanilla SpecKit | Improvement visible in review or downstream execution |
-| Token efficiency | Enrichment layer doesn't add excessive overhead | Context injected <10K additional tokens |
-| Seamless integration | User doesn't need to know about enrichment layers | CLI commands work transparently |
-| Fallback behavior | If context missing, enrichments work with empty context | No failures if vault inaccessible |
-
+Criterion | Validation | Success Criteria | -----------|-----------|------------------ | Context injection | Enrichments inject context into SpecKit calls | SpecKit receives full context (decisions, patterns, code) | Output quality | Generated specs/plans/tasks are more context-aware than vanilla SpecKit | Improvement visible in review or downstream execution | Token efficiency | Enrichment layer doesn't add excessive overhead | Context injected <10K additional tokens | Seamless integration | User doesn't need to know about enrichment layers | CLI commands work transparently | Fallback behavior | If context missing, enrichments work with empty context | No failures if vault inaccessible
 **Validation (Automated Tests):**
 
 ```bash
@@ -143,8 +108,6 @@ pytest tests/performance/test_enrichment_overhead.py
 - [ ] Compare output with vanilla SpecKit (enriched vs. non-enriched)
 - [ ] Verify enrichment works with stale context (fallback)
 
-**Status:** ⏳ PHASE 2 PENDING (enrichment code not yet implemented)
-
 ---
 
 ## Phase 3: CLI + Orchestration
@@ -156,16 +119,7 @@ pytest tests/performance/test_enrichment_overhead.py
  - Configuration system (`.spek/config.yaml`)
 
 **Acceptance Criteria:**
-
-| Criterion | Validation | Success Criteria |
-|-----------|-----------|------------------|
-| CLI usability | All commands work as documented | `spek --help` accurate, all flags functional |
-| Workflow sequencing | Feature workflow forced in correct order | Cannot run `specify` before `prepare` |
-| Feature state tracking | Feature progress persisted | `vault/session/` created + updated |
-| Exit codes | Commands return correct exit codes | 0=success, 1=error, 2=validation, 3=user action |
-| Error messages | All errors actionable | Every error includes "Fix:" section |
-| Integration with SpecKit | CLI commands call SpecKit transparently | User doesn't see SpecKit abstraction |
-
+Criterion | Validation | Success Criteria | -----------|-----------|------------------ | CLI usability | All commands work as documented | `spek --help` accurate, all flags functional | Workflow sequencing | Feature workflow forced in correct order | Cannot run `specify` before `prepare` | Feature state tracking | Feature progress persisted | `vault/session/` created + updated | Exit codes | Commands return correct exit codes | 0=success, 1=error, 2=validation, 3=user action | Error messages | All errors actionable | Every error includes "Fix:" section | Integration with SpecKit | CLI commands call SpecKit transparently | User doesn't see SpecKit abstraction
 **Validation (Automated Tests):**
 
 ```bash
@@ -194,8 +148,6 @@ pytest tests/error_handling/test_error_messages.py
 - [ ] Try with `--dry-run` flag, verify no writes
 - [ ] Trigger error (e.g., git dirty), verify exit code and error message
 
-**Status:** ⏳ PHASE 3 PENDING (CLI implementation not yet started)
-
 ---
 
 ## Phase 4: Memory Persistence & Vault Integration
@@ -208,17 +160,7 @@ pytest tests/error_handling/test_error_messages.py
 - Repo memory caching (`vault/repo/`)
 
 **Acceptance Criteria:**
-
-| Criterion | Validation | Success Criteria |
-|-----------|-----------|------------------|
-| Vault creation | Vault structure created on first use | `wiki/vault/decision.md`, `wiki/vault/patterns.md`, `wiki/vault/lessons/` exist |
-| Lesson persistence | Lessons stored and retrievable | Lessons readable 1+ days later, searchable |
-| Decision archival | Architectural decisions captured + indexed | Future features can reference past decisions |
-| Pattern reuse | Patterns indexed and recommended | New specs can reference established patterns |
-| Repo memory sync | Compressed cache synced with vault | `vault/repo/` stays <5 decisions + patterns |
-| Graph integration | Code graph nodes stored in vault | `wiki/vault/graph/nodes.jsonl` contains ≥100 symbols |
-| Cross-session context | Context available across sessions | Start new session, old context accessible |
-
+Criterion | Validation | Success Criteria | -----------|-----------|------------------ | Vault creation | Vault structure created on first use | `wiki/vault/decision.md`, `wiki/vault/patterns.md`, `wiki/vault/lessons/` exist | Lesson persistence | Lessons stored and retrievable | Lessons readable 1+ days later, searchable | Decision archival | Architectural decisions captured + indexed | Future features can reference past decisions | Pattern reuse | Patterns indexed and recommended | New specs can reference established patterns | Repo memory sync | Compressed cache synced with vault | `vault/repo/` stays <5 decisions + patterns | Graph integration | Code graph nodes stored in vault | `wiki/vault/graph/nodes.jsonl` contains ≥100 symbols | Cross-session context | Context available across sessions | Start new session, old context accessible
 **Validation (Automated Tests):**
 
 ```bash
@@ -250,8 +192,6 @@ pytest tests/memory/test_cross_session_context.py
 - [ ] Start new session, run `spek prepare`, verify old context loaded
 - [ ] Check repo memory cache, verify compressed decisions + patterns
 
-**Status:** ⏳ PHASE 4 PENDING (memory implementation not yet started)
-
 ---
 
 ## Phase 5: Index Integration (lat.md)
@@ -264,16 +204,7 @@ pytest tests/memory/test_cross_session_context.py
 - Graph query patterns (for context loading)
 
 **Acceptance Criteria:**
-
-| Criterion | Validation | Success Criteria |
-|-----------|-----------|------------------|
-| Code indexing | lat.md indexes all code symbols | ≥100 symbols in spekificity codebase |
-| Doc extraction | Obsidian export extracts all document nodes | ≥20 document nodes from wiki/ |
-| Graph merge | Code + doc nodes merged correctly | No duplicate nodes, correct hierarchy |
-| Incremental sync | Graph updates only changed files | Refresh time <30s for small changes |
-| Query patterns | Symbols queryable by type/scope/file | Can get all functions in a file, all classes, etc. |
-| Performance | Graph operations within SLA | Load: <5s, Query: <100ms |
-
+Criterion | Validation | Success Criteria | -----------|-----------|------------------ | Code indexing | lat.md indexes all code symbols | ≥100 symbols in spekificity codebase | Doc extraction | Obsidian export extracts all document nodes | ≥20 document nodes from wiki/ | Graph merge | Code + doc nodes merged correctly | No duplicate nodes, correct hierarchy | Incremental sync | Graph updates only changed files | Refresh time <30s for small changes | Query patterns | Symbols queryable by type/scope/file | Can get all functions in a file, all classes, etc. | Performance | Graph operations within SLA | Load: <5s, Query: <100ms
 **Validation (Automated Tests):**
 
 ```bash
@@ -302,8 +233,6 @@ pytest tests/performance/test_graph_performance.py
 - [ ] Modify a code file, re-run `/spek.map`, verify only changed file re-indexed
 - [ ] Query graph for symbols in modified file, verify results accurate
 - [ ] Time graph operations, verify <5s for load, <100ms for query
-
-**Status:** ⏳ PHASE 5 PENDING (graph integration not yet started)
 
 ---
 
@@ -358,19 +287,7 @@ spek conclude
 ---
 
 ## Performance Benchmarks (SLA)
-
-| Operation | Target | Measurement Method | Acceptance |
-|-----------|--------|-------------------|-----------|
-| `/spek.prepare` | <10s | Time full execution | <10s wall time |
-| `/spek.context` | <5s | Time context loading | <5s wall time |
-| `/spek.conclude` | <30s | Time full execution | <30s wall time |
-| `/spek.map` | <60s | Time graph refresh | <60s wall time |
-| Context size | <10K tokens | Measure loaded context | <10K tokens |
-| Session memory | <100MB | Monitor vault/session/ | <100MB disk |
-| Vault size | <50MB | Monitor vault/ directory | <50MB disk (after post cleanup) |
-| Graph load | <5s | Time nodes.jsonl parsing | <5s |
-| Graph query | <100ms | Time symbol lookups | <100ms per query |
-
+Operation | Target | Measurement Method | Acceptance | -----------|--------|-------------------|----------- | `/spek.prepare` | <10s | Time full execution | <10s wall time | `/spek.context` | <5s | Time context loading | <5s wall time | `/spek.conclude` | <30s | Time full execution | <30s wall time | `/spek.map` | <60s | Time graph refresh | <60s wall time | Context size | <10K tokens | Measure loaded context | <10K tokens | Session memory | <100MB | Monitor vault/session/ | <100MB disk | Vault size | <50MB | Monitor vault/ directory | <50MB disk (after post cleanup) | Graph load | <5s | Time nodes.jsonl parsing | <5s | Graph query | <100ms | Time symbol lookups | <100ms per query
 **Monitoring:**
 - Token usage logged in feature state
 - Latency measured per operation (in execution trace)

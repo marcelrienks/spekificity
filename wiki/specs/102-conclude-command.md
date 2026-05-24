@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Conclude Command (C4.2)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Skill — /spek.conclude (10-step feature completion + vault sync)  
 **Depends On:** lessons-format.md, architectural-decisions.md, conclude-processing.md  
 
 ---

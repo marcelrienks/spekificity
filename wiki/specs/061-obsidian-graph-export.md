@@ -1,6 +1,5 @@
 # Spec: Obsidian Graph Export Protocol
 
-**Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Concern:** How to extract documentation nodes from Obsidian vault for graph indexing  
 **Extracted from:** extracted spec Question 2  
 **Depends on:** node-schema-design  

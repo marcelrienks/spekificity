@@ -1,7 +1,5 @@
 # CONSOLIDATED: Validation & Reflection Patterns Library
 
-**Status:** CONSOLIDATED SPECIFICATION ARCHIVE   | **Version:** 1.0.0-alpha.1 (2026-05-20)  
-**Type:** Validation Patterns — AI Drift Prevention, Code Quality, Failure Learning, Alignment Verification  
 **Consolidated From:** 4 separate specifications (C.3.6, C.3.7, C.3.8, C.3.9)  
 **Used By:** `/spek.conclude` steps 3, 7, 8b; `/spek.plan` phases  
 
@@ -19,19 +17,11 @@ This archive consolidates 4 related validation patterns with their adoption prio
 ---
 
 ## Pattern Index
-
-| Pattern | Priority | Effort | Adoption Status | Purpose |
-|---------|----------|--------|-----------------|---------|
-| **[Section 1] Anti-Sycophancy Rules** | HIGH | 3-4h | Phase 2 | Flag AI drift before implementation |
-| **[Section 2] Backprop Reflex** | HIGH | 3-4h | Phase 2 | Test failures → vault learning |
-| **[Section 3] RARV Reflection Cycle** | HIGH | 4-5h | Phase 2 | Continuous alignment verification |
-| **[Section 4] Blind Code Review** | MEDIUM | 4-5h | Phase 2 (optional) | Independent code quality check |
-
+Pattern | Priority | Effort | Adoption Status | Purpose | ---------|----------|--------|-----------------|--------- | **[Section 1] Anti-Sycophancy Rules** | HIGH | 3-4h | Phase 2 | Flag AI drift before implementation | **[Section 2] Backprop Reflex** | HIGH | 3-4h | Phase 2 | Test failures → vault learning | **[Section 3] RARV Reflection Cycle** | HIGH | 4-5h | Phase 2 | Continuous alignment verification | **[Section 4] Blind Code Review** | MEDIUM | 4-5h | Phase 2 (optional) | Independent code quality check
 ---
 
 ## SECTION 1: Anti-Sycophancy Validation Rules
 
-**Status:** SPECIFICATION — Phase 2 implementation  
 **Priority:** HIGH (solo dev critical)  
 **Effort:** 3-4 hours  
 **Source:** Loki Mode (930⭐), B.10 comparison  
@@ -160,7 +150,6 @@ Store per-project rules in `.spek/validation-rules.md`:
 
 ## SECTION 2: Backprop Reflex: Test Failures → Vault Updates
 
-**Status:** SPECIFICATION — Phase 2 implementation  
 **Priority:** HIGH (post-launch critical)  
 **Effort:** 3-4 hours  
 **Source:** Cavekit (920⭐), B.10 comparison  
@@ -218,7 +207,6 @@ For each test failure:
 ```markdown
 ---
 title: "Test Failures: Auth Refactor Feature"
-type: "failure-log"
 tags: ["failure", "domain/authentication", "feature/auth-refactor"]
 related_decisions: ["[[use-singleton-pattern]]", "[[token-lifecycle-decision]]"]
 patterns_affected: ["concurrent-access", "async-performance"]
@@ -322,7 +310,6 @@ backprop:
 
 ## SECTION 3: RARV Reflection Cycle: Reason-Act-Reflect-Verify
 
-**Status:** SPECIFICATION — Phase 2 implementation  
 **Priority:** HIGH (post-launch critical)  
 **Effort:** 4-5 hours  
 **Source:** Loki Mode (930⭐), B.10 comparison  
@@ -507,7 +494,6 @@ rarv:
 
 ## SECTION 4: Blind Code Review
 
-**Status:** SPECIFICATION — Phase 2 (optional enhancement)  
 **Priority:** MEDIUM (optional, quality improvement)  
 **Effort:** 4-5 hours  
 **Source:** Pilot Shell, Loki Mode  
@@ -663,7 +649,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Anonymize code
-        run: |
+        run:
           find src -name "*.ts" -o -name "*.js" | \
           xargs sed -i '/Claude-generated/d' | \
           xargs sed -i '/AI-generated/d'

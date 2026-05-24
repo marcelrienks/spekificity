@@ -1,7 +1,5 @@
 # Spec: Code and Document Maps (extracted spec)
 
-**Status:** ATOMIC SPECIFICATION | **Version:** 1.0.0-alpha.1 (2026-05-20)
-
 ## Overview
 
 **Problem:** The vault graph currently targets source code only. Documentation (specs, plans, skills, architectural decisions) exists in Obsidian vault outside the queryable graph, so AI-assisted steps (specify, plan, implement) cannot easily discover what documentation already exists. This leads to duplicated specs, contradictory plans, and missed opportunities to reuse patterns.
@@ -159,11 +157,8 @@ spek.map step 3: merge both → SQLite (permanent storage) + optional JSONL expo
 
 ```yaml
 ---
-type: decision | spec | skill | pattern | lesson | guide
 tags: [tag1, tag2, ...]
 affects: [affected-feature, ...]
-status: active | archived | draft
-version: "1.0"
 ---
 
 # Heading

@@ -1,6 +1,5 @@
 # Spec: Node Schema Design
 
-**Status:** ATOMIC SPECIFICATION (2026-05-18)   | **Version:** 1.0.0-alpha.1 (2026-05-20)
 **Concern:** JSON schema for code and documentation nodes in the knowledge graph  
 **Extracted from:** extracted spec Questions 1 & 4  
 **Used by:** obsidian-graph-export, graph-merge-integration, graph-storage-structure  
@@ -18,13 +17,7 @@
 ---
 
 ## Node Types Overview
-
-| Type | Source | Granularity | Frequency | Count (Est.) |
-|------|--------|-------------|-----------|--------------|
-| **code** | lat.md | Symbol (function/class/var) | Per file | 1000-5000 |
-| **doc** | Obsidian | Heading or file | Per feature | 100-500 |
-| **skill** | Obsidian/SpecKit | File | Per workflow | 20-50 |
-
+Type | Source | Granularity | Frequency | Count (Est.) | ------|--------|-------------|-----------|-------------- | **code** | lat.md | Symbol (function/class/var) | Per file | 1000-5000 | **doc** | Obsidian | Heading or file | Per feature | 100-500 | **skill** | Obsidian/SpecKit | File | Per workflow | 20-50
 ---
 
 ## Code Node Schema
@@ -327,21 +320,7 @@ interface SkillNode {
 ---
 
 ## Common Fields (All Node Types)
-
-| Field | Type | Required | Purpose |
-|-------|------|----------|---------|
-| `type` | enum | ✓ | "code" \| "doc" \| "skill" |
-| `id` | string | ✓ | Unique identifier (file:symbol or file#heading) |
-| `file` | string | ✓ | Relative path to source file |
-| `description` | string | ✓ | Human-readable summary |
-| `tags` | string[] | ✓ | Searchable tags (implicit + explicit) |
-| `references` | string[] | ✓ | Links to other nodes (outbound) |
-| `referencedBy` | string[] | ✓ | Reverse links (inbound, computed) |
-| `indexed_at` | string | ✓ | ISO timestamp of indexing |
-| `hash` | string | ✓ | SHA256 for change detection |
-| `status` | enum | — | "active" \| "archived" \| "draft" (docs only) |
-| `version` | string | — | Semver or free-form version (optional) |
-
+Field | Type | Required | Purpose | -------|------|----------|--------- | `type` | enum | ✓ | "code" \| "doc" \| "skill" | `id` | string | ✓ | Unique identifier (file:symbol or file#heading) | `file` | string | ✓ | Relative path to source file | `description` | string | ✓ | Human-readable summary | `tags` | string[] | ✓ | Searchable tags (implicit + explicit) | `references` | string[] | ✓ | Links to other nodes (outbound) | `referencedBy` | string[] | ✓ | Reverse links (inbound, computed) | `indexed_at` | string | ✓ | ISO timestamp of indexing | `hash` | string | ✓ | SHA256 for change detection | `status` | enum | — | "active" \| "archived" \| "draft" (docs only) | `version` | string | — | Semver or free-form version (optional)
 ---
 
 ## Implicit Tags

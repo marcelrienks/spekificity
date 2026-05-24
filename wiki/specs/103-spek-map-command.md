@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: /spek.map Command (C5.3)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Skill — /spek.map (lat.md index generation & maintenance)  
 **Depends On:** 050-latmd-setup-and-integration.md, graph-storage-structure.md
 **Used By:** /spek.prepare (Step 4), /spek.conclude (Step 8)  
 

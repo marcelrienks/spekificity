@@ -1,10 +1,5 @@
 # FOUNDATIONAL SPECIFICATION: Error Handling and Recovery (F1.0)
 
-**Status:** FOUNDATIONAL SPECIFICATION
-**Type:** Cross-Cutting Concern — Error Strategy for all Skills and Workflows
-**Version:** 2026-05-19
-**Scope:** Applies to all `/spek.*` skills, enrichment layers, and integration points  
-
 ## Overview
 
 Spekificity operates in autonomous mode with limited user intervention. This spec defines the error handling and recovery strategy across all components: error categorization, per-category handling, logging, graceful degradation, recovery flows, and testing.

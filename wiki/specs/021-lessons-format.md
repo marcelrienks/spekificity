@@ -1,6 +1,5 @@
 # Spec: Per-Feature Lessons Format
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1
 **Concern:** Template and lifecycle for lessons learned files written at feature end  
 **Extracted from:** extracted spec Type 1 (Per-Feature Lessons)  
 **Used by:** conclude-command, /spek.conclude skill  
@@ -40,7 +39,7 @@
 ```markdown
 # Lesson: [Feature Name] (Spec-[Number], [Date])
 
-**Status:** complete | partial | abandoned  
+partial | abandoned  
 **Date Completed:** YYYY-MM-DD  
 **Duration:** X days / Y sessions  
 **Feature Spec:** specs/NNN-feature-name.md  
@@ -164,14 +163,7 @@ Tech stack:
 
 ```markdown
 ## Key Tasks Executed
-
-| Task | Status | Duration | Notes |
-|------|--------|----------|-------|
-| Task 1: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] |
-| Task 2: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] |
-| Task 3: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] |
-| Task 4: [description] | ✗ partial | duration recorded (omitted) | [why not complete] |
-
+Task | Status | Duration | Notes | ------|--------|----------|------- | Task 1: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] | Task 2: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] | Task 3: [description] | ✓ done | duration recorded (omitted) | [blockers/learnings] | Task 4: [description] | ✗ partial | duration recorded (omitted) | [why not complete]
 **Total Feature Time:** recorded (omitted)
 **Blocker Resolution:** [Any major blockers encountered and how resolved]
 ```

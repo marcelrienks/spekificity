@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Decorator Wrapper Pattern (C3.2)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Integration Pattern — Pre/Core/Post Layer Structure  
 **Depends On:** None (foundational pattern)  
 **Used By:** enrichment-layer.md (all three phases: specify, plan, implement)  
 

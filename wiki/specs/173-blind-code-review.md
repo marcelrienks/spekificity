@@ -2,7 +2,6 @@
 
 **This specification has been consolidated into a single archive file.**
 
-**Status:** REDIRECTED (Consolidated 2026-05-20)  
 **Original ID:** C.3.9  
 **See:** [Validation Patterns Archive](validation-patterns-archive.md#section-4-blind-code-review)
 
@@ -261,7 +260,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Anonymize code
-        run: |
+        run:
           # Strip AI-generated markers
           find src -name "*.ts" -o -name "*.js" | \
           xargs sed -i '/Claude-generated/d' | \
@@ -274,14 +273,14 @@ jobs:
         run: npm run test:coverage
       
       - name: Check coverage
-        run: |
+        run:
           coverage=$(npm run test:coverage 2>&1 | grep -o "[0-9]*%")
           if (( coverage < 80 )); then exit 1; fi
       
       - name: Comment PR with report
         uses: actions/github-script@v6
         with:
-          script: |
+          script:
             // Post blind review report to PR
 ```
 

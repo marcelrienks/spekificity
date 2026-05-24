@@ -1,8 +1,5 @@
 # ATOMIC SPECIFICATION: lat.md Setup & Integration (C5.0)
 
-**Status:** ATOMIC SPECIFICATION  
-**Type:** Infrastructure — lat.md Installation, Configuration, and `/spek.map` Integration  
-**Version:** 2026-05-23  
 **Replaces:** legacy graph installation spec (archived)
 **Depends On:** spek-map-command.md, graph-refresh-strategy.md, node-schema-design.md  
 **Used By:** `/spek.prepare` (freshness check), `/spek.conclude` (incremental sync), `/spek.plan` (context queries)
@@ -158,7 +155,7 @@ Example (conceptual):
 #!/bin/bash
 # Auto-refresh lat.md index after each commit (optional)
 if [ -z "$LAT_SKIP_HOOKS" ]; then
-  lat.md index --incremental --config .spek/config.yaml || true
+  lat.md index --incremental --config .spek/config.yaml | true
 fi
 ```
 

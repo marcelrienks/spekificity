@@ -1,7 +1,5 @@
 # ATOMIC SPECIFICATION: Graph Refresh Strategy (C5.4)
 
-**Status:** ATOMIC SPECIFICATION   | **Version:** 1.0.0-alpha.1 (2026-05-20)
-**Type:** Performance — Caching & Incremental Sync Strategy  
 **Depends On:** graph-storage-structure.md, spek-map-command.md  
 **Used By:** /spek.map  
 
@@ -206,14 +204,7 @@ If invalid JSON: Rebuild cache
 ---
 
 ## Cost Analysis
-
-| Scenario | Duration | Cache Hit? | Tokens |
-|----------|----------|-----------|--------|
-| Full rebuild | 30-60s | No | 0 |
-| Incremental (5/200 changed) | 2-5s | Yes | 0 |
-| Cache miss | 30-60s | No | 0 |
-| Watch mode (per change) | 1-2s | Yes | 0 |
-
+Scenario | Duration | Cache Hit? | Tokens | ----------|----------|-----------|-------- | Full rebuild | 30-60s | No | 0 | Incremental (5/200 changed) | 2-5s | Yes | 0 | Cache miss | 30-60s | No | 0 | Watch mode (per change) | 1-2s | Yes | 0
 **Token Cost:** none (pure local file I/O, no LLM calls)
 
 ---

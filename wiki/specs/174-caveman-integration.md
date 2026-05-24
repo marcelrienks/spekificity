@@ -1,8 +1,5 @@
 # SPECIFICATION: Caveman Integration (C4.3)
 
-**Status:** ATOMIC SPECIFICATION  
-**Type:** Optimization — Caveman Compression Mode Integration  
-**Version:** 2026-05-19  
 **Depends On:** error-handling-and-recovery.md, lessons-format.md, post-command.md, post-processing.md  
 
 ---
@@ -341,13 +338,7 @@ Both capture the same decision information; compression just removes verbosity.
 ---
 
 ## Performance Impact
-
-| Mode | Token Reduction | Readability | Use Case |
-|------|-----------------|-------------|----------|
-| `lite` | 30% | High | Onboarding, documentation |
-| `full` | 75% | Medium | Standard workflow |
-| `ultra` | 90% | Low | Token budget exhausted |
-
+Mode | Token Reduction | Readability | Use Case | ------|-----------------|-------------|---------- | `lite` | 30% | High | Onboarding, documentation | `full` | 75% | Medium | Standard workflow | `ultra` | 90% | Low | Token budget exhausted
 **Typical Session:**
 - Feature 1 (fresh context): lite mode (30% reduction) → 15K tokens
 - Feature 2-5 (reusing context): full mode (75% reduction) → 12K tokens each
