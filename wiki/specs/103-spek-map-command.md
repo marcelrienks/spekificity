@@ -116,7 +116,7 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 │  ├─ Call lat_references + lat_impact for each symbol
 │  └─ Output: code symbol nodes with edges
 ├─ Phase 3: Doc Pass (Obsidian Export)
-│  ├─ Export vault via cache.json or plugin
+│  ├─ Export vault via Obsidian CLI export
 │  └─ Output: doc nodes
 ├─ Phase 4: Merge
 │  ├─ Combine code symbols + doc nodes

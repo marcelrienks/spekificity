@@ -1,15 +1,6 @@
----
-title: LLM Wiki
-type: framework
-tags: [meta, knowledge-management, pattern]
-sources:
-  - "raw/llm-wiki/"
-  - "raw/articles/"
-created: current
-updated: current
----
-
 # LLM Wiki: Persistent, Compounding Knowledge Management
+
+## Overview
 
 ## Overview
 

@@ -239,11 +239,16 @@ All vault notes should include frontmatter with these fields to enable tooling a
 ```yaml
 ---
 title: "<note-title>"
+type: "decision|pattern|lesson|guide"
+status: "active"
 tags: ["<domain>", "<methodology>", "<tech-stack>"]
 created: "<YYYY-MM-DD>"
 updated: "<YYYY-MM-DD>"
 source: "<feature-name|external-link|manual>"
 related: ["[[note-name]]", "[[other-note]]"]
+# Optional:
+version: "1.0"  # optional semantic version or date
+affects: ["spec-003-api-redesign"]  # optional list of affected features/components
 ---
 ```
 

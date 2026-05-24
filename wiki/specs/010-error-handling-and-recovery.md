@@ -216,16 +216,16 @@ Spekificity operates in autonomous mode with limited user intervention. This spe
 - [ ] Test: Working tree dirty → Fail + guidance
 - [ ] Test: Feature branch missing → Fail + guidance
 - [ ] Validation: Error message includes `git` command to fix
-- **Category 2: Vault Access Errors**
-- [ ] Test: `vault/` missing → Warn + fallback to cache
-- [ ] Test: Permission denied → Warn + fallback to cache
-- [ ] Test: JSON corrupted → Warn + fallback to cache
-- [ ] Validation: Recovery uses cached context, continues
+-- **Category 2: Vault Access Errors**
+-- [ ] Test: `vault/` missing → Fail + guidance (do not auto-fallback for core automation)
+-- [ ] Test: Permission denied → Fail + guidance (do not auto-fallback for core automation)
+-- [ ] Test: JSON corrupted → Fail + guidance (do not auto-fallback for core automation)
+-- [ ] Validation: Fail-fast for core automation; surface recovery steps to operator/CI
 - **Category 3: Graph Errors**
 - [ ] Test: `nodes.jsonl` corrupted → Warn + fallback to old graph
 - [ ] Test: lat.md hung → Timeout after 2 min, offer async refresh
-- [ ] Test: Obsidian export fails → Warn + fallback
-- [ ] Validation: Graph error doesn't block workflow
+-- [ ] Test: Obsidian export fails → Fail + guidance (Obsidian CLI required for core automation)
+-- [ ] Validation: Graph export failures block core automation and report actionable remediation
 - **Category 4: Context Injection Errors**
 - [ ] Test: Context too large → Auto-compress, continue
 - [ ] Test: Session memory write fails → Warn + fallback

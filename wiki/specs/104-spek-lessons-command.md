@@ -253,17 +253,23 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Entry point:** User calls `/spek.lessons --regenerate` during feature work
 
 **Syntax:**
-```bash
-spek lessons --regenerate [--dry-run]
+```yaml
+---
+title: "Lesson: [Feature Name]"
+type: "lesson"
+status: "active"
+tags: ["lesson/<feature>", "<domain>"]
+created: "<YYYY-MM-DD>"
+updated: "<YYYY-MM-DD>"
+feature_id: NNN
+feature_name: name-from-branch
+duration_days: X
+duration_sessions: Y
+spec_link: specs/NNN-feature-name.md
+branch: NNN-feature-name
+commit_range: abc123..def456
+---
 ```
-
-**Behavior:**
-1. Check current feature state (`vault/session/`)
-2. Verify feature is NOT yet completed (phase < completing)
-3. Read current artifacts (spec, plan, tasks, execution trace if exists)
-4. Generate lesson document (same multi-section template as auto mode)
-5. Write to temporary file (e.g., `/tmp/spek-lesson-preview.md`)
-6. Output: Preview + "Lesson ready; run `/spek.conclude` to finalize"
 
 **Use case:** Mid-feature validation (verify lessons will be comprehensive before `/spek.conclude`)
 

@@ -8,13 +8,13 @@ def convert_heading_to_id(heading_text):
     """Convert 'API Versioning Strategy' → 'api-versioning-strategy'"""
     return heading_text.lower().replace(" ", "-").replace("--", "-")
 
-def parse_obsidian_cache(cache_file):
-    """Read cache.json and yield doc nodes"""
-    
-    with open(cache_file, 'r') as f:
+def parse_cli_export(export_file):
+    """Read Obsidian CLI JSON export and yield doc nodes"""
+
+    with open(export_file, 'r') as f:
         cache = json.load(f)
-    
-    for file_path, file_data in cache['files'].items():
+
+    for file_path, file_data in cache.get('files', {}).items():
         # Skip non-markdown files
         if not file_path.endswith('.md'):
             continue
@@ -69,11 +69,11 @@ def parse_obsidian_cache(cache_file):
                 }
 
 # Usage
-cache_file = ".obsidian/cache.json"
+export_file = "vault/graph/export.json"
 output_file = "vault/graph/nodes-docs.jsonl"
 
 with open(output_file, 'w') as out:
-    for node in parse_obsidian_cache(cache_file):
+    for node in parse_cli_export(export_file):
         out.write(json.dumps(node) + '\n')
 
 print(f"Exported {output_file}")

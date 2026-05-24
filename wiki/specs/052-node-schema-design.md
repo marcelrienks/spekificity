@@ -52,7 +52,7 @@ Type | Source | Granularity | Frequency | Count (Est.) | ------|--------|-------
 - }
 - ```
 - ## Documentation Node Schema (Heading-Level)
-- **Source:** Obsidian export (cache.json or dataview)
+- **Source:** Obsidian export (Obsidian CLI)
 - **Granularity:** Heading level (h1-h6)
 - **Example ID:** `vault/decision.md#api-versioning-strategy` (file#heading-id)
 - ```typescript
@@ -107,8 +107,8 @@ Type | Source | Granularity | Frequency | Count (Est.) | ------|--------|-------
 - **Source:** Obsidian export
 - **Granularity:** Entire file
 - **Example ID:** `vault/intention.md` or `skills/spek-prepare/SKILL.md`
-- interface DocNodeFile {
-- id: string;                          // e.g., "vault/intention.md"
+## Documentation Node Schema (Heading-Level)
+**Source:** Obsidian export (Obsidian CLI)
 - file: string;                        // Same as id for file-level nodes
 - level: "file";                       // Literal "file" (not 1-6 like heading-level)
 - version?: string;

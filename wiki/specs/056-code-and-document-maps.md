@@ -27,7 +27,7 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - **Options:**
 - **Custom markdown parser** — Write code to extract headings, frontmatter, and link structure from markdown files
 - **Obsidian's built-in graph** — Query Obsidian's graph API or export feature to get links, backlinks, and structure
-- **Obsidian CLI (obsidian command)** — Use the Obsidian CLI (bundled `obsidian` command) or plugin-based exports to export the vault graph
+- **Obsidian CLI (obsidian command)** — Use the Obsidian CLI. The `obsidian` CLI is the required integration for vault graph export; the Obsidian desktop app is optional (used for visualization or interactive workflows). Plugin-based or cache-based exports are unsupported for core automation.
 - **Hybrid** — Obsidian for storage + structure, custom parser for agent queries
 - **Decision: Use Obsidian's graph export directly**
 - **Rationale:**
@@ -161,11 +161,9 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - **Optional Exports:** JSONL files in `exports/` subdirectory
 - Generated on-demand for external tool compatibility
 - Not meant for direct agent queries (use MCP tools instead)
-- -- Can be regenerated from SQLite via `lat export` command
-- **Obsidian export format to use:**
-- Obsidian's `dataview` plugin export (most structured)
-- Or Obsidian's native `.obsidian/cache.json` (metadata cache)
-- Or custom Obsidian CLI tool that exports graph as JSONL
+- - Can be regenerated from SQLite via `lat export` command
+- - **Obsidian export format to use:**
+- - Obsidian CLI export (via `obsidian` command). The `obsidian` CLI is required; the Obsidian desktop app is optional. Alternative export methods (Dataview plugin export, `.obsidian/cache.json`) are unsupported for core automation.
 - **nodes.jsonl format (one line per node, OPTIONAL export):**
 - ```jsonl
 - {"type":"code","id":"src/prepare/prepare.ts:Prepare",...}
@@ -186,7 +184,7 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - },
 - "obsidian": {
 - "vaultPath": "vault/",
-- "exportMethod": "dataview-plugin | obsidian-cache | cli-tool",
+- "exportMethod": "cli-tool",
 - "includeMetadata": true,
 - "includeFrontmatter": true,
 - "includeBacklinks": true
@@ -216,9 +214,9 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - "refreshPolicy": {
 - "fullRefresh": "on-demand or after-obsidian-rebuild",
 - "incrementalRefresh": "after-feature (spek.conclude)",
-- "obsidianCacheMonitor": "watch .obsidian/cache.json for
+- "obsidianCliMonitor": "use Obsidian CLI export hooks to detect vault changes",
 - "cacheInvalidation": "when source file hash changes"
-- Export Obsidian graph (via dataview, cache, or CLI tool) → wiki/vault/graph/nodes-docs.jsonl
+- Export Obsidian graph (via Obsidian CLI export) → wiki/vault/graph/nodes-docs.jsonl
 - Extract heading structure from Obsidian's link graph and frontmatter
 - Convert Obsidian links to node references
 - Merge both into wiki/vault/graph/nodes.jsonl (deduplicate, compute backreferences)
@@ -262,7 +260,7 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - Link discovery from Obsidian's built-in graph structure and markdown `[text](url)` syntax
 - Static storage (JSONL, derived from Obsidian vault)
 - **Phase 2 (future):**
-- Real-time sync from Obsidian (file watcher on .obsidian/cache.json)
+- Real-time sync via Obsidian CLI (may require the Obsidian app + CLI enabled depending on export method)
 - Semantic search across nodes (embedding-based on Obsidian content)
 - Interactive graph CLI tool (query Obsidian-sourced nodes)
 - Relationship visualization (which decisions affect which specs)
@@ -282,7 +280,7 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - [x] Node schema is defined for both code and doc nodes
 - [x] Hybrid granularity approach chosen (heading-level for content, file-level for config)
 - [x] Separate parsing passes defined (lat.md for code, custom for docs)
-- [x]Choose Obsidian export method** — Dataview plugin, native cache.json, or custom CLI tool
+- [x]Choose Obsidian export method** — Obsidian CLI export (required)
 - **Implement Obsidian export integration** — Script or plugin that exports Obsidian graph to JSONL format
 - **Update `/spek.map` skill** — Integrate lat.md + Obsidian export into unified command
 - **Create config.json template** — Place in `.spek/config/graph-config.json`
@@ -331,4 +329,3 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 **Storage:** Primary storage in the lat.md SQLite index (`.spek/lat_index.db`); optional JSONL export in `wiki/vault/graph/exports/nodes.jsonl` for compatibility with external tools
 
 ---
-

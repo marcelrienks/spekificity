@@ -10,7 +10,7 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 
 ## Overview
 
-Spekificity defines a coherent memory architecture with three layers: Obsidian vault (persistent), repo-scoped memories (Copilot), and session-scoped context (ephemeral). The preferred automation path uses the Obsidian CLI (`obsidian` command bundled with the desktop app), but the spec supports fallback export methods (cache.json, Dataview/plugin exports, or custom JS via `obsidian eval`) when needed. Each layer has explicit granularity, ownership, persistence, and lifecycle. This spec covers:
+Spekificity defines a coherent memory architecture with three layers: Obsidian vault (persistent), repo-scoped memories (Copilot), and session-scoped context (ephemeral). Indexing and vault exports must be performed via the Obsidian CLI (`obsidian` command). The CLI is the primary integration point; the Obsidian desktop app is optional and may be used for visualization or interactive workflows. Alternative export methods (cache.json, Dataview/plugin exports, or custom JS via `obsidian eval`) are unsupported for core automation. Each layer has explicit granularity, ownership, persistence, and lifecycle. This spec covers:
 
 - **What** each memory layer stores and why
 - **When** memory is read (load lifecycle) and written (write lifecycle)
@@ -45,7 +45,7 @@ Spekificity defines a coherent memory architecture with three layers: Obsidian v
 - ├── vault/session/context-loaded.md    [what was loaded at session start]
 - ├── vault/session/current-feature.md   [current feature state + progress]
 - ## Documentation Index (Separate from Code Graph)
-- **Purpose:** Index all project documentation (vault/ + wiki/) independently, enabling discovery and wikilink traversal. Indexing can be performed via the Obsidian CLI when available, or via `.obsidian/cache.json` or plugin exports (e.g., Dataview) as acceptable alternatives.
+- **Purpose:** Index all project documentation (vault/ + wiki/) independently, enabling discovery and wikilink traversal. Indexing must be performed via the Obsidian CLI (`obsidian` command). The `obsidian` CLI is the required integration; the Obsidian desktop app is optional and may be used for visualization or interactive workflows. Alternative export methods (cache.json, Dataview/plugin exports, or custom JS) are unsupported for core automation.
 - **What It Does:**
 - Indexes all files in vault/ (lessons, patterns, decisions, intention) and wiki/ (specs, guides)
 - Extracts [[wikilink]] references within each document
@@ -184,10 +184,10 @@ Spekificity defines a coherent memory architecture with three layers: Obsidian v
 - Read vault/repo/architectural-decisions.md
 - Read vault/repo/patterns-index.md
 - **Error Handling:**
-- If vault/decision.md missing → Log warning, continue without decisions
-- If vault/patterns.md missing → Log warning, continue without patterns
-- If vault/lessons/ empty → Log info, continue without recent lessons
-- If repo memory missing → Log info (created at first feature end)
+- If `vault/decision.md` missing or vault inaccessible → Fail fast and guide user to restore vault or enable Obsidian CLI. Core automation depends on vault access.
+- If `vault/patterns.md` missing → Fail with guidance to restore vault contents.
+- If `vault/lessons/` empty → Fail with guidance (lessons must exist for provenance).
+- If repo memory missing → Fail with guidance to run `/spek.conclude` after restoring vault.
 - ### Phase 2: Code Graph Query (LOCAL FILE I/O)
 - Validate code graph freshness
 - Read vault/graph/config.json
@@ -369,7 +369,6 @@ Spekificity defines a coherent memory architecture with three layers: Obsidian v
 - Feature end: `/spek.conclude` archives and converts to lessons
 - Feature continuation: Agent reads at session start to resume work
 - Between turns: Agent updates as work progresses
-- Keep during feature work (spans multiple sessions)
 - Archive to vault/session/archive/ after feature completes
 - Delete after N days (default: 30 days after feature ends)
 - ## Load/Write Lifecycle Summary
@@ -398,53 +397,3 @@ Spekificity defines a coherent memory architecture with three layers: Obsidian v
 - ```bash
 - # Query repo memory (fast):
 - grep -A5 "^| .* | active |" vault/repo/architectural-decisions.md
-- # Or query vault (complete):
-- grep -B2 "status.*active" vault/decision.md
-- ### "What patterns exist for [topic]?"
-- # Query vault:
-- grep -l "[topic-tag]" vault/patterns.md
-- # Or query repo memory (recent only):
-- grep "[topic]" vault/repo/patterns-index.md
-- ### "What was learned from similar features?"
-- # Query lessons vault:
-- grep -l "[similar-domain]" vault/lessons/*.md | xargs cat
-- ## Configuration
-- ### .spek/config.yaml
-- ```yaml
-- context_loading:
-- # Enable caching?
-- enable_cache: true
-- cache_expiry_minutes: 60  # Re-summarize after this long
-- # Model for summarization
-- model: "claude-haiku-4.5"  # Fast + cheap
-- temperature: 0.3  # Low creativity
-- max_tokens_output: 2000
-- # Token limits (by mode)
-- token_limits:
-- standard: 3500
-- lite: 2000
-- ultra: 1000
-- # Graph freshness threshold
-- graph_stale_threshold_hours: 1
-- # How many items to include
-- recent_decisions_count: 5
-- recent_patterns_count: 5
-- recent_lessons_count: 3
-- ## Success Criteria
-- [x] Memory architecture has three layers (vault, repo, session) with clear ownership
-- [x] Per-feature lessons are self-contained and reusable
-- [x] Per-decision entries capture rationale and impact
-- [x] Load lifecycle is defined (what, when, how, costs)
-- [x] Write lifecycle is defined (what, when, how)
-- [x] Caching strategy minimizes token usage
-- [x] Session memory files are ephemeral
-- [x] Query patterns are documented
-- [x] Fallback behavior is graceful
-- **Related Specs:**
-- [context-layer.md](031-context-layer.md) — Context composition and injection
-- [decorator-wrapper-pattern.md](011-decorator-wrapper-pattern.md) — How enrichment wraps SpecKit
-- [caveman-integration.md](caveman-integration.md) — Compression format for context summaries
-- *Note: This spec replaces context-load-lifecycle.md, session-memory.md, and persistent-memories-and-lessons.md (merged here)*
-- **External:**
-- [Copilot docs](/memories/) scope definitions and retention policies
-

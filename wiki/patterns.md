@@ -938,8 +938,8 @@ Classify errors into categories; apply category-specific recovery:
 **Category 2: Vault Access Errors (TRANSIENT or FATAL)**
 - Issue: Vault missing, JSON parse error, permission denied
 - Severity: MEDIUM-HIGH
-- Action: WARN + FALLBACK (continue with cache or empty vault)
-- Recovery: Async retry (30s intervals, max 3 retries)
+- Action: FAIL + GUIDANCE (do not fallback for core automation; surface actionable error)
+- Recovery: Manual intervention or CI provisioning (do not auto-fallback to cache for core flows)
 
 **Category 3: Graph/Code Index Errors (TRANSIENT or RECOVERABLE)**
 - Issue: lat.md index corrupted, lat.md index rebuild fails
@@ -998,7 +998,9 @@ Classify errors into categories; apply category-specific recovery:
 **Status:** ACTIVE  
 
 ### Problem
-When primary systems fail (vault inaccessible, graph stale), workflow should degrade gracefully, not crash.
+When primary systems fail (graph stale, non-vault services), workflow should degrade gracefully, not crash.
+
+Exception: For Obsidian vault exports, Spekificity requires the Obsidian CLI; vault export failures are considered authoritative failures for core automation and must fail-fast (no automatic fallback to cache/plugin exports).
 
 ### Solution
 Implement fallback hierarchy (Layer 1 primary, Layer 2-3 fallbacks):

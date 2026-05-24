@@ -7,17 +7,9 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 This document contains shared templates and conventions referenced by individual spec files in this directory. Do not edit the per-spec copies of these sections directly; update this file and then propagate changes.
 
 
-## Frontmatter Schema
+## Frontmatter
 
-Recommended frontmatter fields (if used outside `wiki/specs/`):
-
-- `title`: Human-friendly title
-- `status`: active | draft | archived
-- `version`: semantic version or date
-- `date`: YYYY-MM-DD
-- `type`: spec | pattern | skill | guide
-
-Note: Spec files in `wiki/specs/` are maintained without frontmatter by project convention.
+Project convention: frontmatter and embedded front-metadata are not used for core tooling. All note and document metadata is tracked via the external index (`lat.md` / graph outputs) rather than YAML frontmatter. Do not add or rely on frontmatter fields in `wiki/` pages; specs in `wiki/specs/` remain boilerplate-only.
 
 
 ## Cross-cutting Error Handling Rules (summary)

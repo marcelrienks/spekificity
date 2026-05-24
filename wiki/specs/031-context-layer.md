@@ -46,7 +46,7 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 - Active decisions (vault/decision.md)
 - Active patterns (vault/patterns.md)
 - Recent lessons (vault/lessons/ — a small set of recent lessons)
-- **NOTE:** Vault context is authoritative and can be loaded via multiple mechanisms. Spekificity recommends using the Obsidian CLI (`obsidian` command bundled with the desktop app) where available for scripted automation; alternative methods include reading `.obsidian/cache.json`, using Dataview/plugin exports, or running `obsidian eval` snippets. The implementation should gracefully fall back to cache/plugin-based exports when the CLI is not available.
+- **NOTE:** Vault context is authoritative and must be loaded via the Obsidian CLI (`obsidian` command). The CLI is the primary integration point; the Obsidian desktop app is optional and may be used for visualization or interactive workflows. Alternative export methods (cache.json, Dataview/plugin exports, or `obsidian eval`) are unsupported for core automation. If the CLI or vault is unavailable, core workflows must not proceed.
 - **From repo memory (compressed cache):**
 - Recent decisions (if already synced)
 - Pattern index
@@ -128,10 +128,7 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 - ## Error Handling & Resilience
 - ### If Context Load Fails
 - **Scenario 1: Vault is inaccessible**
-- Fallback: Use repo memory (cached version, might be stale)
-- If repo memory also missing: Use code graph only
-- Log: "Vault load failed; using cached context"
-- Continue: Yes (partial context is useful)
+- Action: Fail fast. Abort operation and present actionable guidance to restore vault access and enable Obsidian CLI. Core automation requires vault access; proceeding with partial context is unsupported.
 - **Scenario 2: Code graph is missing or corrupted**
 - Fallback: Skip code structure summary
 - Continue with vault/repo memory
@@ -192,14 +189,14 @@ The context layer loads project knowledge (decisions, patterns, lessons, code gr
 - refresh_interval_minutes: 30
 - # OR refresh only when user requests?
 - on_demand: true
-- # Fallback behavior
-- fallback:
-- # If vault unavailable, use repo memory?
-- use_repo_memory: true
-- # If summarization fails, use uncompressed?
-- use_uncompressed: true
-- # If all sources fail, continue anyway?
-- continue_without_context: true
+# Fallback behavior (core automation: fail-fast)
+fallback:
+# If vault unavailable, use repo memory? (CORE AUTOMATION: set to false)
+use_repo_memory: false
+# If summarization fails, use uncompressed? (optional for non-core flows)
+use_uncompressed: true
+# If all sources fail, continue anyway? (CORE AUTOMATION: set to false)
+continue_without_context: false
 - ## Success Criteria
 - ✅ Context is loaded at session start
 - ✅ Context is available throughout session

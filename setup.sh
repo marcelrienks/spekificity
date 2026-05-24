@@ -46,38 +46,16 @@ echo "✓ Git found"
 
 # 4. Check Obsidian
 if ! command -v obsidian &> /dev/null; then
-    echo "Obsidian not found. Attempting to install..."
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        brew install --cask obsidian || true
-    elif [[ "$OSTYPE" == "linux"* ]]; then
-        echo "Please install Obsidian manually from https://obsidian.md/download"
-    elif [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "win32"* ]]; then
-        choco install obsidian || true
-    else
-        echo "Please install Obsidian manually from https://obsidian.md/download"
-    fi
-fi
-if command -v obsidian &> /dev/null; then
-    echo "✓ Obsidian found"
-else
-    echo "❌ Obsidian not found. Please install manually and re-run."
-    exit 1
-fi
-
-# 5. Verify Obsidian CLI availability (bundled with Obsidian app)
-# The Obsidian CLI is provided by the Obsidian desktop app and registers
-# as the `obsidian` command in PATH when enabled via Settings → General → Command line interface.
-if ! command -v obsidian &> /dev/null; then
-    echo "❌ Obsidian CLI (obsidian) not found in PATH."
-    echo "Ensure the Obsidian desktop app is installed and the CLI is enabled:"
-    echo "  1. Open Obsidian → Settings → General → Command line interface"
-    echo "  2. Follow the on-screen prompt to register the CLI in your PATH"
-    echo "  3. Restart your terminal and retry this script"
-    echo "If you need CI/headless alternatives, see: https://obsidian.md/help/headless"
+    echo "❗ Obsidian CLI (obsidian) not found in PATH. The Obsidian CLI is required for core automation."
+    echo "If you have the Obsidian desktop app, enable the CLI in Settings → General → Command line interface and register it in your PATH."
+    echo "For CI/headless options or more installation guidance see: https://obsidian.md/help/headless"
+    echo "Please install or register the Obsidian CLI and re-run this script."
     exit 1
 else
     echo "✓ Obsidian CLI (obsidian) available"
 fi
+
+# (Obsidian CLI verification handled above)
 
 # 6. Check Spekificity CLI
 if ! command -v spek &> /dev/null; then

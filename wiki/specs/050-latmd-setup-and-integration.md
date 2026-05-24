@@ -98,11 +98,8 @@ See [Spec Boilerplate](./_boilerplate.md) for shared templates and conventions.
 - # This adapter should enforce the `api_timeout_seconds` and a simple retry/backoff policy
 - # (e.g., 2 retries with exponential backoff starting at 250ms) so agent callers can depend on
 - # consistent timeout semantics.
-- # Obsidian fallback
-- # Automated vault exports rely on Obsidian tooling. If Obsidian CLI/plugins are not available,
-- # provide an alternative export path (dataview plugin export, Obsidian cache.json, or a manual
-- # JSONL export) and document CI behavior when Obsidian is absent (skip doc-merge or fail-fast
-- # depending on policy).
+# Obsidian requirement
+# Automated vault exports rely on the Obsidian CLI. The `obsidian` CLI must be available in PATH for core automation; the Obsidian desktop app is optional (used for visualization or interactive workflows). Alternative export methods (Dataview plugin export, `.obsidian/cache.json`, or manual JSONL exports) are unsupported for core automation.
 - ### Step 3: Initialize Index
 - Run the lat.md initialization step as documented by the tool. The goal is to create an on-disk index under the runtime folder (`.spek/lat/`) and ensure configuration validation passes. If human-readable exports are required, produce JSON/graph exports into `wiki/vault/graph/exports/` (optional) so the `wiki/` remains browseable.
 - Output expectations:

@@ -68,6 +68,8 @@ Obsidian vault is the single source of truth for project knowledge:
 - Decisions are documented with rationale and dates
 - Lessons learned are captured and indexed
 
+**Note:** The `obsidian` CLI is required for Spekificity's automation. Core workflows (vault sync, metadata export, lesson extraction, graph exports) depend on the CLI being available in PATH; the Obsidian desktop app is optional and may be used for visualization or interactive workflows. Fallback alternatives are unsupported.
+
 **Implication:** A new agent joining mid-project can read the vault and understand what's been tried, what worked, and why.
 
 ---
