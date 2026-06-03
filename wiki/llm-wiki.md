@@ -31,7 +31,7 @@ In Spekificity, **the Obsidian vault (Layer 1 of memory architecture)** is the L
 - **vault/lessons/** - Learned concepts extracted from feature execution
 - **vault/patterns.md** - Reusable patterns discovered during implementation
 - **vault/decision.md** - Architectural decisions and rationale
-- **vault/intention.md** - Project vision and guiding principles
+- **vault/vision.md** - Project vision and guiding principles
 
 When you run `spek conclude` (outcome archival), lessons, decisions, and patterns are automatically written to the vault and committed to Git. The vault becomes your **persistent, compounding knowledge base that survives all sessions**.
 
@@ -81,7 +81,7 @@ wiki/                              # LLM Wiki (root-level artifact)
 │
 ├── llm-wiki.md                    # This file (framework documentation)
 ├── architecture.md                # Single-word lowercase files (flat)
-├── intention.md
+├── vision.md
 ├── workflow.md
 └── specs/                         # Specification documents
 ```

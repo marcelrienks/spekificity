@@ -288,7 +288,7 @@ vault/
 │     └─ Current session decisions
 │
 ├─ repo/
-│  ├─ intention.md
+│  ├─ vision.md
 │  │  └─ Project vision, tenets, constraints
 │  │
 │  ├─ patterns.md
@@ -705,7 +705,7 @@ Spekificity is working when:
 | Document | Read For |
 |----------|----------|
 | [wiki/vision.md](../vision.md) | Why Spekificity exists (problems + philosophy) |
-| [wiki/intention.md](../intention.md) | Core principles and design tenets |
+| [wiki/vision.md](../vision.md) | Core principles and design tenets |
 | [wiki/architecture.md](../architecture.md) | Technical architecture and components |
 | [wiki/workflow.md](../workflow.md) | 4-stage workflow details (reference during development) |
 | [wiki/quickstart.md](../quickstart.md) | Hands-on walkthrough of first feature (short tutorial) |

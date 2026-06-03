@@ -39,9 +39,9 @@ The `obsidian` CLI is the required runtime interface for automated vault and per
 
 > **Execution model note:** Spekificity is init-first. Install globally via `uv`, then run `spek init` in a target project to scaffold `.spek` skills/functions. References in this document to `/spek.*` denote generated skills executed by an agent runtime, not direct shell subcommands.
 
-**See also:** [vision.md](vision.md) (philosophy) → [intention.md](intention.md) (principles) → [workflow.md](workflow.md) (process)
+**See also:** [vision.md](vision.md) (philosophy) → [vision.md](vision.md) (principles) → [workflow.md](workflow.md) (process)
 
-**Note:** This document covers technical architecture only. For philosophical foundations and design principles, see [vision.md](vision.md) and [intention.md](intention.md).
+**Note:** This document covers technical architecture only. For philosophical foundations and design principles, see [vision.md](vision.md) and [vision.md](vision.md).
 
 ---
 
@@ -286,6 +286,6 @@ See [patterns](patterns/) directory for detailed deep-dives:
 
 ## References
 
-- **Intention & Philosophy:** [intention.md](intention.md)
+- **Intention & Philosophy:** [vision.md](vision.md)
 - **Workflow Details:** [workflow.md](workflow.md)
 - **Naming & Namespacing:** [conventions.md](conventions.md)

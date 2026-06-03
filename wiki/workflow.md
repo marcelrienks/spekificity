@@ -1,6 +1,6 @@
 # Feature Development Workflow
 
-**See also:** [intention.md](intention.md) (principles) → [architecture.md](architecture.md) (technical) → [quickstart.md](quickstart.md) (howto)
+**See also:** [vision.md](vision.md) (principles) → [architecture.md](architecture.md) (technical) → [quickstart.md](quickstart.md) (howto)
 
 ---
 

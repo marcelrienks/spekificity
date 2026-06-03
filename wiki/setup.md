@@ -108,7 +108,7 @@ your-project/
 │   ├── lessons/              ← written by spek conclude (per-feature lessons)
 │   ├── patterns.md           ← reusable patterns discovered
 │   ├── decision.md           ← architectural decisions and rationale
-│   └── intention.md          ← project vision and guiding principles
+│   └── vision.md          ← project vision and guiding principles
 ├── vault/                  ← Persistent memory (Obsidian vault: user, session, repo, lessons)
 └── wiki/                     ← Documentation specs and guides
 ```
@@ -126,7 +126,7 @@ This creates:
 - ✅ `vault/lessons/` for per-feature lessons (one `.md` file per feature)
 - ✅ `vault/patterns.md` — template for reusable patterns
 - ✅ `vault/decision.md` — template for architectural decisions
-- ✅ `vault/intention.md` — template for project vision
+- ✅ `vault/vision.md` — template for project vision
 
 **You do not need to create vault files manually.**
 

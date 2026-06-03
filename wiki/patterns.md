@@ -172,7 +172,7 @@ Implement three-layer memory architecture:
 ```
 Layer 1: Vault (Obsidian) — Persistent, Authoritative
 ├── vault/decision.md
-├── vault/intention.md
+├── vault/vision.md
 ├── vault/patterns.md
 └── vault/lessons/<YYYY-MM-DD>-<feature>-*.md
 
