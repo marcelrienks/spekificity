@@ -134,114 +134,46 @@ Recommended tooling and checks:
 
 **For full command reference, see:** [skill-index.md](skill-index.md)
 
-**Copilot-instructions.md will document:**
+## Command Naming Decisions
 
-```markdownspek.*` prefix)
-Spekificity-owned skills for orchestration, context, and enhancement.
-- `/spek.prepare` — Pre-feature setup
-- `/spek.conclude` — Feature conclusion and archival
-- `/spek.context` — Load vault context
-- `/spek.map` — Index source code
-- `/spek.lessons` — Extract lessons learned
-- `/spek.plan` — Full automation workflow
+| Old Name | New Name | Rationale |
+|----------|----------|-----------|
+| `spek.context-load` | `/spek.context` | Keep prefix; simplify command portion |
+| `spek.map-codebase` | `/spek.map` | Keep prefix; simplify command portion |
+| `spek.lessons-learnt` | `/spek.lessons` | Keep prefix; simplify command portion |
+| `spek.prepare` | `/spek.prepare` | UNCHANGED (already simple) |
+| `spek.plan` | `/spek.plan` | UNCHANGED (already simple) |
+| `speckit-enrich-specify` | Via `/spek.plan` | Collapse into workflow orchestrator |
+| `speckit-enrich-plan` | Via `/spek.plan` | Collapse into workflow orchestrator |
+| `/speckit.specify` | `/speckit.specify` | UNCHANGED (vanilla SpecKit namespace) |
+| `/speckit.plan` | `/speckit.plan` | UNCHANGED (vanilla SpecKit namespace) |
+| `/speckit.implement` | `/speckit.implement` | UNCHANGED (vanilla SpecKit namespace) |
 
-### SpecKit Vanilla (`speckit.*` prefix)
-Spec-driven framework commands (unchanged; distinct namespace for clarity).
-- `/speckit.specify` — Create spec (vanilla SpecKit)
-- `/speckit.plan` — Create plan (vanilla SpecKit)
-- `/speckit.implement` — Execute tasks (vanilla SpecKit)
+## Design Principles
 
-### Spekificity Workflow Commands (`spek.*` prefix)
-Spekificity exposes workflow-level commands rather than one wrapper per SpecKit phase.
-- `/spek.plan` — Orchestrates specify → clarify → plan → analyze → remediate → tasks
-- `/spek.implement` — Runs implementation after workflow artifacts are approved
-
-**User mental model:** 
-- Use `/spek.*` commands (enriched, full feature workflow)
-- Use `/speckit.*` commands only if vanilla SpecKit workflow needed
-- Prefix indicates ownership: `spek` = Spekificity, `speckit` = SpecKit
-
-### Auxiliary (No prefix, system-level
-- `/implement-enrich` — Wrap /speckit.implement
-
-### Auxiliary (`/command` or `/command-hyphen`)
-Support utilities.
-- `/caveman` — Compression mode
-- `/read-wiki` — Wiki analysis
-- `/simplify-docs` — Docs consolidation
-```
-spek.context-load` | `spek.context` | Keep prefix; simplify command portion |
-| `spek.map-codebase` | `spek.map` | Keep prefix; simplify command portion |
-| `spek.lessons-learnt` | `spek.lessons` | Keep prefix; simplify command portion |
-| `spek.prepare` | `spek.prepare` | **UNCHANGED** (already simple) |
-| `spek.plan` | `spek.plan` | **UNCHANGED** (already simple) |
-| `spek.plan` | `spek.plan` | **UNCHANGED** (already simple) |
-| `speckit-enrich-specify` | `spek.plan` | Collapse wrapper into workflow orchestrator |
-| `speckit-enrich-plan` | `spek.plan` | Collapse wrapper into workflow orchestrator |
-| `speckit-enrich-implement` | `spek.implement` | Keep separate enriched execution command |
-| `/speckit.specify` | `/speckit.specify` | **UNCHANGED** (vanilla SpecKit, distinct namespace) |
-| `/speckit.plan` | `/speckit.plan` | **UNCHANGED** (vanilla SpecKit, distinct namespace) |
-| `/speckit.implement` | `/speckit.implement` | **UNCHANGED** (vanilla SpecKit, distinct namespace) |
-| `/speckit.specify` | `/speckit.specify` | **UNCHANGED** (keep namespace for clarity) |
-| Keep `spek.*` prefix? | **Yes, always** | Clear namespace ownership; visual grouping in invocation |
-| Simplify command portion? | **One word when possible** | Shorter to type; easier to remember |
-| Use hyphenation in commands? | **Only if one word insufficient** | Prefer single words (e.g., `context` not `load-context`); hyphens acceptable if needed |
-| Namespace prefix for SpecKit skills? | **Yes (`speckit.*`), unchanged** | Intentional distinction; SpecKit-owned tools |
-| Namespace prefix for workflow commands? | **Yes (`spek.*`)** | `spek.plan` and `spek.implement` remain distinct from upstream SpecKit commands |
-| Should skill directories use prefix? | **Yes (`spek-` prefix in directory name)** | Groups all Spekificity skills together in filesystem; easy to scan |
-| Should directory suffix match command? | **Yes, exactly** | Directory `spek-context/` → command `/spek.context` → remove ambiguity
 | Question | Decision | Rationale |
 |----------|----------|-----------|
-| One word or hyphenated? | **One word when possible, hyphenated when needed** | Shorter invocation; user preference |
-| Use dot notation? | **Yes** | Use dot notation for CLI command names (e.g., `/spek.prepare`, `/speckit.specify`). Use kebab-case for file and artifact names (e.g., `feature-name.md`). |
-| Namespace prefix for spekificity skills? | **No** | Global scope; namespace clarity via documentation |
-| Namespace prefix for SpecKit skills? | **Yes (`speckit.*`)** | Intentional distinction; SpecKit-owned tools |
-| Namespace prefix for enriched wrappers? | **No, but use `-enrich` suffix** | Suffix signals wrapper; no prefix needed |
-| Should skill directories match command names? | **Yes, exactly** | Remove ambiguity; directory reflects invocation |
-| Should enriched wrappers be prefixed? | **No; use `-enrich` suffix instead** | Suffix is more meaningful than prefix |
+| Keep `spek.*` prefix? | **Yes, always** | Clear namespace ownership; visual grouping |
+| Simplify command portion? | **One word when possible** | Shorter to type; easier to remember |
+| Use hyphenation in commands? | **Only if necessary** | Prefer single words (e.g., `context` not `load-context`) |
+| Namespace for SpecKit skills? | **Yes (`speckit.*`)** | Intentional distinction; SpecKit-owned tools |
+| Skill directories prefix? | **Yes (`spek-` prefix)** | Groups Spekificity skills together; easy to scan |
+| Directory suffix match command? | **Yes, exactly** | Directory `spek-context/` → command `/spek.context` |
 
----
+## User Mental Model
+
+- Use `/spek.*` commands for full enriched workflow
+- Use `/speckit.*` commands only for vanilla SpecKit workflow (when enrichment not needed)
+- Prefix indicates ownership: `spek.*` = Spekificity, `speckit.*` = SpecKit, `context.*` = memory, `lat.*` = code analysis
 
 ## Success Criteria
 
-- [x] User-facing Spekificity workflow commands reduced to `/spek.plan` and `/spek.implement`
+- [x] User-facing Spekificity workflow commands streamlined (`/spek.prepare`, `/spek.plan`, `/spek.implement`, `/spek.conclude`)
 - [x] SpecKit vanilla commands use `speckit.*` namespace (unchanged, intentional distinction)
-- [x] Spekificity does not mirror every SpecKit phase as separate primary commands
-- [x] Directory names match command invocations
-- [x] Namespace distinctions documented in copilot-instructions.md
+- [x] Spekificity exposes workflow-level orchestration, not phase-by-phase wrappers
+- [x] Directory names match command invocations exactly
+- [x] Namespace distinctions clear and documented
 - [x] Migration path clear for current users
-
----
-
-#spek.prepare               # Pre-feature setup
-/spek.context               # Load vault context independently
-
-# Workflow
-/spek.plan              # Orchestrate spec -> plan -> analyze -> remediate -> tasks
-
-# Implement
-/spek.implement             # Execute implementation after workflow artifacts are approved
-```
-
-**Compare to old naming:**
-```
-/spek.prepare
-/speckit.specify
-/speckit.clarify
-/speckit.plan
-/speckit.analyze
-/speckit.tasks
-/speckit.implement
-```
-
-**Key improvements:**
-- All Spekificity commands keep `spek.*` prefix (namespace clarity)
-- Command portions simplified: `context-load` → `context`, `lessons-learnt` → `lessons`, `map-codebase` → `map`
-- Spekificity exposes workflow-level orchestration instead of phase-by-phase wrappers
-- Easier to type and remember while maintaining namespace distinction
-```
-
-**New naming is shorter and more memorable.**
 
 ---
 

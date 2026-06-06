@@ -137,11 +137,12 @@ This creates:
 
 ### Important: Plain Markdown (No Obsidian App Required)
 
-**The vault is just markdown files on your filesystem.** Spekificity agents access it directly via file I/O:
+**The vault is just markdown files on your filesystem.** Spekificity agents access it directly via file I/O. **Obsidian CLI required** for automated vault operations (syncs, metadata exports, graph generation); desktop app is optional visualization layer.
 
-- ✅ **Agents work without Obsidian** — They read/write `.md` files directly
+- ✅ **Agents work without Obsidian app** — They read/write `.md` files directly via filesystem
 - ✅ **Vault is fully git-committable** — Commit `vault/` to version control
 - ✅ **Tool-agnostic** — Use any markdown editor or command-line tools
+- ⚠️ **Obsidian CLI required** — Enables `/spek.conclude` vault operations; fallback (manual steps only) not supported
 - ⚠️ **Obsidian app is optional** — Use only if you want graph visualization or rich UI
 
 ### Optional: Obsidian Desktop App (Enhanced UI)
@@ -192,7 +193,7 @@ Spekificity uses an indexing tool to make source code and documentation queryabl
 - Connectors for Obsidian-style vaults so documentation and code share a single graph
 - Agent-friendly query interface (MCP or HTTP API) for context injection
 
-See [wiki/specs/050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md) for complete lat.md setup and integration details.
+**Setup:** Install lat.md globally via `uv tool install lat-md` (or package manager equivalent). Configure MCP tools in your agent environment. Run `lat.md init` in project directory to scaffold `.lat/` index and setup hooks. Verify with `lat.md --version` and `lat.md query --help`.
 
 ---
 

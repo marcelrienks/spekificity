@@ -108,26 +108,27 @@ Spekificity defines how these tools work together—it doesn't replace them. **T
 
 ---
 
-## Core Workflow
+## Core Workflow (4 Main Stages)
 
 ```
-GLOBAL INSTALL
-    ↓
-uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
-    ↓
-PROJECT INIT
-    ↓
-spek init [target-dir]
-    ↓
-INIT ACTIONS
-    ├─ scaffold .spek skills/functions/prompts
-    ├─ install/verify dependencies (specify, obsidian CLI, lat.md, caveman)
-    ├─ run specify init under the covers
-    └─ link workflow between all tools
-    ↓
-AGENT EXECUTION
-    ↓
-Use generated /spek.* skills from .spek (or direct underlying tools when needed)
+STAGE 1: PREPARE
+/spek.prepare (workspace ready, vault synced, lat.md fresh)
+    ├─ Includes: /speckit.specify as substep
+    └─ Output: Feature spec + context loaded
+
+STAGE 2: PLAN (2 substeps; tasks optional but preferred)
+/spek.plan
+    ├─ Substep 1: /speckit.plan (architecture + tech choices)
+    └─ Substep 2: /speckit.tasks (dependency-ordered tasks) [optional, recommended]
+    └─ Output: Plan + task breakdown
+
+STAGE 3: IMPLEMENT
+/spek.implement (execute tasks, write code + tests)
+    └─ Output: Code committed, tests passing
+
+STAGE 4: CLOSE
+/spek.conclude (archive outcomes, extract lessons, refresh state)
+    └─ Output: Vault updated, lessons captured, graph fresh
 ```
 
 ---

@@ -262,24 +262,24 @@ For fine-grained context control at specific workflow points:
 
 ## lat.md Skills: `/lat.*` Namespace
 
-### `/cg.query`
+### `/lat.query`
 
 **Purpose:** Query code graph for code intelligence  
-**Usage:** `/cg.query [pattern|symbol|impact] [target]`
+**Usage:** `/lat.query [pattern|symbol|impact] [target]`
 
 **Subcommands:**
 
-#### `/cg.query pattern [pattern-name]`
+#### `/lat.query pattern [pattern-name]`
 - Find all uses of design pattern in codebase
 - Return file + line ranges
 - Suggest refactoring if pattern misapplied
 
-#### `/cg.query symbol [symbol-name]`
+#### `/lat.query symbol [symbol-name]`
 - Find all references to function/class/module
 - Return call graph (who calls this symbol?)
 - Identify unused symbols
 
-#### `/cg.query impact [file|symbol]`
+#### `/lat.query impact [file|symbol]`
 - What specs + features depend on this code?
 - What happens if we change this file/symbol?
 - Identify breaking change risk
@@ -293,10 +293,10 @@ For fine-grained context control at specific workflow points:
 
 ---
 
-### `/cg.sync`
+### `/lat.sync`
 
 **Purpose:** Synchronize code graph with current repository state  
-**Usage:** `/cg.sync [--force]`
+**Usage:** `/lat.sync [--force]`
 
 **What it does:**
 1. Detect file changes since last sync
@@ -534,8 +534,8 @@ For fine-grained context control at specific workflow points:
 ```
 /context.load         # Load memory
 /context.inject       # Stage-specific context
-/cg.query            # Code intelligence
-/cg.sync             # Refresh graph
+/lat.query            # Code intelligence
+/lat.sync             # Refresh graph
 ```
 
 **Compression & Utilities:**
@@ -554,7 +554,7 @@ For fine-grained context control at specific workflow points:
 
 **Simplicity:** Command portions are single words where possible (`prepare`, not `prep`; `context`, not `ctx`). Hyphenation avoided for ergonomics.
 
-**Clarity:** Command name describes action (verb-oriented). Prefixes group related tools (`spek.*` = Spekificity, `speckit.*` = SpecKit, `context.*` = memory, `cg.*` = code analysis).
+**Clarity:** Command name describes action (verb-oriented). Prefixes group related tools (`spek.*` = Spekificity, `speckit.*` = SpecKit, `context.*` = memory, `lat.*` = code analysis).
 
 **Modularity:** Each command follows same patterns:
 - Input: Feature name, spec file, or target item

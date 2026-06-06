@@ -46,7 +46,7 @@ Pre-flight checks before feature development begins. Ensures workspace is ready,
 
 ---
 
-## Planning
+## Specification
 
 ### Commands
 ```
@@ -106,39 +106,40 @@ Each spec includes structured enrichment:
 
 ---
 
-## Planning
+## Task Breakdown (Planning Phase: Part 2)
 
 ### Commands
 ```
 /spek.plan --phase=plan
-# or directly (two-step):
+# or separately:
 /speckit.plan --spec="feature-spec-id"
 /speckit.tasks --plan="feature-plan-id"
 ```
 
 ### Purpose
-Convert specification into detailed execution plan (architecture + tech choices) and task list (dependency-ordered executable tasks).
+Convert specification into detailed execution plan (architecture + tech choices), then break plan into dependency-ordered executable tasks.
 
-### Workflow
+### Workflow (Two-Step Process)
 
 ```
 SPEC DOCUMENT
     ↓
-/speckit.plan (Step 1: Architecture)
+STEP 1: /speckit.plan (Architecture & Tech Design)
     ├─ Analyze spec requirements
     ├─ Design architecture + tech choices
     ├─ Query lat.md for affected areas
-    └─ Produce: plan.md (rationale, architecture decisions)
+    ├─ Document rationale and technology decisions
+    └─ OUTPUT: plan.md (stored in vault)
     ↓
-/speckit.tasks (Step 2: Task Breakdown)
+STEP 2: /speckit.tasks (Task Decomposition)
     ├─ Read plan.md
-    ├─ Identify task boundaries
-    ├─ Determine dependencies (task A blocks B)
+    ├─ Break plan into executable tasks
+    ├─ Determine task dependencies (A blocks B)
     ├─ Estimate per-task resources
     ├─ Query lat.md for file locations
-    └─ Produce: tasks.md (ordered, IDs, dependencies, risk mitigation)
+    └─ OUTPUT: tasks.md (ordered, IDs, dependencies, risk mitigation)
     ↓
-PLAN + TASKS DOCUMENTS (vault + git commit)
+COMPLETE: PLAN + TASKS ARTIFACTS (vault + git commit)
 ```
 
 ### Plan Structure

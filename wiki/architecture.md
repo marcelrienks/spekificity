@@ -271,12 +271,13 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 ### Command Execution (Example: `/spek.plan`)
 
 1. **Preparation:** Run pre-flight checks (`spek.prepare` substeps)
-2. **Orchestration:** Call SpecKit pipeline
-   - `/speckit.specify`: Generate feature spec with enrichments
-   - `/speckit.plan`: Break spec into tasks
-   - `/speckit.analyze`: Validate plan (risk, feasibility, token budget)
-3. **Storage:** Archive spec/plan in vault/ (Git commit)
-4. **Return:** Hand off to `spek.implement` for task execution
+2. **Orchestration:** Call SpecKit pipeline with enrichment (context injection PRE-execution only)
+   - `/speckit.specify`: Generate feature spec with enrichments (decisions + patterns injected)
+   - `/speckit.plan`: Create architecture + tech choices (code graph injected via lat.md)
+   - `/speckit.tasks`: Break plan into executable tasks (dependencies analyzed)
+   - `/speckit.analyze`: Validate completeness (risk, feasibility, token budget)
+3. **Storage:** Archive spec/plan/tasks in vault/ (Git commit)
+4. **Return:** Hand off to `spek.implement` for task execution (no enrichment; execute approved plan)
 
 ---
 
@@ -299,9 +300,10 @@ User Intention
 /spek.prepare
     ↓ (invokes)
 /spek.plan
-    ├→ /speckit.specify (reads vault, writes spec)
-    ├→ /speckit.plan (reads spec, writes plan)
-    ├→ /speckit.analyze (queries lat.md, validates)
+    ├→ /speckit.specify (reads vault, writes spec with enrichments)
+    ├→ /speckit.plan (reads spec, writes plan with code graph)
+    ├→ /speckit.tasks (reads plan, writes dependency-ordered tasks)
+    ├→ /speckit.analyze (queries lat.md, validates completeness)
     │
 /spek.implement
     ├→ Read plan from vault

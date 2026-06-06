@@ -62,10 +62,6 @@ Spekificity is a spec-driven agent development framework that ties a persistent 
 - Ensure lat.md and SpecKit are installed per `wiki/setup.md` when you need code indexing + spec workflows.
 - Use `/spek.prepare` → `/spek.plan` → `/spek.implement` → `/spek.conclude` as the minimal workflow.
 
-## Notes on Consolidation
-
-This page consolidates content previously split across `vision.md` and `vision.md`. `wiki/vision.md` has been converted to a short redirect stub to avoid duplication; the canonical project vision, tenets, and implementation notes live here.
-
 ## References
 
 - `wiki/architecture.md` — technical architecture and component responsibilities
