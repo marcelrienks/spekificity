@@ -34,7 +34,7 @@ Spekificity exposes agent skills and commands for specification-driven developme
 - Related patterns (quick-ref links)
 - Previous lessons learned (if feature attempted before)
 
-**Spec Reference:** [spek-lessons-command.md](../specs/spek-lessons-command.md) (preparation phase)
+**Reference:** [decision.md](../decision.md) (preparation phase)
 
 ---
 
@@ -57,7 +57,7 @@ Spekificity exposes agent skills and commands for specification-driven developme
 - Decision tree path (if decisions needed)
 - Token allocation per phase
 
-**Spec Reference:** [spek-plan-workflow.md](../specs/spek-plan-workflow.md) (plan phase)
+**Reference:** [workflow.md](../workflow.md) (plan phase)
 
 ---
 
@@ -90,14 +90,15 @@ Spekificity exposes agent skills and commands for specification-driven developme
 - Token usage to date
 - Completion status summary
 
-**Spec Reference:** [spek-implement-workflow.md](../specs/spek-implement-workflow.md)
+**Reference:** [workflow.md](../workflow.md)
 
 ---
 
 ### `/spek.lessons`
 
 **Purpose:** Archive lessons learned + extract patterns + update vault  
-**Usage:** `/spek.lessons [feature-name|feature-complete]`
+**Usage:** `/spek.lessons [feature-name|feature-complete]`  
+**Requires:** Obsidian CLI (for vault exports and graph generation)
 
 **What it does:**
 1. Prompt for retrospective (What went well? What to improve?)
@@ -113,14 +114,15 @@ Spekificity exposes agent skills and commands for specification-driven developme
 - New decisions logged (for wiki/decision.md)
 - Spec version incremented (if changes made)
 
-**Spec Reference:** [spek-lessons-command.md](../specs/spek-lessons-command.md)
+**Reference:** [decision.md](../decision.md)
 
 ---
 
 ### `/spek.conclude`
 
 **Purpose:** Archive feature outcomes, extract lessons, update vault + refresh lat.md  
-**Usage:** `/spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]`
+**Usage:** `/spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]`  
+**Requires:** Obsidian CLI (for vault exports and graph generation)
 
 **What it does:**
 1. Collect implementation artifacts (spec, plan, tasks, execution trace, code changes)
@@ -139,7 +141,7 @@ Spekificity exposes agent skills and commands for specification-driven developme
 - Code graph refreshed via lat.md
 - Completion report
 
-**Spec Reference:** [conclude-command.md](../specs/102-conclude-command.md)
+**Reference:** [workflow.md](../workflow.md#conclude-feature-conclusion)
 
 ---
 
@@ -167,7 +169,7 @@ The following commands are **first-class and fully documented**, but **not requi
 - Context loaded summary (decisions, lessons, patterns available)
 - Context refresh timestamp
 
-**Spec Reference:** [context-layer.md](../specs/context-layer.md)
+**Reference:** [architecture.md](../architecture.md)
 
 ---
 
@@ -198,7 +200,7 @@ The following commands are **first-class and fully documented**, but **not requi
 - Blocked features (if dependencies unmet)
 - Critical path (longest sequence of dependencies)
 
-**Spec Reference:** [spek-map-command.md](../specs/spek-map-command.md)
+**Reference:** [architecture.md](../architecture.md)
 
 ---
 
@@ -227,7 +229,7 @@ For fine-grained context control at specific workflow points:
 4. Provide minimal-token-cost context injection
 
 **Output:** Filtered context (decisions, patterns, lessons relevant to stage + topic)  
-**Spec Reference:** [enrichment-layer.md](../specs/enrichment-layer.md)
+**Reference:** [architecture.md](../architecture.md)
 
 ---
 
@@ -260,7 +262,7 @@ For fine-grained context control at specific workflow points:
 - Call/dependency graph
 - Risk assessment (if impact query)
 
-**Spec Reference:** [050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md)
+**Reference:** [setup.md](../setup.md)
 
 ---
 
@@ -282,7 +284,7 @@ For fine-grained context control at specific workflow points:
 - Coverage of codebase
 - Timestamp of last sync
 
-**Spec Reference:** [050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md)
+**Reference:** [setup.md](../setup.md)
 
 ---
 
@@ -305,7 +307,7 @@ For fine-grained context control at specific workflow points:
 4. Switch back to normal mode with `/caveman off`
 
 **Output:** All subsequent commands respond in compressed format  
-**Spec Reference:** [caveman-integration.md](../specs/caveman-integration.md)
+**Reference:** [decision.md](../decision.md#decision-3)
 
 ---
 
@@ -326,7 +328,7 @@ For fine-grained context control at specific workflow points:
 - Summary line (overall quality assessment)
 - Severity classification (critical/high/medium/low)
 
-**Spec Reference:** [caveman-integration.md](../specs/caveman-integration.md)
+**Reference:** [decision.md](../decision.md#decision-3)
 
 ---
 

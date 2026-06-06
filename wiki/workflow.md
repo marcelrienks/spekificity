@@ -209,10 +209,10 @@ Execute each task from the plan with full context (spec, plan, lat.md, enrichmen
 
 ```
 FOR EACH TASK IN PLAN (in dependency order):
-    ├─ Load Task Context
+    ├─ Access Task Context (loaded once at /spek.prepare, reused)
     │  ├─ Spec (what/why)
     │  ├─ Plan (dependencies, what this task does)
-    │  ├─ lat.md (files to change, impact analysis)
+    │  ├─ lat.md (files to change, impact analysis from prepare)
     │  └─ Previous Task Outcomes (linking info)
     │
     ├─ Implement
@@ -353,7 +353,7 @@ IMPLEMENTATION COMPLETE
     │  ├─ Outcomes → Session memory
     │  └─ Task commits → Summarized
     │
-    ├─ Extract Lessons Learned (Automatic)
+    ├─ Extract lessons learned (Automatic)
     │  ├─ What worked well?
     │  ├─ What was difficult?
     │  ├─ Patterns discovered?
@@ -375,7 +375,7 @@ IMPLEMENTATION COMPLETE
 FEATURE ARCHIVED, LESSONS CAPTURED, READY FOR NEXT FEATURE
 ```
 
-### Lessons Learned Structure
+### lessons learned Structure
 
 Lessons stored in vault with template:
 
@@ -384,19 +384,19 @@ Lessons stored in vault with template:
 Date: 2026-05-20
 Status: Complete
 
-### What Went Well
+### What went well
 - [pattern/approach/tool that worked]
 - [pattern/approach/tool that worked]
 
-### What Was Difficult
+### What was difficult
 - [challenge/blocker]
 - [mitigation used]
 
-### Patterns Discovered
+### Patterns discovered
 - [reusable pattern]
 - [architectural insight]
 
-### Recommendations for Future
+### Recommendations for future
 - [suggestion for similar features]
 - [process improvement]
 
@@ -757,8 +757,8 @@ Step 10: Report Completion
 
 ## References
 
-- **Architecture:** [architecture.md](architecture.md)
-- **Naming & Commands:** [conventions.md](conventions.md)
-- **Integration Checklist:** [integration-checklist.md](integration-checklist.md)
-- **Architecture Notes** — Key decisions and rationale
-- **Pattern Library:** [patterns/](patterns/)
+- **Architecture:** [architecture.md](architecture.md) — technical design and component responsibilities
+- **Naming & Commands:** [conventions.md](conventions.md) — command naming and file conventions
+- **Patterns:** [patterns.md](patterns.md) — reusable patterns used throughout workflow
+- **Decisions:** [decision.md](decision.md) — architectural decisions and rationale
+- **Skills:** [skills.md](skills.md) — command reference and usage

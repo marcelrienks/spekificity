@@ -8,32 +8,32 @@ Reusable patterns extracted from Spekificity specifications. Each pattern solves
 
 ## Quick Reference
 
-| # | Pattern | Category | Problem | Spec | Adoption |
-|---|---------|----------|---------|------|----------|
-| 1 | Decorator Wrapper | Architectural | Extend without modifying internals | [decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md) | ✅ ACTIVE |
-| 2 | Three-Layer Memory | Architectural | Persist context across sessions | [memory-architecture.md](wiki/specs/memory-architecture.md) | ✅ ACTIVE |
-| 3 | Three-Layer Query | Query | Optimize token usage hierarchically | [3layer-query-rule.md](wiki/specs/3layer-query-rule.md) | 🟢 S3 |
-| 4 | Enrichment Layer | Architectural | Inject context into SpecKit | [enrichment-layer.md](wiki/specs/enrichment-layer.md) | ✅ ACTIVE |
-| 5 | Context Injection | Integration | Load & compose context | [context-layer.md](wiki/specs/context-layer.md) | ✅ ACTIVE |
-| 6 | Feature Lifecycle | Workflow | End-to-end orchestration | [cli-orchestration.md](wiki/specs/cli-orchestration.md) | ✅ ACTIVE |
-| 7 | Error Categorization | Error Handling | Classify errors for recovery | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | ✅ ACTIVE |
-| 8 | Zettelkasten | Memory | Atomic notes + frontmatter | [zettelkasten-conventions.md](wiki/specs/zettelkasten-conventions.md) | 🟢 S1 |
-| 9 | Caveman Compression | Compression | Reduce tokens substantially | [caveman-integration.md](wiki/specs/caveman-integration.md) | ✅ ACTIVE |
-| 10 | Auto-Tagging | Memory | Automate knowledge links | [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md) | 🟢 S2 |
-| 11 | Skill Chaining | Integration | Sequential execution | [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md) | ✅ ACTIVE |
-| 12 | Post-Processing | Workflow | Artifact → compress → archive | [101-conclude-processing.md](wiki/specs/101-conclude-processing.md) | ✅ ACTIVE |
-| 13 | Hybrid Graph | Graph | Unify code + doc nodes | [code-and-document-maps.md](wiki/specs/code-and-document-maps.md) | 📅 FUTURE |
-| 14 | Graph Merge | Graph | Combine node types | [graph-merge-integration.md](wiki/specs/graph-merge-integration.md) | 📅 FUTURE |
-| 15 | Incremental Sync | Graph | Cache + file watch | [graph-refresh-strategy.md](wiki/specs/graph-refresh-strategy.md) | 🟢 S4 |
-| 16 | Feature State | State Mgmt | Track lifecycle phases | [feature-state-tracking.md](wiki/specs/feature-state-tracking.md) | ✅ ACTIVE |
-| 17 | Session-to-Vault | Memory | Ephemeral → permanent | [session-logs-vault-artifacts.md](wiki/specs/session-logs-vault-artifacts.md) | 🟢 S5 |
-| 18 | Anti-Sycophancy | Validation | Flag AI drift | [anti-sycophancy.md](wiki/specs/anti-sycophancy.md) | 📅 FUTURE |
-| 19 | Blind Review | Validation | Anon. review | [blind-code-review.md](wiki/specs/blind-code-review.md) | 📅 FUTURE |
-| 20 | Backprop Reflex | Validation | Test failures → learning | [backprop-reflex.md](wiki/specs/backprop-reflex.md) | 🟡 C1 |
-| 21 | RARV Reflection | Validation | Alignment cycle | [rarv-reflection.md](wiki/specs/rarv-reflection.md) | 🟡 C2 |
-| 22 | Token Budget | Compression | Monitor costs | [token-budget.md](wiki/specs/token-budget.md) | 📅 FUTURE |
-| 23 | Fallback Hierarchy | Error Handling | Graceful degradation | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | ✅ ACTIVE |
-| 24 | Sequential Recovery | Error Handling | Pre-core-post recovery | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | ✅ ACTIVE |
+| # | Pattern | Category | Problem | Reference | Adoption |
+|---|---------|----------|---------|-----------|----------|
+| 1 | Decorator Wrapper | Architectural | Extend without modifying internals | [decision.md](decision.md) | ✅ ACTIVE |
+| 2 | Three-Layer Memory | Architectural | Persist context across sessions | [decision.md](decision.md) | ✅ ACTIVE |
+| 3 | Three-Layer Query | Query | Optimize token usage hierarchically | [decision.md](decision.md#decision-6) | 🟢 S3 |
+| 4 | Enrichment Layer | Architectural | Inject context into SpecKit | [architecture.md](architecture.md) | ✅ ACTIVE |
+| 5 | Context Injection | Integration | Load & compose context | [architecture.md](architecture.md) | ✅ ACTIVE |
+| 6 | Feature Lifecycle | Workflow | End-to-end orchestration | [workflow.md](workflow.md) | ✅ ACTIVE |
+| 7 | Error Categorization | Error Handling | Classify errors for recovery | [decision.md](decision.md) | ✅ ACTIVE |
+| 8 | Zettelkasten | Memory | Atomic notes + frontmatter | [decision.md](decision.md#decision-4) | 🟢 S1 |
+| 9 | Caveman Compression | Compression | Reduce tokens substantially | [decision.md](decision.md#decision-3) | ✅ ACTIVE |
+| 10 | Auto-Tagging | Memory | Automate knowledge links | [decision.md](decision.md#decision-5) | 🟢 S2 |
+| 11 | Skill Chaining | Integration | Sequential execution | [workflow.md](workflow.md) | ✅ ACTIVE |
+| 12 | Post-Processing | Workflow | Artifact → compress → archive | [workflow.md](workflow.md) | ✅ ACTIVE |
+| 13 | Hybrid Graph | Graph | Unify code + doc nodes | [architecture.md](architecture.md) | 📅 FUTURE |
+| 14 | Graph Merge | Graph | Combine node types | [architecture.md](architecture.md) | 📅 FUTURE |
+| 15 | Incremental Sync | Graph | Cache + file watch | [architecture.md](architecture.md) | 🟢 S4 |
+| 16 | Feature State | State Mgmt | Track lifecycle phases | [workflow.md](workflow.md) | ✅ ACTIVE |
+| 17 | Session-to-Vault | Memory | Ephemeral → permanent | [workflow.md](workflow.md) | 🟢 S5 |
+| 18 | Anti-Sycophancy | Validation | Flag AI drift | [decision.md](decision.md#decision-10) | 📅 FUTURE |
+| 19 | Blind Review | Validation | Anon. review | [decision.md](decision.md#decision-11) | 📅 FUTURE |
+| 20 | Backprop Reflex | Validation | Test failures → learning | [decision.md](decision.md#decision-8) | 🟡 C1 |
+| 21 | RARV Reflection | Validation | Alignment cycle | [decision.md](decision.md#decision-9) | 🟡 C2 |
+| 22 | Token Budget | Compression | Monitor costs | [decision.md](decision.md#decision-12) | 📅 FUTURE |
+| 23 | Fallback Hierarchy | Error Handling | Graceful degradation | [decision.md](decision.md) | ✅ ACTIVE |
+| 24 | Sequential Recovery | Error Handling | Pre-core-post recovery | [decision.md](decision.md) | ✅ ACTIVE |
 
 **Legend:** ✅ ACTIVE = Implemented | 🟢 S1–S5 = Should adopt soon | 🟡 C1–C2 = Consider later | 📅 FUTURE = Research phase
 
@@ -55,7 +55,7 @@ Reusable patterns extracted from Spekificity specifications. Each pattern solves
 
 **Category:** Architectural  
 **Solves:** Extend functionality without modifying internals  
-**Primary Spec:** [decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md)  
+**Reference:** [decision.md](decision.md) (architectural decisions)  
 **Phase Introduced:** Phase 0 (Foundation)  
 **Status:** ACTIVE  
 
@@ -114,7 +114,7 @@ def spek_enriched_command(command_name, *args, **kwargs):
 
 **Category:** Architectural  
 **Solves:** Persist context across sessions and features  
-**Primary Spec:** [memory-architecture.md](wiki/specs/memory-architecture.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [memory-architecture.md](wiki/specs/memory-architecture.md)  
 **Phase Introduced:** Phase 0 (Foundation)  
 **Status:** ACTIVE  
 
@@ -175,7 +175,7 @@ Layer 3: Session Memory — Ephemeral, Session-Scoped
 
 **Category:** Architectural  
 **Solves:** Inject context into SpecKit workflow phases  
-**Primary Spec:** [enrichment-layer.md](wiki/specs/enrichment-layer.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [enrichment-layer.md](wiki/specs/enrichment-layer.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -238,7 +238,7 @@ Wrap each SpecKit phase with enrichment:
 
 **Category:** Workflow  
 **Solves:** End-to-end orchestration of feature development  
-**Primary Spec:** [cli-orchestration.md](wiki/specs/cli-orchestration.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [cli-orchestration.md](wiki/specs/cli-orchestration.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -297,7 +297,7 @@ Each phase:
 
 **Category:** Workflow  
 **Solves:** Execute dependent skills in sequence with error resilience  
-**Primary Spec:** [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -350,7 +350,7 @@ Chain skills with explicit dependency management:
 
 **Category:** Workflow  
 **Solves:** Extract, compress, and archive feature artifacts  
-**Primary Spec:** [101-conclude-processing.md](wiki/specs/101-conclude-processing.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [101-conclude-processing.md](wiki/specs/101-conclude-processing.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -405,7 +405,7 @@ _Note: Pattern 3 (Three-Layer Query Rule) — Implementation details in [decisio
 
 **Category:** Query  
 **Solves:** Query code graph efficiently for context  
-**Primary Spec:** [graph-query-patterns.md](wiki/specs/graph-query-patterns.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [graph-query-patterns.md](wiki/specs/graph-query-patterns.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -475,7 +475,7 @@ _Note: Pattern 10 (Auto-Tagging + Auto-Wikilink) — Implementation details in [
 
 **Category:** Memory  
 **Solves:** Convert ephemeral session context to permanent vault artifacts  
-**Primary Spec:** [session-logs-vault-artifacts.md](wiki/specs/session-logs-vault-artifacts.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [session-logs-vault-artifacts.md](wiki/specs/session-logs-vault-artifacts.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -527,7 +527,7 @@ Archive session logs to vault with Zettelkasten format:
 
 **Category:** Compression  
 **Solves:** Reduce token usage (significant reduction) while preserving meaning
-**Primary Spec:** [caveman-integration.md](wiki/specs/caveman-integration.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [caveman-integration.md](wiki/specs/caveman-integration.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -587,7 +587,7 @@ _Note: Pattern 13 (Token Budget Tracking) — Implementation details in [decisio
 
 **Category:** Integration  
 **Solves:** Load and compose context for tool invocation  
-**Primary Spec:** [context-layer.md](wiki/specs/context-layer.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [context-layer.md](wiki/specs/context-layer.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -651,7 +651,7 @@ Already documented in Workflow Patterns section. Repeated here for completeness 
 
 **Category:** Error Handling  
 **Solves:** Classify errors for targeted recovery  
-**Primary Spec:** [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md)  
 **Phase Introduced:** Phase 0 (Foundation)  
 **Status:** ACTIVE  
 
@@ -725,7 +725,7 @@ Classify errors into categories; apply category-specific recovery:
 
 **Category:** Error Handling  
 **Solves:** Graceful degradation via layered fallbacks  
-**Primary Spec:** [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -783,7 +783,7 @@ Layer 3 (MINIMAL): Skip context injection (log warning, continue)
 
 **Category:** Error Handling  
 **Solves:** Structured pre-core-post error handling  
-**Primary Spec:** [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md)  
 **Phase Introduced:** Phase 0 (Foundation)  
 **Status:** ACTIVE  
 
@@ -870,7 +870,7 @@ _Note: Patterns 19-22 (Anti-Sycophancy, RARV, Backprop, Blind Review) — Implem
 
 **Category:** Graph  
 **Solves:** Unify code + doc + skill nodes in single queryable graph  
-**Primary Spec:** [code-and-document-maps.md](wiki/specs/code-and-document-maps.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [code-and-document-maps.md](wiki/specs/code-and-document-maps.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -937,7 +937,7 @@ Query via MCP tools:
 
 **Category:** Graph  
 **Solves:** Combine heterogeneous node types into unified graph  
-**Primary Spec:** [graph-merge-integration.md](wiki/specs/graph-merge-integration.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [graph-merge-integration.md](wiki/specs/graph-merge-integration.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -1000,7 +1000,7 @@ Step 5: Merge & validation
 
 **Category:** Graph  
 **Solves:** Cache + file watching for efficient updates  
-**Primary Spec:** [graph-refresh-strategy.md](wiki/specs/graph-refresh-strategy.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [graph-refresh-strategy.md](wiki/specs/graph-refresh-strategy.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -1062,7 +1062,7 @@ Incremental Sync Modes:
 
 **Category:** State Management  
 **Solves:** Track feature lifecycle phases  
-**Primary Spec:** [feature-state-tracking.md](wiki/specs/feature-state-tracking.md)  
+**Reference:** See [decision.md](decision.md) or [architecture.md](architecture.md). [feature-state-tracking.md](wiki/specs/feature-state-tracking.md)  
 **Phase Introduced:** Phase 1 (Agent Skills)  
 **Status:** ACTIVE  
 
@@ -1122,34 +1122,7 @@ completion: progress-indicator
 
 ## Pattern-Spec Mapping
 
-| Pattern | Primary Spec | Supporting Specs | Use Phase | Frequency |
-|---------|---|---|---|---|
-| 1. Decorator Wrapper | decorator-wrapper-pattern.md | enrichment-layer.md, speckit-integration-contract.md | 1-2 | HIGH |
-| 2. Three-Layer Memory | memory-architecture.md | context-layer.md, 101-conclude-processing.md, session-logs-vault-artifacts.md | 1-2 | HIGH |
-| 3. Three-Layer Query | 3layer-query-rule.md | graph-query-patterns.md, context-layer.md | 1-2 | HIGH |
-| 4. Enrichment Layer | enrichment-layer.md | context-layer.md, speckit-integration-contract.md, decorator-wrapper-pattern.md | 1-2 | HIGH |
-| 5. Context Injection | context-layer.md | enrichment-layer.md, decorator-wrapper-pattern.md, memory-architecture.md | 1-2 | HIGH |
-| 6. Feature Lifecycle | cli-orchestration.md | 100-prepare-command.md, 102-conclude-command.md, feature-state-tracking.md | 1-2 | HIGH |
-| 7. Error Categorization | error-handling-and-recovery.md | All workflow specs | 1-2 | HIGH |
-| 8. Zettelkasten | zettelkasten-conventions.md | auto-tagging-wikilinks.md, session-logs-vault-artifacts.md | 1-2 | MEDIUM |
-| 9. Caveman Compression | caveman-integration.md | lessons-format.md, 102-conclude-command.md, 101-conclude-processing.md | 1-2 | HIGH |
-| 10. Auto-Tagging | auto-tagging-wikilinks.md | zettelkasten-conventions.md, 102-conclude-command.md | 2+ | MEDIUM |
-| 11. Skill Chaining | spek-automate-workflow.md | cli-orchestration.md, error-handling-and-recovery.md | 1-2 | HIGH |
-| 12. Post-Processing | 101-conclude-processing.md | 102-conclude-command.md, lessons-format.md, caveman-integration.md | 1-2 | HIGH |
-| 13. Hybrid Graph | code-and-document-maps.md | graph-merge-integration.md, node-schema-design.md, spek-map-command.md | 1-2 | MEDIUM |
-| 14. Graph Merge | graph-merge-integration.md | hybrid-graph (code-and-document-maps.md), graph-storage-structure.md | 1 | MEDIUM |
-| 15. Incremental Sync | graph-refresh-strategy.md | spek-map-command.md, graph-storage-structure.md | 1-2 | MEDIUM |
-| 16. Feature State | feature-state-tracking.md | cli-orchestration.md, 100-prepare-command.md, 102-conclude-command.md | 1-2 | HIGH |
-| 17. Session-to-Vault | session-logs-vault-artifacts.md | 101-conclude-processing.md, zettelkasten-conventions.md, lessons-format.md | 2+ | MEDIUM |
-| 18. Anti-Sycophancy | anti-sycophancy.md | context-layer.md, enrichment-layer.md | 2+ | LOW |
-| 19. Blind Review | blind-code-review.md | integration-validation-and-testing.md, 102-conclude-command.md | 2+ | LOW |
-| 20. Backprop Reflex | backprop-reflex.md | 102-conclude-command.md, lessons-format.md | 2+ | MEDIUM |
-| 21. RARV Reflection | rarv-reflection.md | 101-conclude-processing.md, context-layer.md, anti-sycophancy.md | 2+ | LOW |
-| 22. Token Budget | token-budget.md | 102-conclude-command.md, caveman-integration.md, 3layer-query-rule.md | 2+ | MEDIUM |
-| 23. Fallback Hierarchy | error-handling-and-recovery.md | context-layer.md, graph-query-patterns.md | 1-2 | HIGH |
-| 24. Sequential Recovery | error-handling-and-recovery.md | All workflow specs, decorator-wrapper-pattern.md | 1-2 | HIGH |
-| 25. Code Graph Query | graph-query-patterns.md | graph-storage-structure.md, code-and-document-maps.md | 1-2 | HIGH |
-| 26. (RESERVED for future patterns) | | | | |
+See [decision.md](decision.md) and [architecture.md](architecture.md) for detailed specifications and implementation details for all patterns.
 
 ---
 

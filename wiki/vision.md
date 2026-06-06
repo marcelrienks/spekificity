@@ -37,10 +37,14 @@ Spekificity is a spec-driven agent development framework that ties a persistent 
 
 ## Workflow Stages (brief)
 
-- Stage 0: Init — `spek init` scaffolds vault and tool wiring; index built once.
-- Stage 1: Ingest — add raw sources to `wiki/raw/`; agent proposes ingestion plans; human approves.
-- Stage 2: Feature development — `/spek.plan` (specify → plan → tasks); `/spek.implement` executes tasks with lat.md context.
-- Stage 3: Conclude — `/spek.conclude` archives artifacts and extracts lessons to vault.
+Per-feature workflow uses 4 stages:
+
+- **Prepare** — `/spek.prepare` loads vault context, indexes code state, prepares workspace (includes init/setup for new features)
+- **Plan** — `/spek.plan` generates specs, plans, task breakdown
+- **Implement** — `/spek.implement` executes tasks with lat.md context
+- **Conclude** — `/spek.conclude` archives artifacts and extracts lessons to vault
+
+One-time setup (`spek init`) scaffolds vault and tool wiring before first feature.
 
 ## Tooling & Implementation Notes
 

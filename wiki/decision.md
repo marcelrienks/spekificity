@@ -43,7 +43,7 @@ lat.md is purpose-built for agent-driven development:
 - Deterministic impact analysis
 - Framework-aware extractors
 
-**Status:** CANONICAL (lat.md is the only supported code analysis tool)  
+**Status:** CANONICAL FOR SPEKIFICITY (lat.md is the only code analysis tool supported by Spekificity). Alternatives exist for other frameworks; this decision applies to Spekificity integration only.  
 **Migration Path:** If using legacy tools, rebuild index with `lat.md` per setup.md
 
 ---
@@ -265,38 +265,6 @@ spekificity init
 
 ---
 
-### Alternative Toolsets (Use Cases)
-
-#### **Use Case 1: Minimum Setup (No Optional Dependencies)**
-- **Token Efficiency:** Caveman (skill-based; no install)
-- **Determinism:** SpecKit/Specify (global install)
-- **Persistence:** Markdown vault (plain files; no dependencies)
-- **Autonomy:** Manual grep (no tool; skip for small projects)
-
-**Best for:** small projects; teams without CI/CD infrastructure
-
----
-
-#### **Use Case 2: Maximum Token Savings (Production Codebases)**
--- **Token Efficiency:** Squeez (Rust CLI) + Caveman
-- **Determinism:** SDD Pilot (strict quality gates)
-- **Persistence:** Obsidian + SilverBullet (markdown + scripting)
-- **Autonomy:** codebase-memory-mcp (emerging; better than lat.md for high-performance scenarios)
-
-**Best for:** Teams running frequent agent cycles; large codebases
-
----
-
-#### **Use Case 3: Ecosystem-Focused (GitHub, Enterprise)**
-- **Token Efficiency:** Caveman (internal Spekificity compression skill)
-- **Determinism:** SpecKit/Specify (GitHub official; enterprise ready)
-- **Persistence:** Obsidian + git (enterprise-friendly)
-- **Autonomy:** lat.md (standard; good GitHub integration)
-
-**Best for:** Enterprise; GitHub-first teams; standardization priority
-
----
-
 ### Trade-off Matrix
 
 | Criterion | Caveman | Squeez | contextzip | clipforge | claw-compactor |
@@ -321,18 +289,6 @@ Each tool rated on:
 
 ---
 
-### When to Consider Alternatives
-
-| Scenario | Recommendation |
-|----------|-----------------|
-| **Extreme token constraints** | Replace Caveman with Squeez; evaluate claw-compactor |
-| **Dataflow analysis needed** | Add Joern alongside lat.md |
-| **Team already uses SilverBullet** | Replace Obsidian (compatible via markdown export) |
-| **Python-only codebase** | Pylance sufficient for autonomy; skip lat.md |
-| **Large codebase with deep history** | Consider codebase-memory-mcp for extreme scale scenarios |
-| **Offline-first requirement** | Ensure all tools work locally; Obsidian + lat.md do; verify others |
-
----
 
 ### Conclusion
 
@@ -1117,15 +1073,15 @@ START: "Do you use AI agents for development?"
 
 | ID | Title | Related Specs | Phase | When Activated |
 |:--:|-------|---------------|-------|---|
-| 4 | Zettelkasten Architecture | `zettelkasten-conventions.md` `lessons-format.md` `session-logs-vault-artifacts.md` | Phase 1 | Vault setup; all note creation |
-| 5 | Auto-Tagging & Auto-Wikilinks | `auto-tagging-wikilinks.md` `zettelkasten-conventions.md` `session-logs-vault-artifacts.md` | Phase 1 | `/spek.conclude` Step 3 (lesson generation) |
-| 6 | 3-Layer Query Rule | `3layer-query-rule.md` `latmd-setup-and-integration.md` `memory-architecture.md` | Phase 1 | `/spek.context` load; `/spek.plan` phases |
-| 7 | Git Hooks Integration | `latmd-setup-and-integration.md` Part 5 (git hook config) | Phase 1 | `spek setup`; post-commit execution |
-| 8 | Backprop Reflex | `backprop-reflex.md` `spek-lessons-command.md` `integration-validation-and-testing.md` | Phase 2 | `/spek.conclude` Step 3 (lesson generation) |
-| 9 | RARV Reflection Cycles | `rarv-reflection.md` `architectural-decisions.md` `feature-state-tracking.md` | Phase 2 | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
-| 10 | Anti-Sycophancy Validation | `anti-sycophancy.md` `error-handling-and-recovery.md` `lessons-format.md` | Phase 2 | `/spek.plan` (specify + plan phases) |
-| 11 | Blind Code Review | `blind-code-review.md` `integration-validation-and-testing.md` `error-handling-and-recovery.md` | Phase 2 | `/spek.conclude` Step 8 (optional; pre-archival) |
-| 12 | Token Budget Model | `token-budget.md` `spek-automate-workflow.md` `spek-map-command.md` | Phase 2 | All phases; tracked throughout feature |
+| 4 | Zettelkasten Architecture | See [architecture.md](architecture.md) and [patterns.md](patterns.md) | Phase 1 | Vault setup; all note creation |
+| 5 | Auto-Tagging & Auto-Wikilinks | See [patterns.md](patterns.md) (Pattern 10) | Phase 1 | `/spek.conclude` Step 3 (lesson generation) |
+| 6 | 3-Layer Query Rule | See [architecture.md](architecture.md) | Phase 1 | `/spek.context` load; `/spek.plan` phases |
+| 7 | Git Hooks Integration | See [setup.md](setup.md) | Phase 1 | `spek setup`; post-commit execution |
+| 8 | Backprop Reflex | See [patterns.md](patterns.md) (Pattern 20) | Phase 2 | `/spek.conclude` Step 3 (lesson generation) |
+| 9 | RARV Reflection Cycles | See [patterns.md](patterns.md) (Pattern 21) | Phase 2 | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
+| 10 | Anti-Sycophancy Validation | See [patterns.md](patterns.md) (Pattern 18) | Phase 2 | `/spek.plan` (specify + plan phases) |
+| 11 | Blind Code Review | See [patterns.md](patterns.md) (Pattern 19) | Phase 2 | `/spek.conclude` Step 8 (optional; pre-archival) |
+| 12 | Token Budget Model | See [patterns.md](patterns.md) (Pattern 22) | Phase 2 | All phases; tracked throughout feature |
 
 ---
 

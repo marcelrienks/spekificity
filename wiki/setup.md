@@ -106,23 +106,27 @@ Running `specify init .` is **idempotent** — safe to run multiple times:
 
 The Obsidian vault is your persistent memory layer—lessons learned, decisions, patterns, and project context stored as plain markdown files. Spekificity agents read and write to this vault directly as the authoritative knowledge base.
 
+**Obsidian CLI Requirement:** Spekificity automation (e.g., `/spek.conclude`) requires the Obsidian CLI for vault exports and graph generation. Install the Obsidian desktop app (includes CLI). The desktop app UI is optional for visualization; CLI is required for automation.
+
 ### Vault Location in Spekificity
 
 ```
 your-project/
-├── vault/                    ← Persistent knowledge vault (auto-created by spek init)
-│   ├── lessons/              ← Per-feature lessons (written by /spek.conclude)
-│   ├── decision.md           ← Architectural decisions and rationale
-│   ├── patterns.md           ← Reusable patterns and best practices
-│   └── vision.md             ← Project vision and guiding principles
-├── specs/                    ← Feature specifications (created during /spek.plan)
-│   └── NNNN-feature-name.md  ← Spec files follow naming convention
-└── wiki/                     ← Documentation, guides, and reference
+├── vault/                              ← Persistent knowledge vault (auto-created by spek init)
+│   ├── lessons/                        ← Per-feature lessons (written by /spek.conclude)
+│   │   └── YYYY-MM-DD-feature-name.md  ← Lesson file naming: date + feature name
+│   ├── decision.md                     ← Architectural decisions and rationale
+│   ├── patterns.md                     ← Reusable patterns and best practices
+│   └── vision.md                       ← Project vision and guiding principles
+├── specs/                              ← Feature specifications (created by /speckit.specify)
+│   ├── NNNN-feature-name.md            ← Spec files: numeric prefix + kebab-case name
+│   └── NNNN-feature-name-plan.md       ← Plan files: spec name + "-plan"
+└── wiki/                               ← Documentation, guides, and reference
     ├── architecture.md
     ├── conventions.md
     ├── setup.md
     ├── workflow.md
-    └── specs/                ← Detailed technical specifications
+    └── [other guides]
 ```
 
 ### Automatic Initialization
@@ -144,13 +148,13 @@ This creates:
 
 ### Vault: Plain Markdown Files
 
-**The vault is plain markdown on your filesystem.** Agents access via file I/O. **Obsidian CLI is required** for automation; desktop app is optional.
+**The vault is plain markdown on your filesystem.** Agents access via file I/O.
 
 - ✅ **Agents work without Obsidian desktop** — Read/write `.md` files directly via filesystem
-- ✅ **Vault is fully git-tracked** — Version-control all vault files
+- ✅ **Vault is fully git-tracked** — All vault files version-controlled; commit via `git add vault/; git commit -m "..."`
 - ✅ **Editor-agnostic** — Edit with any markdown editor or command-line tools
-- ✅ **Obsidian CLI required** — Enables vault automation in `/spek.conclude` (syncs, exports, graph generation)
-- ℹ️ **Obsidian desktop optional** — Use only for graph visualization or interactive UI (not required for automation)
+- ✅ **Obsidian CLI required** — Enables vault automation (exports, graph generation) in `/spek.conclude`
+- ℹ️ **Obsidian desktop optional** — Use only for graph visualization or interactive UI (not required for CLI automation)
 
 ### Optional: Obsidian Desktop App (For Visualization)
 

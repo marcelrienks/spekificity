@@ -66,7 +66,7 @@ pip install -e .
 spek init
 ```
 
-**Full guide:** See [wiki/setup.md](wiki/setup.md) for detailed setup options.
+**Full guide:** See [wiki/setup.md](wiki/setup.md) for installation and configuration details.
 
 ---
 
@@ -189,12 +189,10 @@ Start with this reading order—each doc builds on the previous:
 
 **New to Spekificity?** Start here:
 
-1. Read [wiki/quickstart.md](wiki/quickstart.md)
-2. Install globally via `uv tool install ... --from git+...`
+1. Read [wiki/vision.md](wiki/vision.md) for philosophy and core concepts
+2. Install globally via `uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git`
 3. Run `spek init` in your project directory to scaffold `.spek`
 4. Run generated skills through your agent workflow
-
-**Questions?** See [wiki/faq.md](wiki/faq.md).
 
 ---
 
@@ -248,19 +246,6 @@ Use the generated `/spek.*` skills when following the Spekificity workflow. **En
 Note on notation: `/spek.*` denotes generated agent skills placed in `.spek/` by `spek init`. The user-facing setup CLI is `spek` (primarily `spek init`).
 
 Vanilla SpecKit commands remain the execution layer; Spekificity adds context loading, orchestration, and post-processing around them.
-
-## Current Repository State
-
-This repository is ahead on architectural definition and behind on implementation.
-
-Current state, based on the docs in `wiki/`:
-
-- architecture and workflow intent are documented
-- naming conventions for the new command surface are defined
-- memory, graph, orchestration, and post-processing behavior are specified in atomic docs
-- implementation of agent skills, CLI orchestration, and end-to-end validation is the next major phase
-
-If you are evaluating the project today, treat this repository as the source for design contracts and planned behavior, not as a finished installable product.
 
 ## Start Here
 
@@ -340,6 +325,3 @@ The docs in this repository consistently assume:
 - Code intelligence via indexed graph (lat.md MCP tools) rather than file scans
 - Post-feature lessons (captured in `/spek.conclude`) are part of the system, not optional
 
-## Constitution
-
-Project principles are governed by [.specify/memory/constitution.md](.specify/memory/constitution.md).

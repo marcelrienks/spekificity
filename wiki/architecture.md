@@ -204,7 +204,7 @@ START FEATURE
 - Stores specifications, plans, decisions, and lessons learned
 - Enables human reasoning across sessions (spec remains stable across multiple agent invocations)
 - Provides enrichment layers (Success Criteria, Assumptions, Risk Assessment, Metrics)
-- Syncs to Git for version control and collaboration
+- Git-tracked for version control and collaboration (manual commit via `git add vault/; git commit`)
 
 ### lat.md index
 
@@ -289,14 +289,26 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 
 ### Command Execution (Example: `/spek.plan`)
 
-1. **Preparation:** Run pre-flight checks (`spek.prepare` substeps)
-2. **Orchestration:** Call SpecKit pipeline with enrichment (context injection PRE-execution only)
-   - `/speckit.specify`: Generate feature spec with enrichments (decisions + patterns injected)
-   - `/speckit.plan`: Create architecture + tech choices (code graph injected via lat.md)
-   - `/speckit.tasks`: Break plan into executable tasks (dependencies analyzed)
-   - `/speckit.analyze`: Validate completeness (risk, feasibility, token budget)
-3. **Storage:** Archive spec/plan/tasks in vault/ (Git commit)
-4. **Return:** Hand off to `spek.implement` for task execution (no enrichment; execute approved plan)
+**Two-phase enrichment:**
+
+1. **PRE-Execution Enrichment (Context Injection):**
+   - Load vault decisions + patterns
+   - Load code graph via lat.md
+   - Compose enrichment prompt
+   - Prepend to SpecKit inputs
+
+2. **Core Execution:**
+   - `/speckit.specify`: Generate feature spec with injected context
+   - `/speckit.plan`: Create architecture + tech choices (code graph injected)
+   - `/speckit.tasks`: Break plan into executable tasks
+   - `/speckit.analyze`: Validate completeness
+
+3. **POST-Execution Enrichment (Compression & Storage):**
+   - Compress output (caveman mode if configured)
+   - Archive spec/plan/tasks in vault/ (Git commit)
+   - Validate output aligns with injected context
+
+4. **Return:** Hand off to `spek.implement` for task execution
 
 ---
 
@@ -304,7 +316,7 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 
 | Layer | Storage | Sync | Lifetime |
 |-------|---------|------|----------|
-| **Knowledge Vault** | Git (vault/ sync) | Manual (user commits) + Auto (post/lessons) | Persistent (feature cycle + beyond) |
+| **Knowledge Vault** | Git (vault/ directory) | Manual (user commits) after /spek.conclude | Persistent (feature cycle + beyond) |
 | **Repo Memory** | `.git/spek-memory/` (YAML) | Git hook + manual | Persistent (workspace lifetime) |
 | **lat.md** | Index directory in `.spek/lat/` (primary, non-human-readable) | File watcher (auto) | Persistent (session lifetime) |
 | **Session State** | In-memory + context window | Manual commits to memory | Temporary (single session) |
