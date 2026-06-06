@@ -204,8 +204,8 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 | SDD Pilot | Spec Framework | Medium | high | Spec-driven phases + quality gates | VSCode + Windsurf support; strong quality gates; enforces phases |
 | FSPEC | Spec Framework | Low | moderate | Multi-agent factory; DDD/BDD support | TDD/DDD/BDD focus; example mapping; guardrails; newer |
 | spec-driven-steroids | Spec Framework | Low | moderate | Simple toolkit; native AI tool integration | Focus on CLI discipline; minimal overhead; less documented |
-| Paul (Plan-Apply-Unify Loop) | Framework | Low | moderate | Plan-Apply-Unify; quality-over-speed | Claude Code native; roundtable-style; newer |
-| spec2ship | Spec Framework | Low | moderate | Multi-agent; roundtable collaboration | Claude Code focus; social/collaborative; emerging |
+| Paul (Plan-Apply-Unify Loop) | Framework | Low | moderate | Plan-Apply-Unify; quality-over-speed | Interactive agent UI native; roundtable-style; newer |
+| spec2ship | Spec Framework | Low | moderate | Multi-agent; roundtable collaboration | Vendor-specific interactive UI focus; social/collaborative; emerging |
 
 **Recommendation:** Use `SpecKit/Specify` for planning & determinism. Strong ecosystem maturity, broad feature coverage, and active maintenance. Alternatives (SDD Pilot, FSPEC) target specific niches (quality gates, DDD) but require more specialized setup.
 
@@ -889,7 +889,7 @@ Without blind review:
 #### Blind Review Solution
 
 **Anonymization:**
-- Strip AI-generation markers (comments mentioning Claude, etc.)
+- Strip AI-generation markers (comments mentioning vendor or specific agent names)
 - Remove context bias (feature names, implementation rationale)
 - Anonymize service/class names (ServiceA instead of AuthService)
 - Keeps: code logic, structure, tests, error handling

@@ -1,9 +1,5 @@
 # Naming Conventions: Brief Style Guide
 
-**See also:** [skill-index.md](skill-index.md) (primary command reference), [workflow.md](workflow.md), [architecture.md](architecture.md)
-
----
-
 ## Quick Reference
 
 ## Runtime Model
@@ -101,6 +97,38 @@ All commands follow:
 - Lessons: `vault/lessons/YYYY-MM-DD-feature-name.md`
 - Decisions: `vault/decision.md` (single file, append-only)
 - Patterns: `vault/patterns.md` (single file)
+
+## Markdown structural hygiene (required)
+
+Generated Markdown must be structurally sound. Structural noise (duplicate H1s, broken YAML frontmatter, malformed tables, inconsistent heading nesting) corrupts downstream automation (chunking, dedupe, indexing). Follow these rules:
+
+- No duplicate H1s in same file; headings must nest correctly.
+- YAML frontmatter must be valid YAML; quote values containing colons or special characters.
+- Tables must parse; ensure header and delimiter lines are present.
+- Use section-aware chunking: chunk boundaries must not split inside a heading.
+- Lint every generated page before merge; reject or flag pages that fail strict structural checks.
+- Safe merging: dedupe headings (e.g., `dedupe_headings=True`) and prefer canonical slugs or content-addressable IDs when available.
+
+Recommended tooling and checks:
+
+- Use `markdown-hero` (or equivalent) for type-checked sections, section-aware chunking, canonicalization, and safe merges.
+- Add pre-commit hooks for structural linting (YAML validation, markdownlint, custom section checks).
+- Route structural failures to a repair agent or human review; do not auto-merge uncertain fixes.
+
+## Implementation choice heuristic
+
+- **Agentic (.md + AGENTS.md):** Fast to start, flexible for iteration, best for personal/small-team vaults (≈<200 docs). Use when discovery and prompt-tuning are frequent.
+- **Programmatic (package/pipeline):** Deterministic outputs, typed contracts, content-addressable IDs, CI-friendly, token-efficient at scale. Use when corpus large, reproducibility and audit trails required, or pipeline feeds downstream automation.
+
+## Pre-merge checklist (recommended)
+
+- Git versioning enabled; require review before merging agent writes to `vault/`.
+- Run structural lint (markdown-hero / yaml-lint / markdownlint) and frontmatter validation.
+- Small-batch ingest tests (5–10 documents) before large runs.
+- Ensure plan-before-execute gating is present in agent workflows.
+- Store generated HTML artifacts under `wiki/artifacts/html/` and do not make them primary wiki pages.
+- Require export-to-markdown or short canonical markdown summary for any HTML artifact that must be audited or edited; include this in PRs.
+- Add CI rule to flag large HTML files and ensure export present; block merges when missing.
 
 ---
 

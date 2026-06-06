@@ -57,7 +57,7 @@ When you run `spek conclude` (outcome archival), lessons, decisions, and pattern
    - Guarantees data sovereignty, portability, version control.
 
 5. **Structure Emerges From Constraints**
-   - A configuration document (schema, AGENTS.md, or CLAUDE.md) tells the LLM exactly how to behave.
+   - A configuration document (schema or AGENTS.md) tells the agent exactly how to behave.
    - This transforms a generic chatbot into a disciplined wiki maintainer.
 
 6. **Knowledge Should Be Accessible to Reasoning**
@@ -311,7 +311,7 @@ The LLM Wiki literature contains several documented tensions. Here's how this im
 
 | Agent | Purpose | Notes |
 |-------|---------|-------|
-| **Claude Code** | Wiki maintainer (Anthropic) | Reads schema; executes /ingest, /query, /lint |
+| **Agent UI (interactive)** | Wiki maintainer (vendor-specific) | Reads schema; executes /ingest, /query, /lint |
 | **Any LLM via MCP** | Schema-agnostic implementation | Local Ollama, vLLM, or API-based models |
 
 ### Local Model Options (If Using Local)
@@ -571,6 +571,22 @@ Agents implementing LLM Wiki should:
 - Very large wikis (very large; needs specialized search)
 
 ---
+
+## Operational updates (2026)
+
+- Retrieval decision matrix: agent-as-retriever for code/evolving repos; hybrid (lexical + semantic) for large monorepos; vector RAG + reranker for stable, low-latency KBs; specialized retrieval LLMs (SWE-grep, Context-1) for sub-second UX; RL-trained retrieval (Search-R1/CoSearch) for learnable policies.
+
+- Compaction pipeline (short): budget reduction → snip → microcompact → context collapse → auto-compact. Apply when long-horizon context nears limits to preserve signal and reduce token cost.
+
+- AGENTS.md operational rules (must exist): enforce zones (raw/ read-only, wiki/ agent-maintained with approval, dev/ collaborative), frontmatter schema, plan-before-execute gate, allowed-tools per slash-command, behavioral constraints (Think before coding; Simplicity first; Surgical changes; Goal-driven execution). Keep AGENTS.md concise.
+
+- Tool design: expose minimal, single-purpose tools (glob, grep, read, bash fallback). Use allowlists per command. Forbid destructive primitives (e.g., Bash(rm:*)) unless explicit human approval present.
+
+- Structured graph recommendation: evaluate myKG to emit typed, provenance-bearing Obsidian vaults. Use append mode and base-schema lock to grow stable, auditable agent memory.
+
+- Ops checklist: git for safety (frequent commits, review diffs); test ingest with small batch (5 sources); require plan approval before writes; if latency critical, evaluate SWE-grep/Context-1 or add small vector fallback for first-hop.
+
+- HTML artifact policy: store generated HTML artifacts in `wiki/artifacts/html/` (do not treat them as primary wiki pages). Each HTML artifact must include an export-to-markdown feature or produce a canonical markdown summary (3 lines) linked from a wiki page or PR. Add CI check to flag large HTML files and ensure export present before merge.
 
 ## Related Reading
 

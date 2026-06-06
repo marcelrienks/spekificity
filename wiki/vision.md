@@ -1,7 +1,5 @@
 # Spekificity — Vision & Tenets
 
-Last updated: 2026-06-03T16:03:02+02:00
-
 ## Vision Statement
 
 Spekificity is a spec-driven agent development framework that ties a persistent knowledge vault, a deterministic spec engine, and a code index into a single workflow. It solves four core problems: token efficiency, deterministic planning, persistent project memory, and agent autonomy.

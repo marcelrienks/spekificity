@@ -52,12 +52,12 @@ SpecKit is the spec-driven development workflow engine. Spekificity wraps and en
    ```
 
    When prompted:
-   - **AI Assistant**: Select your agent type (e.g., `copilot` for GitHub Copilot, `claude` for Claude Code)
+   - **AI Assistant**: Select your assistant type (e.g., `code-assistant` or `interactive-agent-ui`)
    - **Script Type**: Select `sh`
 
    This creates:
    - `.specify/` — SpecKit configuration, templates, scripts, extensions
-   - Agent-specific config files (varies by agent selection)
+   - Agent-specific config files (varies by assistant selection)
 
 4. Verify SpecKit initialization:
    ```bash
@@ -72,6 +72,12 @@ SpecKit configuration lives in `.specify/`:
 - **`.specify/extensions.yml`** — Hook definitions for `before_specify`, `before_plan`, `before_implement`, etc. Spekificity enrichment skills can be registered here.
 - **`.specify/memory/constitution.md`** — Project constitution. Edit this to add project-specific principles.
 - **`.specify/templates/`** — Override SpecKit default templates for spec, plan, and tasks.
+
+HTML artifact policy and AGENTS.md
+
+- Create `wiki/artifacts/html/` to host generated HTML artifacts separate from primary wiki pages.
+- AGENTS.md should require export-to-markdown for any HTML artifact that must be audited, and enforce plan-before-execute for writes that modify `wiki/`.
+- Add CI job to detect large HTML files and ensure export-to-markdown present when artifacts are checked into repo.
 
 ### Re-Initialization
 
@@ -250,7 +256,7 @@ tools:
 context_loading:
   enable_cache: true
   cache_expiry_minutes: 60
-  model: "claude-haiku-4.5"
+  model: "<model-name>"
   temperature: 0.3
   max_tokens_output: 2000
 

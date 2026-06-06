@@ -1,9 +1,5 @@
 # Feature Development Workflow
 
-**See also:** [vision.md](vision.md) (principles) → [architecture.md](architecture.md) (technical) → [quickstart.md](quickstart.md) (howto)
-
----
-
 ## Overview
 
 Spekificity feature development follows a deterministic, staged workflow:

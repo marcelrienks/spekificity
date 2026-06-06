@@ -1,12 +1,5 @@
 # Pattern Library: Reusable Patterns from Spekificity Architecture
 
-**Status:** Complete  
-**Version:** current
-**Phases Covered:** Phase 0 (Foundation), Phase 1 (Agent Skills), Phase 2 (Validation & Optimization)  
-**Total Patterns:** multiple distinct, reusable patterns
-
----
-
 ## Overview
 
 This document catalogs all reusable architectural, workflow, and optimization patterns extracted from many specification files in Spekificity. Each pattern is:

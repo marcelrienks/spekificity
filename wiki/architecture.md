@@ -1,7 +1,5 @@
 # Architectural Principles: Token Efficiency, Determinism, Persistence, Autonomy
 
-**Date:** 2026-05-21
-
 ## 1. Token Efficiency
 - All source code and wiki documents are pre-indexed using lat.md.
 - Context injection is performed by querying lat.md for only the most relevant nodes (functions, patterns, lessons, decisions, etc.).
@@ -20,9 +18,58 @@ The `obsidian` CLI is the required runtime interface for automated vault and per
 - The vault serves as the single source of truth for all project knowledge, ensuring long-term durability and accessibility.
 
 ## 4. Autonomy
+
 - lat.md enables autonomous extraction of context, impact analysis, and knowledge mapping.
 - Agents can operate with minimal manual intervention, leveraging the indexed knowledge base for decision-making and workflow execution.
 - This supports agentic workflows and continuous improvement.
+
+## Implementation direction: Programmatic pipeline
+
+Spekificity adopts the programmatic pipeline as the project architecture and operational default.
+
+- **Primary architecture — Programmatic pipeline (package):** deterministic outputs, typed contracts (Pydantic), content-addressable IDs (e.g., SHA-256 of normalized body), integrated lint/repair agents, and structural Markdown enforcement (markdown-hero). BM25 lexical retrieval is the default. This path supports large corpora, scheduled runs, CI/CD, auditability, and downstream automation.
+
+Rationale:
+
+- Deterministic runs produce idempotent artifacts, simplify deduplication and merging, and enable robust testing and audit trails.
+- Typed contracts and content-addressable IDs make ingestion, repair, and regression analysis reliable.
+- Structural Markdown enforcement prevents downstream corruption of chunking/indexing and enables safe automated merges.
+
+Markdown structural hygiene (mandatory):
+
+- Enforce strict structural checks before merging generated pages (no duplicate H1s, valid YAML frontmatter, parseable tables, correct heading nesting).
+- Use section-aware chunking to keep chunk windows inside headings.
+- Prefer canonicalization and safe-merge strategies (dedupe_headings=True).
+- Route structural failures to a repair agent or human review; structural noise breaks chunking, dedupe, and indexing.
+
+Retrieval guidance
+
+- Start with lexical/BM25 retrieval for wiki-scale corpora: transparent, cost-effective, fast to index and run.
+- Add hybrid or vector layers when semantic synonymy, scale, or UX require it (large stable KBs, sub-second latency).
+- Treat agent-as-retriever (just-in-time context loading) as an auxiliary technique for freshness-critical queries or development/testing, not as the architectural default.
+
+Operational heuristics
+
+- Use deterministic IDs and typed outputs for idempotence, simpler dedupe, and auditability.
+- Run small-batch ingestion tests (5–10 documents) before scaling.
+- Integrate markdown-hero (or equivalent) into Generator → Lint → Consolidate stages.
+- Use git-backed vault with pre-commit structural lints and human approval gates for writes.
+
+HTML artifact policy
+
+- Store generated HTML artifacts outside primary wiki pages under `wiki/artifacts/html/`.
+- Require each HTML artifact to embed or link an export-to-markdown feature that produces a canonical markdown record or a short 3-line summary suitable for PR reviews.
+- Host artifacts on static site (S3/Vercel) where appropriate; link from canonical markdown/PR for review.
+- CI: flag large HTML files and ensure export-to-markdown present when HTML is checked into repo; fail CI when export missing for audited artifacts.
+
+## Exploratory note: Agentic instruction files
+
+Agentic instruction files (AGENTS.md) remain supported as a lightweight experimental path for personal or small-team workflows. They are not the project architecture. Rules for exploratory use:
+
+- Use only for experiments, discovery, or rapid iteration on small vaults.
+- Conform to the same structural hygiene and pre-merge checks as programmatic pipelines.
+- Include plan-before-execute gating and allowlists for tool surface.
+- Do not use agentic path for production ingest, scheduled runs, or pipelines that require reproducibility.
 
 ---
 

@@ -1,11 +1,5 @@
 # Spekificity Skills Index: Command Reference
 
-**Last Updated:** date-omitted (future-state)  
-**Version:** 1.0.0-alpha.1  
-**Status:** ATOMIC SPECIFICATION
-
----
-
 ## Overview
 
 Spekificity exposes a set of CLI skills and AI agent commands for specification-driven development. All skills follow the decorator pattern — they wrap SpecKit base commands without replacing them.
