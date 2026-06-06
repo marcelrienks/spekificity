@@ -1,9 +1,3 @@
----
-title: decision
-type: guide
-tags: []
----
-
 # Decisions: Spekificity Architecture & Tooling
 
 ## Decision 1: Indexing Tool (lat.md — Final)

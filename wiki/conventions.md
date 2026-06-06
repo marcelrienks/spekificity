@@ -1,9 +1,3 @@
----
-title: conventions
-type: guide
-tags: []
----
-
 # Naming Conventions: Brief Style Guide
 
 ## Quick Reference

@@ -1,9 +1,3 @@
----
-title: tutorial
-type: guide
-tags: []
----
-
 # Spekificity Workflow Goal
 
 > **Execution model note:** This workflow assumes Spekificity was installed globally and bootstrapped in-project with `spek init`. Any `/spek.*` references below are generated skills in `.spek/` and are agent-facing execution steps.

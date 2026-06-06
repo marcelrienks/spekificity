@@ -1,9 +1,3 @@
----
-title: architecture
-type: guide
-tags: []
----
-
 # Architectural Principles: Token Efficiency, Determinism, Persistence, Autonomy
 
 ## 1. Token Efficiency

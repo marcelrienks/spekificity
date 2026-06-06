@@ -1,9 +1,3 @@
----
-title: vision
-type: guide
-tags: []
----
-
 # Spekificity — Vision & Tenets
 
 ## Vision Statement

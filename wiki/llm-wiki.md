@@ -1,9 +1,3 @@
----
-title: llm-wiki
-type: guide
-tags: [wiki, ldm]
----
-
 # LLM Wiki — Overview
 
 This page is the consolidated index for the LLM Wiki pattern used in this project. Detailed, canonical documents have been consolidated into the files below to reduce duplication while preserving all original content.

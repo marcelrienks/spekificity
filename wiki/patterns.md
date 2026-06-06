@@ -1,9 +1,3 @@
----
-title: patterns
-type: guide
-tags: []
----
-
 # Pattern Library: Reusable Patterns from Spekificity Architecture
 
 ## Overview
