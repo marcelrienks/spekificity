@@ -1,5 +1,11 @@
 # Spekificity Architecture
 
+**See also:** [vision.md](vision.md) (philosophy & principles) → [workflow.md](workflow.md) (4-stage process)
+
+**Execution model:** Spekificity is init-first. Install globally via `uv`, then run `spek init` in target project to scaffold `.spek` skills. References to `/spek.*` denote generated agent skills, not shell commands.
+
+---
+
 ## Architectural Motivation
 
 Spekificity rests on four pillars that guide all design decisions:
@@ -31,9 +37,11 @@ These four pillars map to core components: Vault (persistence + determinism), la
 - This guarantees that outcomes are reproducible and auditable.
 
 ## 3. Persistence
-The `obsidian` CLI is the required runtime interface for automated vault and persistent memory operations. Spekificity uses the Obsidian CLI to perform scripted vault syncs, exports, and metadata extractions that enable automated context loading and lesson extraction; see `setup.sh` for verification and install instructions. The Obsidian desktop app is optional and may be used for visualization or interactive workflows; it is not a substitute for the required CLI.
-- All session states, decisions, patterns, lessons, and architectural context (from lat.md source and wiki indexing) are managed and stored in the Obsidian vault.
-- The vault serves as the single source of truth for all project knowledge, ensuring long-term durability and accessibility.
+**Obsidian CLI is required** for automated vault operations (syncs, exports, metadata extractions) that enable context loading and lesson extraction during `/spek.conclude`. Obsidian desktop app is optional for visualization.
+
+- All decisions, patterns, lessons, and architectural context stored in vault (single source of truth)
+- Vault synced to Git for version control and team collaboration
+- Obsidian CLI performs automated vault operations; desktop app is optional for browsing
 
 ## 4. Autonomy
 
@@ -100,13 +108,6 @@ Agentic instruction files (AGENTS.md) remain supported as a lightweight experime
 
 **This section should be referenced in architectural reviews and onboarding.**
 
-# Spekificity Architecture
-
-> **Execution model note:** Spekificity is init-first. Install globally via `uv`, then run `spek init` in a target project to scaffold `.spek` skills/functions. References in this document to `/spek.*` denote generated skills executed by an agent runtime, not direct shell subcommands.
-
-**See also:** [vision.md](vision.md) (philosophy & principles) → [workflow.md](workflow.md) (process)
-
-**Note:** This document covers technical architecture only. For philosophical foundations and design principles, see [vision.md](vision.md).
 
 ---
 

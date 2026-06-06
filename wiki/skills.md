@@ -2,15 +2,15 @@
 
 ## Overview
 
-Spekificity exposes a set of CLI skills and AI agent commands for specification-driven development. All skills follow the decorator pattern — they wrap SpecKit base commands without replacing them.
+Spekificity exposes agent skills and commands for specification-driven development. All skills follow the decorator pattern — they wrap SpecKit base commands without replacing them.
 
-**Quick Reference:**
-- Workflow commands: `/spek.*` namespace (agent/skill identifiers)
-- Context commands: `/context.*` namespace
-- Analysis commands: `/lat.*` (lat.md) namespace
+**Command Notation:**
+- All Spekificity workflow commands use `/spek.*` prefix (agent skill identifier)
+- Context commands: `/spek.context`, `/spek.map`, `/spek.lessons`
+- Analysis commands: `/lat.query`, `/lat.sync` (lat.md MCP tools)
 - Compression: `/caveman` mode commands
 
-Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers used in agent skill files and documentation. The equivalent user-facing CLI commands are the plain `spek` invocations (for example, `spek prepare` or `spek plan --mode=specify`). Both refer to the same operations; use the CLI form when running commands locally and the slash-prefixed form when referring to skills in docs or agent prompts.
+**Note:** Slash-prefixed forms (`/spek.prepare`, `/spek.plan`, etc.) are the canonical notation used in all documentation and agent prompts. When running commands via CLI directly, use the same form: `spek prepare`, `spek plan`, etc. (without slash).
 
 ---
 
@@ -163,9 +163,10 @@ Note: The slash-prefixed forms (e.g., `/spek.prepare`) are skill identifiers use
 8. Report completion
 
 **Output:**
-- Lessons document (vault/lessons/YYYY-MM-DD-feature-name.md)
+- Lessons document (`vault/lessons/YYYY-MM-DD-feature-name.md`)
 - Decisions and patterns documented
-- Synced repo memory + graph refreshed
+- Repo memory synced (`.spek/memory/`)
+- Code graph refreshed via lat.md
 - Completion report
 
 **Spec Reference:** [conclude-command.md](../specs/102-conclude-command.md)

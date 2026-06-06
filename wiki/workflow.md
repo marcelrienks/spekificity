@@ -2,12 +2,12 @@
 
 ## Overview
 
-Spekificity feature development follows a deterministic, staged workflow:
+Spekificity feature development follows a deterministic, 4-stage workflow:
 
 - **Prepare** – Pre-flight checks and workspace setup
-- **Plan** – Write feature spec, generate implementation plan
+- **Plan** – Write feature spec, generate implementation plan & tasks (2 sub-stages: Specification, Task Breakdown)
 - **Implement** – Execute tasks with full context
-- **Post** – Archive outcomes, sync vault, update graph
+- **Conclude** – Archive outcomes, extract lessons, sync vault, update graph
 
 Optional enhancements (context loading, dependency analysis, retrospectives) can be applied at any stage. Each stage produces durable artifacts stored in the vault.
 
@@ -46,7 +46,7 @@ Pre-flight checks before feature development begins. Ensures workspace is ready,
 
 ---
 
-## Specification
+## Specification (Sub-Stage: Plan Phase)
 
 ### Commands
 ```
@@ -106,7 +106,7 @@ Each spec includes structured enrichment:
 
 ---
 
-## Task Breakdown (Planning Phase: Part 2)
+## Task Breakdown (Sub-Stage: Plan Phase)
 
 ### Commands
 ```
@@ -117,7 +117,7 @@ Each spec includes structured enrichment:
 ```
 
 ### Purpose
-Convert specification into detailed execution plan (architecture + tech choices), then break plan into dependency-ordered executable tasks.
+Convert specification into detailed execution plan (architecture + tech choices), then break plan into dependency-ordered executable tasks. Part of Plan stage (along with spec generation).
 
 ### Workflow (Two-Step Process)
 
@@ -326,7 +326,7 @@ Before moving to the final stage, verify all quality gates:
 
 ---
 
-## Stage 5: Feature Conclusion
+## Conclude: Feature Conclusion
 
 ### Commands
 ```
@@ -444,24 +444,24 @@ Status: Complete
 - Complex refactor or architectural change: `/spek.conclude` + `/spek.lessons --deep`
 - Research/experimental work: `/spek.lessons --deep` for thorough analysis
 
-## Timeline Diagram
+## Timeline Diagram (4 Stages)
 
 ```
 DAY 1
 ├─ Morning: /spek.prepare          [short setup]
-├─ Morning: /spek.plan             [spec + plan review]
-├─ Afternoon: Review & Approve     [stakeholder sign-off]
+├─ Morning: /spek.plan (spec)      [feature spec + enrichment]
+├─ Afternoon: /spek.plan (task)    [plan + task breakdown]
+├─ Late: Review & Approve          [stakeholder sign-off]
 │
-DAY 2
-├─ Morning: /spek.implement        [implementation work]
-├─ Afternoon: /spek.implement      [continued implementation]
-├─ Late: Local testing + fixes     [testing and fixes]
+DAY 2-3
+├─ /spek.implement                 [execute tasks]
+├─ Local testing + fixes           [validation]
 │
-DAY 3
-├─ Morning: Final validation       [final validation]
-├─ Afternoon: /spek.conclude       [archive + lessons]
+DAY 4
+├─ Morning: Final validation       [final integration check]
+├─ Afternoon: /spek.conclude       [archive + lessons + graph refresh]
 │
-TOTAL: multi-day effort
+TOTAL: multi-day effort (4 stages)
 ```
 
 ---

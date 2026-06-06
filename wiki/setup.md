@@ -110,12 +110,19 @@ The Obsidian vault is your persistent memory layer—lessons learned, decisions,
 
 ```
 your-project/
-├── vault/                    ← Created automatically by spek init. Persistent memory (Obsidian vault: user, session, repo, lessons)
-│   ├── lessons/              ← written by spek conclude (per-feature lessons)
-│   ├── patterns.md           ← reusable patterns discovered
-│   ├── decision.md           ← architectural decisions and rationale
-│   └── vision.md          ← project vision and guiding principles
-└── wiki/                     ← Documentation specs and guides
+├── vault/                    ← Persistent knowledge vault (auto-created by spek init)
+│   ├── lessons/              ← Per-feature lessons (written by /spek.conclude)
+│   ├── decision.md           ← Architectural decisions and rationale
+│   ├── patterns.md           ← Reusable patterns and best practices
+│   └── vision.md             ← Project vision and guiding principles
+├── specs/                    ← Feature specifications (created during /spek.plan)
+│   └── NNNN-feature-name.md  ← Spec files follow naming convention
+└── wiki/                     ← Documentation, guides, and reference
+    ├── architecture.md
+    ├── conventions.md
+    ├── setup.md
+    ├── workflow.md
+    └── specs/                ← Detailed technical specifications
 ```
 
 ### Automatic Initialization
@@ -135,19 +142,19 @@ This creates:
 
 **You do not need to create vault files manually.**
 
-### Important: Plain Markdown (No Obsidian App Required)
+### Vault: Plain Markdown Files
 
-**The vault is just markdown files on your filesystem.** Spekificity agents access it directly via file I/O. **Obsidian CLI required** for automated vault operations (syncs, metadata exports, graph generation); desktop app is optional visualization layer.
+**The vault is plain markdown on your filesystem.** Agents access via file I/O. **Obsidian CLI is required** for automation; desktop app is optional.
 
-- ✅ **Agents work without Obsidian app** — They read/write `.md` files directly via filesystem
-- ✅ **Vault is fully git-committable** — Commit `vault/` to version control
-- ✅ **Tool-agnostic** — Use any markdown editor or command-line tools
-- ⚠️ **Obsidian CLI required** — Enables `/spek.conclude` vault operations; fallback (manual steps only) not supported
-- ⚠️ **Obsidian app is optional** — Use only if you want graph visualization or rich UI
+- ✅ **Agents work without Obsidian desktop** — Read/write `.md` files directly via filesystem
+- ✅ **Vault is fully git-tracked** — Version-control all vault files
+- ✅ **Editor-agnostic** — Edit with any markdown editor or command-line tools
+- ✅ **Obsidian CLI required** — Enables vault automation in `/spek.conclude` (syncs, exports, graph generation)
+- ℹ️ **Obsidian desktop optional** — Use only for graph visualization or interactive UI (not required for automation)
 
-### Optional: Obsidian Desktop App (Enhanced UI)
+### Optional: Obsidian Desktop App (For Visualization)
 
-If you want the interactive visualization and backlink browsing (optional):
+If you want graph visualization and interactive backlink browsing (optional, not required for automation):
 
 #### macOS
 1. Download from [obsidian.md/download](https://obsidian.md/download) or: `brew install obsidian`
@@ -180,20 +187,23 @@ These are already excluded in the project `.gitignore`.
 
 ---
 
-## Tool 3: Indexing Tool (lat.md)
+## Tool 3: lat.md (Code Analysis — Canonical)
 
-Spekificity uses an indexing tool to make source code and documentation queryable for context injection during feature development. The recommended, canonical tool for this project is `lat.md`.
+Spekificity requires `lat.md` for code indexing and querying. lat.md is the canonical, only-supported code analysis tool for this project.
 
-### Current Recommendation: lat.md
+### lat.md Setup
 
-`lat.md` focuses on creating a Markdown-first knowledge layer that links specs, vault content, and source metadata. It provides:
-- Markdown-native indexing (frontmatter, headings, wikilinks)
-- Pluggable extractors for source symbols and basic dependency edges
-- Incremental refresh and watch mode for fast updates
-- Connectors for Obsidian-style vaults so documentation and code share a single graph
-- Agent-friendly query interface (MCP or HTTP API) for context injection
+`lat.md` provides:
+- Pre-indexed code symbols, definitions, and relationships
+- Incremental refresh and optional file-watcher for real-time updates
+- MCP tool interface for agent-friendly queries (lat_symbols, lat_references, lat_callers, lat_impact, etc.)
+- Pluggable extractors for source code and documentation
 
-**Setup:** Install lat.md globally via `uv tool install lat-md` (or package manager equivalent). Configure MCP tools in your agent environment. Run `lat.md init` in project directory to scaffold `.lat/` index and setup hooks. Verify with `lat.md --version` and `lat.md query --help`.
+**Setup:** 
+1. Install globally: `uv tool install lat-md`
+2. Initialize in project: `lat.md init` (creates `.lat/` directory + index)
+3. Configure MCP tools in agent environment (see lat.md docs for MCP server setup)
+4. Verify: `lat.md --version` and `lat.md query --help`
 
 ---
 
@@ -208,8 +218,8 @@ After installing all tools:
 
 2. **Verify Vault:**
    ```bash
-   ls vault/context/
-   # Expected: decisions.md, patterns.md
+   ls vault/
+   # Expected: decision.md, patterns.md, vision.md, lessons/
    ```
 
 3. **Verify Indexing Tool:**

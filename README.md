@@ -26,7 +26,7 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 
 - Python 3.11+
 - `uv` package manager ([install](https://docs.astral.sh/uv/))
--- **Obsidian CLI** (required) — primary integration for vault automation: syncs, exports, and scripted operations that enable context loading, graph generation, and lesson extraction.
+-- **Obsidian CLI** (required for automation) — primary integration for vault automation: syncs, exports, and scripted operations that enable context loading, graph generation, and lesson extraction. Desktop app is optional (used for visualization only).
 +    - Why: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports). Having the `obsidian` CLI in PATH simplifies reliable automation in developer workflows and CI.
 +    - Install / enable CLI: Register the `obsidian` command in your PATH. The CLI is typically provided by the Obsidian desktop app, but the CLI is the primary required integration point — the desktop app is optional (used for visualization and interactive workflows). See https://obsidian.md/help/cli and https://obsidian.md/help/headless for platform-specific guidance.
 
@@ -66,9 +66,7 @@ pip install -e .
 spek init
 ```
 
-**Full guide:** See [wiki/install.md](wiki/install.md) for detailed setup options.
-
-**Testing local branch code before merge:** See [wiki/local.md](wiki/local.md) for a local-only pre-merge workflow using editable installs.
+**Full guide:** See [wiki/setup.md](wiki/setup.md) for detailed setup options.
 
 ---
 
@@ -76,7 +74,7 @@ spek init
 
 ✅ **Spec-Driven Workflow** — All work starts with a structured specification  
 ✅ **Persistent Memory** — Decisions, patterns, lessons stored in Git-backed vault  
-✅ **Token Efficiency** — Pre-indexed indexing (lat.md) + Caveman compression  
+✅ **Token Efficiency** — Pre-indexed code analysis (lat.md, canonical) + Caveman compression  
 ✅ **Deterministic Sequencing** — 4-stage workflow (Prepare → Specify & Plan → Implement → Close)  
 ✅ **Composable Skills** — `/spek.*` commands can be chained or run independently  
 
@@ -100,8 +98,7 @@ Spekificity is built around four pillars:
 
 - **SpecKit / Specify** — Spec-driven workflow engine
 - **lat.md** — Indexing and doc-code linkage (preferred)
-- **Obsidian Vault (with Obsidian CLI)** — Required knowledge store and runtime interface for specs, decisions, patterns, and lessons. The automation described in these documents depends on the `obsidian` CLI being available and registered in PATH.
-- **Obsidian Vault (with Obsidian CLI)** — Required knowledge store and runtime interface for specs, decisions, patterns, and lessons. The automation described here depends on the `obsidian` CLI being available and registered in PATH. The Obsidian CLI is the required integration; the desktop app is optional and used primarily for visualization and interactive workflows.
+- **Obsidian Vault (with Obsidian CLI)** — Required knowledge store and runtime interface for specs, decisions, patterns, and lessons. The `obsidian` CLI must be available in PATH for automation (vault syncs, metadata exports, graph generation). Desktop app is optional for visualization and interactive workflows.
 - **Caveman Mode** — Response compression for token control
 
 Spekificity defines how these tools work together—it doesn't replace them. **The toolset described (SpecKit, lat.md, Obsidian + Obsidian CLI, Caveman) is required for the intended automation and behavior described in this documentation.**
@@ -113,22 +110,26 @@ Spekificity defines how these tools work together—it doesn't replace them. **T
 ```
 STAGE 1: PREPARE
 /spek.prepare (workspace ready, vault synced, lat.md fresh)
-    ├─ Includes: /speckit.specify as substep
-    └─ Output: Feature spec + context loaded
+    ├─ Pre-flight checks (git state, vault sync, graph fresh)
+    └─ Output: Workspace ready, context loaded
 
-STAGE 2: PLAN (2 substeps; tasks optional but preferred)
+STAGE 2: PLAN (2 sub-stages)
 /spek.plan
-    ├─ Substep 1: /speckit.plan (architecture + tech choices)
-    └─ Substep 2: /speckit.tasks (dependency-ordered tasks) [optional, recommended]
-    └─ Output: Plan + task breakdown
+    ├─ Sub-stage 1: Specification — /speckit.specify (write spec + enrichment layers)
+    ├─ Sub-stage 2: Task Breakdown — /speckit.plan + /speckit.tasks (create plan + tasks)
+    └─ Output: Spec + plan + task breakdown
 
 STAGE 3: IMPLEMENT
-/spek.implement (execute tasks, write code + tests)
-    └─ Output: Code committed, tests passing
+/spek.implement (execute tasks in order, write code + tests)
+    ├─ Per-task: code changes, tests, validation
+    └─ Output: Code committed, tests passing, Success Criteria validated
 
-STAGE 4: CLOSE
+STAGE 4: CONCLUDE
 /spek.conclude (archive outcomes, extract lessons, refresh state)
-    └─ Output: Vault updated, lessons captured, graph fresh
+    ├─ Archive: Spec + plan → vault
+    ├─ Learn: Extract lessons, capture decisions + patterns
+    ├─ Sync: Refresh lat.md index, update repo memory
+    └─ Output: Vault updated, lessons captured, graph fresh, ready for next feature
 ```
 
 ---
@@ -139,9 +140,9 @@ STAGE 4: CLOSE
 
 Start with this reading order—each doc builds on the previous:
 
-1. **[wiki/intention.md](wiki/intention.md)** — Why Spekificity exists and core philosophy (vision, principles, tenets)
+1. **[wiki/vision.md](wiki/vision.md)** — Why Spekificity exists and core philosophy (vision, principles, tenets)
 2. **[wiki/architecture.md](wiki/architecture.md)** — How components fit together (technical architecture and data flow)
-3. **[wiki/quickstart.md](wiki/quickstart.md)** — Hands-on walkthrough of your first feature
+3. **[wiki/workflow.md](wiki/workflow.md)** — 4-stage feature development workflow and lifecycle
 
 ### **For Daily Work (Reference)**
 
@@ -163,7 +164,7 @@ Start with this reading order—each doc builds on the previous:
 | File | Scope | When to Read |
 |------|-------|--------------|
 | **vision.md** | Vision statement, problem/solution, four pillars, design principles | Understand *why* Spekificity exists |
-| **intention.md** | Philosophy, core principles, project tenets, constraints, target users | Understand Spekificity *philosophy* and design intent |
+| **vision.md** | Vision statement, philosophy, core principles, four pillars | Understand Spekificity *philosophy* and design intent |
 | **architecture.md** | Technical components, data flow, responsibilities (Vault, lat.md, SpecKit, Skills), integration | Understand *how* components fit together technically |
 | **workflow.md** | 5-phase feature development workflow with entry/exit criteria, artifacts, detailed steps | Reference during *active development* |
 | **quickstart.md** | Hands-on walkthrough for first feature | *Get started* with your first feature |
@@ -274,30 +275,22 @@ Use these documents first:
 ### Core docs
 
 - [wiki/vision.md](wiki/vision.md)
-- [wiki/intention.md](wiki/intention.md)
 - [wiki/architecture.md](wiki/architecture.md)
 - [wiki/workflow.md](wiki/workflow.md)
-- [wiki/llm-wiki.md](wiki/llm-wiki.md)
 - [wiki/conventions.md](wiki/conventions.md)
 
 ### Setup notes
 
 - [wiki/setup.md](wiki/setup.md)
 
-### Key specifications
+### Specifications by Topic
 
-- [wiki/specs/context-load-lifecycle.md](wiki/specs/context-load-lifecycle.md)
-- [wiki/specs/session-memory.md](wiki/specs/session-memory.md)
-- [wiki/specs/persistent-memories-and-lessons.md](wiki/specs/persistent-memories-and-lessons.md)
-- [wiki/specs/decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md)
-- [wiki/specs/cli-orchestration.md](wiki/specs/cli-orchestration.md)
-- [wiki/specs/100-prepare-command.md](wiki/specs/100-prepare-command.md)
-- [wiki/specs/102-conclude-command.md](wiki/specs/102-conclude-command.md)
-- [wiki/specs/specify-enrichment.md](wiki/specs/specify-enrichment.md)
-- [wiki/specs/plan-enrichment.md](wiki/specs/plan-enrichment.md)
-- [wiki/specs/implement-enrichment.md](wiki/specs/implement-enrichment.md)
-- [wiki/specs/050-latmd-setup-and-integration.md](wiki/specs/050-latmd-setup-and-integration.md)
-- [wiki/specs/integration-validation-and-testing.md](wiki/specs/integration-validation-and-testing.md)
+See [wiki/specs/](wiki/specs/) directory for detailed technical specifications. Key areas:
+- Memory architecture (vault, session, lessons)
+- Workflow orchestration (prepare, plan, implement, conclude)
+- Error handling and recovery
+- Integration with SpecKit, lat.md, Obsidian CLI
+- Token efficiency and compression
 
 ## Repository Layout
 
@@ -310,41 +303,42 @@ spekificity/
 ├── wiki/
 │   ├── architecture.md
 │   ├── conventions.md
-│   ├── goal.md
-│   ├── intention.md
-│   ├── llm-wiki.md
-│   ├── quickstart.md
+│   ├── decision.md
+│   ├── patterns.md
 │   ├── setup.md
-│   ├── skill-index.md
-│   ├── speckit.md
+│   ├── skills.md
 │   ├── vision.md
 │   ├── workflow.md
 │   ├── specs/
 │   └── raw/
+├── vault/                    [project knowledge: decisions, patterns, lessons]
+├── .spek/                    [Spekificity config and generated skills]
 ├── .git/
 └── .gitignore
 ```
 
 Practical reading order:
 
-1. README
-2. `wiki/intention.md`
+1. README (this file)
+2. `wiki/vision.md`
 3. `wiki/architecture.md`
-4. `wiki/quickstart.md`
+4. `wiki/workflow.md` (4 main stages)
 5. `wiki/conventions.md`
-6. relevant files in `wiki/specs/`
+6. `wiki/setup.md` (tool installation)
+7. relevant files in `wiki/specs/` for deep dives
 
 
 ## Working Assumptions
 
 The docs in this repository consistently assume:
 
-- the enriched command surface uses `spek.*`
-- Spekificity wraps SpecKit rather than forking it
-- durable knowledge lives in markdown, not opaque runtime state
-- **Obsidian CLI is required:** The `obsidian` command must be available in PATH and enabled in Obsidian Settings → General → Command line interface. The Obsidian CLI is the primary integration point for core automation (vault syncs, metadata exports, lesson extraction, and graph exports); the desktop app is optional. Fallback alternatives are not supported.
-- code intelligence should come from indexed graph tooling rather than repeated file scans
-- post-feature lessons are part of the system, not optional afterthoughts
+- Workflow uses 4 main stages: Prepare → Plan (2 sub-stages: Specification, Task Breakdown) → Implement → Conclude
+- Enriched command surface uses `/spek.*` prefix
+- Spekificity wraps SpecKit (decorator pattern) rather than forking it
+- Durable knowledge lives in markdown vault (`vault/`), version-controlled via Git
+- **Obsidian CLI required for automation:** Vault syncs, metadata exports, graph generation, and lesson extraction depend on `obsidian` CLI in PATH. Desktop app is optional for visualization.
+- Code intelligence via indexed graph (lat.md MCP tools) rather than file scans
+- Post-feature lessons (captured in `/spek.conclude`) are part of the system, not optional
 
 ## Constitution
 

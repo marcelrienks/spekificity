@@ -169,15 +169,15 @@ Layer 1: Vault (Obsidian) — Persistent, Authoritative
 ├── vault/patterns.md
 └── vault/lessons/<YYYY-MM-DD>-<feature>-*.md
 
-Layer 2: Repo Memory (Copilot) — Persistent, Project-Scoped
-├── [056-code-and-document-maps.md](wiki/specs/056-code-and-document-maps.md)
-├── [022-architectural-decisions.md](wiki/specs/022-architectural-decisions.md)
-└── [023-patterns-library.md](wiki/specs/023-patterns-library.md)
+Layer 2: Repo Memory — Persistent, Project-Scoped
+├── .spek/memory/architecture-index.md
+├── .spek/memory/patterns-summary.md
+└── (synced by /spek.conclude, read by /spek.context)
 
-Layer 3: Session Memory (Copilot) — Ephemeral, Session-Scoped
-├── /memories/session/context-loaded.md
-├── /memories/session/current-feature.md
-└── /memories/session/scratchpad.md
+Layer 3: Session Memory — Ephemeral, Session-Scoped
+├── .spek/memory/session/context-loaded.md
+├── .spek/memory/session/current-feature.md
+└── .spek/memory/session/scratchpad.md (deleted at feature end)
 ```
 
 ### When to Use
@@ -1141,9 +1141,9 @@ completion: progress-indicator
 - Stateless systems (no phase concept)
 
 ### Example Code / Integration
-- **Create:** `/spek.prepare` Step 6 (initialized status)
+- **Create:** `/spek.prepare` Step 6 (initialized status in `.spek/memory/session/current-feature.md`)
 - **Update:** Each skill updates status through defined phases (drafted → planned → implementing → completing → completed)
-- **Archive:** `/spek.conclude` Step 9 (move to /memories/session/archive/)
+- **Archive:** `/spek.conclude` Step 9 (archived in vault or deleted)
 
 ### Related Patterns
 - Feature Lifecycle Pattern (phases that state tracks)

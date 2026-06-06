@@ -1,10 +1,10 @@
 # Decisions: Spekificity Architecture & Tooling
 
-## Decision 1: Indexing Tool (lat.md — Final)
+## Decision 1: Indexing Tool (lat.md — Canonical)
 
 ### Decision
 
-**lat.md is the canonical indexing tool for Spekificity. Legacy indexing approaches are deprecated and not supported for new projects.**
+**lat.md is the canonical, required indexing tool for Spekificity. It is the only supported code analysis solution. Legacy indexing approaches are not supported.**
 
 ---
 
@@ -34,19 +34,17 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 | Query Performance | low-latency average (vs. much slower for file scan) |
 | **Fit for Agent Workflows** | **high** (purpose-built for this use case) |
 
-#### Legacy indexing approaches
+#### Why lat.md is Canonical
 
-Older indexing tools required manual syncs and produced document-heavy outputs that were costly for agent queries. Those legacy approaches are archived and not recommended for new projects.
+lat.md is purpose-built for agent-driven development:
+- Pre-indexed queries (no file scans; low token cost)
+- Fast incremental updates (file-watcher optional)
+- MCP tool interface (agent-friendly)
+- Deterministic impact analysis
+- Framework-aware extractors
 
-**Concrete Impact (illustrative):**
-- Manual indexers: higher token cost per query and stale results without watch mode
-- Modern incremental indexers (lat.md): fast incremental queries and lower token overhead
-
-#### Decision Made: lat.md as the canonical indexer
-
-**Status:** Final (lat.md is the project's canonical indexing tool)  
-**Legacy Support:** Legacy specs archived for reference only; migrate to `lat.md` for active work  
-**Migration:** Existing legacy-index users → rebuild index using `lat.md` and update configuration as specified in the lat.md setup spec
+**Status:** CANONICAL (lat.md is the only supported code analysis tool)  
+**Migration Path:** If using legacy tools, rebuild index with `lat.md` per setup.md
 
 ---
 
@@ -54,10 +52,9 @@ Older indexing tools required manual syncs and produced document-heavy outputs t
 
 | Trade-off | Reasoning |
 |-----------|-----------|
-| MCP Configuration Complexity | Small one-time cost; pays off in session 2 |
-| No Human-Browsable Code Docs | Vault is for architecture + decisions; lat.md is for code intelligence |
-| New Tool Learning Curve | lat.md simpler to configure via extractors than legacy AST setups |
-| Long-term Vendor Lock | lat.md risk mitigated by pluggable extractors and open ecosystem |
+| lat.md Required (Not Optional) | Agent workflows depend on indexed queries; fallback to manual grep is manual overhead |
+| MCP Configuration | One-time setup; small cost; enables all downstream automation |
+| Vendor Dependency | Mitigated by pluggable extractors; lat.md open-source |
 
 ---
 

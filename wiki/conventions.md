@@ -66,8 +66,8 @@ Standard flags: `--verbose`, `--format [text|json|mermaid]`, `--dry-run`, `--qui
 ```
 
 **Artifact Files:**
-- Specs: `wiki/specs/feature-name.md` (kebab-case)
-- Plans: `wiki/specs/feature-name-plan.md`
+- Specs: `specs/NNNN-feature-name.md` (project root; kebab-case; numeric prefix for ordering)
+- Plans: `specs/NNNN-feature-name-plan.md` (same directory as spec)
 - Lessons: `vault/lessons/YYYY-MM-DD-feature-name.md`
 - Decisions: `vault/decision.md` (single file, append-only)
 - Patterns: `vault/patterns.md` (single file)
