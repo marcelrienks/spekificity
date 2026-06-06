@@ -506,6 +506,255 @@ Next Feature Spec (pattern reference) + Next Feature Plan (estimate refinement)
 
 ---
 
+---
+
+## Example: User Authentication Feature
+
+This section walks through a complete feature cycle using the workflow above.
+
+### Prepare Workspace
+
+**Command:** `/spek.prepare`
+
+```
+✓ Git working tree clean
+✓ Vault synced from origin
+✓ lat.md index refreshed
+✓ Session context loaded
+READY: Workspace prepared for feature development
+```
+
+**What happened:**
+- Git verified clean (no uncommitted work)
+- Vault pulled (latest specs/decisions/lessons from vault/)
+- lat.md queried for affected files
+- Session memory loaded (decisions, patterns from vault/)
+- Feature state file created
+
+### Specify Feature
+
+**Command:** `/spek.plan --phase=specify --feature="user-auth-api"`
+
+```
+SPEC GENERATION
+├─ Feature Intent: "POST /auth/login endpoint validates credentials, returns JWT"
+├─ Query lat.md:
+│  ├─ Found existing: auth/models.py (user model)
+│  ├─ Found existing: auth/tokens.py (jwt utilities)
+│  └─ Impact: several existing files touch auth system
+│
+├─ Enrich with layers:
+│  ├─ Success Criteria:
+│  │  - ✓ POST /auth/login accepts email + password
+│  │  - ✓ Valid credentials return JWT token
+│  │  - ✓ Invalid credentials return 401
+│  │  - ✓ JWT validates on protected endpoints
+│  │  - ✓ high test coverage on new code
+│  │
+│  ├─ Assumptions:
+│  │  - User model exists (✓ verified in lat.md)
+│  │  - JWT utilities exist (✓ verified in lat.md)
+│  │  - Passwords already hashed (✓ verified in auth/models.py)
+│  │
+│  ├─ Risk Assessment:
+│  │  - 🔴 HIGH: SQL injection if not parameterized (mitigation: ORM only)
+│  │  - 🟡 MEDIUM: Token expiry not configurable (mitigation: add ENV var)
+│  │  - 🟢 LOW: Rate limiting not implemented (mitigation: future feature)
+│  │
+│  └─ Resource Estimate:
+│     - Complexity: Medium (multiple files touched; existing patterns reused)
+│     - Tokens: not specified
+│     - Time: not specified
+│
+└─ Output: vault/specs/150-user-auth-api.md (CREATED)
+   └─ Ready for planning phase
+```
+
+**What was produced:**
+- `/wiki/specs/150-user-auth-api.md` — Complete spec with enrichment layers
+- Linked to existing patterns (JWT handling, error handling)
+- Cross-referenced with existing decisions (why we use JWT not sessions)
+- Risk assessment documented
+- Success criteria crystal clear
+
+### Create Plan
+
+**Command:** `/spek.plan --phase=plan`
+
+```
+TASK BREAKDOWN
+├─ Spec parsed: 150-user-auth-api.md
+├─ lat.md queried: affected files and functions identified
+│
+├─ Dependencies analyzed:
+│  ├─ Upstream: User model (EXISTS, no changes needed)
+│  ├─ Upstream: JWT utilities (EXISTS, extend token generation)
+│  └─ Downstream: Protected endpoints (WILL use new endpoint)
+│
+├─ Tasks generated:
+│  │
+│  ├─ Task 1: Add login route handler
+│  │  ├─ File: auth/routes.py
+│  │  ├─ Depends: User model, JWT utils
+│  │  └─ Success: Handler accepts email + password, returns JWT or 401
+│  │
+│  ├─ Task 2: Add unit tests (login handler)
+│  │  ├─ File: tests/auth/test_routes.py
+│  │  ├─ Depends: Task 1
+│  │  └─ Success: Comprehensive coverage, all cases covered (valid, invalid, expired)
+│  │
+│  ├─ Task 3: Add integration tests (full auth flow)
+│  │  ├─ File: tests/integration/test_auth_flow.py
+│  │  ├─ Depends: Task 1, Task 2
+│  │  └─ Success: End-to-end flow works (login → token → protected endpoint)
+│  │
+│  └─ Task 4: Update docs
+│     ├─ File: docs/API.md
+│     ├─ Depends: Task 1
+│     └─ Success: Login endpoint documented with examples
+```
+
+**What was produced:**
+- `/wiki/specs/151-user-auth-plan.md` — Detailed task breakdown
+- Dependencies validated (no blocking issues)
+- Sequence determined (tasks 2/3 depend on task 1, can parallelize after)
+- Ready to implement
+
+### Execute Implementation
+
+**Command:** `/spek.implement --task=1 --task=2 --task=3 --task=4`
+
+For each task:
+
+```
+IMPLEMENTING TASK 1: Add login route handler
+
+INPUT:
+├─ Task spec (150-user-auth-api.md + 151-user-auth-plan.md)
+├─ lat.md results (where to add code, what exists, what to reuse)
+├─ Existing patterns (JWT handling, error responses)
+└─ Session memory (decisions from previous features)
+
+EXECUTION:
+├─ Agent reads task spec
+├─ Agent queries lat.md for:
+│  ├─ User model location + interface
+│  ├─ JWT utilities location + interface
+│  ├─ Existing error handling patterns
+│  └─ Where to add route (app.py, routes.py, etc.)
+│
+├─ Agent writes code:
+│  ├─ Adds POST /auth/login handler
+│  ├─ Validates input (email, password)
+│  ├─ Queries user by email
+│  ├─ Checks password (using bcrypt)
+│  ├─ Generates JWT token
+│  └─ Returns token or 401
+│
+├─ Agent writes comprehensive tests
+│  ├─ Valid credentials → token returned
+│  ├─ Invalid email → 401
+│  ├─ Invalid password → 401
+│  ├─ Expired token rejected
+│  └─ Protected endpoint requires valid token
+│
+└─ OUTPUT:
+   ├─ auth/routes.py (NEW)
+   ├─ tests/auth/test_routes.py (NEW)
+   ├─ .git diff (tracked)
+   └─ Session trace (what was tried, what worked)
+```
+
+Tasks 2, 3, 4 follow same pattern. By end of implementation phase:
+
+```
+✓ Task 1: Login handler written + unit tested (DONE)
+✓ Task 2: Unit tests all passing (DONE)
+✓ Task 3: Integration tests passing (DONE)
+✓ Task 4: API docs updated (DONE)
+
+Code changes committed to git.
+Ready for closing phase.
+```
+
+### Archive & Close
+
+**Command:** `/spek.conclude --caveman-mode=full`
+
+```
+FEATURE COMPLETION & VAULT SYNC
+
+Step 1: Collect Artifacts
+├─ Feature state (user-auth-api)
+├─ Spec (150-user-auth-api.md)
+├─ Plan (151-user-auth-plan.md)
+├─ Code changes (git diff)
+├─ Execution trace (what was tried, what worked)
+└─ Test results
+
+Step 2: Activate Caveman Compression
+├─ Active voice, concrete, no filler
+└─ Compress output
+
+Step 3: Generate Lessons
+├─ What worked:
+│  - JWT token generation pattern applied cleanly
+│  - lat.md impact analysis reduced manual code review effort
+│  - Unit test template from existing auth tests reused
+│
+├─ What didn't:
+│  - Initial attempt at rate limiting too complex (deferred to future)
+│  - Password validation edge cases found in integration testing
+│
+├─ Patterns discovered:
+│  - "Error response pattern for 401/403 cases" (reusable)
+│  - "JWT token generation and validation" (already captured)
+│
+├─ Decisions made:
+│  - Why: JWT chosen over session for statelessness (scalability)
+│  - Why: Token expiry set to 24h (balance security + UX)
+│
+└─ Output: vault/lessons/2026-05-20-user-auth-api-implementation.md (CREATED)
+
+Step 4-5: Update Vault
+├─ vault/decision.md (append new architectural decisions)
+├─ vault/patterns.md (log pattern usage + frequency)
+└─ Feature marked as COMPLETED
+
+Step 6-7: Sync Repo Memory
+├─ vault/repo/architectural-decisions.md (updated)
+├─ vault/repo/patterns-index.md (updated)
+└─ Ready for next project to use
+
+Step 8: Refresh lat.md index
+├─ Scan new code (auth/routes.py, tests/)
+├─ Update index with new functions/classes
+└─ Graph now includes login handler, tests
+
+Step 9: Archive Feature State
+├─ Move vault/session/current-feature.md to vault/archive/
+├─ Clean up session temporary files
+└─ Ready for next feature
+
+Step 10: Report Completion
+└─ FEATURE COMPLETE: user-auth-api
+   ├─ Code added: auth/routes.py
+   ├─ Tests added: Multiple test cases with comprehensive coverage
+   ├─ Docs added: API.md updated
+   ├─ Lessons: Patterns refined, decisions logged
+   └─ Next feature can reuse patterns/decisions from vault
+```
+
+**What was produced:**
+- Lessons documented and indexed in vault
+- Decisions logged with rationale
+- Patterns captured for reuse
+- lat.md updated and ready
+- Session memory archived
+- Repository ready for next feature
+
+---
+
 ## References
 
 - **Architecture:** [architecture.md](architecture.md)

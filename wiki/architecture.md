@@ -1,4 +1,22 @@
-# Architectural Principles: Token Efficiency, Determinism, Persistence, Autonomy
+# Spekificity Architecture
+
+## Architectural Motivation
+
+Spekificity rests on four pillars that guide all design decisions:
+
+**Token Efficiency:** AI-assisted development often re-reads files repeatedly, wasting tokens. Solution: Pre-index code and docs; load only minimal, relevant context via lat.md queries and compressed outputs (Caveman mode). This ensures agents can operate with significantly lower token overhead while maintaining full context precision.
+
+**Determinism:** Unstructured agent workflows produce unreproducible outcomes. Solution: Enforce spec → plan → implement → conclude workflows via SpecKit, making outcomes reproducible and auditable. Specs serve as canonical records, enabling consistent decision-making across sessions.
+
+**Persistence:** Project knowledge vanishes between sessions. Solution: Store all specs, decisions, and lessons in a Git-backed Obsidian-style markdown vault. This knowledge compounds across sessions, enabling agents to reference historical decisions and avoiding repeated mistakes.
+
+**Autonomy:** Agents often need hand-holding to navigate context. Solution: Equip agents with deterministic tools (lat.md index, SpecKit engine) and indexed context so they can execute feature work with minimal human intervention, while maintaining human-in-the-loop safety through plan reviews and contradiction flags.
+
+These four pillars map to core components: Vault (persistence + determinism), lat.md index (token efficiency + determinism), SpecKit (deterministic orchestration), and Caveman (token efficiency).
+
+---
+
+## Architectural Principles: Token Efficiency, Determinism, Persistence, Autonomy
 
 ## 1. Token Efficiency
 - All source code and wiki documents are pre-indexed using lat.md.
