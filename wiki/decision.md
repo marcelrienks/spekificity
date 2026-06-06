@@ -1,14 +1,76 @@
-# Decisions: Spekificity Architecture & Tooling
+# Decisions: Spekificity Architecture & Implementation
 
-## Decision 1: Indexing Tool (lat.md — Canonical)
-
-### Decision
-
-**lat.md is the canonical, required indexing tool for Spekificity. It is the only supported code analysis solution. Legacy indexing approaches are not supported.**
+Architectural and implementation decisions that guide Spekificity design and tooling choices.
 
 ---
 
-### Rationale
+# Section 1: Tooling & Architecture
+
+## Decision 1: Recommended Baseline Toolset
+
+### Summary
+
+For each of Spekificity's four pillars, recommend a tool that balances maturity, community adoption, and cohesive fit:
+
+| Pillar | Tool | Why | Setup |
+|--------|------|-----|-------|
+| **Token Efficiency** | Caveman (compression) | Simple notation; preserves code; tested | Low (integrated) |
+| **Determinism** | SpecKit/Specify | GitHub official; broad adoption; YAML-first | Medium (install + init) |
+| **Persistence** | Obsidian (vault) | Largest PKM community; markdown portable; git-backed | Low (optional UI; CLI required) |
+| **Autonomy & Code Understanding** | lat.md | Agent-optimized; fast queries; framework-aware | Medium (install + MCP config) |
+
+---
+
+### Tooling Decisions Detail
+
+#### Code Analysis: lat.md is Canonical
+
+**lat.md is the canonical, required indexing tool for Spekificity.** It is the only supported code analysis solution.
+
+**Why:**
+- Purpose-built for agent-driven workflows
+- Pre-indexed queries (no file scans; low token cost)
+- Fast incremental updates (file watcher optional)
+- MCP tool interface (agent-friendly)
+- Deterministic impact analysis
+- Framework-aware extractors
+
+**Status:** lat.md is the ONLY code analysis tool supported by Spekificity. Migration path: If using legacy tools, rebuild index with `lat.md` per [setup.md](setup.md).
+
+---
+
+#### Dual-System Architecture: Vault + Code Analysis
+
+**Recommend dual-system approach: Knowledge Vault + Code Analysis Tool.**
+
+Each system owns a domain and operates on different rhythms:
+
+| System | Purpose | Access | Rhythm |
+|--------|---------|--------|--------|
+| **Vault** | Knowledge base (specs, decisions, lessons) | Git + UI (optional) | Once per feature cycle |
+| **Code Analysis** | Code intelligence (symbols, calls, impact) | MCP tools (agent queries) | Every file save (auto-sync) |
+
+**Why separation?**
+- Vault changes slowly; code analysis changes constantly
+- Agents query code frequently (per implementation cycle); vault queried once per session
+- Vault stays lean + human-navigable; code analysis stays fast + agent-efficient
+
+**Result:** Faster development with pre-indexed analysis and persistent architectural context.
+
+---
+
+### Trade-offs Accepted
+
+| Trade-off | Reasoning |
+|-----------|-----------|
+| Multiple tools (not monolithic) | Clear separation; each tool optimized for its domain |
+| lat.md required | Agent workflows depend on indexed queries; fallback to grep is manual overhead |
+| Setup effort | One-time effort; pays for itself in token efficiency and query speed |
+| Obsidian CLI required | Enables automated vault operations; desktop app optional for visualization |
+
+---
+
+## Rationale: Agent-First Design
 
 #### Project Priority: Agent-First Development
 

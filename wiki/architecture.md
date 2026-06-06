@@ -1,53 +1,71 @@
-# Spekificity Architecture
+# Spekificity Architecture & Vision
 
-**See also:** [vision.md](vision.md) (philosophy & principles) → [workflow.md](workflow.md) (4-stage process)
+## Vision Statement
 
-**Execution model:** Spekificity is init-first. Install globally via `uv`, then run `spek init` in target project to scaffold `.spek` skills. References to `/spek.*` denote generated agent skills, not shell commands.
+Spekificity is a spec-driven agent development framework that ties project knowledge (Obsidian vault), code analysis (lat.md), workflow automation (SpecKit), and skill execution (Agent Skills) into a single workflow. It solves four core problems: token efficiency, deterministic planning, persistent project memory, and agent autonomy.
+
+**Core Problem & Core Solution:**
+- Problem: AI-assisted development often loses context between sessions, wastes tokens re-reading files, and produces work without durable specifications or lessons.
+- Solution: Treat documentation as canonical memory (markdown vault), use a code graph/index for precise context (lat.md), and orchestrate feature work with a spec-first engine (SpecKit) wrapped by Spekificity skills.
+
+**Philosophy & Tenets:**
+- Consolidation, not reinvention: integrate best-in-class tools (SpecKit, lat.md, Obsidian-style vault) rather than rebuilding them.
+- Decorator pattern: Spekificity wraps SpecKit commands to inject context and enrichment, without modifying upstream tools.
+- Modular independence: each component (vault, index, spec engine, compression) can be upgraded independently.
+- Human-in-the-loop safety: agent actions are gated by plan reviews and contradiction flags; human decisions resolve conflicts.
+- Token efficiency by default: graph queries + cached vault context replace repeated file scans; Caveman mode provides optional terse outputs.
 
 ---
 
-## Architectural Motivation
+## Four Pillars: Core Design Drivers
 
 Spekificity rests on four pillars that guide all design decisions:
 
-**Token Efficiency:** AI-assisted development often re-reads files repeatedly, wasting tokens. Solution: Pre-index code and docs; load only minimal, relevant context via lat.md queries and compressed outputs (Caveman mode). This ensures agents can operate with significantly lower token overhead while maintaining full context precision.
+1. **Token Efficiency** — AI-assisted development often re-reads files repeatedly, wasting tokens. Solution: Pre-index code and docs; load only minimal, relevant context via lat.md queries and compressed outputs (Caveman mode). Ensures agents operate with significantly lower token overhead while maintaining full context precision.
 
-**Determinism:** Unstructured agent workflows produce unreproducible outcomes. Solution: Enforce spec → plan → implement → conclude workflows via SpecKit, making outcomes reproducible and auditable. Specs serve as canonical records, enabling consistent decision-making across sessions.
+2. **Determinism** — Unstructured agent workflows produce unreproducible outcomes. Solution: Enforce spec → plan → implement → conclude workflows via SpecKit, making outcomes reproducible and auditable. Specs serve as canonical records, enabling consistent decision-making across sessions.
 
-**Persistence:** Project knowledge vanishes between sessions. Solution: Store all specs, decisions, and lessons in a Git-backed Obsidian-style markdown vault. This knowledge compounds across sessions, enabling agents to reference historical decisions and avoiding repeated mistakes.
+3. **Persistence** — Project knowledge vanishes between sessions. Solution: Store all specs, decisions, and lessons in a Git-backed Obsidian-style markdown vault. Knowledge compounds across sessions, enabling agents to reference historical decisions and avoid repeated mistakes.
 
-**Autonomy:** Agents often need hand-holding to navigate context. Solution: Equip agents with deterministic tools (lat.md index, SpecKit engine) and indexed context so they can execute feature work with minimal human intervention, while maintaining human-in-the-loop safety through plan reviews and contradiction flags.
+4. **Autonomy** — Agents often need hand-holding to navigate context. Solution: Equip agents with deterministic tools (lat.md index, SpecKit engine) and indexed context so they execute feature work with minimal human intervention, while maintaining human-in-the-loop safety through plan reviews and contradiction flags.
 
-These four pillars map to core components: Vault (persistence + determinism), lat.md index (token efficiency + determinism), SpecKit (deterministic orchestration), and Caveman (token efficiency).
+**Component Mapping:** Vault (persistence + determinism), lat.md index (token efficiency + determinism), SpecKit (deterministic orchestration), Caveman (token efficiency).
 
 ---
 
-## Architectural Principles: Token Efficiency, Determinism, Persistence, Autonomy
+## Execution Model
 
-## 1. Token Efficiency
+Spekificity is init-first. Install globally via `uv`, then run `spek init` in target project to scaffold `.spek` skills. References to `/spek.*` denote generated agent skills, not shell commands.
+
+**See also:** [workflow.md](workflow.md) (4-stage process), [patterns.md](patterns.md) (reusable patterns)
+
+---
+
+## Principle Details
+
+### 1. Token Efficiency Implementation
 - All source code and wiki documents are pre-indexed using lat.md.
-- Context injection is performed by querying lat.md for only the most relevant nodes (functions, patterns, lessons, decisions, etc.).
-- Caveman skill is used to compress context (lessons, vault, session) for minimal token usage during agent operations.
-- This approach ensures that only the most essential information is loaded into the agent’s context window, optimizing for both speed and cost.
+- Context injection performed by querying lat.md for only the most relevant nodes (functions, patterns, lessons, decisions).
+- Caveman skill compresses context (lessons, vault, session) for minimal token usage during agent operations.
+- Only essential information loaded into context window; optimizes for speed and cost.
 
-## 2. Determinism
-- SpecKit’s workflow (specify, clarify, plan, implement) is the backbone for all feature and skill orchestration.
-- All agent actions are driven by explicit, spec-driven processes, ensuring repeatability and traceability.
-- Skillsets are extended as needed, but always within the deterministic SpecKit orchestration model.
-- This guarantees that outcomes are reproducible and auditable.
+### 2. Determinism Implementation
+- SpecKit’s workflow (specify, clarify, plan, implement) is backbone for all feature and skill orchestration.
+- All agent actions driven by explicit, spec-driven processes; ensures repeatability and traceability.
+- Skillsets extended as needed, but always within deterministic SpecKit orchestration model.
+- Outcomes are reproducible and auditable.
 
-## 3. Persistence
-**Obsidian CLI is required** for automated vault operations (syncs, exports, metadata extractions) that enable context loading and lesson extraction during `/spek.conclude`. Obsidian desktop app is optional for visualization.
+### 3. Persistence Implementation
+**Obsidian CLI Required:** Automated vault operations (syncs, exports, metadata extractions) enable context loading and lesson extraction during `/spek.conclude`. Obsidian desktop app optional for visualization.
 
 - All decisions, patterns, lessons, and architectural context stored in vault (single source of truth)
 - Vault synced to Git for version control and team collaboration
-- Obsidian CLI performs automated vault operations; desktop app is optional for browsing
+- Obsidian CLI performs automated vault operations; desktop app optional for browsing
 
-## 4. Autonomy
-
+### 4. Autonomy Implementation
 - lat.md enables autonomous extraction of context, impact analysis, and knowledge mapping.
-- Agents can operate with minimal manual intervention, leveraging the indexed knowledge base for decision-making and workflow execution.
-- This supports agentic workflows and continuous improvement.
+- Agents operate with minimal manual intervention, leveraging indexed knowledge base for decision-making and workflow execution.
+- Supports agentic workflows and continuous improvement.
 
 ## Implementation direction: Programmatic pipeline
 

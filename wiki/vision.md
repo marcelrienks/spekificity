@@ -1,73 +1,51 @@
-# Spekificity — Vision & Tenets
+# Spekificity: Vision & Core Principles
 
-## Vision Statement
+Quick orientation to Spekificity's goals and philosophy.
 
-Spekificity is a spec-driven agent development framework that ties a persistent knowledge vault, a deterministic spec engine, and a code index into a single workflow. It solves four core problems: token efficiency, deterministic planning, persistent project memory, and agent autonomy.
+---
 
-## Core Problem & Core Solution
+## Vision
 
-- Problem: AI-assisted development often loses context between sessions, wastes tokens re-reading files, and produces work without durable specifications or lessons.
-- Solution: Treat documentation as canonical memory (markdown vault), use a code graph/index for precise context (lat.md), and orchestrate feature work with a spec-first engine (SpecKit) wrapped by Spekificity skills.
+Spekificity is a spec-driven agent development framework that ties persistent knowledge (Obsidian vault), code analysis (lat.md), workflow automation (SpecKit), and skill execution into a cohesive system. It enables rapid, deterministic feature development with minimal token overhead and maximum context reuse.
+
+**Core Problem:** AI-assisted development often loses context between sessions, wastes tokens re-reading files, and produces work without durable specifications or lessons.
+
+**Core Solution:** Treat documentation as canonical memory (markdown vault), use a code graph for precise context (lat.md), and orchestrate feature work with spec-first workflow (SpecKit).
+
+---
 
 ## Four Pillars
 
-1. Token efficiency
-   - Pre-index code and docs; load minimal, relevant context; use compressed output (Caveman) when appropriate.
-2. Determinism
-   - Enforce spec → plan → implement → conclude workflows so outcomes are reproducible and auditable.
-3. Persistence
-   - Store specs, decisions, and lessons in a Git-backed markdown vault so knowledge compounds across sessions.
-4. Autonomy
-   - Equip agents with deterministic tools and indexed context so they can execute work with minimal hand-holding.
+1. **Token Efficiency** — Pre-index code and docs; load minimal, relevant context; compress outputs when needed.
+2. **Determinism** — Enforce spec → plan → implement → conclude workflows; outcomes reproducible and auditable.
+3. **Persistence** — Store specs, decisions, and lessons in Git-backed vault; knowledge compounds across sessions.
+4. **Autonomy** — Equip agents with deterministic tools and indexed context; execute with minimal hand-holding.
 
-## Philosophy & Tenets
+---
 
-- Consolidation, not reinvention: integrate best-in-class tools (SpecKit, lat.md, Obsidian-style vault) rather than rebuilding them.
-- Decorator pattern: Spekificity wraps SpecKit commands to inject context and enrichment, without modifying upstream tools.
-- Modular independence: each component (vault, index, spec engine, compression) can be upgraded independently.
-- Human-in-the-loop safety: agent actions are gated by plan reviews and contradiction flags; human decisions resolve conflicts.
-- Token efficiency by default: graph queries + cached vault context replace repeated file scans; Caveman mode provides optional terse outputs.
+## Philosophy
 
-## How Components Map to the Pillars
+- **Consolidation:** Integrate best-in-class tools (SpecKit, lat.md, Obsidian) rather than rebuilding.
+- **Decorator Pattern:** Spekificity wraps SpecKit without modifying it.
+- **Modularity:** Each component (vault, index, spec engine, compression) upgradeable independently.
+- **Human-in-the-Loop:** Agent actions gated by plan reviews; humans resolve conflicts.
+- **Token Efficiency First:** Graph queries + cached context replace file scans; Caveman mode available for terse outputs.
 
-- Vault (Obsidian-style markdown): Persistence + determinism (stores specs, decisions, lessons).
-- lat.md (code index/graph): Token efficiency + determinism (indexed queries replace file scans; enables impact analysis).
-- SpecKit (speckit): Deterministic workflow orchestration (spec → plan → tasks → implement).
-- Caveman (compression): Token efficiency (terse, accurate outputs when needed).
+---
 
-## Workflow Stages (brief)
+## Getting Started
 
-Per-feature workflow uses 4 stages:
+1. Run `spek init` to scaffold `.spek/`, vault/, and recommended defaults.
+2. Install lat.md and SpecKit per [setup.md](setup.md).
+3. Use `/spek.prepare` → `/spek.plan` → `/spek.implement` → `/spek.conclude` workflow.
 
-- **Prepare** — `/spek.prepare` loads vault context, indexes code state, prepares workspace (includes init/setup for new features)
-- **Plan** — `/spek.plan` generates specs, plans, task breakdown
-- **Implement** — `/spek.implement` executes tasks with lat.md context
-- **Conclude** — `/spek.conclude` archives artifacts and extracts lessons to vault
+---
 
-One-time setup (`spek init`) scaffolds vault and tool wiring before first feature.
+## Next Steps
 
-## Tooling & Implementation Notes
-
-- Canonical indexer: lat.md is the recommended codegraph/index tool for deterministic queries and impact analysis.
-- Persistent vault: a Git-backed Obsidian-style markdown vault (plain files) is the single source of truth. The Obsidian desktop app is optional.
-- Obsidian CLI: required for automated vault operations; automation scripts assume the CLI is available for scripted exports/syncs.
-- Spec engine: SpecKit (speckit.*) is the spec-first framework Spekificity decorates for orchestration.
-- Compression: Caveman mode is available for token-constrained contexts; use `--caveman` or `/caveman` when terse outputs are acceptable.
-
-## Constraints & Out-of-Scope
-
-- Not a build system or CI replacement; integrate with existing CI for builds/tests.
-- Not a real-time collaborative editor — vault is Git-backed and eventual-consistency applies.
-- No prescribed model selection — skills are model-agnostic.
-
-## Getting Started & Next Steps
-
-- Run `spek init` to scaffold `.spek/`, vault/, and recommended defaults.
-- Ensure lat.md and SpecKit are installed per `wiki/setup.md` when you need code indexing + spec workflows.
-- Use `/spek.prepare` → `/spek.plan` → `/spek.implement` → `/spek.conclude` as the minimal workflow.
-
-## References
-
-- `wiki/architecture.md` — technical architecture and component responsibilities
-- `wiki/workflow.md` — full feature lifecycle and skill semantics
-
+- **Architecture & Components:** [architecture.md](architecture.md)
+- **Feature Workflow:** [workflow.md](workflow.md)
+- **Setup & Installation:** [setup.md](setup.md)
+- **Skills & Commands:** [skills.md](skills.md)
+- **Reusable Patterns:** [patterns.md](patterns.md)
+- **Design Decisions:** [decision.md](decision.md)
