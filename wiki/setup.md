@@ -11,8 +11,8 @@ Spekificity requires three essential tools:
 | Tool | Purpose | Install Mode | Required |
 |------|---------|--------------|----------|
 | **SpecKit** | Spec-driven workflow engine | Global | ✅ Required |
-| **Knowledge Vault** | Markdown knowledge store | Local (project) | ✅ Required |
-| **Code Analysis Tool** | Code indexing and graph | Local or Global | ✅ Required |
+| **Obsidian Knowledge Vault** | Markdown/HTML knowledge store | Local (project) | ✅ Required |
+| **lat.md Code Analysis Tool** | Code indexing and graph | Local or Global | ✅ Required |
 
 ---
 
@@ -110,12 +110,11 @@ The Obsidian vault is your persistent memory layer—lessons learned, decisions,
 
 ```
 your-project/
-├── vault/                    ← Created automatically by spek init
+├── vault/                    ← Created automatically by spek init. Persistent memory (Obsidian vault: user, session, repo, lessons)
 │   ├── lessons/              ← written by spek conclude (per-feature lessons)
 │   ├── patterns.md           ← reusable patterns discovered
 │   ├── decision.md           ← architectural decisions and rationale
 │   └── vision.md          ← project vision and guiding principles
-├── vault/                  ← Persistent memory (Obsidian vault: user, session, repo, lessons)
 └── wiki/                     ← Documentation specs and guides
 ```
 
