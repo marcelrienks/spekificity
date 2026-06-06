@@ -61,36 +61,6 @@ Spekificity exposes agent skills and commands for specification-driven developme
 
 ---
 
-### `/spek.plan`
-
-**Purpose:** Automated spec generation, planning, and validation  
-**Usage:** `/spek.plan --mode [specify|plan|validate]`
-
-**Modes:**
-
-#### Mode 1: `specify` (Generate Specs from Feature Proposal)
-- Parse feature description
-- Generate candidate specs following existing format
-- Validate against existing specs (no duplication)
-- Generate Success Criteria from requirements
-- Suggest dependencies + related specs
-
-#### Mode 2: `plan` (Auto-generate Implementation Plan)
-- Parse existing spec
-- Break Success Criteria into tasks
-- Map tasks to code sections (lat.md)
-- Estimate effort + token cost per task
-- Order tasks by dependency
-
-#### Mode 3: `validate` (Verify Spec Completeness)
-- Check for required metadata (Status, Version, Success Criteria)
-- Validate all "Depends On" references exist
-- Check for circular dependencies
-- Verify link validity (cross-references)
-- Test Success Criteria completeness
-
-**Output:** Varies by mode (candidate specs, plan, or validation report)  
-**Spec Reference:** [spek-plan-workflow.md](../specs/spek-plan-workflow.md)
 
 ---
 

@@ -2,91 +2,56 @@
 
 ## Overview
 
-This document catalogs all reusable architectural, workflow, and optimization patterns extracted from many specification files in Spekificity. Each pattern is:
-- **Self-contained** — Solves a specific, recurring problem
-- **Cross-referenced** — Links to specs, related patterns, and use cases
-- **Actionable** — Includes examples, implementation notes, and integration points
-- **Classified** — Grouped by domain (architectural, workflow, error handling, memory, query, compression, integration, validation, graph, state management)
-
-**Purpose:** Enable pattern reuse across future features, document proven solutions, and provide a reference for architecture decisions.
+Reusable patterns extracted from Spekificity specifications. Each pattern solves a recurring problem and links to its authoritative spec.
 
 ---
 
-## Quick Reference Table
+## Quick Reference
 
-| # | Pattern Name | Category | Problem | Primary Spec | Frequency | Adoption Priority |
-|---|---|---|---|---|---|---|
-| 1 | Decorator Wrapper Pattern | Architectural | Extend functionality without modifying internals | [decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md) | HIGH | ✅ ACTIVE |
-| 2 | Three-Layer Memory Model | Architectural | Persist context across sessions | [memory-architecture.md](wiki/specs/memory-architecture.md) | HIGH | ✅ ACTIVE |
-| 3 | Three-Layer Query Rule | Query | Optimize token usage via hierarchical queries | [3layer-query-rule.md](wiki/specs/3layer-query-rule.md) | HIGH | 🟢 S3 |
-| 4 | Enrichment Layer Pattern | Architectural | Inject context into SpecKit commands | [enrichment-layer.md](wiki/specs/enrichment-layer.md) | HIGH | ✅ ACTIVE |
-| 5 | Context Injection Pattern | Integration | Load & compose context for tool invocation | [context-layer.md](wiki/specs/context-layer.md) | HIGH | ✅ ACTIVE |
-| 6 | Feature Lifecycle Pattern | Workflow | End-to-end feature orchestration | [cli-orchestration.md](wiki/specs/cli-orchestration.md) | HIGH | ✅ ACTIVE |
-| 7 | Error Categorization Pattern | Error Handling | Classify errors for targeted recovery | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH | ✅ ACTIVE |
-| 8 | Zettelkasten Convention Pattern | Memory | Atomic, interconnected notes with frontmatter | [zettelkasten-conventions.md](wiki/specs/zettelkasten-conventions.md) | MEDIUM | 🟢 S1 |
-| 9 | Caveman Compression Mode | Compression | Reduce token usage substantially | [caveman-integration.md](wiki/specs/caveman-integration.md) | HIGH | ✅ ACTIVE |
-| 10 | Auto-Tagging + Auto-Wikilink Pattern | Memory | Automate knowledge interconnection | [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md) | MEDIUM | 🟢 S2 |
-| 11 | Skill Chaining Pattern | Integration | Sequential execution with dependencies | [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md) | HIGH | ✅ ACTIVE |
-| 12 | Post-Processing Pattern | Workflow | Artifact collection → compression → archive | [101-conclude-processing.md](wiki/specs/101-conclude-processing.md) | HIGH | ✅ ACTIVE |
-| 13 | Hybrid Graph Pattern | Graph | Unify code + doc + skill nodes | [code-and-document-maps.md](wiki/specs/code-and-document-maps.md) | MEDIUM | 📅 FUTURE |
-| 14 | Graph Merge Integration Pattern | Graph | Combine heterogeneous node types | [graph-merge-integration.md](wiki/specs/graph-merge-integration.md) | MEDIUM | 📅 FUTURE |
-| 15 | Incremental Sync Pattern | Graph | Cache + file watching for efficient updates | [graph-refresh-strategy.md](wiki/specs/graph-refresh-strategy.md) | MEDIUM | 🟢 S4 |
-| 16 | Feature State Tracking Pattern | State Management | Track feature lifecycle phases | [feature-state-tracking.md](wiki/specs/feature-state-tracking.md) | HIGH | ✅ ACTIVE |
-| 17 | Session-to-Vault Archival Pattern | Memory | Convert ephemeral context to permanent | [session-logs-vault-artifacts.md](wiki/specs/session-logs-vault-artifacts.md) | MEDIUM | 🟢 S5 |
-| 18 | Anti-Sycophancy Validation Pattern | Validation | Flag AI drift & contradictions | [anti-sycophancy.md](wiki/specs/anti-sycophancy.md) | LOW | 📅 FUTURE |
-| 19 | Blind Code Review Pattern | Validation | Anonymized independent review | [blind-code-review.md](wiki/specs/blind-code-review.md) | LOW | 📅 FUTURE |
-| 20 | Backprop Reflex Pattern | Validation | Test failures → vault updates → better specs | [backprop-reflex.md](wiki/specs/backprop-reflex.md) | MEDIUM | 🟡 C1 |
-| 21 | RARV Reflection Pattern | Validation | Reason-Act-Reflect-Verify alignment cycle | [rarv-reflection.md](wiki/specs/rarv-reflection.md) | LOW | 🟡 C2 |
-| 22 | Token Budget Tracking Pattern | Compression | Allocate & monitor per-phase token costs | [token-budget.md](wiki/specs/token-budget.md) | MEDIUM | 📅 FUTURE |
-| 23 | Fallback Hierarchy Pattern | Error Handling | Graceful degradation via layered fallbacks | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH | ✅ ACTIVE |
-| 24 | Sequential Error Recovery Pattern | Error Handling | Pre-core-post with error classification | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | HIGH | ✅ ACTIVE |
+| # | Pattern | Category | Problem | Spec | Adoption |
+|---|---------|----------|---------|------|----------|
+| 1 | Decorator Wrapper | Architectural | Extend without modifying internals | [decorator-wrapper-pattern.md](wiki/specs/decorator-wrapper-pattern.md) | ✅ ACTIVE |
+| 2 | Three-Layer Memory | Architectural | Persist context across sessions | [memory-architecture.md](wiki/specs/memory-architecture.md) | ✅ ACTIVE |
+| 3 | Three-Layer Query | Query | Optimize token usage hierarchically | [3layer-query-rule.md](wiki/specs/3layer-query-rule.md) | 🟢 S3 |
+| 4 | Enrichment Layer | Architectural | Inject context into SpecKit | [enrichment-layer.md](wiki/specs/enrichment-layer.md) | ✅ ACTIVE |
+| 5 | Context Injection | Integration | Load & compose context | [context-layer.md](wiki/specs/context-layer.md) | ✅ ACTIVE |
+| 6 | Feature Lifecycle | Workflow | End-to-end orchestration | [cli-orchestration.md](wiki/specs/cli-orchestration.md) | ✅ ACTIVE |
+| 7 | Error Categorization | Error Handling | Classify errors for recovery | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | ✅ ACTIVE |
+| 8 | Zettelkasten | Memory | Atomic notes + frontmatter | [zettelkasten-conventions.md](wiki/specs/zettelkasten-conventions.md) | 🟢 S1 |
+| 9 | Caveman Compression | Compression | Reduce tokens substantially | [caveman-integration.md](wiki/specs/caveman-integration.md) | ✅ ACTIVE |
+| 10 | Auto-Tagging | Memory | Automate knowledge links | [auto-tagging-wikilinks.md](wiki/specs/auto-tagging-wikilinks.md) | 🟢 S2 |
+| 11 | Skill Chaining | Integration | Sequential execution | [spek-automate-workflow.md](wiki/specs/spek-automate-workflow.md) | ✅ ACTIVE |
+| 12 | Post-Processing | Workflow | Artifact → compress → archive | [101-conclude-processing.md](wiki/specs/101-conclude-processing.md) | ✅ ACTIVE |
+| 13 | Hybrid Graph | Graph | Unify code + doc nodes | [code-and-document-maps.md](wiki/specs/code-and-document-maps.md) | 📅 FUTURE |
+| 14 | Graph Merge | Graph | Combine node types | [graph-merge-integration.md](wiki/specs/graph-merge-integration.md) | 📅 FUTURE |
+| 15 | Incremental Sync | Graph | Cache + file watch | [graph-refresh-strategy.md](wiki/specs/graph-refresh-strategy.md) | 🟢 S4 |
+| 16 | Feature State | State Mgmt | Track lifecycle phases | [feature-state-tracking.md](wiki/specs/feature-state-tracking.md) | ✅ ACTIVE |
+| 17 | Session-to-Vault | Memory | Ephemeral → permanent | [session-logs-vault-artifacts.md](wiki/specs/session-logs-vault-artifacts.md) | 🟢 S5 |
+| 18 | Anti-Sycophancy | Validation | Flag AI drift | [anti-sycophancy.md](wiki/specs/anti-sycophancy.md) | 📅 FUTURE |
+| 19 | Blind Review | Validation | Anon. review | [blind-code-review.md](wiki/specs/blind-code-review.md) | 📅 FUTURE |
+| 20 | Backprop Reflex | Validation | Test failures → learning | [backprop-reflex.md](wiki/specs/backprop-reflex.md) | 🟡 C1 |
+| 21 | RARV Reflection | Validation | Alignment cycle | [rarv-reflection.md](wiki/specs/rarv-reflection.md) | 🟡 C2 |
+| 22 | Token Budget | Compression | Monitor costs | [token-budget.md](wiki/specs/token-budget.md) | 📅 FUTURE |
+| 23 | Fallback Hierarchy | Error Handling | Graceful degradation | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | ✅ ACTIVE |
+| 24 | Sequential Recovery | Error Handling | Pre-core-post recovery | [error-handling-and-recovery.md](wiki/specs/error-handling-and-recovery.md) | ✅ ACTIVE |
 
-**Adoption Legend:**
-- ✅ ACTIVE: Currently implemented
-- 🟢 S1–S5: SHOULD adopt (high priority, production-validated)
-- 🟡 C1–C2: COULD adopt (medium priority, for future phases)
-- 📅 FUTURE: Research/experimental, defer for now
+**Legend:** ✅ ACTIVE = Implemented | 🟢 S1–S5 = Should adopt soon | 🟡 C1–C2 = Consider later | 📅 FUTURE = Research phase
 
 ---
 
-## Adoption Guidance (From Research)
+## Adoption Priority
 
-### High Priority (`S` tier) — Should Adopt Soon
-
-**S1: Zettelkasten Conventions** (Atomic vault notes with YAML frontmatter)  
-Enable graph navigation, make lessons discoverable, zero conflicts with current design. Dependencies: None.
-
-**S2: Auto-Tagging + Auto-Wikilink** (Keyword extraction → vault mapping)  
-Create natural interconnection, enable discovery, validate lessons against patterns. Dependencies: S1 (Zettelkasten).
-
-**S3: 3-Layer Query Rule** (Graph → Vault → Code priority)  
-Reduce token waste, already planned. Dependencies: None.
-
-**S4: lat.md File Watcher (optional)** (Auto-sync on file changes)  
-Keep index fresh, prevent stale queries. `lat.md` supports on-demand refresh and an optional file-watcher for incremental updates. Dependencies: lat.md setup spec.
-
-**S5: Session Logs as Vault Artifacts** (Archive session memory)  
-Provide audit trail, enable cross-feature discovery. Dependencies: S1, S2 (auto-linking).
-
-### Medium Priority (`C` tier) — Consider for Future Phases
-
-**C1: Backprop Reflex** (Test failures → vault updates)  
-Reduce repeat mistakes, depends on automated testing infrastructure.
-
-**C2: RARV Reflection** (Reason-Act-Reflect-Verify cycles)  
-Continuous alignment, requires orchestration loop-back.
-
-For details, see [research.md](research.md).
+**HIGH (implement now):** Patterns 1-7, 9, 11-12, 16, 23-24  
+**MEDIUM (target S2):** Patterns 8, 10, 15, 17, 20-21  
+**FUTURE:** Patterns 13-14, 18-19, 22
 
 ---
 
-## Pattern Catalog (Detailed)
+## Full Reference
 
-### CATEGORY 1: ARCHITECTURAL PATTERNS
+### Architectural Patterns
 
----
-
-## Pattern 1: Decorator Wrapper Pattern
+#### Pattern 1: Decorator Wrapper Pattern
 
 **Category:** Architectural  
 **Solves:** Extend functionality without modifying internals  
@@ -1155,69 +1120,7 @@ completion: progress-indicator
 
 ---
 
-## Pattern Evolution During Phases 1-2
-
-### Phase 0 → Phase 1
-
-**Patterns Introduced in Phase 1 (Agent Skills):**
-- Skill Chaining Pattern (no existing workflow orchestration)
-- Context Injection Pattern (context loading layer)
-- Feature State Tracking Pattern (progress visibility)
-- Feature Lifecycle Pattern (multi-phase orchestration)
-- Post-Processing Pattern (artifact archival)
-- Code Graph Query Pattern (pre-indexed queries)
-- Hybrid Graph Pattern (code+doc unification)
-
-**Patterns Evolved in Phase 1:**
-- Decorator Wrapper Pattern: Enhanced with context injection
-- Error Categorization Pattern: Refined with category definitions
-
-### Phase 1 → Phase 2
-
-**Patterns Introduced in Phase 2 (Validation & Optimization):**
-- Anti-Sycophancy Validation Pattern (catch AI drift)
-- Blind Code Review Pattern (independent review)
-- RARV Reflection Pattern (alignment verification)
-- Backprop Reflex Pattern (test failures → learning)
-- Token Budget Tracking Pattern (cost transparency)
-- Auto-Tagging + Auto-Wikilink Pattern (automation)
-
-**Patterns Evolved in Phase 2:**
-- Session-to-Vault Archival Pattern: Formalized archival format
-- Caveman Compression Mode: Tuned compression levels (lite/full/ultra)
-
-### Summary: Pattern Adoption Timeline
-
-| Pattern | Phase 0 | Phase 1 | Phase 2 | Status |
-|---------|---------|---------|---------|--------|
-| Decorator Wrapper | ✓ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Three-Layer Memory | ✓ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Three-Layer Query | ✓ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Enrichment Layer | ✓ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Context Injection | ~ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Feature Lifecycle | ~ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Error Categorization | ✓ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Zettelkasten | ✓ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Caveman Compression | ~ SPEC | ✓ IMPL | ✓ EVOLVED | ACTIVE |
-| Auto-Tagging | ~ SPEC | ~ IMPL | ✓ IMPL | ACTIVE (Phase 2+) |
-| Skill Chaining | - | ✓ SPEC | ✓ IMPL | ACTIVE |
-| Post-Processing | ~ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Hybrid Graph | ~ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Graph Merge | ~ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Incremental Sync | ~ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Feature State Tracking | ~ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Session-to-Vault | ~ SPEC | ~ IMPL | ✓ IMPL | ACTIVE (Phase 2+) |
-| Anti-Sycophancy | - | - | ✓ SPEC | ACTIVE (Phase 2+) |
-| Blind Review | - | - | ✓ SPEC | ACTIVE (Phase 2+) |
-| Backprop Reflex | - | - | ✓ SPEC | ACTIVE (Phase 2+) |
-| RARV Reflection | - | - | ✓ SPEC | ACTIVE (Phase 2+) |
-| Token Budget | - | - | ✓ SPEC | ACTIVE (Phase 2+) |
-| Fallback Hierarchy | ✓ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-| Sequential Error Recovery | ✓ SPEC | ✓ IMPL | ✓ ACTIVE | ACTIVE |
-
----
-
-## Pattern-Spec Mapping (Cross-Reference Validation)
+## Pattern-Spec Mapping
 
 | Pattern | Primary Spec | Supporting Specs | Use Phase | Frequency |
 |---------|---|---|---|---|
@@ -1319,47 +1222,15 @@ completion: progress-indicator
 
 ---
 
-## Implementation Checklist (per Pattern)
+## How to Use
 
-Each pattern follows this verification checklist:
-
-- ✅ **Spec Written:** Full specification exists and is linked
-- ✅ **Concept Clear:** What problem it solves is explicit
-- ✅ **Solution Documented:** How it works is described
-- ✅ **When/When-Not:** Use cases clearly defined
-- ✅ **Example Code:** Code snippet or integration point shown
-- ✅ **Related Patterns:** Cross-links to other patterns
-- ✅ **Primary Spec Identified:** Single authoritative source
-- ✅ **Supporting Specs Identified:** Related specs listed
-- ✅ **Phase Introduced:** Phase 0/1/2 noted
-- ✅ **Status:** ACTIVE/DEPRECATED/PROPOSED noted
-- ✅ **Frequency:** HIGH/MEDIUM/LOW adoption rate noted
+**Discovery:** See "Pattern Index by Use Case" below. Use CTRL+F for problem names.  
+**Implementation:** Find pattern → read spec link → check related patterns → review examples.  
+**Extension:** Identify gap → check if pattern exists → add to spec catalog and this index.
 
 ---
 
-## How to Use This Document
-
-### For Pattern Discovery
-1. **Search by use case:** See "Pattern Index by Use Case" section
-2. **Search by problem:** Use CTRL+F to find pattern names/problems
-3. **Follow cross-references:** Each pattern links to related patterns
-
-### For Implementation
-1. **Find pattern:** Look up pattern by name or use case
-2. **Read spec:** Click primary spec link
-3. **Check related patterns:** Ensure dependencies are understood
-4. **Review code examples:** Copy and adapt
-5. **Check integration points:** Understand where pattern fits in workflow
-
-### For Extension
-1. **Identify gap:** What recurring problem exists without a pattern?
-2. **Check if pattern exists:** Search document + related specs
-3. **If new pattern needed:** Document in wiki/specs/patterns/<PATTERN-NAME>-quick-ref.md (see next section)
-4. **Update this file:** Add to Pattern Catalog + Index
-
----
-
-## Quick Reference: Top 10 Most-Used Patterns
+## Top 10 Most-Used Patterns
 
 1. **Decorator Wrapper Pattern** — Used in: `/spek.plan` (all phases), `/spek.implement`
 2. **Three-Layer Memory Model** — Used in: All skills (read/write context)

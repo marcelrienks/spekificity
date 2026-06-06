@@ -78,7 +78,7 @@ Standard flags: `--verbose`, `--format [text|json|mermaid]`, `--dry-run`, `--qui
 - **Programmatic (package/pipeline):** Deterministic outputs, typed contracts, content-addressable IDs, CI-friendly, token-efficient at scale. Use when corpus large, reproducibility and audit trails required, or pipeline feeds downstream automation.
 
 
-**For full command reference, see:** [skill-index.md](skill-index.md)
+**For full command reference, see:** [skills.md](skills.md)
 
 ## Command Naming Decisions
 

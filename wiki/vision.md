@@ -66,5 +66,4 @@ Spekificity is a spec-driven agent development framework that ties a persistent 
 
 - `wiki/architecture.md` — technical architecture and component responsibilities
 - `wiki/workflow.md` — full feature lifecycle and skill semantics
-- `wiki/llm-wiki.md` — canonical wiki ingestion and frontmatter rules
 
