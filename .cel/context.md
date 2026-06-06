@@ -10,7 +10,7 @@ Architecture & Tech Stack (concise)
 
 - Code index: lat.md (canonical). MCP tools: lat_symbols, lat_references, lat_callers, lat_impact, lat_query. Incremental sync, optional file-watcher + git hook for freshness.
 - Spec engine: SpecKit (spec → plan → tasks → implement). Spekificity orchestrates SpecKit via /spek.plan and /spek.implement wrappers.
-- Persistent vault: Obsidian-style markdown vault (wiki/vault/). Zettelkasten conventions, YAML frontmatter, git-backed. Obsidian app optional; CLI used for scripted exports where automation requires it.
+- Persistent vault: Obsidian-style markdown vault (vault/). Zettelkasten conventions, YAML frontmatter, git-backed. Obsidian app optional; CLI used for scripted exports where automation requires it.
 - Compression: Caveman modes (lite|full|ultra) for token-budgeted outputs.
 - Retrieval default: BM25 lexical for wiki-scale; hybrid/vector optional for large stable KBs or UX needs.
 - Programmatic pipeline (chosen canonical direction): deterministic package/pipeline outputs, typed contracts, content-addressable IDs, markdown-hero structural enforcement, CI-friendly ingestion.
