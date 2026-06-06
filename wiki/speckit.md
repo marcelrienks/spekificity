@@ -1,3 +1,9 @@
+---
+title: speckit
+type: guide
+tags: []
+---
+
 # The Full SpecKit Workflow (B.1 Resolution)
 
 ## Canonical SpecKit Flow

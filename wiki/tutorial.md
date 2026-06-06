@@ -1,3 +1,9 @@
+---
+title: tutorial
+type: guide
+tags: []
+---
+
 # Spekificity Workflow Goal
 
 > **Execution model note:** This workflow assumes Spekificity was installed globally and bootstrapped in-project with `spek init`. Any `/spek.*` references below are generated skills in `.spek/` and are agent-facing execution steps.
@@ -348,9 +354,9 @@ READY: Workspace prepared for feature development
 
 **What happened:**
 - Git verified clean (no uncommitted work)
-- Vault pulled (latest specs/decisions/lessons from wiki/vault/)
+- Vault pulled (latest specs/decisions/lessons from vault/)
 ├─ lat.md queried for affected files
-- Session memory loaded (decisions, patterns from wiki/vault/)
+- Session memory loaded (decisions, patterns from vault/)
 - Feature state file created
 
 #### Specify Feature
@@ -388,7 +394,7 @@ SPEC GENERATION
 │     - Tokens: not specified
 │     - Time: not specified
 │
-└─ Output: wiki/vault/specs/150-user-auth-api.md (CREATED)
+└─ Output: vault/specs/150-user-auth-api.md (CREATED)
    └─ Ready for planning phase
 ```
 
@@ -536,11 +542,11 @@ Step 3: Generate Lessons
 │  - Why: JWT chosen over session for statelessness (scalability)
 │  - Why: Token expiry set to 24h (balance security + UX)
 │
-└─ Output: wiki/vault/lessons/2026-05-20-user-auth-api-implementation.md (CREATED)
+└─ Output: vault/lessons/2026-05-20-user-auth-api-implementation.md (CREATED)
 
 Step 4-5: Update Vault
-├─ wiki/vault/decision.md (append new architectural decisions)
-├─ wiki/vault/patterns.md (log pattern usage + frequency)
+├─ vault/decision.md (append new architectural decisions)
+├─ vault/patterns.md (log pattern usage + frequency)
 └─ Feature marked as COMPLETED
 
 Step 6-7: Sync Repo Memory
@@ -554,7 +560,7 @@ Step 8: Refresh lat.md index
 └─ Graph now includes login handler, tests
 
 Step 9: Archive Feature State
-├─ Move vault/session/current-feature.md to wiki/vault/archive/
+├─ Move vault/session/current-feature.md to vault/archive/
 ├─ Clean up session temporary files
 └─ Ready for next feature
 

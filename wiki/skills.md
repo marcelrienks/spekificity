@@ -1,3 +1,9 @@
+---
+title: skills
+type: guide
+tags: []
+---
+
 # Spekificity Skills Index: Command Reference
 
 ## Overview

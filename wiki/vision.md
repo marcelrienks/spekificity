@@ -1,3 +1,9 @@
+---
+title: vision
+type: guide
+tags: []
+---
+
 # Spekificity — Vision & Tenets
 
 ## Vision Statement
@@ -46,7 +52,7 @@ Spekificity is a spec-driven agent development framework that ties a persistent 
 
 - Canonical indexer: lat.md is the recommended codegraph/index tool for deterministic queries and impact analysis.
 - Persistent vault: a Git-backed Obsidian-style markdown vault (plain files) is the single source of truth. The Obsidian desktop app is optional.
-- Obsidian CLI: required for automated vault operations in some workflows; automation scripts assume the CLI is available for scripted exports/syncs.
+- Obsidian CLI: required for automated vault operations; automation scripts assume the CLI is available for scripted exports/syncs.
 - Spec engine: SpecKit (speckit.*) is the spec-first framework Spekificity decorates for orchestration.
 - Compression: Caveman mode is available for token-constrained contexts; use `--caveman` or `/caveman` when terse outputs are acceptable.
 

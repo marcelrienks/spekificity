@@ -1,3 +1,9 @@
+---
+title: setup
+type: guide
+tags: []
+---
+
 # Setup Guide: Prerequisites and Tool Installation
 
 This guide walks through installing and configuring the three core tools that Spekificity integrates.
@@ -208,7 +214,7 @@ After installing all tools:
 
 2. **Verify Vault:**
    ```bash
-   ls wiki/vault/context/
+   ls vault/context/
    # Expected: decisions.md, patterns.md
    ```
 
@@ -217,7 +223,7 @@ After installing all tools:
 
 4. **Commit to Git:**
    ```bash
-   git add wiki/vault/ .specify/
+   git add vault/ .specify/
    git commit -m "Initialize Spekificity tools and vault"
    ```
 
@@ -250,7 +256,7 @@ tools:
   
   vault:
     enabled: true
-    location: wiki/vault/
+    location: vault/
     mode: local
 
 context_loading:

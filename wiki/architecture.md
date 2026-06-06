@@ -1,3 +1,9 @@
+---
+title: architecture
+type: guide
+tags: []
+---
+
 # Architectural Principles: Token Efficiency, Determinism, Persistence, Autonomy
 
 ## 1. Token Efficiency
@@ -13,7 +19,7 @@
 - This guarantees that outcomes are reproducible and auditable.
 
 ## 3. Persistence
-The `obsidian` CLI is the required runtime interface for automated vault and persistent memory operations. Spekificity uses the Obsidian CLI to perform scripted vault syncs, exports, and metadata extractions that enable automated context loading and lesson extraction; see `setup.sh` for verification and install instructions. The Obsidian desktop app is optional and may be used for visualization or interactive workflows; where relevant, some export scenarios may require a running app depending on CLI capabilities and plugins.
+The `obsidian` CLI is the required runtime interface for automated vault and persistent memory operations. Spekificity uses the Obsidian CLI to perform scripted vault syncs, exports, and metadata extractions that enable automated context loading and lesson extraction; see `setup.sh` for verification and install instructions. The Obsidian desktop app is optional and may be used for visualization or interactive workflows; it is not a substitute for the required CLI.
 - All session states, decisions, patterns, lessons, and architectural context (from lat.md source and wiki indexing) are managed and stored in the Obsidian vault.
 - The vault serves as the single source of truth for all project knowledge, ensuring long-term durability and accessibility.
 
@@ -86,9 +92,9 @@ Agentic instruction files (AGENTS.md) remain supported as a lightweight experime
 
 > **Execution model note:** Spekificity is init-first. Install globally via `uv`, then run `spek init` in a target project to scaffold `.spek` skills/functions. References in this document to `/spek.*` denote generated skills executed by an agent runtime, not direct shell subcommands.
 
-**See also:** [vision.md](vision.md) (philosophy) → [vision.md](vision.md) (principles) → [workflow.md](workflow.md) (process)
+**See also:** [vision.md](vision.md) (philosophy & principles) → [workflow.md](workflow.md) (process)
 
-**Note:** This document covers technical architecture only. For philosophical foundations and design principles, see [vision.md](vision.md) and [vision.md](vision.md).
+**Note:** This document covers technical architecture only. For philosophical foundations and design principles, see [vision.md](vision.md).
 
 ---
 
