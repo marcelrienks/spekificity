@@ -1,19 +1,19 @@
-# Feature Development Workflow
+# Feature Development Workflow Specification
 
 ## Overview
 
-Spekificity feature development follows a deterministic, 4-stage workflow:
+Upon completion, Spekificity will implement a deterministic, 4-stage feature development workflow:
 
 - **Prepare** – Pre-flight checks and workspace setup
 - **Plan** – Write feature spec, generate implementation plan & tasks (2 sub-stages: Specification, Task Breakdown)
 - **Implement** – Execute tasks with full context
 - **Conclude** – Archive outcomes, extract lessons, sync vault, update graph
 
-Optional enhancements (context loading, dependency analysis, retrospectives) can be applied at any stage. Each stage produces durable artifacts stored in the vault.
+**Design Intent:** Optional enhancements (context loading, dependency analysis, retrospectives) will be available at any stage. Each stage will produce durable artifacts stored in the vault.
 
 ---
 
-## Preparation
+## Preparation (Stage Specification)
 
 ### Command
 ```
@@ -21,12 +21,12 @@ Optional enhancements (context loading, dependency analysis, retrospectives) can
 ```
 
 ### Purpose
-Pre-flight checks before feature development begins. Ensures workspace is ready, vault is current, lat.md index is fresh, and git state is clean.
+Perform pre-flight checks before feature development begins. Will ensure workspace is ready, vault is current, lat.md index is fresh, and git state is clean.
 
-### Sub-steps
+### Designed Sub-steps
 
-| Step | Action | Validates | Output |
-|------|--------|-----------|--------|
+| Step | Intended Action | Will Validate | Output |
+|------|-----------------|---------------|--------|
 | Git Status | Check for uncommitted changes | No stale work left | Clean working tree |
 | Vault Fresh | Pull latest from Obsidian git sync | No vault conflicts | Current specs/decisions |
 | lat.md Sync | Refresh lat.md index from latest code (incremental update) | Code index reflects current state | Fresh `lat_index.db` |

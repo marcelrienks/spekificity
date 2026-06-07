@@ -1,44 +1,44 @@
-# Setup Guide: Installation & Configuration
+# Setup Specification: Installation & Configuration
 
-Complete walkthrough for installing and configuring Spekificity.
+This document specifies the intended setup and configuration process for Spekificity upon completion.
 
 ---
 
-## Overview: Responsibility Division
+## Setup Model: Two-Phase Design
 
-Spekificity setup is split into two phases:
+Spekificity installation is designed as two phases:
 
-| Phase | Command | Responsibility | Scope |
-|-------|---------|-----------------|-------|
-| **Global Install** | `uv tool install spekificity ...` | Spekificity package resolves + installs all dependencies | Python environment, global PATH |
+| Phase | Command | Design Responsibility | Scope |
+|-------|---------|----------------------|-------|
+| **Global Install** | `uv tool install spekificity ...` | Spekificity package will resolve + install all dependencies | Python environment, global PATH |
 | **Per-Project Init** | `spek init` | Initialize project-local structures | Single project directory |
 
-**Spekificity Global Install Handles:**
-- ✅ Installs SpecKit globally (if not present)
-- ✅ Installs lat.md globally (if not present)
-- ✅ Verifies Python 3.11+, git, uv in PATH
-- ✅ Warns if Obsidian CLI missing (needed for `/spek.conclude`, but non-blocking)
-- ✅ All other tool dependencies resolved automatically
+**Global Install Will Handle:**
+- ✅ Install SpecKit globally (if missing)
+- ✅ Install lat.md globally (if missing)
+- ✅ Verify Python 3.11+, git, uv in PATH
+- ✅ Warn if Obsidian CLI missing (needed for `/spek.conclude`, non-blocking)
+- ✅ Resolve all other tool dependencies automatically
 
-**spek init Handles:**
+**spek init Will Handle:**
 - ✅ Per-project initialization (one-time per project)
-- ✅ Runs `specify init .` for SpecKit project setup
-- ✅ Creates vault structure
-- ✅ Creates .spek/ with generated skills
-- ✅ Initializes lat.md per-project index
-- ✅ Creates specs/ directory
+- ✅ Run `specify init .` for SpecKit project setup
+- ✅ Create vault structure
+- ✅ Create .spek/ with generated skills
+- ✅ Initialize lat.md per-project index
+- ✅ Create specs/ directory
 
 ---
 
-## Prerequisites (Minimal)
+## Prerequisites (Specification)
 
-**Only three things must exist before running Spekificity install:**
+**Minimum prerequisites required before Spekificity install:**
 
 - **Python 3.11+** — Check: `python3 --version`. If missing, install from [python.org](https://python.org) or system package manager.
 - **Git** — Check: `git --version`. If missing, install from [git-scm.com](https://git-scm.com) or system package manager.
 - **`uv` package manager** — Check: `uv --version`. If missing: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
-That's it. Everything else (SpecKit, lat.md, Obsidian CLI checks) resolved by Spekificity installer.
+**Design Principle:** The Spekificity installer will resolve and install everything else (SpecKit, lat.md, Obsidian CLI checks). User will not manually install these tools.
 
 ---
 

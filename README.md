@@ -1,21 +1,21 @@
 # Spekificity
 
-> **Status:** Init-first wrapper model. Spekificity is intended to be installed globally via `uv`, then initialized per-project with `spek init` which scaffolds `.spek` skills/functions and configures dependent tools.
+> **Status:** Specification-stage. This documentation describes the intended design and expected behavior of Spekificity upon completion. No aspects have been physically implemented yet; all sections are design specifications for future implementation.
 >
-> **Documentation Structure:** `/wiki/` contains philosophy, architecture, and workflow guidance. `/specs/` contains detailed specifications and implementation contracts.
+> **Documentation Structure:** `/wiki/` contains design philosophy, architecture specification, and workflow guidance. `/specs/` contains detailed specifications and implementation contracts.
 
-## What is Spekificity?
+## Spekificity Specification
 
-Spekificity is a **specification-driven framework for rapid AI agent development**. It solves four critical problems:
+Spekificity **will be** a **specification-driven framework for rapid AI agent development**. Upon completion, it will address four critical problems:
 
-| Problem | Solution |
-|---------|----------|
+| Problem | Designed Solution |
+|---------|-------------------|
 | **Token bloat** | Indexed code analysis (lat.md) + scoped context loading |
 | **Shallow planning** | Spec-first workflow with enriched validation layers |
 | **Context loss** | Persistent knowledge vault (Git-backed Obsidian vault/) |
 | **Low autonomy** | Reusable agent skills with deterministic sequencing |
 
-**Value Proposition:** Build features **faster** with deterministic specs, persistent memory, and zero context loss between sessions.
+**Intended Value Proposition:** Enable faster feature building through deterministic specs, persistent memory, and zero context loss between sessions.
 
 ---
 
@@ -72,42 +72,48 @@ spek init
 
 ---
 
-## Key Features
+## Intended Features
 
-✅ **Spec-Driven Workflow** — All work starts with a structured specification  
-✅ **Persistent Memory** — Decisions, patterns, lessons stored in Git-backed vault  
-✅ **Token Efficiency** — Pre-indexed code analysis (lat.md, canonical) + Caveman compression  
-✅ **Deterministic Sequencing** — 4-stage workflow (Prepare → Specify & Plan → Implement → Close)  
-✅ **Composable Skills** — `/spek.*` commands can be chained or run independently  
+**Upon completion, Spekificity will provide:**
+
+- **Spec-Driven Workflow** — All work will start with a structured specification  
+- **Persistent Memory** — Decisions, patterns, lessons stored in Git-backed vault  
+- **Token Efficiency** — Pre-indexed code analysis (lat.md, canonical) + Caveman compression  
+- **Deterministic Sequencing** — 4-stage workflow (Prepare → Specify & Plan → Implement → Conclude)  
+- **Composable Skills** — `/spek.*` commands designed to be chainable or independently runnable  
 
 ---
 
-## Platform Model
+## Design Pillars
 
-Spekificity is built around four pillars:
+Spekificity's design is built around four pillars:
 
-| Pillar | Goal | Mechanism |
+| Pillar | Design Goal | Intended Mechanism |
 |---|---|---|
 | **Token efficiency** | Spend tokens on reasoning, not file rediscovery | indexed graph queries, scoped context loading, Caveman compression |
-| **Determinism** | Keep feature work on a repeatable track | SpecKit workflow: specify → plan → tasks → implement |
+| **Determinism** | Keep feature work on a repeatable, auditable track | SpecKit workflow: specify → plan → tasks → implement |
 | **Persistence** | Preserve architectural context across sessions | knowledge vault (markdown store for decisions, patterns, lessons) |
 | **Autonomy** | Reduce developer hand-holding | reusable project memory + graph-grounded context injection |
 
 ---
 
 
-## Target Tool Stack
+## Integrated Tool Stack (Specification)
 
-- **SpecKit / Specify** — Spec-driven workflow engine
-- **lat.md** — Indexing and doc-code linkage (preferred)
-- **Obsidian Vault (with Obsidian CLI)** — Required knowledge store and runtime interface for specs, decisions, patterns, and lessons. The `obsidian` CLI must be available in PATH for automation (vault syncs, metadata exports, graph generation). Desktop app is optional for visualization and interactive workflows.
-- **Caveman Mode** — Response compression for token control
+Spekificity will integrate (not replace) these tools:
 
-Spekificity defines how these tools work together—it doesn't replace them. **The toolset described (SpecKit, lat.md, Obsidian + Obsidian CLI, Caveman) is required for the intended automation and behavior described in this documentation.**
+- **SpecKit / Specify** — Spec-driven workflow engine (upstream tool)
+- **lat.md** — Code indexing and analysis (upstream tool, canonical choice)
+- **Obsidian Vault + Obsidian CLI** — Knowledge store for specs, decisions, patterns, lessons. Obsidian CLI required for automation (vault syncs, exports, graph generation). Desktop app optional for visualization.
+- **Caveman Mode** — Compression for token budget control
+
+**Design Intent:** Spekificity will define HOW these tools integrate and work together via its decorator pattern and enrichment layers. It will not fork or replace them; it will extend their capabilities through composition.
 
 ---
 
-## Core Workflow (4 Main Stages)
+## Intended Workflow (4-Stage Design)
+
+Upon completion, Spekificity will implement this workflow:
 
 ```
 STAGE 1: PREPARE
@@ -315,15 +321,15 @@ Practical reading order:
 7. relevant files in `wiki/specs/` for deep dives
 
 
-## Working Assumptions
+## Design Assumptions (Specification Foundation)
 
-The docs in this repository consistently assume:
+This specification consistently assumes these design principles and constraints:
 
-- Workflow uses 4 main stages: Prepare → Plan (2 sub-stages: Specification, Task Breakdown) → Implement → Conclude
-- Enriched command surface uses `/spek.*` prefix
-- Spekificity wraps SpecKit (decorator pattern) rather than forking it
-- Durable knowledge lives in markdown vault (`vault/`), version-controlled via Git
-- **Obsidian CLI required for automation:** Vault syncs, metadata exports, graph generation, and lesson extraction depend on `obsidian` CLI in PATH. Desktop app is optional for visualization.
-- Code intelligence via indexed graph (lat.md MCP tools) rather than file scans
-- Post-feature lessons (captured in `/spek.conclude`) are part of the system, not optional
+- **Workflow:** 4 main stages (Prepare → Plan [Specification + Task Breakdown] → Implement → Conclude)
+- **Command Surface:** Enriched `/spek.*` prefix for all Spekificity skills
+- **Integration Pattern:** Spekificity wraps SpecKit via decorator pattern (no fork)
+- **Persistence:** Durable knowledge in markdown vault (`vault/`), Git-version-controlled
+- **CLI Requirement:** Obsidian CLI required for `/spek.conclude` automation (syncs, exports, graph generation). Desktop app optional for visualization.
+- **Code Analysis:** Indexed graph (lat.md MCP tools) as canonical approach, not file scans
+- **Learning Loop:** Post-feature lessons (captured in `/spek.conclude`) are core system behavior, not optional add-on
 
