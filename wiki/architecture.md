@@ -35,9 +35,16 @@ Spekificity rests on four pillars that guide all design decisions:
 
 ## Execution Model
 
-Spekificity is init-first. Install globally via `uv`, then run `spek init` in target project to scaffold `.spek` skills. References to `/spek.*` denote generated agent skills, not shell commands.
+Spekificity is init-first. Install globally via `uv`, then run `spek init` in target project to scaffold `.spek` skills and configure all dependencies (SpecKit, lat.md, vault). References to `/spek.*` denote generated agent skills, not shell commands.
 
-**See also:** [workflow.md](workflow.md) (4-stage process), [patterns.md](patterns.md) (reusable patterns)
+`spek init` automates:
+- ✅ SpecKit global install (if needed) + per-project `specify init .`
+- ✅ lat.md global install (if needed) + per-project index creation
+- ✅ Vault structure creation (vault/, lessons/, decision.md, patterns.md, vision.md)
+- ✅ Spekificity skills scaffolding (.spek/ with /spek.* commands)
+- ✅ Prerequisites verification (Python, uv, git, Obsidian CLI)
+
+**See also:** [setup.md](setup.md) (installation), [workflow.md](workflow.md) (4-stage process), [patterns.md](patterns.md) (reusable patterns)
 
 ---
 

@@ -1,108 +1,129 @@
-# Setup Guide: Prerequisites and Tool Installation
+# Setup Guide: Installation & Configuration
 
-This guide walks through installing and configuring the three core tools that Spekificity integrates.
+Complete walkthrough for installing and configuring Spekificity.
 
 ---
 
 ## Overview
 
-Spekificity requires three essential tools:
+Spekificity integrates three core tools. `spek init` handles all setup automatically:
 
-| Tool | Purpose | Install Mode | Required |
-|------|---------|--------------|----------|
-| **SpecKit** | Spec-driven workflow engine | Global | ✅ Required |
-| **Obsidian Knowledge Vault** | Markdown/HTML knowledge store | Local (project) | ✅ Required |
-| **lat.md Code Analysis Tool** | Code indexing and graph | Local or Global | ✅ Required |
-
----
-
-## Prerequisites (All Tools)
-
-- **Python 3.11+** — Check with `python3 --version`
-- **Git** — Check with `git --version`
-- **`uv` package manager** — Install via `curl -LsSf https://astral.sh/uv/install.sh | sh`
-- **Internet access** for initial installation
-- **Project folder** initialized as a git repository
+| Tool | Purpose | Configured By | Status |
+|------|---------|---------------|--------|
+| **Spekificity** | Agent skill framework + orchestration | `spek init` (automatic) | Runs in project |
+| **SpecKit** | Spec-driven workflow engine | `spek init` (automatic) | Global install + per-project init |
+| **lat.md** | Code analysis & indexing | `spek init` (automatic) | Per-project index |
+| **Obsidian Vault** | Git-backed knowledge base | `spek init` (automatic) | Per-project directory |
+| **Obsidian CLI** | Vault automation (exports, graph) | Manual install required | Global/Path |
 
 ---
 
-## Tool 1: SpecKit (Global Installation)
+## Prerequisites
 
-SpecKit is the spec-driven development workflow engine. Spekificity wraps and enriches its commands; SpecKit remains unchanged and upgradable.
+Before running `spek init`, ensure:
 
-### Installation Steps
-
-1. Install globally via `uv`:
-   ```bash
-   uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
-   ```
-
-2. Verify installation:
-   ```bash
-   which specify
-   # Expected: /users/<you>/.local/bin/specify or similar
-   specify --version
-   # Expected output: specify-cli x.x.x
-   ```
-
-3. Initialize SpecKit in your project:
-   ```bash
-   cd /path/to/your/project
-   specify init .
-   ```
-
-   When prompted:
-   - **AI Assistant**: Select your assistant type (e.g., `code-assistant` or `interactive-agent-ui`)
-   - **Script Type**: Select `sh`
-
-   This creates:
-   - `.specify/` — SpecKit configuration, templates, scripts, extensions
-   - Agent-specific config files (varies by assistant selection)
-
-4. Verify SpecKit initialization:
-   ```bash
-   ls .specify/
-   # Expected: extensions.yml  memory/  scripts/  templates/
-   ```
-
-### Configuration
-
-SpecKit configuration lives in `.specify/`:
-
-- **`.specify/extensions.yml`** — Hook definitions for `before_specify`, `before_plan`, `before_implement`, etc. Spekificity enrichment skills can be registered here.
-- **`.specify/memory/constitution.md`** — Project constitution. Edit this to add project-specific principles.
-- **`.specify/templates/`** — Override SpecKit default templates for spec, plan, and tasks.
-
-HTML artifact policy and AGENTS.md
-
-- Create `wiki/artifacts/html/` to host generated HTML artifacts separate from primary wiki pages.
-- AGENTS.md should require export-to-markdown for any HTML artifact that must be audited, and enforce plan-before-execute for writes that modify `wiki/`.
-- Add CI job to detect large HTML files and ensure export-to-markdown present when artifacts are checked into repo.
-
-### Re-Initialization
-
-Running `specify init .` is **idempotent** — safe to run multiple times:
-- If SpecKit is already initialized, it updates templates and scripts without overwriting your constitution or custom configuration.
-- After upgrading SpecKit: run `uv tool upgrade specify-cli` then re-run `specify init .` to pick up new templates.
-
-### Version Compatibility
-
-| SpecKit version | Spekificity compatible | Notes |
-|-----------------|----------------------|-------|
-| ≥ 0.8.0 | ✓ | Extensions/hooks system required |
-| 0.7.x | ⚠ | No extensions.yml; enrichment skills must be invoked manually |
-| < 0.7.0 | ✗ | Unsupported |
-
-### Troubleshooting
-
-- **`specify: command not found`** → Run the install command above; ensure `~/.local/bin` is in your PATH
-- **`specify init .` fails with git error** → Ensure the project folder is a git repository (`git init` first)
-- **Hooks in `extensions.yml` not firing** → Check `enabled: true` and `optional: false`; confirm SpecKit ≥ 0.8.0
-- **Templates not applied** → Check `.specify/templates/` for overrides; run `specify init .` again
+- **Python 3.11+** — `python3 --version`
+- **Git** — `git --version` + project must be a git repository (`git init` if needed)
+- **`uv` package manager** — `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- **Obsidian CLI** — Install Obsidian desktop app or standalone CLI. Required for `/spek.conclude` automation. See [obsidian.md/help/cli](https://obsidian.md/help/cli) for platform-specific instructions.
+- **Internet access** for initial tool installation
 
 ---
 
-## Tool 2: Obsidian Vault (Local Setup)
+## Installation & Initialization
+
+### Step 1: Install Spekificity Globally
+
+```bash
+uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
+```
+
+Verify:
+```bash
+which spek
+spek --version
+```
+
+### Step 2: Navigate to Your Project
+
+```bash
+cd /path/to/your/project
+# Ensure git is initialized
+git status  # Should show a valid repo, not "not a git repository"
+```
+
+### Step 3: Run `spek init` (One Command)
+
+```bash
+spek init
+```
+
+**What this does automatically:**
+
+1. ✅ **Installs SpecKit globally** (if not already present) via `uv tool install specify-cli`
+2. ✅ **Initializes SpecKit per-project** by running `specify init .` (creates `.specify/`)
+3. ✅ **Creates vault structure** (`vault/` with lessons/, decision.md, patterns.md, vision.md)
+4. ✅ **Scaffolds Spekificity skills** (`.spek/` with generated `/spek.*` commands)
+5. ✅ **Initializes lat.md index** (`.lat/` directory with code graph)
+6. ✅ **Creates specs directory** (`specs/` for feature specifications)
+7. ✅ **Verifies dependencies** (checks for Obsidian CLI, git, Python, uv)
+8. ✅ **Reports readiness** (summary of created directories and next steps)
+
+### Step 4: Verify Installation
+
+```bash
+# Check Spekificity
+spek --help
+spek --version
+
+# Check SpecKit integration
+ls .specify/
+# Expected: extensions.yml  memory/  scripts/  templates/
+
+# Check vault
+ls vault/
+# Expected: decision.md  lessons/  patterns.md  vision.md
+
+# Check lat.md
+ls .lat/
+# Expected: (depends on lat.md version; typically index files)
+
+# Check specs
+ls specs/
+# Expected: (empty until features are created)
+```
+
+---
+
+## Post-Installation Configuration
+
+### SpecKit Configuration (`.specify/`)
+
+After `spek init` completes, customize SpecKit behavior (optional):
+
+- **`.specify/memory/constitution.md`** — Project principles. Edit to add domain-specific constraints.
+- **`.specify/extensions.yml`** — Hook system. Spekificity registers enrichment skills here automatically.
+- **`.specify/templates/`** — Override default templates for specs, plans, tasks if needed.
+
+**Note:** `spek init` is **idempotent** — safe to run multiple times. Existing config preserved, templates updated.
+
+### SpecKit Upgrade Path
+
+After upgrading SpecKit:
+
+```bash
+# Upgrade SpecKit globally
+uv tool upgrade specify-cli
+
+# Re-run spek init to pull new templates
+spek init
+```
+
+Existing configurations are preserved; only templates updated.
+
+---
+
+## Tool 2: Obsidian Vault (Git-Backed Knowledge Base)
 
 The Obsidian vault is your persistent memory layer—lessons learned, decisions, patterns, and project context stored as plain markdown files. Spekificity agents read and write to this vault directly as the authoritative knowledge base.
 
@@ -129,22 +150,20 @@ your-project/
     └── [other guides]
 ```
 
-### Automatic Initialization
+### Vault Initialization (Automatic via `spek init`)
 
-When you run `spek init`, the vault is created automatically:
+`spek init` creates the vault structure automatically — no manual setup needed.
 
-```bash
-spek init
+Created structure:
+```
+vault/
+├── lessons/                 ← Per-feature retrospectives
+├── decision.md              ← Architectural decisions (append-only)
+├── patterns.md              ← Reusable patterns
+└── vision.md                ← Project vision + principles
 ```
 
-This creates:
-- ✅ `vault/` directory with full structure
-- ✅ `vault/lessons/` for per-feature lessons (one `.md` file per feature)
-- ✅ `vault/patterns.md` — template for reusable patterns
-- ✅ `vault/decision.md` — template for architectural decisions
-- ✅ `vault/vision.md` — template for project vision
-
-**You do not need to create vault files manually.**
+**Do NOT create vault files manually.** `spek init` handles all scaffolding.
 
 ### Vault: Plain Markdown Files
 
@@ -191,59 +210,66 @@ These are already excluded in the project `.gitignore`.
 
 ---
 
-## Tool 3: lat.md (Code Analysis — Canonical)
+## Tool 3: lat.md (Code Analysis — Canonical via `spek init`)
 
-Spekificity requires `lat.md` for code indexing and querying. lat.md is the canonical, only-supported code analysis tool for this project.
-
-### lat.md Setup
+Spekificity requires `lat.md` for code indexing and querying. It is the canonical, only-supported code analysis tool.
 
 `lat.md` provides:
-- Pre-indexed code symbols, definitions, and relationships
-- Incremental refresh and optional file-watcher for real-time updates
+- Pre-indexed code symbols, definitions, relationships (no file scans)
+- Incremental refresh + optional file-watcher for real-time updates
 - MCP tool interface for agent-friendly queries (lat_symbols, lat_references, lat_callers, lat_impact, etc.)
-- Pluggable extractors for source code and documentation
+- Pluggable extractors (framework-aware for Go, Python, TypeScript, etc.)
 
-**Setup:** 
-1. Install globally: `uv tool install lat-md`
-2. Initialize in project: `lat.md init` (creates `.lat/` directory + index)
-3. Configure MCP tools in agent environment (see lat.md docs for MCP server setup)
-4. Verify: `lat.md --version` and `lat.md query --help`
+### Installation & Setup
+
+`spek init` handles lat.md installation and initialization automatically:
+
+1. **Installs globally** (if not present): `uv tool install lat-md`
+2. **Initializes per-project**: Creates `.lat/` directory with index
+3. **Configures MCP tools**: Registers with agent environment
+4. **Runs initial index**: Scans codebase, creates symbol database
+
+No manual commands needed. Verify post-initialization:
+
+```bash
+lat.md --version
+lat.md query --help
+ls .lat/
+```
 
 ---
 
-## Post-Installation Verification
+## Post-Installation Verification & Commit
 
-After installing all tools:
+After `spek init` completes:
 
-1. **Verify SpecKit:**
-   ```bash
-   specify --version
-   ```
+```bash
+# Verify all directories created
+ls -la | grep -E '\.spek|vault|\.lat|specs|\.specify'
 
-2. **Verify Vault:**
-   ```bash
-   ls vault/
-   # Expected: decision.md, patterns.md, vision.md, lessons/
-   ```
+# Check key files
+ls vault/               # decision.md, patterns.md, vision.md, lessons/
+ls .spek/               # Generated skills
+ls .specify/            # SpecKit config
+ls .lat/                # Code index
 
-3. **Verify Indexing Tool:**
-   See lat.md setup docs for complete verification.
-
-4. **Commit to Git:**
-   ```bash
-   git add vault/ .specify/
-   git commit -m "Initialize Spekificity tools and vault"
-   ```
+# Commit to git
+git add vault/ .spek/ .specify/ .lat/ specs/
+git commit -m "Initialize Spekificity: vault, skills, SpecKit, lat.md index"
+```
 
 ---
 
 ## Next Steps
 
-Once all tools are installed and verified:
+Ready to start feature development:
 
-1. Run `/spek.prepare` to initialize workspace and load context
-2. Run `/spek.plan [feature description]` to begin a feature workflow
-3. See [wiki/workflow.md](../workflow.md) for complete workflow documentation
+1. **Load context:** `/spek.prepare` — workspace ready, vault synced, lat.md fresh
+2. **Create spec & plan:** `/spek.plan --feature="feature-name"` — orchestrates SpecKit
+3. **Implement:** `/spek.implement` — execute tasks with full context
+4. **Archive:** `/spek.conclude` — save lessons, refresh graph, update vault
+
+See [wiki/workflow.md](../workflow.md) for complete workflow guide.
 
 ---
 
@@ -284,18 +310,33 @@ token_limits:
 
 ## Troubleshooting
 
-### General
+### `spek init` Issues
 
-- **Tool install fails** → Ensure Python 3.11+ and `uv` are installed
-- **`PATH` issues** → Verify `~/.local/bin` is in your PATH: `echo $PATH`
-- **Permission errors** → On Linux, ensure user permissions on project folder
+- **`spek: command not found`** → Ensure Spekificity installed: `uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git`; check PATH: `echo $PATH | grep .local/bin`
+- **`spek init` fails with git error** → Ensure project is a git repo: `git status` should work; if not, run `git init` first
+- **Obsidian CLI not found** → Install Obsidian desktop app or CLI separately. See [obsidian.md/help/cli](https://obsidian.md/help/cli). Required for `/spek.conclude` automation.
+- **SpecKit installation fails** → Ensure Python 3.11+ and `uv` installed: `python3 --version` and `uv --version`
+- **lat.md index error** → Usually transient. Re-run `spek init`. If persists, check disk space and file permissions.
 
-### Tool-Specific
+### General Prerequisites
 
-See individual tool sections above for tool-specific troubleshooting.
+- **Python 3.11+ not found** → `python3 --version` should show ≥3.11. Install from python.org or use system package manager.
+- **`uv` not in PATH** → After installing uv: `~/.cargo/bin/uv --version`. If not in PATH, add `~/.cargo/bin` to PATH or reinstall.
+- **Permission errors** → On Linux/macOS: ensure user can write to project directory: `ls -ld . | head -c 1` should show `d`.
+- **Internet connectivity** → `ping github.com` to verify. Tools install from GitHub; offline setup not supported initially.
+
+### After `spek init` Completes
+
+- **Vault dir missing** → Check: `ls vault/`. If not present, re-run `spek init`.
+- **`.specify/` missing** → Check: `ls .specify/`. SpecKit may not have installed. Verify: `which specify` and `specify --version`. Run `spek init` again.
+- **`.lat/` index incomplete** → lat.md may still be building. Wait a moment, then check: `ls .lat/` and `lat.md --version`.
+- **Can't run `/spek.*` commands** → Ensure skills are generated in `.spek/`. Check: `ls .spek/skills/`. If empty, re-run `spek init`.
 
 ---
 
 ## See Also
 
-- [wiki/specs/050-latmd-setup-and-integration.md](../specs/050-latmd-setup-and-integration.md) (recommended indexing tool)
+- [wiki/workflow.md](../workflow.md) — Start here after setup completes
+- [wiki/skills.md](../skills.md) — `/spek.*` command reference
+- [github.com/github/spec-kit](https://github.com/github/spec-kit) — SpecKit documentation
+- [obsidian.md/help/cli](https://obsidian.md/help/cli) — Obsidian CLI setup

@@ -21,52 +21,51 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 
 ## Quick Start
 
-
 ### Prerequisites
 
-- Python 3.11+
-- `uv` package manager ([install](https://docs.astral.sh/uv/))
--- **Obsidian CLI** (required for automation) — primary integration for vault automation: syncs, exports, and scripted operations that enable context loading, graph generation, and lesson extraction. Desktop app is optional (used for visualization only).
-+    - Why: Spekificity performs scripted vault operations (pull/push, heading/frontmatter export, and JSON/graph exports). Having the `obsidian` CLI in PATH simplifies reliable automation in developer workflows and CI.
-+    - Install / enable CLI: Register the `obsidian` command in your PATH. The CLI is typically provided by the Obsidian desktop app, but the CLI is the primary required integration point — the desktop app is optional (used for visualization and interactive workflows). See https://obsidian.md/help/cli and https://obsidian.md/help/headless for platform-specific guidance.
+- **Python 3.11+** — Check with `python3 --version`
+- **`uv` package manager** — [Install](https://docs.astral.sh/uv/)
+- **Git** — Initialized repository (`git init` first if needed)
+- **Obsidian CLI** — Install via Obsidian desktop app or standalone. Required for `/spek.conclude` automation (vault exports, graph generation). Desktop app optional for visualization; CLI is mandatory. See [obsidian.md/help/cli](https://obsidian.md/help/cli) for setup.
 
-### Installation & Setup (Recommended)
+### Installation & Project Setup
+
+**One-command setup (recommended):**
 
 ```bash
-# 1. Install Spekificity as a tool (installs all dependencies)
+# 1. Install Spekificity globally
 uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
 
-# 2. Initialize your project (sets up infrastructure and runs specify init)
-spek init
+# 2. Navigate to your project (must be a git repository)
+cd /path/to/your/project
 
-# 3. Verify installation
+# 3. Initialize — this single command does everything:
+spek init
+#   ✅ Installs SpecKit globally (if not present)
+#   ✅ Runs specify init . (SpecKit per-project initialization)
+#   ✅ Creates vault/ with full structure
+#   ✅ Creates .spek/ with generated skills
+#   ✅ Initializes lat.md index
+#   ✅ Verifies Obsidian CLI in PATH
+
+# 4. Verify
 spek --help
 spek --version
-spek tools --list
 ```
 
+**Result:** `.spek/`, `vault/`, `.lat/`, and `specs/` directories created. SpecKit configured in `.specify/`. Ready to use.
 
-Planned automatic steps:
-- Install Spekificity CLI and configured dependencies (SpecKit, lat.md, etc.)
-- Create project directories (`.spek/`, `vault/`, `wiki/`)
-- Initialize lat.md index and invoke SpecKit initialization
-- Verify `obsidian` CLI availability (the automation described here requires the `obsidian` CLI to be installed and registered in PATH)
-
-### Alternative: Manual Installation
+### Alternative: Development Installation
 
 ```bash
-# Clone repository
 git clone <repo-url>
 cd spekificity
-
-# Install in development mode
 pip install -e .
-
-# Initialize project
+cd /path/to/your/project
 spek init
 ```
 
-**Full guide:** See [wiki/setup.md](wiki/setup.md) for installation and configuration details.
+**Full guide:** See [wiki/setup.md](wiki/setup.md) for detailed configuration and troubleshooting.
 
 ---
 
