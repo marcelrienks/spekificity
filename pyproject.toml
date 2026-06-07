@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "spekificity"
-version = "0.1.0"
+version = "1.0.0"
 description = "Specification-driven framework for rapid AI agent development"
 readme = "README.md"
 requires-python = ">=3.11"
