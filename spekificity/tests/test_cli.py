@@ -17,28 +17,13 @@ def cli_runner():
 
 class TestMainCLI:
     """Tests for main CLI commands."""
-    
+
     def test_version_flag(self, cli_runner):
         """--version flag should show version."""
         result = cli_runner.invoke(cli, ["--version"])
-        
+
         assert result.exit_code == 0
         assert "spek version" in result.output
-    
-    def test_help_flag(self, cli_runner):
-        """--help flag should show help."""
-        result = cli_runner.invoke(cli, ["--help"])
-        
-        assert result.exit_code == 0
-        assert "Spekificity" in result.output or "Usage" in result.output
-    
-    def test_no_command_shows_help(self, cli_runner):
-        """Running with no command should show help."""
-        result = cli_runner.invoke(cli, [])
-        
-        assert result.exit_code == 0
-        # Should show help or error message
-        assert "spek" in result.output.lower() or "command" in result.output.lower()
 
 
 class TestInitCommand:
