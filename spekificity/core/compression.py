@@ -4,6 +4,7 @@ Caveman mode reduces tokens by ~75% through abbreviated notation.
 Supports intensity levels: lite, full (default), ultra.
 """
 
+import re
 from typing import Optional
 
 from spekificity.core.types import TaskContext
@@ -60,42 +61,45 @@ class CavemanCompressor:
     
     def compress_text(self, text: str) -> str:
         """Compress text to Caveman notation.
-        
+
         Args:
             text: Text to compress
-        
+
         Returns:
             Compressed text
         """
         if not text:
             return text
-        
-        # Remove filler words
+
+        # Remove filler words (case-insensitive, handle word boundaries)
         for filler in self.FILLER_WORDS:
-            text = text.replace(f" {filler} ", " ")
-            text = text.replace(f"{filler} ", "")
-        
+            # Use word boundaries to match filler words properly
+            pattern = re.compile(rf'\b{re.escape(filler)}\b', re.IGNORECASE)
+            text = pattern.sub('', text)
+
         # Remove articles (a, an, the) unless keeping them
         if not self.config["keep_articles"]:
-            articles = [" a ", " an ", " the "]
+            articles = ['a', 'an', 'the']
             for article in articles:
-                text = text.replace(article, " ")
-        
+                pattern = re.compile(rf'\b{article}\b', re.IGNORECASE)
+                text = pattern.sub('', text)
+
         # Abbreviate prose words
         if self.config["abbreviate_prose"]:
             for full, abbrev in self.PROSE_ABBREVIATIONS.items():
-                text = text.replace(full, abbrev)
-        
+                pattern = re.compile(re.escape(full), re.IGNORECASE)
+                text = pattern.sub(abbrev, text)
+
         # Use arrows for causality
         if self.config["use_arrows"]:
             text = text.replace(" causes ", " → ")
             text = text.replace(" because ", " → ")
             text = text.replace(" results in ", " → ")
             text = text.replace(" leads to ", " → ")
-        
+
         # Clean up extra spaces
         text = " ".join(text.split())
-        
+
         return text
     
     def compress_context(self, context: TaskContext) -> str:

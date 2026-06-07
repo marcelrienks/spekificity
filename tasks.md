@@ -433,15 +433,15 @@ Create user-facing README.md with feature overview, prerequisites, installation 
 Create wrapper functions for lat.md MCP tools: index sync, BM25 file search, function search, impact analysis.
 
 **Acceptance Criteria:**
-- [ ] `index_codebase()` runs `lat sync` to rebuild/update code index
-- [ ] `query_relevant_files(intent, scope)` returns List[filepath, relevance_score] via BM25 search
-- [ ] `query_functions(intent, scope)` returns List[function_name, file, signature] matching intent
-- [ ] `query_impact(file_path)` returns callers, dependencies, impact scope
-- [ ] `search_patterns(pattern_name)` finds code matching design pattern
-- [ ] All queries are scoped: can search "backend/" only, or "all" for full codebase
-- [ ] Queries timeout gracefully (fallback to semantic_search if lat.md takes > 5s)
-- [ ] Results are deduplicated and ranked by relevance
-- [ ] Integration with lat.md MCP tools confirmed (lat_files, lat_callers, lat_impact tools available)
+- [x] `index_codebase()` runs `lat sync` to rebuild/update code index
+- [x] `query_relevant_files(intent, scope)` returns List[filepath, relevance_score] via BM25 search
+- [x] `query_functions(intent, scope)` returns List[function_name, file, signature] matching intent
+- [x] `query_impact(file_path)` returns callers, dependencies, impact scope
+- [x] `search_patterns(pattern_name)` finds code matching design pattern
+- [x] All queries are scoped: can search "backend/" only, or "all" for full codebase
+- [x] Queries timeout gracefully (fallback to semantic_search if lat.md takes > 5s)
+- [x] Results are deduplicated and ranked by relevance
+- [x] Integration with lat.md MCP tools confirmed (lat_files, lat_callers, lat_impact tools available)
 
 **Subtasks:**
 1. Verify lat.md MCP interface (check available tools, test simple query)
@@ -473,12 +473,12 @@ Create wrapper functions for lat.md MCP tools: index sync, BM25 file search, fun
 Create fallback semantic search for when lat.md is unavailable or times out. Uses workspace semantic_search tool or simple grep-based matching.
 
 **Acceptance Criteria:**
-- [ ] `semantic_search(query, scope)` uses workspace semantic_search tool if available
-- [ ] Falls back to grep-based keyword search if semantic_search unavailable
-- [ ] Returns List[filepath, line_number, context] of matches
-- [ ] Queries are scoped (by file pattern, directory)
-- [ ] Performance acceptable for typical codebases (< 10s for keyword search on 100K+ files)
-- [ ] Clearly marked as fallback (logging indicates lat.md unavailable, using fallback)
+- [x] `semantic_search(query, scope)` uses workspace semantic_search tool if available
+- [x] Falls back to grep-based keyword search if semantic_search unavailable
+- [x] Returns List[filepath, line_number, context] of matches
+- [x] Queries are scoped (by file pattern, directory)
+- [x] Performance acceptable for typical codebases (< 10s for keyword search on 100K+ files)
+- [x] Clearly marked as fallback (logging indicates lat.md unavailable, using fallback)
 
 **Subtasks:**
 1. Implement workspace semantic_search wrapper
@@ -505,18 +505,18 @@ Create fallback semantic search for when lat.md is unavailable or times out. Use
 Create context injection engine: load relevant decisions, patterns, code files, and function signatures for a task. This is the heart of the "deterministic context" feature.
 
 **Acceptance Criteria:**
-- [ ] `load_feature_context(feature_intent, scope)` returns FeatureContext object with:
+- [x] `load_feature_context(feature_intent, scope)` returns FeatureContext object with:
   - relevant_decisions: List[Decision] from vault (top 5 most relevant)
   - relevant_patterns: List[Pattern] from vault
   - relevant_files: List[FileRef] from lat.md search
   - relevant_functions: List[FunctionRef] with signatures
   - impact_map: Dict[file] → callers, dependencies
-- [ ] `inject_context(context, format)` returns formatted context string (Markdown) for agent consumption
-- [ ] `compress_context(context)` uses Caveman skill to reduce token usage (optional compression)
-- [ ] Context ranking by relevance: decisions > patterns > code files > functions
-- [ ] Total injected context ≤ 50K tokens (or configurable limit)
-- [ ] All decisions include rationale and implications (not just titles)
-- [ ] Code snippets include line numbers and function signatures
+- [x] `inject_context(context, format)` returns formatted context string (Markdown) for agent consumption
+- [x] `compress_context(context)` uses Caveman skill to reduce token usage (optional compression)
+- [x] Context ranking by relevance: decisions > patterns > code files > functions
+- [x] Total injected context ≤ 50K tokens (or configurable limit)
+- [x] All decisions include rationale and implications (not just titles)
+- [x] Code snippets include line numbers and function signatures
 
 **Subtasks:**
 1. Define `FeatureContext` Pydantic model (decisions, patterns, files, functions, impact)
@@ -548,12 +548,12 @@ Create context injection engine: load relevant decisions, patterns, code files, 
 Integrate Caveman skill for optional context compression to reduce token usage when context is large.
 
 **Acceptance Criteria:**
-- [ ] `compress_context(context, intensity)` calls Caveman skill with appropriate intensity level
-- [ ] Intensity levels: lite, full (default), ultra correspond to Caveman modes
-- [ ] Compressed output is 40-60% of original token size (typical compression ratio)
-- [ ] Caveman-compressed context remains actionable (no loss of critical information)
-- [ ] Compression is optional (configurable via flag or environment variable)
-- [ ] Fallback to uncompressed context if Caveman unavailable (non-blocking)
+- [x] `compress_context(context, intensity)` calls Caveman skill with appropriate intensity level
+- [x] Intensity levels: lite, full (default), ultra correspond to Caveman modes
+- [x] Compressed output is 40-60% of original token size (typical compression ratio)
+- [x] Caveman-compressed context remains actionable (no loss of critical information)
+- [x] Compression is optional (configurable via flag or environment variable)
+- [x] Fallback to uncompressed context if Caveman unavailable (non-blocking)
 
 **Subtasks:**
 1. Implement Caveman skill invocation wrapper
@@ -580,14 +580,14 @@ Integrate Caveman skill for optional context compression to reduce token usage w
 Write comprehensive tests for lat.md queries, context loading, and injection.
 
 **Acceptance Criteria:**
-- [ ] Test file: `tests/test_index.py` for lat.md queries
-- [ ] Test file: `tests/test_context.py` for context loading and injection
-- [ ] Tests for all query types: query_relevant_files, query_functions, query_impact
-- [ ] Tests for context loading: relevant decisions, patterns, files loaded correctly
-- [ ] Tests for context injection: Markdown format correct, no broken links
-- [ ] Tests for context compression: token reduction verified
-- [ ] At least 80% coverage for lat.md and context modules
-- [ ] Sample projects in fixtures with known code structure
+- [x] Test file: `tests/test_index.py` for lat.md queries
+- [x] Test file: `tests/test_context.py` for context loading and injection
+- [x] Tests for all query types: query_relevant_files, query_functions, query_impact
+- [x] Tests for context loading: relevant decisions, patterns, files loaded correctly
+- [x] Tests for context injection: Markdown format correct, no broken links
+- [x] Tests for context compression: token reduction verified
+- [x] At least 80% coverage for lat.md and context modules
+- [x] Sample projects in fixtures with known code structure
 
 **Subtasks:**
 1. Create sample project fixture with known code structure

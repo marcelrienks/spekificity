@@ -31,17 +31,16 @@ dependencies = [
     "python-dateutil>=2.8",     # Date/time utilities
 ]
 
-optional-dependencies = {
-    dev = [
-        "pytest>=7.0",
-        "pytest-cov>=4.0",
-        "black>=23.0",
-        "isort>=5.0",
-        "flake8>=6.0",
-        "mypy>=1.0",
-        "pytest-asyncio>=0.21",
-    ]
-}
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "isort>=5.0",
+    "flake8>=6.0",
+    "mypy>=1.0",
+    "pytest-asyncio>=0.21",
+]
 
 [project.scripts]
 spek = "spekificity.cli.main:main"

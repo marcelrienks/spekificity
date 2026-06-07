@@ -35,3 +35,4 @@ venv/
 # ── Framework / Config ────────────────────────────────────────
 .specify/
 .github/
+.claude/
