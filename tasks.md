@@ -1072,20 +1072,20 @@ Implement `/spek.implement` skill: executes a single task with context injection
 Implement `/spek.conclude` skill: analyzes outcomes, extracts lessons, updates vault, refreshes project state.
 
 **Acceptance Criteria:**
-- [ ] `/spek.conclude --feature FEATURE_NAME` is the entry point
-- [ ] Loads feature spec, plan, tasks, progress logs
-- [ ] Compares actual outcomes (completed tasks, code changes) vs success criteria
-- [ ] Extracts lessons learned: what went well, what to improve, patterns identified
-- [ ] Prompts developer to document lessons (interactive)
-- [ ] Writes lessons to vault: `vault/lessons/TIMESTAMP-feature.md` and `vault/lessons.md`
-- [ ] Updates vault decisions: new decisions or refinements based on implementation
-- [ ] Updates vault patterns: new or refined patterns identified
-- [ ] Exports feature summary: spec + plan + outcomes + lessons (Markdown)
-- [ ] Refreshes lat.md index (sync codebase after implementation)
-- [ ] Refreshes project state (update README references if needed)
-- [ ] Requires Obsidian CLI for vault export; graceful fallback if unavailable
-- [ ] Completes in < 5 minutes (per SC-007)
-- [ ] Second feature's `/spek.prepare` retrieves lessons from first feature (SC-008)
+- [x] `/spek.conclude --feature FEATURE_NAME` is the entry point
+- [x] Loads feature spec, plan, tasks, progress logs
+- [x] Compares actual outcomes (completed tasks, code changes) vs success criteria
+- [x] Extracts lessons learned: what went well, what to improve, patterns identified
+- [x] Prompts developer to document lessons (interactive)
+- [x] Writes lessons to vault: `vault/lessons/TIMESTAMP-feature.md` and `vault/lessons.md`
+- [x] Updates vault decisions: new decisions or refinements based on implementation
+- [x] Updates vault patterns: new or refined patterns identified
+- [x] Exports feature summary: spec + plan + outcomes + lessons (Markdown)
+- [x] Refreshes lat.md index (sync codebase after implementation)
+- [x] Refreshes project state (update README references if needed)
+- [x] Requires Obsidian CLI for vault export; graceful fallback if unavailable
+- [x] Completes in < 5 minutes (per SC-007)
+- [x] Second feature's `/spek.prepare` retrieves lessons from first feature (SC-008)
 
 **Subtasks:**
 1. Create entry point function `conclude(feature_name, ...)`
@@ -1121,12 +1121,12 @@ Implement `/spek.conclude` skill: analyzes outcomes, extracts lessons, updates v
 Implement progress tracking for task execution: log creation, progress updates, rollback, completion.
 
 **Acceptance Criteria:**
-- [ ] `start_task(task_id, task_description)` creates `.specify/logs/TASK_ID.md` with frontmatter
-- [ ] `log_progress(task_id, message, level)` appends timestamped progress entry to log
-- [ ] `mark_complete(task_id, summary)` adds completion entry with changes summary
-- [ ] `mark_rollback(task_id, reason)` rolls back task (archives log, restores previous state)
-- [ ] Progress logs have clear structure: frontmatter, progress entries with timestamps, decisions, final summary
-- [ ] All progress operations are idempotent (safe to call multiple times)
+- [x] `start_task(task_id, task_description)` creates `.specify/logs/TASK_ID.md` with frontmatter
+- [x] `log_progress(task_id, message, level)` appends timestamped progress entry to log
+- [x] `mark_complete(task_id, summary)` adds completion entry with changes summary
+- [x] `mark_rollback(task_id, reason)` rolls back task (archives log, restores previous state)
+- [x] Progress logs have clear structure: frontmatter, progress entries with timestamps, decisions, final summary
+- [x] All progress operations are idempotent (safe to call multiple times)
 
 **Subtasks:**
 1. Define progress log structure (frontmatter: task_id, start_time, status, etc.)
@@ -1153,11 +1153,11 @@ Implement progress tracking for task execution: log creation, progress updates, 
 Implement decision logging and extraction: parse decision annotations from agent output, write to vault.
 
 **Acceptance Criteria:**
-- [ ] `log_decision(task_id, title, rationale, implications)` creates Decision model and appends to vault
-- [ ] `extract_decisions(agent_output)` parses decision annotations (format: `@decision "..."` or `## Decision:` sections)
-- [ ] `write_decisions_to_vault(decisions)` appends to `vault/decisions.md` with frontmatter
-- [ ] Decisions are idempotent: same decision logged twice doesn't create duplicates
-- [ ] Decisions are traceable: reference task_id, date, author (from context)
+- [x] `log_decision(task_id, title, rationale, implications)` creates Decision model and appends to vault
+- [x] `extract_decisions(agent_output)` parses decision annotations (format: `@decision "..."` or `## Decision:` sections)
+- [x] `write_decisions_to_vault(decisions)` appends to `vault/decisions.md` with frontmatter
+- [x] Decisions are idempotent: same decision logged twice doesn't create duplicates
+- [x] Decisions are traceable: reference task_id, date, author (from context)
 - [ ] Extracted decisions are validated: status, rationale, implications present
 
 **Subtasks:**
