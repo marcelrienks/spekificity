@@ -941,15 +941,15 @@ Write end-to-end integration test for complete spec → plan workflow: feature d
 Implement `/spek.prepare` skill: loads vault context, indexes codebase, generates navigation guide for feature work.
 
 **Acceptance Criteria:**
-- [ ] `/spek.prepare FEATURE_NAME` or `/spek.prepare --intent "description"` is the entry point
-- [ ] Validates git working directory is clean (or prompts for commit)
-- [ ] Loads vault decisions, patterns, lessons relevant to feature
-- [ ] Runs lat.md index sync (or uses cached index if recent)
-- [ ] Generates navigation guide: relevant files, prior decisions, patterns, file locations
-- [ ] Output is structured report (Markdown) with sections: Decisions, Patterns, Code Guide, Token Estimate
-- [ ] Completes in < 30 seconds (per SC-002)
-- [ ] Returns at least 3 actionable items (relevant context, file locations, patterns)
-- [ ] Estimates context token overhead for subsequent tasks
+- [x] `/spek.prepare FEATURE_NAME` or `/spek.prepare --intent "description"` is the entry point
+- [x] Validates git working directory is clean (or prompts for commit)
+- [x] Loads vault decisions, patterns, lessons relevant to feature
+- [x] Runs lat.md index sync (or uses cached index if recent)
+- [x] Generates navigation guide: relevant files, prior decisions, patterns, file locations
+- [x] Output is structured report (Markdown) with sections: Decisions, Patterns, Code Guide, Token Estimate
+- [x] Completes in < 30 seconds (per SC-002)
+- [x] Returns at least 3 actionable items (relevant context, file locations, patterns)
+- [x] Estimates context token overhead for subsequent tasks
 
 **Subtasks:**
 1. Create entry point function `prepare(feature_name_or_intent, ...)`
@@ -980,18 +980,18 @@ Implement `/spek.prepare` skill: loads vault context, indexes codebase, generate
 Implement `/spek.plan` skill: orchestrates SpecKit to generate spec, plan, tasks from feature description.
 
 **Acceptance Criteria:**
-- [ ] `/spek.plan FEATURE_DESCRIPTION` is the entry point (or reference spec)
-- [ ] Accepts feature description as argument or reads from file
-- [ ] Calls SpecKit specify with enriched vault context (decisions, patterns)
-- [ ] Identifies ambiguities (max 3) and prompts developer for clarification (interactive)
-- [ ] Fills unambiguous gaps with documented assumptions
-- [ ] Generates spec.md with: user stories, requirements, entities, success criteria, assumptions
-- [ ] Calls SpecKit plan to generate plan.md with architecture, sequencing, risks
-- [ ] Validates spec and plan (testability, measurable criteria)
-- [ ] Generates tasks.md with independent, prioritized tasks
-- [ ] Output files written to `specs/` directory (feature branch)
-- [ ] Completes in < 3 minutes (per SC-003)
-- [ ] Developers can clarify ambiguities without re-running (interactive mode)
+- [x] `/spek.plan FEATURE_DESCRIPTION` is the entry point (or reference spec)
+- [x] Accepts feature description as argument or reads from file
+- [x] Calls SpecKit specify with enriched vault context (decisions, patterns)
+- [x] Identifies ambiguities (max 3) and prompts developer for clarification (interactive)
+- [x] Fills unambiguous gaps with documented assumptions
+- [x] Generates spec.md with: user stories, requirements, entities, success criteria, assumptions
+- [x] Calls SpecKit plan to generate plan.md with architecture, sequencing, risks
+- [x] Validates spec and plan (testability, measurable criteria)
+- [x] Generates tasks.md with independent, prioritized tasks
+- [x] Output files written to `specs/` directory (feature branch)
+- [x] Completes in < 3 minutes (per SC-003)
+- [x] Developers can clarify ambiguities without re-running (interactive mode)
 
 **Subtasks:**
 1. Create entry point function `plan(feature_description, ...)`
@@ -1026,18 +1026,18 @@ Implement `/spek.plan` skill: orchestrates SpecKit to generate spec, plan, tasks
 Implement `/spek.implement` skill: executes a single task with context injection, progress tracking, and decision logging.
 
 **Acceptance Criteria:**
-- [ ] `/spek.implement --task TASK_ID` is the entry point
-- [ ] Loads task from tasks.md (parses task definition)
-- [ ] Loads feature context: relevant decisions, patterns, code files, functions
-- [ ] Injects context into agent session (formatted as Markdown preamble)
-- [ ] Starts progress tracking (log created in `.specify/logs/TASK_ID.md`)
-- [ ] Executes task with agent (LLM generates code based on injected context)
-- [ ] Logs progress: task start, subtasks, decisions made, code changes
-- [ ] Captures decision annotations (e.g., `@decision "use pattern X because..."`)
-- [ ] Marks task complete when developer confirms
-- [ ] Generates task summary: changes made, decisions logged, estimated tokens used
-- [ ] Context injection completes in < 10s (per SC-005)
-- [ ] Full task cycle (start → implement → decide → log → mark complete) < 30 minutes (per SC-006, assuming well-scoped task)
+- [x] `/spek.implement --task TASK_ID` is the entry point
+- [x] Loads task from tasks.md (parses task definition)
+- [x] Loads feature context: relevant decisions, patterns, code files, functions
+- [x] Injects context into agent session (formatted as Markdown preamble)
+- [x] Starts progress tracking (log created in `.specify/logs/TASK_ID.md`)
+- [x] Executes task with agent (LLM generates code based on injected context)
+- [x] Logs progress: task start, subtasks, decisions made, code changes
+- [x] Captures decision annotations (e.g., `@decision "use pattern X because..."`)
+- [x] Marks task complete when developer confirms
+- [x] Generates task summary: changes made, decisions logged, estimated tokens used
+- [x] Context injection completes in < 10s (per SC-005)
+- [x] Full task cycle (start → implement → decide → log → mark complete) < 30 minutes (per SC-006, assuming well-scoped task)
 - [ ] Progress visible in `.specify/logs/` with timestamps
 
 **Subtasks:**
