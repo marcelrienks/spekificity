@@ -1,8 +1,8 @@
-# Code Indexing & Context Loading (Phase 2)
+# Code Indexing & Context Loading
 
 ## Overview
 
-Phase 2 implements code indexing and context injection layer. Spekificity:
+Code indexing and context injection layer. Spekificity:
 
 1. Indexes the codebase using lat.md (BM25 lexical search)
 2. Loads relevant code, decisions, and patterns for task execution
@@ -229,7 +229,7 @@ context = load_context_for_task(
 
 ---
 
-## Performance Targets (Phase 2 SLAs)
+## Performance Targets
 
 | Operation | Target | Status |
 |-----------|--------|--------|
@@ -276,10 +276,10 @@ If lat.md unavailable:
 
 ## Testing
 
-Run Phase 2 tests:
+Run context loading tests:
 
 ```bash
-pytest spekificity/tests/test_phase2.py -v
+pytest spekificity/tests/test_vault_and_indexing.py -v
 ```
 
 Tests cover:
@@ -354,5 +354,5 @@ Phase 3 will integrate context loading with SpecKit wrapper:
 
 ---
 
-**Phase 2 Status:** In progress  
+**Status:** Complete  
 **Last Updated:** 2026-06-07
