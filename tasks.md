@@ -686,13 +686,13 @@ Create documentation for code indexing strategy and context injection mechanism.
 Create wrapper functions for SpecKit commands: `run_specify()`, `run_plan()`, `run_implement()` with context enrichment injection.
 
 **Acceptance Criteria:**
-- [ ] `run_specify(feature_intent, context)` calls `speckit specify` with enriched context (decisions, patterns from vault)
-- [ ] `run_plan(spec, context)` calls `speckit plan` with architecture context
-- [ ] `run_implement(plan, context)` calls `speckit implement` with task context
-- [ ] Enrichment injected via environment variables or input file (depends on SpecKit API)
-- [ ] Output parsed correctly: spec.md, plan.md, tasks.md extracted from SpecKit output
-- [ ] Error handling: if SpecKit call fails, returns clear error message with remediation
-- [ ] All SpecKit outputs validated for structure (required sections, frontmatter, etc.)
+- [x] `run_specify(feature_intent, context)` calls `speckit specify` with enriched context (decisions, patterns from vault)
+- [x] `run_plan(spec, context)` calls `speckit plan` with architecture context
+- [x] `run_implement(plan, context)` calls `speckit implement` with task context
+- [x] Enrichment injected via environment variables or input file (depends on SpecKit API)
+- [x] Output parsed correctly: spec.md, plan.md, tasks.md extracted from SpecKit output
+- [x] Error handling: if SpecKit call fails, returns clear error message with remediation
+- [x] All SpecKit outputs validated for structure (required sections, frontmatter, etc.)
 
 **Subtasks:**
 1. Implement `run_specify()` — call SpecKit with feature intent + vault context
@@ -721,13 +721,13 @@ Create wrapper functions for SpecKit commands: `run_specify()`, `run_plan()`, `r
 Create low-level SpecKit command runners: invoke `speckit specify`, `speckit plan`, `speckit analyze` commands.
 
 **Acceptance Criteria:**
-- [ ] `invoke_specify(feature_intent, output_dir)` runs `speckit specify` in subprocess with args
-- [ ] `invoke_plan(spec_file, output_dir)` runs `speckit plan` with spec.md as input
-- [ ] `invoke_analyze(spec_file, output_dir)` runs `speckit analyze` for validation
-- [ ] All commands run in specified output directory (isolated from project root)
-- [ ] Environment variables can be passed to SpecKit (for context enrichment)
-- [ ] Return codes and stderr captured and raised as exceptions if non-zero
-- [ ] SpecKit CLI version checked before running commands (fail early if version wrong)
+- [x] `invoke_specify(feature_intent, output_dir)` runs `speckit specify` in subprocess with args
+- [x] `invoke_plan(spec_file, output_dir)` runs `speckit plan` with spec.md as input
+- [x] `invoke_analyze(spec_file, output_dir)` runs `speckit analyze` for validation
+- [x] All commands run in specified output directory (isolated from project root)
+- [x] Environment variables can be passed to SpecKit (for context enrichment)
+- [x] Return codes and stderr captured and raised as exceptions if non-zero
+- [x] SpecKit CLI version checked before running commands (fail early if version wrong)
 
 **Subtasks:**
 1. Add SpecKit version check function
@@ -756,12 +756,12 @@ Create low-level SpecKit command runners: invoke `speckit specify`, `speckit pla
 Create enrichment layer that injects vault decisions and patterns as context input to SpecKit commands. This is critical for spec/plan generation to leverage prior knowledge.
 
 **Acceptance Criteria:**
-- [ ] `enrich_specify_input(feature_intent, vault_context)` formats decisions, patterns as preamble to feature description
-- [ ] `enrich_plan_input(spec, decisions, patterns)` injects relevant decisions and patterns as architecture hints
-- [ ] Injected context does not change spec/plan structure (only augments content)
-- [ ] Enrichment data passed to SpecKit via environment variables or input file
-- [ ] All enriched inputs remain valid YAML/Markdown per SpecKit spec
-- [ ] Enrichment is optional: framework works without vault context (fallback)
+- [x] `enrich_specify_input(feature_intent, vault_context)` formats decisions, patterns as preamble to feature description
+- [x] `enrich_plan_input(spec, decisions, patterns)` injects relevant decisions and patterns as architecture hints
+- [x] Injected context does not change spec/plan structure (only augments content)
+- [x] Enrichment data passed to SpecKit via environment variables or input file
+- [x] All enriched inputs remain valid YAML/Markdown per SpecKit spec
+- [x] Enrichment is optional: framework works without vault context (fallback)
 
 **Subtasks:**
 1. Design enrichment format (how to inject decisions into SpecKit input)
@@ -787,13 +787,13 @@ Create enrichment layer that injects vault decisions and patterns as context inp
 Create output parser for SpecKit-generated spec.md, plan.md, and tasks from stdout/files. Parse Markdown and frontmatter into typed models.
 
 **Acceptance Criteria:**
-- [ ] `parse_spec(markdown_text)` extracts Spec model from spec.md
-- [ ] `parse_plan(markdown_text)` extracts Plan model from plan.md
-- [ ] `parse_tasks(markdown_text)` extracts List[Task] from tasks list
-- [ ] Frontmatter YAML parsed into model fields correctly
-- [ ] All required fields present; error if missing with clear message
-- [ ] Markdown sections mapped to model fields (User Stories → user_stories[], etc.)
-- [ ] Parsed models can be re-serialized to Markdown identically (round-trip)
+- [x] `parse_spec(markdown_text)` extracts Spec model from spec.md
+- [x] `parse_plan(markdown_text)` extracts Plan model from plan.md
+- [x] `parse_tasks(markdown_text)` extracts List[Task] from tasks list
+- [x] Frontmatter YAML parsed into model fields correctly
+- [x] All required fields present; error if missing with clear message
+- [x] Markdown sections mapped to model fields (User Stories → user_stories[], etc.)
+- [x] Parsed models can be re-serialized to Markdown identically (round-trip)
 
 **Subtasks:**
 1. Create Markdown parser for frontmatter and sections
