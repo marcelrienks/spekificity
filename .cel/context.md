@@ -1,6 +1,6 @@
 Technical Brief: Spekificity — Wiki Context (Updated)
 
-Last Deep Read: 2026-06-07 (UTC) — Wiki simplified: speckit.md consolidated into workflow.md
+Last Deep Read: 2026-06-07 (UTC) — Skills updated: /spek.prepare, /spek.plan, /spek.implement, /spek.conclude now include SpecKit orchestration; /speckit.constitution added to prepare flow; .gitignore updated (.specify, .github added)
 
 Project Purpose
 
@@ -20,7 +20,7 @@ Architecture & Tech Stack
 
 Key Workflows
 
-- **Feature Cycle:** /spek.prepare (pre-flight) → /spek.plan (orchestrates /speckit.specify + /speckit.plan + /speckit.tasks) → /spek.implement (task execution) → /spek.conclude (archive + lessons + graph refresh)
+- **Feature Cycle:** /spek.prepare (constitution check + pre-flight) → /spek.plan (orchestrates /speckit.specify + /speckit.clarify + /speckit.plan + /speckit.tasks with remediation loop) → /spek.implement (executes /speckit.implement task by task) → /spek.conclude (analyzes via /speckit.analyze, extracts lessons, updates vault/lat.md/repo memory)
 - **Spec Structure:** Feature intent → enrichment layers (Success Criteria, Assumptions, Risk Assessment, Dependencies, Resource Estimate) → stored in vault
 - **3-Layer Query Rule:** ALWAYS use hierarchically. Layer 1 (lat.md code graph, low-cost) → Layer 2 (vault summaries, moderate-cost) → Layer 3 (raw code files, high-cost). Escalate only when necessary.
 - **Post-Processing:** /spek.conclude runs automated lesson extraction, auto-tagging + auto-wikilinks, failure pattern capture (backprop reflex), spec drift detection (RARV), and lat.md refresh
@@ -83,12 +83,18 @@ MD5 Hashes (scanned files; use for cache-hit detection)
 - decision.md: 92ee6e4e894c4682557e204d2ae93895
 - patterns.md: b59a9fa0bfd5457df579c62a38318beb
 - setup.md: 580f1e7538cfb48a92ddaf620a4626cb
-- skills.md: e467f28d4852f26688797238c6743dc0
+- skills.md: 9cbf07494d8f275c928a07f3d6bcdd47
 - vision.md: c3593ea9d60e9d03f159241c306ab40a
 - workflow.md: 23c96f793ca83c4929605ccd7a5141be
 
 Notes & Observations
 
+- **Wiki Updates (2026-06-07):** Skills definitions enriched with explicit SpecKit orchestration:
+  - `/spek.prepare` now ensures `/speckit.constitution` check/creation as Step 1
+  - `/spek.plan` orchestrates full SpecKit sequence: `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.tasks` with remediation loop (user-surfaced at each phase)
+  - `/spek.implement` explicitly executes `/speckit.implement` for task sequencing
+  - `/spek.conclude` executes `/speckit.analyze` for validation, then comprehensive post-impl: lessons extraction, vault updates (spec/plan/tasks/lessons), repo memory sync (lat.md, Obsidian graph)
+  - `.gitignore` updated: `.specify/` and `.github/` added to exclusions
 - **Wiki Review Completed (2026-06-07):** Enforced 4 canonical tools (SpecKit, lat.md, Obsidian CLI, Caveman); updated all docs to reflect non-negotiable tooling. Standardized terminology (Conclude, Lessons). Consolidated patterns.md to index patterns.md into decision.md. Simplified speckit.md by consolidating into workflow.md (SpecKit reference section). Updated README to clarify end-state vs specification status. Total wiki files: 9 → 8.
 - **Status:** Specification-stage. Design complete; implementation pending. All wiki files are specifications for intended behavior.
 - **4 Canonical Tools:** lat.md (code analysis, only supported option), SpecKit (spec engine), Obsidian CLI (vault automation, mandatory), Caveman (compression). No alternatives supported.
