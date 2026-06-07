@@ -1,26 +1,11 @@
-# Spekificity: Specification-Driven Agent Development Framework
+# 🔧 Spekificity
+**Specification-Driven Agent Development Framework** — Connects the tools you're already using.
 
-## What It Does
+It orchestrates **SpecKit** (structured planning) + **lat.md** (code indexing—no manual search) + **Obsidian vault** (decision history) + **Caveman** mode (token efficiency) into one workflow. 
 
-Spekificity guides feature development through four repeatable stages: **Prepare** (load context) → **Plan** (generate specs & tasks) → **Implement** (build with memory) → **Conclude** (extract lessons). Each stage integrates best-in-class tools and workflows so agents work smarter, not harder.
+**No new concepts.** Just less friction: setup in minutes, straightforward commands, spec-first procedures that eliminate context-switching.
 
-## What You Get
-
-**Faster, more autonomous agent work:**
-- **Token efficiency** — Code indexing (lat.md) + scoped context loading cuts wasted context by 50%+
-- **Better plans** — Spec-first workflow validates and enriches requirements, catching edge cases upfront
-- **Zero context loss** — Persistent vault (decisions, patterns, lessons) survives session-to-session; agents never re-learn past decisions
-- **Deterministic sequencing** — Four-stage workflow makes feature work repeatable, auditable, scalable
-
-**Built on proven tools:**
-- **SpecKit** — Spec generation with validation layers
-- **lat.md** — BM25-ranked code search and semantic indexing
-- **Obsidian Vault + CLI** — Git-backed markdown knowledge store
-- **Caveman Mode** — Proven 75% token savings via compression
-
-Spekificity doesn't reinvent these — it **orchestrates them** into a coherent workflow. Each tool solves one problem well; Spekificity adds sequencing, integration, and context flow so they work together instead of in silos.
-
-**Not:** A novel framework or secret sauce. **Is:** Best practices + best-in-class tools, encapsulated into one opinionated workflow.
+The heavy lifting comes from best-in-class tools. What we built is the **glue**: one setup, clear procedures, and an opinionated workflow that makes them work together instead of in silos. 🧩
 
 ---
 
