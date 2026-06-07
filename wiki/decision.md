@@ -10,7 +10,7 @@ Architectural and implementation decisions that guide Spekificity design and too
 
 ### Summary
 
-For each of Spekificity's four pillars, recommend a tool that balances maturity, community adoption, and cohesive fit:
+For each of Spekificity's four pillars, a tool is recommended that balances maturity, community adoption, and cohesive fit:
 
 | Pillar | Tool | Why | Setup |
 |--------|------|-----|-------|

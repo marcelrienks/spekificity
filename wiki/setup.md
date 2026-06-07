@@ -1,26 +1,26 @@
-# Setup Specification: Installation & Configuration
+# Setup: Installation & Configuration
 
-This document specifies the intended setup and configuration process for Spekificity upon completion.
+This document describes the setup and configuration process for Spekificity.
 
 ---
 
 ## Setup Model: Two-Phase Design
 
-Spekificity installation is designed as two phases:
+Spekificity installation uses a two-phase model:
 
-| Phase | Command | Design Responsibility | Scope |
-|-------|---------|----------------------|-------|
-| **Global Install** | `uv tool install spekificity ...` | Spekificity package will resolve + install all dependencies | Python environment, global PATH |
+| Phase | Command | Responsibility | Scope |
+|-------|---------|-----------------|-------|
+| **Global Install** | `uv tool install spekificity ...` | Spekificity package resolves + installs all dependencies | Python environment, global PATH |
 | **Per-Project Init** | `spek init` | Initialize project-local structures | Single project directory |
 
-**Global Install Will Handle:**
+**Global Install Handles:**
 - ✅ Install SpecKit globally (if missing)
 - ✅ Install lat.md globally (if missing)
 - ✅ Verify Python 3.11+, git, uv in PATH
 - ✅ Warn if Obsidian CLI missing (needed for `/spek.conclude`, non-blocking)
 - ✅ Resolve all other tool dependencies automatically
 
-**spek init Will Handle:**
+**spek init Handles:**
 - ✅ Per-project initialization (one-time per project)
 - ✅ Run `specify init .` for SpecKit project setup
 - ✅ Create vault structure
@@ -30,7 +30,7 @@ Spekificity installation is designed as two phases:
 
 ---
 
-## Prerequisites (Specification)
+## Prerequisites
 
 **Minimum prerequisites required before Spekificity install:**
 
@@ -38,7 +38,7 @@ Spekificity installation is designed as two phases:
 - **Git** — Check: `git --version`. If missing, install from [git-scm.com](https://git-scm.com) or system package manager.
 - **`uv` package manager** — Check: `uv --version`. If missing: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
-**Design Principle:** The Spekificity installer will resolve and install everything else (SpecKit, lat.md, Obsidian CLI checks). User will not manually install these tools.
+**Design Principle:** The Spekificity installer resolves and installs everything else (SpecKit, lat.md, Obsidian CLI checks). Users don't manually install these tools.
 
 ---
 
@@ -58,7 +58,7 @@ This single command:
 3. ✅ Auto-installs lat.md globally (if missing)
 4. ✅ Verifies Python 3.11+, git, uv in PATH
 5. ✅ Warns if Obsidian CLI not in PATH (can be installed later)
-6. ✅ Reports which tools were installed vs already present
+6. ✅ Reports which tools were installed vs already present, enables downstream use
 
 **Verify global install:**
 ```bash
@@ -88,7 +88,7 @@ spek init
 3. ✅ Creates `.spek/` with generated `/spek.*` skills
 4. ✅ Initializes `.lat/` per-project lat.md index
 5. ✅ Creates `specs/` directory for feature specifications
-6. ✅ Reports readiness and next steps
+6. ✅ Reports readiness and scaffolds for next steps
 
 ### Step 3: Verify Per-Project Setup
 
@@ -115,10 +115,10 @@ spek --help
 After `spek init`, optionally customize SpecKit (all defaults work, this is optional):
 
 - **`.specify/memory/constitution.md`** — Project principles. Edit to add domain-specific constraints or project philosophy.
-- **`.specify/extensions.yml`** — Hook system. Spekificity registers enrichment skills here automatically; can add custom hooks.
+- **`.specify/extensions.yml`** — Hook system. Spekificity registers enrichment skills here automatically; add custom hooks as needed.
 - **`.specify/templates/`** — Override default Spec/Plan/Task templates if needed (advanced; not required).
 
-**Note:** `spek init` is **idempotent** — safe to run multiple times. Existing config preserved.
+**Note:** `spek init` is **idempotent** — safe to run multiple times. Existing config is preserved.
 
 ### Verify Obsidian CLI (Mandatory Dependency)
 
@@ -130,7 +130,7 @@ obsidian --version
 
 If missing, install via Obsidian desktop app or standalone CLI: [obsidian.md/help/cli](https://obsidian.md/help/cli)
 
-Note: All `/spek.*` commands fail gracefully if Obsidian CLI is unavailable; functionality degrades with clear error messages.
+Note: All `/spek.*` commands fail gracefully if Obsidian CLI is unavailable; functionality degrades with clear error messages, allowing recovery.
 
 ### Tool Upgrades
 
@@ -196,7 +196,7 @@ vault/
 └── vision.md                ← Project vision + principles
 ```
 
-**Do NOT create vault files manually.** `spek init` handles all scaffolding.
+**Don't create vault files manually.** `spek init` handles all scaffolding.
 
 ### Vault: Plain Markdown Files
 
@@ -245,7 +245,7 @@ These are already excluded in the project `.gitignore`.
 
 ### lat.md (Code Analysis & Indexing)
 
-`lat.md` is installed globally by the Spekificity installer and initialized per-project by `spek init`. It is the canonical, only-supported code analysis tool.
+`lat.md` installs globally via Spekificity installer and initializes per-project via `spek init`. It is the canonical, only-supported code analysis tool.
 
 `lat.md` provides:
 - Pre-indexed code symbols, definitions, call graphs (no file scans needed)

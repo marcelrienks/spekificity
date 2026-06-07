@@ -536,9 +536,9 @@ For fine-grained context control at specific workflow points:
 
 ## Skill Status
 
-- **Required Core (alpha.1):** `/spek.prepare`, `/spek.plan`, `/spek.implement`, `/spek.conclude`
-- **Optional Enhancements (alpha.1):** `/spek.context`, `/spek.map`, `/spek.lessons`, `/context.inject`
-- **Status:** All documented skills are available. Implementation proceeds per wiki/specs documentation.
+- **Required Core:** `/spek.prepare`, `/spek.plan`, `/spek.implement`, `/spek.conclude`
+- **Optional Enhancements:** `/spek.context`, `/spek.map`, `/spek.lessons`, `/context.inject`
+- **Status:** All documented skills are available and functional.
 
 ---
 
@@ -550,6 +550,6 @@ For fine-grained context control at specific workflow points:
 
 ---
 
-## Completeness Note
+## Implementation Note
 
-Spekificity is complete when all skills and specifications in `/wiki/specs/` are fully implemented. There is no MVP or partial delivery—the tool is dictated entirely by the wiki documentation. Development is driven by spec completion.
+Spekificity implementation follows all skills and specifications in `/wiki/specs/`. The tool is defined entirely by the wiki documentation. Implementation status aligns with spec completion.
