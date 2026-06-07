@@ -22,11 +22,12 @@ Spekificity exposes agent skills and commands for specification-driven developme
 **Usage:** `/spek.prepare [feature-name]`
 
 **What it does:**
-1. Load vault context (3-layer memory model)
-2. Index code state via lat.md
-3. List available specs for feature selection
-4. Load prior decisions + patterns relevant to feature
-5. Present onboarding summary (short read)
+1. Ensure project constitution exists; create if missing via `/speckit.constitution`
+2. Load vault context (3-layer memory model)
+3. Index code state via lat.md
+4. List available specs for feature selection
+5. Load prior decisions + patterns relevant to feature
+6. Present onboarding summary (short read)
 
 **Output:**
 - Feature context + related specs
@@ -44,18 +45,45 @@ Spekificity exposes agent skills and commands for specification-driven developme
 **Usage:** `/spek.plan [spec-file]`
 
 **What it does:**
-1. Parse spec Success Criteria
-2. Generate task list (granular, implementable)
-3. Identify code sections to modify (lat.md impact analysis)
-4. Estimate token budget per task
-5. Suggest related patterns + decision references
+
+Executes SpecKit specification → clarification → planning → task breakdown sequence in order:
+
+1. **`/speckit.specify`** — Write initial spec from feature intent
+   - Surface spec + success criteria + enrichment layers to user
+   - Request confirmation or revisions
+   
+2. **`/speckit.clarify`** — Identify gaps in specification
+   - Surface clarification questions to user
+   - Collect answers + integrate into spec
+   - Loop until spec is unambiguous (no remediations needed)
+   
+3. **`/speckit.plan`** — Generate implementation plan from spec
+   - Identify code sections to modify (lat.md impact analysis)
+   - Estimate token budget per phase
+   - Surface plan to user for review + approval
+   - If remediation required, flag issues to user + loop back to `/speckit.specify` if needed
+   
+4. **`/speckit.tasks`** — Granular task breakdown from plan
+   - Generate implementable tasks (one action per task)
+   - Suggest related patterns + decision references
+   - Surface task list to user for review
+   - If remediation required, re-process tasks after user input
+
+**Remediation Loop:**
+- After each phase, surface output to user for review
+- Collect user input/approval/corrections
+- If remediation needed: apply fixes + reprocess from failure point
+- Continue until all phases complete with no further remediation required
 
 **Output:**
+- Approved spec + success criteria + enrichment layers
+- Clarified specification (no ambiguities)
 - Step-by-step implementation plan
 - Code sections affected (with line ranges)
 - Suggested patterns to use
+- Granular, approved task list
+- Token allocation per task
 - Decision tree path (if decisions needed)
-- Token allocation per phase
 
 **Reference:** [workflow.md](../workflow.md) (plan phase)
 
@@ -70,12 +98,14 @@ Spekificity exposes agent skills and commands for specification-driven developme
 **Usage:** `/spek.implement [feature-name|spec-file] --steps N`
 
 **What it does:**
-1. Load spec + plan
-2. Execute tasks sequentially (or jump to step N)
-3. After each step: log to vault, query lat.md for context
-4. Track token usage against budget
-5. Capture new decisions + lessons as they emerge
-6. Mark steps complete
+
+1. Load spec + plan + task list
+2. Execute `/speckit.implement` — action all tasks sequentially (or jump to step N)
+   - After each step: log to vault, query lat.md for context
+   - Track token usage against budget
+   - Capture new decisions + lessons as they emerge
+   - Mark steps complete
+3. Commit code changes with spec + plan linkage
 
 **Interactive:**
 - Ask for confirmation before major code changes
@@ -120,25 +150,47 @@ Spekificity exposes agent skills and commands for specification-driven developme
 
 ### `/spek.conclude`
 
-**Purpose:** Archive feature outcomes, extract lessons, update vault + refresh lat.md  
+**Purpose:** Analyze implementation, extract lessons, update vault + refresh all project state  
 **Usage:** `/spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]`  
 **Requires:** Obsidian CLI (for vault exports and graph generation)
 
 **What it does:**
-1. Collect implementation artifacts (spec, plan, tasks, execution trace, code changes)
-2. Generate lessons document from artifacts
-3. Document architectural decisions and rationale
-4. Update vault/patterns.md with new patterns
-5. Sync repo memory (architectural decisions, pattern index)
-6. Refresh lat.md index via /spek.map (incremental)
-7. Archive current feature session state
-8. Report completion
+
+1. **Analysis Phase:**
+   - Execute `/speckit.analyze` — validate implementation against spec
+   - Compare Success Criteria vs actual outcomes
+   - Identify any spec drift or deviations
+   - Flag contradictions or risks
+
+2. **Lessons Extraction:**
+   - Prompt for retrospective (What went well? What to improve?)
+   - Extract new patterns if workflow diverged from spec
+   - Log new decisions if architecture changed
+   - Update Success Criteria if spec changed
+
+3. **Vault Updates:**
+   - Archive spec + plan + tasks + execution trace to vault
+   - Generate lessons document (`vault/lessons/YYYY-MM-DD-feature-name.md`)
+   - Update `vault/patterns.md` with new patterns
+   - Update `vault/decisions.md` with new decisions
+
+4. **Repository State Sync:**
+   - Sync repo memory (architectural decisions, pattern index) to `.spek/memory/`
+   - Refresh lat.md code graph index via `/lat.sync` (incremental)
+   - Update graph exports + metadata
+   - Refresh Obsidian vault graph via CLI
+
+5. **Completion:**
+   - Archive current feature session state
+   - Report analysis + lessons + synced artifacts
 
 **Output:**
+- Analysis report (spec drift, outcomes vs criteria)
 - Lessons document (`vault/lessons/YYYY-MM-DD-feature-name.md`)
-- Decisions and patterns documented
+- Updated patterns + decisions (vault + wiki)
 - Repo memory synced (`.spek/memory/`)
-- Code graph refreshed via lat.md
+- lat.md code graph refreshed
+- Obsidian vault graph updated
 - Completion report
 
 **Reference:** [workflow.md](../workflow.md#conclude-feature-conclusion)
