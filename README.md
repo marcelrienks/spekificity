@@ -30,30 +30,33 @@ Spekificity is a **specification-driven framework for rapid AI agent development
 
 ### Installation & Project Setup
 
-**One-command setup (recommended):**
+**Two-command setup (handles all dependencies automatically):**
 
 ```bash
-# 1. Install Spekificity globally
+# 1. Install Spekificity globally (resolves all dependencies)
 uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
+#   ✅ Auto-installs SpecKit globally (if not present)
+#   ✅ Auto-installs lat.md globally (if not present)
+#   ✅ Verifies Python 3.11+, git, uv
+#   ✅ Warns if Obsidian CLI not found (required for /spek.conclude)
+#   Ready: all tools available in PATH
 
-# 2. Navigate to your project (must be a git repository)
+# 2. Per-project initialization (one time per project)
 cd /path/to/your/project
-
-# 3. Initialize — this single command does everything:
 spek init
-#   ✅ Installs SpecKit globally (if not present)
-#   ✅ Runs specify init . (SpecKit per-project initialization)
+#   ✅ Runs specify init . (SpecKit per-project setup)
 #   ✅ Creates vault/ with full structure
 #   ✅ Creates .spek/ with generated skills
-#   ✅ Initializes lat.md index
-#   ✅ Verifies Obsidian CLI in PATH
+#   ✅ Initializes lat.md per-project index
+#   ✅ Creates specs/ directory
+#   ✅ Ready for feature development
 
-# 4. Verify
+# 3. Verify
 spek --help
 spek --version
 ```
 
-**Result:** `.spek/`, `vault/`, `.lat/`, and `specs/` directories created. SpecKit configured in `.specify/`. Ready to use.
+**Result:** All global tools installed. Project directories created (`.spek/`, `vault/`, `.lat/`, `specs/`, `.specify/`). Ready for `/spek.prepare` → feature development.
 
 ### Alternative: Development Installation
 

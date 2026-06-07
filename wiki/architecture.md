@@ -35,16 +35,24 @@ Spekificity rests on four pillars that guide all design decisions:
 
 ## Execution Model
 
-Spekificity is init-first. Install globally via `uv`, then run `spek init` in target project to scaffold `.spek` skills and configure all dependencies (SpecKit, lat.md, vault). References to `/spek.*` denote generated agent skills, not shell commands.
+Spekificity uses two-phase setup:
 
-`spek init` automates:
-- ✅ SpecKit global install (if needed) + per-project `specify init .`
-- ✅ lat.md global install (if needed) + per-project index creation
-- ✅ Vault structure creation (vault/, lessons/, decision.md, patterns.md, vision.md)
-- ✅ Spekificity skills scaffolding (.spek/ with /spek.* commands)
-- ✅ Prerequisites verification (Python, uv, git, Obsidian CLI)
+**Phase 1: Global Install (Dependency Resolution)**
+- `uv tool install spekificity --from git+...` resolves ALL dependencies
+- Automatically installs SpecKit (if missing)
+- Automatically installs lat.md (if missing)
+- Verifies Python 3.11+, git, uv in PATH
+- Warns if Obsidian CLI missing (optional but recommended)
 
-**See also:** [setup.md](setup.md) (installation), [workflow.md](workflow.md) (4-stage process), [patterns.md](patterns.md) (reusable patterns)
+**Phase 2: Per-Project Init**
+- `spek init` (one-time per project)
+- Runs `specify init .` for SpecKit per-project configuration
+- Creates vault structure, .spek/ skills, .lat/ index, specs/ directory
+- References to `/spek.*` denote generated agent skills, not shell commands
+
+**Result:** All tools installed globally; each project scaffolded locally. Ready for `/spek.prepare` → feature development.
+
+**See also:** [setup.md](setup.md) (detailed install guide), [workflow.md](workflow.md) (4-stage process), [patterns.md](patterns.md) (reusable patterns)
 
 ---
 
