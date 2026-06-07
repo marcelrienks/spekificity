@@ -58,13 +58,12 @@ Documentation Map
 
 - wiki/vision.md — Vision, problem/solution, four pillars, philosophy, tenets
 - wiki/architecture.md — Technical components, data flow, responsibilities, programmatic pipeline choice, retrieval guidance, HTML artifact policy
-- wiki/workflow.md — Deterministic 4-stage feature workflow (Prepare → Plan [Specify + Task Breakdown] → Implement → Conclude); detailed per-stage steps, checklists, error recovery, example walkthrough
+- wiki/workflow.md — Deterministic 4-stage feature workflow (Prepare → Plan [Specify + Task Breakdown] → Implement → Conclude); detailed per-stage steps, checklists, error recovery, example walkthrough; includes SpecKit reference (canonical flow, command table, Spekificity integration)
 - wiki/conventions.md — File/directory naming (kebab-case, numeric prefixes for specs/lessons, date prefixes for lessons), skill directory → command prefix matching, agentic vs programmatic choice
 - wiki/decision.md — 12 architectural decisions, tooling rationale (lat.md canonical, SpecKit chosen, Obsidian for vault, Caveman for compression), decision tree for configuration paths, conflict resolution rules
-- wiki/patterns.md — 24 reusable patterns (architectural, query, workflow, memory, compression, error handling, validation, graph, state management), quick reference table, adoption priority
-- wiki/setup.md — Installation steps for SpecKit (global via uv), Obsidian vault (local + CLI required), lat.md (global or local), post-installation verification
+- wiki/patterns.md — Pattern index (24 patterns) with links to full specifications in decision.md and architecture.md; adoption priority guide
+- wiki/setup.md — Installation steps for Spekificity (global via uv), SpecKit, Obsidian vault (CLI required), lat.md, post-installation verification
 - wiki/skills.md — Command reference (/spek.* namespace: prepare, plan, implement, conclude, context, map, lessons; /lat.* code queries; /caveman compression; /context.* injection)
-- wiki/speckit.md — SpecKit workflow reference, canonical flow, integration with Spekificity, key clarifications
 - README.md — Project summary, quick start (install globally, run spek init, execute /spek.* skills), intended features, design pillars, integrated tool stack, 4-stage workflow
 
 Working Assumptions (Core)
