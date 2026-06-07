@@ -1,6 +1,6 @@
 Technical Brief: Spekificity — Wiki Context (Updated)
 
-Last Deep Read: 2026-06-07 (UTC)
+Last Deep Read: 2026-06-07 (UTC) — Wiki simplified: speckit.md consolidated into workflow.md
 
 Project Purpose
 
@@ -78,23 +78,21 @@ Working Assumptions (Core)
 
 MD5 Hashes (scanned files; use for cache-hit detection)
 
-- README.md: 01e6068fd7859c7dbda08f8c7b7ee11f
-- architecture.md: 0ed6df6c041514364007eac90a7720a0
+- architecture.md: a399cf2241f513e18a627a83e95c454c
 - conventions.md: 54533079f8530ca6099f2be292afd3b5
-- decision.md: adfb1f1d0a258660c367368585d3494e
-- patterns.md: af1e65f33a78e0aaea6341e805de255b
-- setup.md: 15431ef41bce693b01d200a85de5720d
+- decision.md: 92ee6e4e894c4682557e204d2ae93895
+- patterns.md: b59a9fa0bfd5457df579c62a38318beb
+- setup.md: 580f1e7538cfb48a92ddaf620a4626cb
 - skills.md: e467f28d4852f26688797238c6743dc0
-- speckit.md: 82d878cf9814e44fe6ba743071288668
 - vision.md: c3593ea9d60e9d03f159241c306ab40a
-- workflow.md: 587e81a9cb8dd45bf7cd02a607e31983
+- workflow.md: 23c96f793ca83c4929605ccd7a5141be
 
 Notes & Observations
 
-- **Recent Changes (2026-06-07):** README.md restructured to emphasize two-phase setup model, intended features, and design pillars. Architecture.md clarified programmatic vs agentic paths + retrieval guidance. Setup.md expanded with detailed installation steps, Obsidian CLI requirement, troubleshooting. New speckit.md added as quick reference for SpecKit integration. Workflow.md enhanced with detailed timeline diagram and comprehensive example walkthrough (user authentication feature).
+- **Wiki Review Completed (2026-06-07):** Enforced 4 canonical tools (SpecKit, lat.md, Obsidian CLI, Caveman); updated all docs to reflect non-negotiable tooling. Standardized terminology (Conclude, Lessons). Consolidated patterns.md to index patterns.md into decision.md. Simplified speckit.md by consolidating into workflow.md (SpecKit reference section). Updated README to clarify end-state vs specification status. Total wiki files: 9 → 8.
 - **Status:** Specification-stage. Design complete; implementation pending. All wiki files are specifications for intended behavior.
-- **Canonical vs Exploratory:** Programmatic pipeline (package-based, deterministic, CI-friendly) is production default. Agentic AGENTS.md path supported for discovery/small vaults only.
-- **Critical Requirement:** Obsidian CLI (not desktop app) is mandatory for /spek.conclude automation. Desktop app is optional visualization layer.
+- **4 Canonical Tools:** lat.md (code analysis, only supported option), SpecKit (spec engine), Obsidian CLI (vault automation, mandatory), Caveman (compression). No alternatives supported.
+- **Obsidian CLI Requirement:** Mandatory for /spek.conclude automation; all spek functions fail gracefully if unavailable.
 - **Cache Key:** Use hashes above for future change detection. Recompute at next /cel.wiki.read call.
 
 Persistence
