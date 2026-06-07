@@ -1,4 +1,8 @@
-# 🔧 Spekificity
+
+<p align="center">
+  <img src="spekificity/assets/logo.png" alt="Spekificity Logo" width="100%">
+</p>
+
 **Specification-Driven Agent Development Framework** — Connects the tools you're already using.
 
 It orchestrates **SpecKit** (structured planning) + **lat.md** (code indexing—no manual search) + **Obsidian vault** (decision history) + **Caveman** mode (token efficiency) into one workflow. 
