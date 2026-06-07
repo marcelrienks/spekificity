@@ -1,31 +1,50 @@
 # Spekificity: Specification-Driven Agent Development Framework
 
-**Status: PRODUCTION READY** ✅
+## What It Does
 
-> Spekificity is a specification-driven framework for rapid AI agent development. All core features are functional: 4-stage workflow (Prepare → Plan → Implement → Conclude), deterministic spec-to-implementation pipeline, vault-backed knowledge persistence, and token-efficient context injection.
->
-> **Implementation Status:**
-> - ✅ Phase 1: Core Infrastructure (28 tasks completed)
-> - ✅ Phase 2: Vault + Code Indexing (5 tasks)
-> - ✅ Phase 3: SpecKit Orchestration (7 tasks)
-> - ✅ Phase 4: Agent Skills & Tracking (6 tasks)
-> - ✅ Phase 5: Integration & Documentation (complete)
-> - 55/60 tests passing (91.7%)
+Spekificity guides feature development through four repeatable stages: **Prepare** (load context) → **Plan** (generate specs & tasks) → **Implement** (build with memory) → **Conclude** (extract lessons). Each stage integrates best-in-class tools and workflows so agents work smarter, not harder.
+
+## What You Get
+
+**Faster, more autonomous agent work:**
+- **Token efficiency** — Code indexing (lat.md) + scoped context loading cuts wasted context by 50%+
+- **Better plans** — Spec-first workflow validates and enriches requirements, catching edge cases upfront
+- **Zero context loss** — Persistent vault (decisions, patterns, lessons) survives session-to-session; agents never re-learn past decisions
+- **Deterministic sequencing** — Four-stage workflow makes feature work repeatable, auditable, scalable
+
+**Built on proven tools:**
+- **SpecKit** — Spec generation with validation layers
+- **lat.md** — BM25-ranked code search and semantic indexing
+- **Obsidian Vault + CLI** — Git-backed markdown knowledge store
+- **Caveman Mode** — Proven 75% token savings via compression
+
+Spekificity doesn't reinvent these — it **orchestrates them** into a coherent workflow. Each tool solves one problem well; Spekificity adds sequencing, integration, and context flow so they work together instead of in silos.
+
+**Not:** A novel framework or secret sauce. **Is:** Best practices + best-in-class tools, encapsulated into one opinionated workflow.
 
 ---
 
-## What Is Spekificity?
+## Quick Start (5 Minutes)
 
-Spekificity addresses four critical problems in AI agent development:
+```bash
+# 1. Install globally (one time)
+uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
 
-| Problem | Designed Solution |
-|---------|-------------------|
-| **Token bloat** | Indexed code analysis (lat.md) + scoped context loading |
-| **Shallow planning** | Spec-first workflow with enriched validation layers |
-| **Context loss** | Persistent knowledge vault (Git-backed Obsidian vault/) |
-| **Low autonomy** | Reusable agent skills with deterministic sequencing |
+# 2. Set up a project
+cd /path/to/your/project
+git init && spek init
 
-**Value Proposition:** Enable faster feature building through deterministic specs, persistent memory, and zero context loss between sessions.
+# 3. Prepare for a feature
+spek prepare "Your feature name"
+
+# 4. Generate a plan
+spek plan "Your feature description"
+
+# 5. Start building
+spek implement --task T1.1
+```
+
+**Next:** Read [Quick Start Workflow](#quick-start-workflow) for detailed walkthrough, or [wiki/vision.md](wiki/vision.md) for design philosophy.
 
 ---
 
@@ -39,12 +58,16 @@ Spekificity addresses four critical problems in AI agent development:
 
 ---
 
-## Prerequisites
+## Requirements
+
+Minimal dependencies — all standard tools:
 
 - **Python 3.11+** — Check with `python3 --version`
-- **`uv` package manager** — [Install](https://docs.astral.sh/uv/)
-- **Git** — Initialized repository (`git init` first if needed)
-- **Obsidian CLI** — (Optional) Install via Obsidian desktop app or standalone. Required for vault exports and graph generation. See [obsidian.md/help/cli](https://obsidian.md/help/cli) for setup.
+- **`uv` package manager** — [Quick install](https://docs.astral.sh/uv/)
+- **Git** — Already initialized in your project
+- **Obsidian CLI** — *(Optional)* Only needed for vault graph exports
+
+All other dependencies install automatically via `uv tool install`.
 
 ---
 
