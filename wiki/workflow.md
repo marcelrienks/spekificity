@@ -1,19 +1,19 @@
-# Feature Development Workflow Specification
+# Feature Development Workflow
 
 ## Overview
 
-Upon completion, Spekificity will implement a deterministic, 4-stage feature development workflow:
+Spekificity implements a deterministic, 4-stage feature development workflow:
 
 - **Prepare** – Pre-flight checks and workspace setup
 - **Plan** – Write feature spec, generate implementation plan & tasks (2 sub-stages: Specification, Task Breakdown)
 - **Implement** – Execute tasks with full context
 - **Conclude** – Archive outcomes, extract lessons, sync vault, update graph
 
-**Design Intent:** Optional enhancements (context loading, dependency analysis, retrospectives) will be available at any stage. Each stage will produce durable artifacts stored in the vault.
+**Design:** Optional enhancements (context loading, dependency analysis, retrospectives) available at any stage. Each stage produces durable artifacts stored in the vault.
 
 ---
 
-## Preparation (Stage Specification)
+## Preparation
 
 ### Command
 ```
@@ -21,12 +21,12 @@ Upon completion, Spekificity will implement a deterministic, 4-stage feature dev
 ```
 
 ### Purpose
-Perform pre-flight checks before feature development begins. Will ensure workspace is ready, vault is current, lat.md index is fresh, and git state is clean.
+Perform pre-flight checks before feature development begins. Ensures workspace is ready, vault is current, lat.md index is fresh, and git state is clean.
 
-### Designed Sub-steps
+### Sub-steps
 
-| Step | Intended Action | Will Validate | Output |
-|------|-----------------|---------------|--------|
+| Step | Action | Validates | Output |
+|------|--------|-----------|--------|
 | Git Status | Check for uncommitted changes | No stale work left | Clean working tree |
 | Vault Fresh | Pull latest from Obsidian git sync | No vault conflicts | Current specs/decisions |
 | lat.md Sync | Refresh lat.md index from latest code (incremental update) | Code index reflects current state | Fresh `lat_index.db` |
@@ -56,7 +56,7 @@ Perform pre-flight checks before feature development begins. Will ensure workspa
 ```
 
 ### Purpose
-Create a detailed feature specification with enrichment layers (Success Criteria, Assumptions, Risk Assessment, Metrics).
+Create detailed feature specification with enrichment layers (Success Criteria, Assumptions, Risk Assessment, Metrics).
 
 ### Workflow
 
@@ -117,7 +117,7 @@ Each spec includes structured enrichment:
 ```
 
 ### Purpose
-Convert specification into detailed execution plan (architecture + tech choices), then break plan into dependency-ordered executable tasks. Part of Plan stage (along with spec generation).
+Convert specification into detailed execution plan (architecture + tech choices), break plan into dependency-ordered executable tasks. Part of Plan stage (along with spec generation).
 
 ### Workflow (Two-Step Process)
 

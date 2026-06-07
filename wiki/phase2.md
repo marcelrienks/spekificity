@@ -2,12 +2,12 @@
 
 ## Overview
 
-Phase 2 implements the code indexing and context injection layer. This allows Spekificity to:
+Phase 2 implements code indexing and context injection layer. Spekificity:
 
-1. Index the codebase using lat.md (BM25 lexical search)
-2. Load relevant code, decisions, and patterns for task execution
-3. Inject context into agent sessions (code snippets, prior decisions, patterns)
-4. Compress context using Caveman notation for token efficiency
+1. Indexes the codebase using lat.md (BM25 lexical search)
+2. Loads relevant code, decisions, and patterns for task execution
+3. Injects context into agent sessions (code snippets, prior decisions, patterns)
+4. Compresses context using Caveman notation for token efficiency
 
 ---
 
@@ -43,7 +43,7 @@ context = query_relevant_context("JWT authentication")
 # Returns: {"files": [...], "functions": [...]}
 ```
 
-**Fallback:** If lat.md times out or is unavailable, context loading falls back to semantic search.
+**Fallback:** If lat.md times out or is unavailable, context loading falls back to semantic search for graceful degradation.
 
 ---
 
