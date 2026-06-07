@@ -120,9 +120,9 @@ After `spek init`, optionally customize SpecKit (all defaults work, this is opti
 
 **Note:** `spek init` is **idempotent** — safe to run multiple times. Existing config preserved.
 
-### Check Obsidian CLI (Optional but Recommended)
+### Verify Obsidian CLI (Mandatory Dependency)
 
-If `/spek.conclude` (lesson extraction, graph refresh) will be used, ensure Obsidian CLI is available:
+Obsidian CLI is required and provisioned as part of `spek init`. Verify installation:
 
 ```bash
 obsidian --version
@@ -130,7 +130,7 @@ obsidian --version
 
 If missing, install via Obsidian desktop app or standalone CLI: [obsidian.md/help/cli](https://obsidian.md/help/cli)
 
-(Optional but recommended; `/spek.conclude` will warn if missing but continue without it.)
+Note: All `/spek.*` commands fail gracefully if Obsidian CLI is unavailable; functionality degrades with clear error messages.
 
 ### Tool Upgrades
 
@@ -290,16 +290,11 @@ git commit -m "Initialize Spekificity: vault, skills, SpecKit, lat.md index"
 
 ---
 
-## Next Steps
+## What's Next
 
-Ready to start feature development:
+Setup complete. `spek init` scaffold is ready.
 
-1. **Load context:** `/spek.prepare` — workspace ready, vault synced, lat.md fresh
-2. **Create spec & plan:** `/spek.plan --feature="feature-name"` — orchestrates SpecKit
-3. **Implement:** `/spek.implement` — execute tasks with full context
-4. **Archive:** `/spek.conclude` — save lessons, refresh graph, update vault
-
-See [wiki/workflow.md](../workflow.md) for complete workflow guide.
+See [wiki/workflow.md](../workflow.md) for feature development workflow using `/spek.*` commands.
 
 ---
 

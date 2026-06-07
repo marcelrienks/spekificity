@@ -1,8 +1,13 @@
 # Spekificity
 
-> **Status:** Specification-stage. This documentation describes the intended design and expected behavior of Spekificity upon completion. No aspects have been physically implemented yet; all sections are design specifications for future implementation.
+> **README Status:** This document describes Spekificity as it **will be upon completion**—the end-state after full implementation. It assumes all tools are installed and configured, and all `/spek.*` commands are functional.
 >
-> **Documentation Structure:** `/wiki/` contains design philosophy, architecture specification, and workflow guidance. `/specs/` contains detailed specifications and implementation contracts.
+> **Wiki Documentation Status:** Files in `/wiki/` (except this README) are **specifications and implementation contracts**—a wishlist of intended design and behavior. They describe what must be built. Use wiki docs to understand the design intent; use README to see the end-user experience.
+>
+> **Documentation Structure:** 
+> - `/wiki/` — Specifications (what must be implemented)
+> - `/specs/` — Detailed implementation contracts (created per feature)
+> - `README.md` — End-state documentation (after implementation complete)
 
 ## Spekificity Specification
 
@@ -142,23 +147,31 @@ STAGE 4: CONCLUDE
 
 ---
 
-## Documentation Roadmap
+## Documentation Guide
 
-### **For First-Time Users**
+### **First-Time Setup (Install & Initialize)**
 
-Start with this reading order—each doc builds on the previous:
+Follow in order:
 
-1. **[wiki/vision.md](wiki/vision.md)** — Why Spekificity exists and core philosophy (vision, principles, tenets)
-2. **[wiki/architecture.md](wiki/architecture.md)** — How components fit together (technical architecture and data flow)
-3. **[wiki/workflow.md](wiki/workflow.md)** — 4-stage feature development workflow and lifecycle
+1. **[wiki/setup.md](wiki/setup.md)** — Install Spekificity globally, run `spek init` per-project
+2. **[wiki/vision.md](wiki/vision.md)** — Understand core design (four pillars, philosophy)
+3. **[wiki/architecture.md](wiki/architecture.md)** — How components fit together (vault, lat.md, SpecKit, skills)
 
-### **For Daily Work (Reference)**
+### **First Feature Development (Specification → Implementation)**
 
-| Document | Purpose |
-|----------|---------|
-| [wiki/workflow.md](wiki/workflow.md) | staged workflow details (reference during development) |
-| [wiki/conventions.md](wiki/conventions.md) | Command naming and skill invocation |
-| [.spek/skill-index.md](.spek/skill-index.md) | Complete `/spek.*` command reference |
+1. **[wiki/workflow.md](wiki/workflow.md)** — 4-stage workflow: Prepare → Plan → Implement → Conclude
+2. **[wiki/skills.md](wiki/skills.md)** — `/spek.*` command reference
+3. **[wiki/patterns.md](wiki/patterns.md)** — Reusable patterns for common tasks
+
+### **Daily Work (Reference)**
+
+| Document | Use When |
+|----------|----------|
+| [wiki/workflow.md](wiki/workflow.md) | Executing a feature (refresh on phase entry) |
+| [wiki/skills.md](wiki/skills.md) | Looking up `/spek.*` command syntax |
+| [wiki/conventions.md](wiki/conventions.md) | Naming files, directories, specs |
+| [wiki/patterns.md](wiki/patterns.md) | Finding a reusable pattern for your task |
+| [wiki/decision.md](wiki/decision.md) | Understanding architectural choices |
 
 
 ### **Documentation Structure**
@@ -190,17 +203,6 @@ Start with this reading order—each doc builds on the previous:
 | **lat.md** | "lat.md" (indexer for docs and source) | "indexing tool", "doc-code linkage" | Markdown-native index + source metadata; primary source for context injection |
 | **Enrichment Layer** | "enrichment layers" (plural when multiple) | "context layers", "structured context" | Context-specific information added to specs/plans (Success Criteria, Assumptions, Risk Assessment, etc.) |
 | **SpecKit** | "SpecKit" or "/speckit.*" commands | "spec framework", "specification tool" | Underlying spec-driven workflow engine (upstream tool, not Spekificity-specific) |
-
----
-
-## Next Steps
-
-**New to Spekificity?** Start here:
-
-1. Read [wiki/vision.md](wiki/vision.md) for philosophy and core concepts
-2. Install globally via `uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git`
-3. Run `spek init` in your project directory to scaffold `.spek`
-4. Run generated skills through your agent workflow
 
 ---
 
@@ -255,26 +257,6 @@ Note on notation: `/spek.*` denotes generated agent skills placed in `.spek/` by
 
 Vanilla SpecKit commands remain the execution layer; Spekificity adds context loading, orchestration, and post-processing around them.
 
-## Start Here
-
-Use these documents first:
-
-- [wiki/vision.md](wiki/vision.md) — project vision, philosophy, architecture, and lifecycle framing
-- [wiki/conventions.md](wiki/conventions.md) — current command names and directory conventions
-- [wiki/workflow.md](wiki/workflow.md) — canonical workflow and Spekificity integration points
-
-## Documentation Map
-
-### Core docs
-
-- [wiki/vision.md](wiki/vision.md)
-- [wiki/architecture.md](wiki/architecture.md)
-- [wiki/workflow.md](wiki/workflow.md)
-- [wiki/conventions.md](wiki/conventions.md)
-
-### Setup notes
-
-- [wiki/setup.md](wiki/setup.md)
 
 ### Specifications by Topic
 

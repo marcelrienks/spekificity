@@ -322,7 +322,7 @@ Before moving to the final stage, verify all quality gates:
 **Sign-Off**
 - [ ] Code reviewed (if applicable)
 - [ ] All Integration Checklist items checked
-- [ ] Feature ready for archive and closeout
+- [ ] Feature ready for archive and conclude
 
 ---
 
@@ -428,7 +428,7 @@ Status: Complete
 
 **Automatic (via `/spek.conclude`):**
 - Lightweight, structured format
-- Runs as part of standard closeout workflow
+- Runs as part of standard conclude workflow
 - Suitable for most features
 - Captured: what worked, what was difficult, patterns, recommendations
 

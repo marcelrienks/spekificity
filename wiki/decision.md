@@ -365,13 +365,13 @@ Each tool rated on:
 
 ---
 
-## Decision 4: Zettelkasten Architecture for Vault Notes
+## Decision 4: Zettelkasten Architecture for Vault Notes (Recommended Default)
 
 ### Decision
 
-**Recommendation:** We strongly recommend adopting Zettelkasten conventions for vault notes: atomic notes (one concept per file), YAML frontmatter with metadata (title, type, tags, status, created, updated, source, related), filename kebab-case, and a suggested small number of wikilinks per note. These conventions enable reliable automation (auto-tagging, graph exports, and AI-friendly context injection).
+**Recommendation:** Adopt Zettelkasten conventions as the default for vault notes: atomic notes (one concept per file), YAML frontmatter with metadata (title, type, tags, status, created, updated, source, related), filename kebab-case, and 2-4 wikilinks per note. These conventions enable reliable automation (auto-tagging, graph exports, AI-friendly context injection).
 
-If a project cannot adopt the full convention immediately, the automation features will still work with less-structured markdown, but some tooling (auto-tagging, graph visualizations, and automated lesson extraction) may be degraded. We provide migration guidance and helper scripts for teams that want to progressively adopt these conventions.
+**Fallback:** If a project cannot immediately adopt full Zettelkasten structure, less-structured markdown is supported. Automation features (auto-tagging, graph visualization, lesson extraction) degrade gracefully; no failures, just reduced capability. Migration and helper scripts provided for progressive adoption.
 
 ---
 

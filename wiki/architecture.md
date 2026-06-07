@@ -101,11 +101,13 @@ Markdown structural hygiene (mandatory):
 - Prefer canonicalization and safe-merge strategies (dedupe_headings=True).
 - Route structural failures to a repair agent or human review; structural noise breaks chunking, dedupe, and indexing.
 
-Retrieval guidance
+Retrieval guidance (Canonical Architecture)
 
-- Start with lexical/BM25 retrieval for wiki-scale corpora: transparent, cost-effective, fast to index and run.
-- Add hybrid or vector layers when semantic synonymy, scale, or UX require it (large stable KBs, sub-second latency).
-- Treat agent-as-retriever (just-in-time context loading) as an auxiliary technique for freshness-critical queries or development/testing, not as the architectural default.
+Spekificity uses **lat.md as the sole code analysis tool**. Alternatives are not supported; all architecture assumes lat.md's pre-indexed MCP interface.
+
+- lat.md provides lexical (BM25) retrieval for codebase queries: transparent, cost-effective, fast
+- Incremental sync + file watcher ensure index freshness  
+- MCP tool interface optimized for agent workflows
 
 Operational heuristics
 

@@ -1,6 +1,6 @@
 # Pattern Library: Reusable Patterns from Spekificity
 
-Quick reference to 24+ patterns. Each pattern links to its authoritative spec for full details.
+Quick index to 24+ patterns. **Full specifications** are in [decision.md](decision.md), [architecture.md](architecture.md), and [workflow.md](workflow.md). Use this page to find patterns by problem; follow links to detailed specs.
 
 ---
 
@@ -37,89 +37,36 @@ Quick reference to 24+ patterns. Each pattern links to its authoritative spec fo
 
 ---
 
-## Pattern Summaries
+## Pattern Summaries (Quick Reference)
 
-### Architectural Patterns
+Full specifications available in linked documents. Follow links for complete details.
 
-**1. Decorator Wrapper** — Extend functionality without modifying internals. Wraps SpecKit with PRE (load context) → CORE (execute) → POST (validate output) layers.
-
-**2. Three-Layer Memory** — Persist context across sessions via three layers: Vault (persistent, authoritative) → Repo Memory (compressed cache) → Session Memory (ephemeral).
-
-**4. Enrichment Layer** — Inject context into SpecKit workflow phases (specify, plan, implement). PRE layer loads decisions+patterns+code graph; validates output post-execution.
-
----
-
-### Query & Analysis Patterns
-
-**3. Three-Layer Query Rule** — Hierarchical context loading: Layer 1 (Code Graph via lat.md) → Layer 2 (Vault summaries) → Layer 3 (Raw Code Files). Use lower layers first; escalate only when necessary.
-
-**5. Context Injection** — Load and inject context at pre-execution: Vault (decisions, patterns, lessons) → Repo Memory (compressed cache) → Code Graph (symbols, relationships).
-
----
-
-### Workflow Patterns
-
-**6. Feature Lifecycle** — End-to-end orchestration via 4 stages: Prepare → Specify → Plan → Implement → Conclude. Each phase validates preconditions and updates feature state.
-
-**11. Skill Chaining** — Execute dependent skills in sequence with error resilience. Explicit dependency management; retry + fallback for failures.
-
-**12. Post-Processing** — After implementation: collect artifacts → compress output → extract lessons → update vault → refresh code graph → archive session.
-
----
-
-### Memory & Knowledge Patterns
-
-**8. Zettelkasten** — Atomic notes (one concept per file) with YAML frontmatter (metadata) and wikilinks (2-4 per note). Enables automation: auto-tagging, graph exports, AI-friendly queries.
-
-**10. Auto-Tagging & Auto-Wikilink** — Keyword extraction → Vault mapping → Auto-insert wikilinks during lesson generation. Reduces manual cross-referencing labor.
-
-**17. Session-to-Vault Archival** — Convert ephemeral session context to permanent vault artifacts at feature end. Session notes → Zettelkasten format → Vault storage.
-
----
-
-### Compression & Efficiency Patterns
-
-**9. Caveman Compression** — Ultra-compressed communication style (terse, accurate). Three modes: Lite (modest), Full (substantial reduction, DEFAULT), Ultra (maximal).
-
-**22. Token Budget Tracking** — Soft limits + warnings per phase. Track usage; enable cost-aware decisions without blocking progress.
-
----
-
-### Error Handling Patterns
-
-**7. Error Categorization** — Classify errors by type (Git, Vault, Graph, LLM, User) → Apply category-specific recovery. Ensures consistent handling across all skills.
-
-**23. Fallback Hierarchy** — Graceful degradation via layered fallbacks: Layer 1 (primary) → Layer 2 (fallback) → Layer 3 (minimal). Continue with reduced capability on failure.
-
-**24. Sequential Error Recovery** — Structured pre-core-post error handling. PRE (validation, fail fast) → CORE (retry or fallback) → POST (update memory or continue).
-
----
-
-### Graph Patterns
-
-**13. Hybrid Graph** — Unify code + doc nodes in single queryable graph. Query via lat.md MCP tools; enables code+doc relationship discovery.
-
-**14. Graph Merge** — Combine heterogeneous node types: code nodes (from lat.md) + doc nodes (from Obsidian) → merged unified graph. Dedup, link discovery, backreference computation.
-
-**15. Incremental Sync** — Cache + file watching for efficient updates. SHA256 caching; node index lookup; incremental (2-5s) or full rebuild (30-60s) modes.
-
----
-
-### State Management Patterns
-
-**16. Feature State Tracking** — Track feature lifecycle phases in `.spek/memory/session/current-feature.md`. State file shows: phase, completion %, session log.
-
----
-
-### Validation Patterns
-
-**18. Anti-Sycophancy** — Flag contradictions (spec vs. vault), complexity increases, pattern deviations, tech stack drift. Violations require documented override.
-
-**19. Blind Review** — Anonymize code (remove AI markers, strip context) → Run independent checks (linting, tests, static analysis) → Flag issues independently.
-
-**20. Backprop Reflex** — Capture test failure patterns at feature end; update vault with warnings/lessons. Failures feed backward into decisions.
-
-**21. RARV Reflection** — After implementation, compare code vs. spec: Reason (identify deviations) → Act (fix code or justify change) → Reflect (update decisions) → Verify (check alignment).
+| # | Pattern | Quick Desc | Spec Location |
+|---|---------|-----------|---|
+| 1 | Decorator Wrapper | Wrap SpecKit without modification | [architecture.md](architecture.md) |
+| 2 | Three-Layer Memory | Vault → Repo Memory → Session Memory | [architecture.md](architecture.md) |
+| 3 | Three-Layer Query Rule | Layer 1 (code graph) → Layer 2 (vault) → Layer 3 (raw code) | [decision.md#decision-6](decision.md#decision-6-3-layer-query-rule-hierarchical-context-loading) |
+| 4 | Enrichment Layer | Inject context into SpecKit phases | [architecture.md](architecture.md) |
+| 5 | Context Injection | Load vault + repo memory + code graph | [architecture.md](architecture.md) |
+| 6 | Feature Lifecycle | 4 stages: Prepare → Plan → Implement → Conclude | [workflow.md](workflow.md) |
+| 7 | Error Categorization | Classify errors by type + recovery | [decision.md](decision.md) |
+| 8 | Zettelkasten | Atomic notes + YAML frontmatter + wikilinks | [decision.md#decision-4](decision.md#decision-4-zettelkasten-architecture-for-vault-notes-recommended-default) |
+| 9 | Caveman Compression | Terse, accurate output | [decision.md#decision-3](decision.md#decision-3-toolset-recommendations-for-the-four-pillars) |
+| 10 | Auto-Tagging | Keyword extraction → vault mapping → auto-insert | [decision.md#decision-5](decision.md#decision-5-auto-tagging--auto-wikilink-insertion) |
+| 11 | Skill Chaining | Execute dependent skills in sequence | [workflow.md](workflow.md) |
+| 12 | Post-Processing | Collect → compress → extract lessons → update vault → refresh | [workflow.md](workflow.md) |
+| 13 | Hybrid Graph | Unify code + doc nodes | [architecture.md](architecture.md) (future) |
+| 14 | Graph Merge | Combine code + doc node types | [architecture.md](architecture.md) (future) |
+| 15 | Incremental Sync | Cache + file watch for efficient updates | [decision.md#decision-7](decision.md#decision-7-git-hooks-integration-for-automatic-graph-refresh) |
+| 16 | Feature State Tracking | Track lifecycle phases in session memory | [workflow.md](workflow.md) |
+| 17 | Session-to-Vault Archival | Convert ephemeral → permanent vault artifacts | [decision.md#decision-5](decision.md#decision-5-auto-tagging--auto-wikilink-insertion) |
+| 18 | Anti-Sycophancy | Flag contradictions + complexity increases | [decision.md#decision-10](decision.md#decision-10-anti-sycophancy-validation-rules) |
+| 19 | Blind Review | Anon code review + independent checks | [decision.md#decision-11](decision.md#decision-11-blind-code-review-optional-second-pass-qa) |
+| 20 | Backprop Reflex | Test failures → vault warnings/lessons | [decision.md#decision-8](decision.md#decision-8-backprop-reflex-test-failures--vault-updates) |
+| 21 | RARV Reflection | Code vs. spec alignment cycle | [decision.md#decision-9](decision.md#decision-9-rarv-reflection-cycles-reason-act-reflect-verify) |
+| 22 | Token Budget Tracking | Soft limits + warnings per phase | [decision.md#decision-12](decision.md#decision-12-token-budget-model-soft-limits-not-hard-caps) |
+| 23 | Fallback Hierarchy | Graceful degradation via layered fallbacks | [architecture.md](architecture.md) |
+| 24 | Sequential Error Recovery | PRE-CORE-POST error handling | [architecture.md](architecture.md) |
 
 ---
 
@@ -165,16 +112,9 @@ Hybrid Graph, Graph Merge, Incremental Sync, Code Graph Query
 
 ---
 
-## Full Pattern Specs
+## Full Specifications
 
-For complete pattern specifications (problem statement, solution, trade-offs, when to use, example code, related patterns), see:
-
-- **Architectural Patterns:** [architecture.md](architecture.md) → Design Patterns section
-- **Workflow Patterns:** [workflow.md](workflow.md) → Feature Development Workflow
-- **Memory Patterns:** [decision.md](decision.md) → Decision 4-5 (Zettelkasten, Auto-Tagging)
-- **Query & Efficiency:** [decision.md](decision.md) → Decision 6 (3-Layer Query Rule)
-- **Error Handling:** [decision.md](decision.md) → Error Handling Patterns
-- **Validation:** [decision.md](decision.md) → Decision 10-11 (Anti-Sycophancy, Blind Review)
+For complete pattern specifications (problem statement, solution, trade-offs, when to use), see links in the Quick Reference table above.
 
 ---
 

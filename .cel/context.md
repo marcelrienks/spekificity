@@ -1,25 +1,26 @@
-Technical Brief: Spekificity — Wiki Context
+Technical Brief: Spekificity — Wiki Context (Updated)
 
 Last Deep Read: 2026-06-07 (UTC)
 
 Project Purpose
 
-- Spekificity: spec-driven agent development framework combining a Git-backed markdown vault, pre-indexed code graph (lat.md), deterministic spec engine (SpecKit), and composable agent skills to enable token-efficient, repeatable, auditable feature work.
+- Spekificity: spec-driven agent development framework combining Git-backed markdown vault, pre-indexed code graph (lat.md), deterministic spec engine (SpecKit), and composable agent skills to enable token-efficient, repeatable, auditable feature work.
+- Status: Specification-stage. All documentation describes intended design; no aspects implemented yet.
 - Install: Global via `uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git`
-- Per-project: `spek init` scaffolds `.spek/` skills and initializes SpecKit + vault
+- Per-project: `spek init` scaffolds `.spek/` skills, vault/, `.lat/` index, `specs/` directory
 
 Architecture & Tech Stack
 
-- **Four Pillars:** Token Efficiency (Caveman compression + indexed graph), Determinism (SpecKit workflow), Persistence (Git-backed Obsidian vault), Autonomy (lat.md + indexed context)
-- **Code Analysis:** lat.md is canonical (ONLY supported option). Provides pre-indexed symbols, calls, impact analysis via MCP tools. Supports incremental sync + optional file-watcher + git post-commit hooks.
-- **Vault:** Git-backed Obsidian-style markdown vault (plain `.md` files, no server). Obsidian CLI required for automation (exports, graph, lesson extraction). Desktop app optional for visualization.
-- **Spec Engine:** SpecKit (GitHub official) wraps specify CLI. Spekificity enriches via PRE (load context) → CORE (execute) → POST (validate) layers without forking SpecKit.
-- **Compression:** Caveman modes (lite|full|ultra) for token budgets. Ultra achieves ~75% reduction while preserving code/URLs/function names exactly.
+- **Four Pillars:** Token Efficiency (Caveman compression + lat.md indexed queries), Determinism (SpecKit workflow + vault tracking), Persistence (Git-backed Obsidian-style vault), Autonomy (lat.md + indexed context enables agent decision-making)
+- **Code Analysis:** lat.md is canonical (ONLY supported option). Pre-indexed symbols, calls, impact analysis via MCP tools. Incremental sync + optional file-watcher + git post-commit hooks.
+- **Vault:** Git-backed Obsidian-style markdown vault (plain `.md` files, no server). Obsidian CLI required for automation (exports, graph generation, lesson extraction). Desktop app optional for visualization.
+- **Spec Engine:** SpecKit (GitHub official) provides specify → clarify → plan → tasks → analyze → implement workflow. Spekificity enriches via PRE (context injection) → CORE (SpecKit execution) → POST (validation) layers without forking.
+- **Compression:** Caveman modes (lite|full|ultra) for token budgets. Ultra achieves ~75% reduction preserving code/URLs/function names exactly.
 - **Memory Architecture:** Three layers. Vault (persistent, authoritative, slow) | Repo Memory (compressed cache, fast) | Session State (ephemeral).
 
 Key Workflows
 
-- **Feature Cycle:** /spek.prepare → /spek.plan (orchestrates /speckit.specify + /speckit.plan + /speckit.tasks) → /spek.implement (task execution) → /spek.conclude (archive + lessons + graph refresh)
+- **Feature Cycle:** /spek.prepare (pre-flight) → /spek.plan (orchestrates /speckit.specify + /speckit.plan + /speckit.tasks) → /spek.implement (task execution) → /spek.conclude (archive + lessons + graph refresh)
 - **Spec Structure:** Feature intent → enrichment layers (Success Criteria, Assumptions, Risk Assessment, Dependencies, Resource Estimate) → stored in vault
 - **3-Layer Query Rule:** ALWAYS use hierarchically. Layer 1 (lat.md code graph, low-cost) → Layer 2 (vault summaries, moderate-cost) → Layer 3 (raw code files, high-cost). Escalate only when necessary.
 - **Post-Processing:** /spek.conclude runs automated lesson extraction, auto-tagging + auto-wikilinks, failure pattern capture (backprop reflex), spec drift detection (RARV), and lat.md refresh
@@ -32,9 +33,16 @@ Implementation Architecture
 - **Markdown Hygiene (mandatory):** No duplicate H1s, valid YAML frontmatter, parseable tables, correct nesting. Use section-aware chunking. CI lints; structural failures routed to repair agent or human review.
 - **HTML Artifact Policy:** Store generated HTML outside primary wiki pages under `wiki/artifacts/html/`. Each must embed or link export-to-markdown. Host on static site (S3/Vercel) when appropriate.
 
+SpecKit Integration
+
+- **SpecKit is upstream tool** — Spekificity wraps via decorator pattern (no fork). SpecKit provides canonical flow: /speckit.constitution → /speckit.specify → /speckit.clarify → /speckit.plan → /speckit.tasks → /speckit.analyze → /speckit.implement
+- **Spekificity Enrichment:** PRE-phase loads vault decisions/patterns/code graph (lat.md); CORE-phase runs SpecKit; POST-phase validates output alignment with decisions, flags contradictions
+- **Setup Model:** Two-phase. Global install (`uv tool install spekificity ...`) auto-installs SpecKit + lat.md + verifies Python 3.11+/git/uv. Per-project `spek init` runs `specify init .` and creates vault/`.spek`/`.lat`/specs/ structure.
+- **Obsidian CLI Requirement:** Mandatory for `/spek.conclude` automation (vault syncs, exports, graph generation, lesson extraction). Obsidian desktop app optional for visualization; CLI is required for automation.
+
 Decision Highlights (Key Decisions 1-12)
 
-- **Decision 1:** lat.md is the canonical, required code analysis tool (purpose-built for agent workflows, pre-indexed queries, MCP interface)
+- **Decision 1:** lat.md is canonical, required code analysis tool (purpose-built for agent workflows, pre-indexed queries, MCP interface)
 - **Decision 2:** Dual-system approach: Knowledge Vault (git-backed, slow, authoritative) + Code Analysis Tool (pre-indexed, fast, auto-synced on every file save)
 - **Decision 4:** Zettelkasten architecture for vault (atomic notes, YAML frontmatter, wikilink density) enables automation, graph exports, AI-friendly queries
 - **Decision 5:** Auto-tagging + auto-wikilink insertion during /spek.conclude (reduces manual linking labor, detects redundancy, prevents orphaned notes)
@@ -56,12 +64,13 @@ Documentation Map
 - wiki/patterns.md — 24 reusable patterns (architectural, query, workflow, memory, compression, error handling, validation, graph, state management), quick reference table, adoption priority
 - wiki/setup.md — Installation steps for SpecKit (global via uv), Obsidian vault (local + CLI required), lat.md (global or local), post-installation verification
 - wiki/skills.md — Command reference (/spek.* namespace: prepare, plan, implement, conclude, context, map, lessons; /lat.* code queries; /caveman compression; /context.* injection)
-- README.md — Project summary, quick start (install globally, run spek init, execute /spek.* skills), key features, target tool stack, working assumptions
+- wiki/speckit.md — SpecKit workflow reference, canonical flow, integration with Spekificity, key clarifications
+- README.md — Project summary, quick start (install globally, run spek init, execute /spek.* skills), intended features, design pillars, integrated tool stack, 4-stage workflow
 
 Working Assumptions (Core)
 
-- Workflow: 4 main stages (Prepare → Plan [2 sub-stages] → Implement → Conclude)
-- Commands: /spek.* prefix (agent skills, not shell CLI)
+- Workflow: 4 main stages (Prepare → Plan [Specification + Task Breakdown] → Implement → Conclude)
+- Commands: /spek.* prefix (agent skills, not shell CLI); /speckit.* for vanilla SpecKit
 - Wrapping: Spekificity = decorator pattern on SpecKit (no fork)
 - Vault: Markdown, Git-backed, persistent (decisions, patterns, lessons, specs)
 - Obsidian CLI: REQUIRED for automation (vault syncs, exports, graph generation, lesson extraction). Desktop app optional for visualization.
@@ -70,24 +79,24 @@ Working Assumptions (Core)
 
 MD5 Hashes (scanned files; use for cache-hit detection)
 
-- README.md: 9015905bb36664f75d994fc85247cddb
-- architecture.md: c7c318198c90ddb84e00ca62ecf9287e
+- README.md: 01e6068fd7859c7dbda08f8c7b7ee11f
+- architecture.md: 0ed6df6c041514364007eac90a7720a0
 - conventions.md: 54533079f8530ca6099f2be292afd3b5
 - decision.md: adfb1f1d0a258660c367368585d3494e
 - patterns.md: af1e65f33a78e0aaea6341e805de255b
-- setup.md: 3865eaec7ee6f98b3c948ee3bfd10359
+- setup.md: 15431ef41bce693b01d200a85de5720d
 - skills.md: e467f28d4852f26688797238c6743dc0
-- speckit.md: [not found in current scan]
+- speckit.md: 82d878cf9814e44fe6ba743071288668
 - vision.md: c3593ea9d60e9d03f159241c306ab40a
-- workflow.md: 7910becfa0ce2ee12d42683ca173e123
+- workflow.md: 587e81a9cb8dd45bf7cd02a607e31983
 
 Notes & Observations
 
-- **Recent Changes (2026-06-07):** All wiki files updated; README restructured to emphasize init-first model, decision tree, and working assumptions. Skills.md expanded with full command reference. Architecture.md clarifies programmatic pipeline vs agentic path.
+- **Recent Changes (2026-06-07):** README.md restructured to emphasize two-phase setup model, intended features, and design pillars. Architecture.md clarified programmatic vs agentic paths + retrieval guidance. Setup.md expanded with detailed installation steps, Obsidian CLI requirement, troubleshooting. New speckit.md added as quick reference for SpecKit integration. Workflow.md enhanced with detailed timeline diagram and comprehensive example walkthrough (user authentication feature).
+- **Status:** Specification-stage. Design complete; implementation pending. All wiki files are specifications for intended behavior.
 - **Canonical vs Exploratory:** Programmatic pipeline (package-based, deterministic, CI-friendly) is production default. Agentic AGENTS.md path supported for discovery/small vaults only.
 - **Critical Requirement:** Obsidian CLI (not desktop app) is mandatory for /spek.conclude automation. Desktop app is optional visualization layer.
 - **Cache Key:** Use hashes above for future change detection. Recompute at next /cel.wiki.read call.
-- **Status:** Spekificity complete when all specs in /wiki/specs/ are implemented. No MVP—tool defined entirely by wiki documentation.
 
 Persistence
 
