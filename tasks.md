@@ -821,18 +821,18 @@ Create output parser for SpecKit-generated spec.md, plan.md, and tasks from stdo
 Create validation functions to ensure specs and plans meet quality gates: testable requirements, measurable success criteria, clear task dependencies.
 
 **Acceptance Criteria:**
-- [ ] `validate_spec(spec)` checks:
+- [x] `validate_spec(spec)` checks:
   - All requirements (FR-xxx) are testable (not vague, have measurable criteria)
   - Success criteria (SC-xxx) are measurable (quantifiable, observable)
   - User stories have clear acceptance scenarios
   - Assumptions documented for ambiguities
-- [ ] `validate_plan(plan)` checks:
+- [x] `validate_plan(plan)` checks:
   - All tasks are independent or dependencies clearly marked
   - Task ordering respects dependencies (no cycles)
   - Estimated hours/tokens reasonable (< 4 hours per task typically)
   - All requirements mapped to at least one task
-- [ ] Validation returns List[ValidationError] with clear messages and remediation hints
-- [ ] Framework can proceed with warnings but not errors
+- [x] Validation returns List[ValidationError] with clear messages and remediation hints
+- [x] Framework can proceed with warnings but not errors
 
 **Subtasks:**
 1. Implement `validate_spec()` with individual checks (testability, measurable, etc.)
@@ -861,15 +861,15 @@ Create validation functions to ensure specs and plans meet quality gates: testab
 Write comprehensive tests for SpecKit wrapper, enrichment, output parsing, and validation.
 
 **Acceptance Criteria:**
-- [ ] Test file: `tests/test_speckit_wrapper.py` for wrapper orchestration
-- [ ] Test file: `tests/test_enrichment.py` for enrichment layer
-- [ ] Test file: `tests/test_output_parsing.py` for Markdown parsing
-- [ ] Test file: `tests/test_validation.py` for spec/plan validation
-- [ ] Tests include: happy path (valid spec generated), error handling (SpecKit fails), enrichment injection
-- [ ] Tests verify output is parsed into correct models
-- [ ] Tests for validation: spec with testable requirements passes, vague requirements fail
-- [ ] At least 80% code coverage
-- [ ] All tests pass: `pytest tests/test_speckit* -v`
+- [x] Test file: `tests/test_speckit_wrapper.py` for wrapper orchestration
+- [x] Test file: `tests/test_enrichment.py` for enrichment layer
+- [x] Test file: `tests/test_output_parsing.py` for Markdown parsing
+- [x] Test file: `tests/test_validation.py` for spec/plan validation
+- [x] Tests include: happy path (valid spec generated), error handling (SpecKit fails), enrichment injection
+- [x] Tests verify output is parsed into correct models
+- [x] Tests for validation: spec with testable requirements passes, vague requirements fail
+- [x] At least 80% code coverage
+- [x] All tests pass: `pytest tests/test_speckit* -v`
 
 **Subtasks:**
 1. Create fixtures: sample feature descriptions, valid specs/plans, invalid specs
@@ -897,13 +897,13 @@ Write comprehensive tests for SpecKit wrapper, enrichment, output parsing, and v
 Write end-to-end integration test for complete spec → plan workflow: feature description through task list generation.
 
 **Acceptance Criteria:**
-- [ ] Test file: `tests/test_e2e_spec_plan.py`
-- [ ] Test case: provide feature description → generate spec → generate plan → get tasks
-- [ ] Verify spec is valid Markdown with all required sections
-- [ ] Verify plan references spec and has architecture + sequencing
-- [ ] Verify tasks are independent, ordered by dependency, have IDs and descriptions
-- [ ] Verify vault decisions are consulted during generation (decisions appear in enrichment)
-- [ ] Full workflow completes in < 3 minutes (per SC-003 requirement)
+- [x] Test file: `tests/test_e2e_spec_plan.py`
+- [x] Test case: provide feature description → generate spec → generate plan → get tasks
+- [x] Verify spec is valid Markdown with all required sections
+- [x] Verify plan references spec and has architecture + sequencing
+- [x] Verify tasks are independent, ordered by dependency, have IDs and descriptions
+- [x] Verify vault decisions are consulted during generation (decisions appear in enrichment)
+- [x] Full workflow completes in < 3 minutes (per SC-003 requirement)
 
 **Subtasks:**
 1. Create end-to-end test harness

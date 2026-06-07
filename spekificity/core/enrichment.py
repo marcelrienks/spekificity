@@ -58,10 +58,12 @@ class EnrichmentFormatter:
 
         for pattern in patterns[:self.max_patterns]:
             output += f"### {pattern.title} ({pattern.category})\n\n"
-            output += f"**Problem:** {pattern.problem}\n\n"
-            output += f"**Solution:** {pattern.solution}\n\n"
-            if pattern.trade_offs:
-                output += f"**Trade-offs:** {pattern.trade_offs}\n\n"
+            if pattern.problem:
+                output += f"**Problem:** {pattern.problem}\n\n"
+            if pattern.solution:
+                output += f"**Solution:** {pattern.solution}\n\n"
+            if pattern.when_to_use:
+                output += f"**When to Use:** {pattern.when_to_use}\n\n"
 
         return output
 

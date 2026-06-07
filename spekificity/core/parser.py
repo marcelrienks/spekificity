@@ -8,8 +8,6 @@ from typing import Dict, Any, List, Optional
 from pathlib import Path
 import yaml
 
-from spekificity.core.types import Spec, Plan, Task
-
 
 class MarkdownParser:
     """Parse Markdown documents into typed models."""

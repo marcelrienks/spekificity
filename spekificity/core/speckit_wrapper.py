@@ -15,7 +15,7 @@ from spekificity.integrations.speckit import (
     check_speckit_version
 )
 from spekificity.core.context import ContextLoader, format_context_for_agent
-from spekificity.core.types import Decision, Pattern
+from spekificity.core.types import Decision, Pattern, Task
 
 
 def create_enrichment_preamble(
