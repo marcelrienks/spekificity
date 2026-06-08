@@ -27,13 +27,12 @@ def is_git_repo() -> bool:
 
 def initialize_project() -> bool:
     """Initialize Spekificity in current project.
-    
+
     Creates:
     - vault/ (with decisions.md, patterns.md, lessons/)
     - .spek/ (skills and configuration)
-    - specs/ (feature specifications directory)
-    - .specify/ (SpecKit configuration, if not exists)
-    
+    - .specify/ (SpecKit configuration via specify init)
+
     Returns:
         True if initialization successful
     """
@@ -66,19 +65,14 @@ def initialize_project() -> bool:
     (spek_path / "memory").mkdir(exist_ok=True)
     (spek_path / "skills").mkdir(exist_ok=True)
     click.echo(f"✓ Created .spek directory at {spek_path}/")
-    
-    # Create specs directory
-    specs_path = cwd / "specs"
-    specs_path.mkdir(exist_ok=True)
-    click.echo(f"✓ Created specs directory at {specs_path}/")
-    
+
     # Initialize SpecKit per-project (if not already done)
     specify_path = cwd / ".specify"
     if not specify_path.exists():
         try:
             subprocess.run(
                 ["specify", "init", "."],
-                capture_output=True,
+                input=b"y\n",
                 timeout=30
             )
             click.echo(f"✓ Initialized SpecKit configuration")

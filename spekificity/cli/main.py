@@ -46,7 +46,7 @@ def cli(ctx: click.Context, version: bool, verbose: bool, debug: bool) -> None:
 def init(ctx: click.Context) -> None:
     """Initialize Spekificity in current project.
 
-    Creates vault/, .spek/, specs/ directories and initializes per-project configuration.
+    Creates vault/, .spek/ directories and initializes SpecKit configuration.
     """
     try:
         run_init(verbose=ctx.obj.get("verbose", False))
