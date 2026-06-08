@@ -98,14 +98,16 @@ def initialize_project() -> bool:
 
     click.echo("✓ Git repository detected")
 
-    # Create vault directory structure
-    vault_path = cwd / "vault"
+    # Create .spek directory first
+    spek_path = cwd / ".spek"
+    spek_path.mkdir(exist_ok=True)
+
+    # Create vault directory structure inside .spek
+    vault_path = spek_path / "vault"
     create_vault_structure(vault_path)
     click.echo(f"✓ Created vault structure at {vault_path}/")
 
-    # Create .spek directory
-    spek_path = cwd / ".spek"
-    spek_path.mkdir(exist_ok=True)
+    # Create remaining .spek subdirectories
     (spek_path / "memory").mkdir(exist_ok=True)
     (spek_path / "skills").mkdir(exist_ok=True)
     click.echo(f"✓ Created .spek directory at {spek_path}/")

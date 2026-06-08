@@ -15,7 +15,7 @@ from spekificity.integrations.semantic_search import SemanticSearcher, search_re
 class ContextLoader:
     """Load and manage context for task execution."""
     
-    def __init__(self, project_path: str = ".", vault_path: str = "vault"):
+    def __init__(self, project_path: str = ".", vault_path: str = ".spek/vault"):
         self.project_path = Path(project_path)
         self.vault = Vault(vault_path)
         self.lat_index = LatMdIndex(project_path)
@@ -248,7 +248,7 @@ def load_context_for_task(
     task_id: str,
     task_description: str,
     project_path: str = ".",
-    vault_path: str = "vault",
+    vault_path: str = ".spek/vault",
     compressed: bool = False
 ) -> str:
     """Load and format context for a task (convenience function).

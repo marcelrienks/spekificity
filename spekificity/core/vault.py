@@ -11,7 +11,7 @@ import yaml
 class Vault:
     """Interface for vault operations (decisions, patterns, lessons)."""
     
-    def __init__(self, vault_path: str = "vault"):
+    def __init__(self, vault_path: str = ".spek/vault"):
         self.path = Path(vault_path)
         self.decisions_file = self.path / "decisions.md"
         self.patterns_file = self.path / "patterns.md"
@@ -191,7 +191,7 @@ def create_vault_structure(vault_path: Path) -> None:
             vault_file.write_text(template_path.read_text())
 
 
-def load_vault(vault_path: str = "vault") -> Vault:
+def load_vault(vault_path: str = ".spek/vault") -> Vault:
     """Load a vault instance.
     
     Args:
