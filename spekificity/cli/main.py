@@ -60,15 +60,18 @@ def cli(ctx: click.Context, version: bool, verbose: bool, color: bool, debug: bo
 
     Transform feature intent into executable specifications and persistent knowledge.
 
-    Usage:
+    CLI Commands (for project initialization):
         spek --help                 Show this help message
         spek --version              Show version
-        spek <command> --help       Show command help
-        spek init                   Initialize project
-        spek prepare [FEATURE]      Onboard to feature, load context
-        spek plan [FEATURE]         Generate spec, plan, tasks
-        spek implement [TASK]       Execute task with context injection
-        spek conclude [FEATURE]     Analyze outcomes, update vault
+        spek init                   Initialize Spekificity in project
+
+    Agent Skills (for interactive workflows - use in Claude Code):
+        /spek.prepare [FEATURE]     Load prior context, onboard to feature
+        /spek.plan [FEATURE]        Generate spec, plan, and tasks
+        /spek.implement [FEATURE]   Execute tasks with context injection
+        /spek.conclude              Analyze outcomes, extract lessons, update vault
+
+    Documentation: wiki/skills.md
     """
     if version:
         click.echo(f"spek version {__version__}")
@@ -199,290 +202,73 @@ def prepare(ctx: click.Context, feature: Optional[str], no_index: bool, compress
         sys.exit(1)
 
 
-@cli.command(short_help="Generate spec, clarify, plan implementation")
+@cli.command(short_help="[DEPRECATED] Use agent skill instead")
 @click.argument("feature", required=False)
-@click.option("--skip-prepare", is_flag=True, help="Skip prepare phase")
-@click.option("--no-clarify", is_flag=True, help="Skip ambiguity clarification")
 @click.pass_context
-def plan(ctx: click.Context, feature: Optional[str], skip_prepare: bool, no_clarify: bool) -> None:
-    """Generate specification and implementation plan.
+def plan(ctx: click.Context, feature: Optional[str]) -> None:
+    """[DEPRECATED] Generate specification and implementation plan.
 
-    Converts feature description to spec.md, identifies ambiguities,
-    and generates plan.md and tasks.md.
+    This CLI command is deprecated. Use the agent skill instead:
+      /spek.plan [feature-name]
+
+    The interactive workflow (spec → clarification → plan → tasks) requires
+    Claude Code agent context, not a pure CLI invocation.
+
+    For documentation: wiki/skills.md#spek.plan
     """
-    cwd = Path.cwd()
-    vault_path = cwd / "vault"
-    specs_path = cwd / "specs"
-
-    if not vault_path.exists():
-        click.echo("❌ Error: Not in a Spekificity project. Run 'spek init' first")
-        sys.exit(1)
-
-    if not feature:
-        click.echo("❌ Error: Feature description required. Usage: spek plan 'Your feature description'")
-        sys.exit(1)
-
-    click.echo("❯ Planning feature implementation...")
-    click.echo(f"  Feature: {feature}")
-
-    try:
-        # Load vault for context enrichment
-        vault = load_vault(str(vault_path))
-        decisions = vault.load_decisions()
-        patterns = vault.load_patterns()
-
-        click.echo()
-        click.echo("## Specification Generation")
-        click.echo("  Loading vault context for enrichment...")
-        click.echo(f"    - {len(decisions)} prior decisions")
-        click.echo(f"    - {len(patterns)} design patterns")
-
-        # Create feature-specific output directory
-        feature_slug = feature.lower().replace(" ", "-")[:30]
-        output_dir = specs_path / feature_slug
-        output_dir.mkdir(parents=True, exist_ok=True)
-
-        # Run SpecKit specify with vault context
-        click.echo("  Running SpecKit specify command...")
-        try:
-            spec_result = run_specify(
-                feature_intent=feature,
-                project_path=str(cwd),
-                vault_path=str(vault_path),
-                output_dir=str(output_dir)
-            )
-
-            spec_file = output_dir / "spec.md"
-            click.echo(f"  ✓ Specification generated: {spec_file}")
-
-            # Validate spec
-            click.echo("  Validating specification...")
-            validation = validate_spec(str(spec_file), str(output_dir))
-            if validation.get("valid"):
-                click.echo("  ✓ Specification valid")
-            else:
-                click.echo("  ⚠ Specification has validation warnings")
-
-        except SpecKitError as e:
-            click.echo(f"  ⚠ SpecKit error: {e}")
-            click.echo("  (Ensure SpecKit v0.9.6+ is installed: uv tool install speckit>=0.9.6)")
-            sys.exit(1)
-
-        click.echo()
-        click.echo("## Ambiguity Clarification")
-        if not no_clarify:
-            click.echo("  Identifying ambiguities in specification...")
-            click.echo("  (Interactive clarification would occur here)")
-        else:
-            click.echo("  (Skipped: using default assumptions)")
-
-        click.echo()
-        click.echo("## Plan Generation")
-        click.echo("  Running SpecKit plan command...")
-
-        # Run SpecKit plan with enrichment
-        try:
-            spec_content = spec_file.read_text()
-            plan_result = run_plan(
-                spec_content=spec_content,
-                project_path=str(cwd),
-                vault_path=str(vault_path),
-                output_dir=str(output_dir)
-            )
-
-            plan_file = output_dir / "plan.md"
-            tasks_file = output_dir / "tasks.md"
-
-            if plan_file.exists():
-                click.echo(f"  ✓ Plan generated: {plan_file}")
-            if tasks_file.exists():
-                click.echo(f"  ✓ Tasks generated: {tasks_file}")
-
-        except SpecKitError as e:
-            click.echo(f"  ⚠ SpecKit plan error: {e}")
-
-        click.echo()
-        click.echo("✓ Specification, plan, and tasks generated")
-        click.echo("  Output directory: " + str(output_dir))
-        click.echo("    - spec.md: Feature specification")
-        click.echo("    - plan.md: Implementation architecture")
-        click.echo("    - tasks.md: Prioritized task list")
-
-        click.echo()
-        click.echo(f"Next: spek implement --task T1.1")
-
-    except Exception as e:
-        click.echo(f"❌ Error: {e}", err=True)
-        sys.exit(1)
+    click.echo(
+        "Error: 'spek plan' requires Claude Code agent context. Use the agent skill:\n\n"
+        "  /spek.plan [feature-name]\n\n"
+        "This interactive workflow generates spec → clarification → plan → tasks with your input.\n"
+        "Documentation: wiki/skills.md#spek.plan"
+    )
+    sys.exit(1)
 
 
-@cli.command(short_help="Execute task with context injection")
+@cli.command(short_help="[DEPRECATED] Use agent skill instead")
 @click.argument("task", required=False)
-@click.option("--task", "task_id", help="Task ID (e.g., T1.1)")
-@click.option("--resume", is_flag=True, help="Resume interrupted task")
-@click.option("--list", "list_tasks", is_flag=True, help="List all tasks")
-@click.option("--mark-complete", is_flag=True, help="Mark task as complete")
-@click.option("--skip-context", is_flag=True, help="Skip context injection")
 @click.pass_context
-def implement(
-    ctx: click.Context,
-    task: Optional[str],
-    task_id: Optional[str],
-    resume: bool,
-    list_tasks: bool,
-    mark_complete: bool,
-    skip_context: bool,
-) -> None:
-    """Execute implementation task.
+def implement(ctx: click.Context, task: Optional[str]) -> None:
+    """[DEPRECATED] Execute implementation task.
 
-    Injects relevant context (decisions, patterns, code), tracks progress,
-    logs decisions made during implementation.
+    This CLI command is deprecated. Use the agent skill instead:
+      /spek.implement [feature-name|spec-file] [--steps N]
+
+    The interactive workflow (context injection, task execution, decision logging)
+    requires Claude Code agent context, not a pure CLI invocation.
+
+    For documentation: wiki/skills.md#spek.implement
     """
-    cwd = Path.cwd()
-    vault_path = cwd / "vault"
-    logs_path = cwd / ".specify" / "logs"
-
-    if not vault_path.exists():
-        click.echo("❌ Error: Not in a Spekificity project. Run 'spek init' first")
-        sys.exit(1)
-
-    click.echo("❯ Implementing task...")
-
-    task_to_use = task_id or task
-
-    if list_tasks:
-        click.echo("  Available tasks would be listed here")
-        click.echo("  (Requires tasks.md parsing)")
-        return
-
-    if not task_to_use and not list_tasks:
-        click.echo("❌ Error: Task ID required. Usage: spek implement --task T1.1")
-        sys.exit(1)
-
-    try:
-        click.echo(f"  Task: {task_to_use}")
-
-        if not skip_context:
-            # Load context from vault
-            vault = load_vault(str(vault_path))
-            decisions = vault.load_decisions()
-            patterns = vault.load_patterns()
-
-            click.echo()
-            click.echo("## Task Context Loaded")
-            click.echo(f"  - Decisions: {len(decisions)} available")
-            click.echo(f"  - Patterns: {len(patterns)} available")
-
-            # Try to load code context via lat.md
-            try:
-                index = load_index(str(cwd))
-                context = query_relevant_context(task_to_use, str(cwd), max_files=5)
-                files = context.get("files", [])
-                if files:
-                    click.echo(f"  - Relevant code files: {len(files)} found via lat.md")
-            except Exception:
-                click.echo("  - Relevant code files: [lat.md unavailable, fallback semantic search]")
-        else:
-            click.echo()
-            click.echo("## Context Injection Skipped")
-
-        # Initialize progress log
-        logs_path.mkdir(parents=True, exist_ok=True)
-        log_file = logs_path / f"{task_to_use}.log"
-
-        click.echo()
-        click.echo("## Progress Log")
-        click.echo(f"  File: {log_file}")
-        click.echo("  Status: In Progress")
-
-        click.echo()
-        click.echo("✓ Agent session started. Context injected.")
-        click.echo(f"  When complete: spek implement --task {task_to_use} --mark-complete")
-
-    except Exception as e:
-        click.echo(f"❌ Error: {e}", err=True)
-        sys.exit(1)
+    click.echo(
+        "Error: 'spek implement' requires Claude Code agent context. Use the agent skill:\n\n"
+        "  /spek.implement [feature-name|spec-file] [--steps N]\n\n"
+        "This interactive workflow executes tasks with context injection and progress tracking.\n"
+        "Documentation: wiki/skills.md#spek.implement"
+    )
+    sys.exit(1)
 
 
-@cli.command(short_help="Analyze outcomes, update vault")
+@cli.command(short_help="[DEPRECATED] Use agent skill instead")
 @click.argument("feature", required=False)
-@click.option("--feature", "feature_name", help="Feature branch or spec ID")
-@click.option("--all", "conclude_all", is_flag=True, help="Conclude all completed features")
-@click.option("--export-vault", is_flag=True, help="Export vault using Obsidian CLI")
-@click.option("--dry-run", is_flag=True, help="Show what would be concluded")
 @click.pass_context
-def conclude(
-    ctx: click.Context,
-    feature: Optional[str],
-    feature_name: Optional[str],
-    conclude_all: bool,
-    export_vault: bool,
-    dry_run: bool,
-) -> None:
-    """Conclude feature development.
+def conclude(ctx: click.Context, feature: Optional[str]) -> None:
+    """[DEPRECATED] Conclude feature development.
 
-    Analyzes outcomes vs success criteria, extracts lessons,
-    updates vault with new patterns and decisions.
+    This CLI command is deprecated. Use the agent skill instead:
+      /spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]
+
+    The interactive workflow (analysis, lessons extraction, vault sync)
+    requires Claude Code agent context, not a pure CLI invocation.
+
+    For documentation: wiki/skills.md#spek.conclude
     """
-    cwd = Path.cwd()
-    vault_path = cwd / "vault"
-    logs_path = cwd / ".specify" / "logs"
-
-    if not vault_path.exists():
-        click.echo("❌ Error: Not in a Spekificity project. Run 'spek init' first")
-        sys.exit(1)
-
-    feature_to_use = feature_name or feature
-
-    click.echo("❯ Concluding feature...")
-    if feature_to_use:
-        click.echo(f"  Feature: {feature_to_use}")
-
-    try:
-        if dry_run:
-            click.echo("  (Dry-run mode: no changes will be made)")
-
-        click.echo()
-        click.echo("## Outcomes Analysis")
-        click.echo("  Analyzing implementation logs...")
-
-        # Load vault to report on what would be updated
-        vault = load_vault(str(vault_path))
-        decisions = vault.load_decisions()
-        patterns = vault.load_patterns()
-
-        click.echo(f"  Current vault state:")
-        click.echo(f"    - {len(decisions)} decisions")
-        click.echo(f"    - {len(patterns)} patterns")
-
-        click.echo()
-        click.echo("## Lesson Extraction")
-        click.echo("  Extracting insights from implementation...")
-        if logs_path.exists():
-            log_files = list(logs_path.glob("*.log"))
-            click.echo(f"  Progress logs found: {len(log_files)}")
-        else:
-            click.echo("  No progress logs found")
-
-        click.echo()
-        click.echo("## Vault Update")
-        if not dry_run:
-            click.echo("  - New decisions appended to vault/decisions.md")
-            click.echo("  - New patterns appended to vault/patterns.md")
-            click.echo("  - Lessons written to vault/lessons/")
-        else:
-            click.echo("  [DRY-RUN: would update vault]")
-            click.echo("  - New decisions would append to vault/decisions.md")
-            click.echo("  - New patterns would append to vault/patterns.md")
-            click.echo("  - Lessons would write to vault/lessons/")
-
-        click.echo()
-        click.echo("✓ Feature conclusion complete")
-        click.echo("  Ready for next feature: spek prepare 'next feature'")
-
-    except Exception as e:
-        click.echo(f"❌ Error: {e}", err=True)
-        sys.exit(1)
+    click.echo(
+        "Error: 'spek conclude' requires Claude Code agent context. Use the agent skill:\n\n"
+        "  /spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]\n\n"
+        "This interactive workflow analyzes outcomes, extracts lessons, and updates the vault.\n"
+        "Documentation: wiki/skills.md#spek.conclude"
+    )
+    sys.exit(1)
 
 
 def main() -> None:

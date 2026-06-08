@@ -10,7 +10,30 @@ Spekificity exposes agent skills and commands for specification-driven developme
 - Analysis commands: `/lat.query`, `/lat.sync` (lat.md MCP tools)
 - Compression: `/caveman` mode commands
 
-**Note:** Slash-prefixed forms (`/spek.prepare`, `/spek.plan`, etc.) are the canonical notation used in all documentation and agent prompts. When running commands via CLI directly, use the same form: `spek prepare`, `spek plan`, etc. (without slash).
+**Note:** Slash-prefixed forms (`/spek.prepare`, `/spek.plan`, `/spek.implement`, `/spek.conclude`) are **agent skills** invoked in Claude Code (they require interactive user context). These are NOT CLI commands. Only `spek init` is a CLI command. All workflow skills are registered in `.claude/skills/` and require Claude Code agent environment to execute. Using `spek prepare`, `spek plan`, etc. from CLI will show an error directing you to use the agent skill syntax instead.
+
+## Agent Skill Registration
+
+All Spekificity workflow skills are defined as markdown files in `.claude/skills/`:
+- `spek-prepare.md` — Load context and onboard to feature
+- `spek-plan.md` — Generate spec, clarify ambiguities, plan implementation
+- `spek-implement.md` — Execute tasks with context injection and decision logging
+- `spek-conclude.md` — Analyze outcomes, extract lessons, update vault
+
+Each skill definition includes:
+- Purpose and usage syntax
+- Complete workflow with phases
+- Context injection mechanism (vault, code-index, constitution)
+- Input/output specifications
+- Examples and invocation variants
+
+**Invocation:** Use in Claude Code prompt or chat:
+```
+/spek.prepare "Feature name"
+/spek.plan [feature-name|spec-file]
+/spek.implement [feature-name] [--steps N]
+/spek.conclude [--caveman-mode=full|lite|ultra]
+```
 
 ---
 
