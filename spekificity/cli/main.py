@@ -19,23 +19,7 @@ from spekificity.cli.logging_config import setup_logging, CLIError, handle_error
 @click.option("--debug", is_flag=True, help="Enable debug logging (very verbose).")
 @click.pass_context
 def cli(ctx: click.Context, version: bool, verbose: bool, color: bool, debug: bool) -> None:
-    """Spekificity: Spec-driven agent development framework.
-
-    Transform feature intent into executable specifications and persistent knowledge.
-
-    CLI Commands (for project initialization):
-        spek --help                 Show this help message
-        spek --version              Show version
-        spek init                   Initialize Spekificity in project
-
-    Agent Skills (for interactive workflows - use in Claude Code):
-        /spek.prepare [FEATURE]     Load prior context, onboard to feature
-        /spek.plan [FEATURE]        Generate spec, plan, and tasks
-        /spek.implement [FEATURE]   Execute tasks with context injection
-        /spek.conclude              Analyze outcomes, extract lessons, update vault
-
-    Documentation: wiki/skills.md
-    """
+    """Spekificity: Spec-driven agent development framework."""
     if version:
         click.echo(f"spek version {__version__}")
         sys.exit(0)
