@@ -10,11 +10,12 @@ from spekificity import __version__
 from spekificity.cli.init import run_init
 from spekificity.core.vault import load_vault
 from spekificity.core.context import ContextLoader
-from spekificity.core.speckit_wrapper import run_specify, run_plan
+from spekificity.core.speckit_wrapper import run_specify, run_plan, validate_spec
 from spekificity.core.progress import ProgressLogger
 from spekificity.core.decisions import DecisionLogger
 from spekificity.integrations.lat_md import load_index, query_relevant_context
 from spekificity.integrations.semantic_search import SemanticSearcher
+from spekificity.integrations.speckit import SpecKitError
 
 
 class SpekGroup(click.Group):
@@ -203,8 +204,37 @@ def plan(ctx: click.Context, feature: Optional[str], skip_prepare: bool, no_clar
         click.echo("  Loading vault context for enrichment...")
         click.echo(f"    - {len(decisions)} prior decisions")
         click.echo(f"    - {len(patterns)} design patterns")
+
+        # Create feature-specific output directory
+        feature_slug = feature.lower().replace(" ", "-")[:30]
+        output_dir = specs_path / feature_slug
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Run SpecKit specify with vault context
         click.echo("  Running SpecKit specify command...")
-        click.echo("  (Full implementation requires SpecKit v0.9.6+ installed)")
+        try:
+            spec_result = run_specify(
+                feature_intent=feature,
+                project_path=str(cwd),
+                vault_path=str(vault_path),
+                output_dir=str(output_dir)
+            )
+
+            spec_file = output_dir / "spec.md"
+            click.echo(f"  ✓ Specification generated: {spec_file}")
+
+            # Validate spec
+            click.echo("  Validating specification...")
+            validation = validate_spec(str(spec_file), str(output_dir))
+            if validation.get("valid"):
+                click.echo("  ✓ Specification valid")
+            else:
+                click.echo("  ⚠ Specification has validation warnings")
+
+        except SpecKitError as e:
+            click.echo(f"  ⚠ SpecKit error: {e}")
+            click.echo("  (Ensure SpecKit v0.9.6+ is installed: uv tool install speckit>=0.9.6)")
+            sys.exit(1)
 
         click.echo()
         click.echo("## Ambiguity Clarification")
@@ -217,15 +247,37 @@ def plan(ctx: click.Context, feature: Optional[str], skip_prepare: bool, no_clar
         click.echo()
         click.echo("## Plan Generation")
         click.echo("  Running SpecKit plan command...")
-        click.echo("  Generating architecture overview and sequencing...")
-        click.echo(f"  Output directory: specs/{feature.lower().replace(' ', '-')}/")
+
+        # Run SpecKit plan with enrichment
+        try:
+            spec_content = spec_file.read_text()
+            plan_result = run_plan(
+                spec_content=spec_content,
+                project_path=str(cwd),
+                vault_path=str(vault_path),
+                output_dir=str(output_dir)
+            )
+
+            plan_file = output_dir / "plan.md"
+            tasks_file = output_dir / "tasks.md"
+
+            if plan_file.exists():
+                click.echo(f"  ✓ Plan generated: {plan_file}")
+            if tasks_file.exists():
+                click.echo(f"  ✓ Tasks generated: {tasks_file}")
+
+        except SpecKitError as e:
+            click.echo(f"  ⚠ SpecKit plan error: {e}")
 
         click.echo()
         click.echo("✓ Specification, plan, and tasks generated")
-        click.echo("  See specs/ directory for output:")
+        click.echo("  Output directory: " + str(output_dir))
         click.echo("    - spec.md: Feature specification")
         click.echo("    - plan.md: Implementation architecture")
         click.echo("    - tasks.md: Prioritized task list")
+
+        click.echo()
+        click.echo(f"Next: spek implement --task T1.1")
 
     except Exception as e:
         click.echo(f"❌ Error: {e}", err=True)
