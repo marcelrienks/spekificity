@@ -89,12 +89,12 @@ def initialize_project() -> bool:
     click.echo()
     click.echo("✓ Spekificity initialized successfully!")
     click.echo()
-    click.echo("Next steps:")
+    click.echo("Next steps (use agent skills in Claude Code):")
     click.echo("  1. Review vault structure: ls -la vault/")
-    click.echo("  2. Start with: spek prepare [FEATURE_NAME]")
-    click.echo("  3. Plan feature: spek plan [FEATURE_DESCRIPTION]")
-    click.echo("  4. Implement: spek implement [TASK_ID]")
-    click.echo("  5. Conclude: spek conclude [FEATURE_NAME]")
+    click.echo("  2. Load context: /spek.prepare [FEATURE_NAME]")
+    click.echo("  3. Plan feature: /spek.plan [FEATURE_DESCRIPTION]")
+    click.echo("  4. Implement: /spek.implement [FEATURE_NAME]")
+    click.echo("  5. Conclude: /spek.conclude [FEATURE_NAME]")
     
     return True
 

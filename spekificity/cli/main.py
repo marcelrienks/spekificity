@@ -15,10 +15,9 @@ from spekificity.cli.logging_config import setup_logging, CLIError, handle_error
 )
 @click.option("--version", is_flag=True, help="Show version and exit.")
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output.")
-@click.option("--color/--no-color", default=True, help="Enable/disable colored output.")
 @click.option("--debug", is_flag=True, help="Enable debug logging (very verbose).")
 @click.pass_context
-def cli(ctx: click.Context, version: bool, verbose: bool, color: bool, debug: bool) -> None:
+def cli(ctx: click.Context, version: bool, verbose: bool, debug: bool) -> None:
     """Spekificity: Spec-driven agent development framework."""
     if version:
         click.echo(f"spek version {__version__}")
@@ -34,7 +33,6 @@ def cli(ctx: click.Context, version: bool, verbose: bool, color: bool, debug: bo
     # Store global options in context
     ctx.ensure_object(dict)
     ctx.obj["verbose"] = verbose_mode
-    ctx.obj["color"] = color
     ctx.obj["debug"] = debug
     ctx.obj["logger"] = logger
 
