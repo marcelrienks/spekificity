@@ -27,9 +27,9 @@ Fix architectural mismatch: `/spek.prepare`, `/spek.plan`, `/spek.implement`, `/
 - **Phase 6 (US4 - Architecture Clarity)**: Pending — Updating wiki/skills.md
 - **Phase 7 (Polish & Validation)**: Pending — Final validation and commits
 
-### Agent Skills Invocation
+### Invocation
 
-**Primary workflow** (all interactive, require Claude Code agent context):
+**Agent Skills** (all interactive, require Claude Code context):
 
 ```bash
 /spek.prepare [feature-name]        # Load prior context, onboard to feature
@@ -38,17 +38,13 @@ Fix architectural mismatch: `/spek.prepare`, `/spek.plan`, `/spek.implement`, `/
 /spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run] # Analyze, extract lessons, update vault
 ```
 
-**CLI command** (for project initialization only):
+**CLI Command** (project initialization only):
 
 ```bash
 spek init                           # Initialize Spekificity in project
 ```
 
-**⚠️ Deprecated CLI commands** (replaced by agent skills):
-- `spek prepare` → Use `/spek.prepare` instead
-- `spek plan` → Use `/spek.plan` instead  
-- `spek implement` → Use `/spek.implement` instead
-- `spek conclude` → Use `/spek.conclude` instead
+**Note**: Only `spek init` is available as a CLI command. All workflow commands are agent skills in Claude Code (marked with `/spek.*` prefix).
 
 ### Key Files to Know (Feature 002)
 
