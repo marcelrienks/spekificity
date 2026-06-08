@@ -1,6 +1,7 @@
 """Spekificity CLI entry point and command router."""
 
 import sys
+import logging
 from typing import Optional
 from pathlib import Path
 
@@ -8,6 +9,7 @@ import click
 
 from spekificity import __version__
 from spekificity.cli.init import run_init
+from spekificity.cli.logging_config import setup_logging, CLIError, handle_error
 from spekificity.core.vault import load_vault
 from spekificity.core.context import ContextLoader
 from spekificity.core.speckit_wrapper import run_specify, run_plan, validate_spec
@@ -51,12 +53,13 @@ class SpekGroup(click.Group):
 @click.option("--version", is_flag=True, help="Show version and exit.")
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output.")
 @click.option("--color/--no-color", default=True, help="Enable/disable colored output.")
+@click.option("--debug", is_flag=True, help="Enable debug logging (very verbose).")
 @click.pass_context
-def cli(ctx: click.Context, version: bool, verbose: bool, color: bool) -> None:
+def cli(ctx: click.Context, version: bool, verbose: bool, color: bool, debug: bool) -> None:
     """Spekificity: Spec-driven agent development framework.
-    
+
     Transform feature intent into executable specifications and persistent knowledge.
-    
+
     Usage:
         spek --help                 Show this help message
         spek --version              Show version
@@ -70,12 +73,21 @@ def cli(ctx: click.Context, version: bool, verbose: bool, color: bool) -> None:
     if version:
         click.echo(f"spek version {__version__}")
         sys.exit(0)
-    
+
+    # Setup logging
+    verbose_mode = verbose or debug
+    logger = setup_logging(verbose=verbose_mode)
+
+    if debug:
+        logger.debug("Debug mode enabled")
+
     # Store global options in context
     ctx.ensure_object(dict)
-    ctx.obj["verbose"] = verbose
+    ctx.obj["verbose"] = verbose_mode
     ctx.obj["color"] = color
-    
+    ctx.obj["debug"] = debug
+    ctx.obj["logger"] = logger
+
     # If no subcommand, show help
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
@@ -105,22 +117,31 @@ def prepare(ctx: click.Context, feature: Optional[str], no_index: bool, compress
     Loads vault (decisions, patterns, lessons), indexes codebase via lat.md,
     and generates a navigation guide.
     """
+    logger = ctx.obj.get("logger")
     cwd = Path.cwd()
     vault_path = cwd / "vault"
 
     if not vault_path.exists():
-        click.echo("❌ Error: Not in a Spekificity project. Run 'spek init' first")
+        msg = "Not in a Spekificity project. Run 'spek init' first"
+        if logger:
+            logger.error(msg)
+        click.echo(f"❌ Error: {msg}", err=True)
         sys.exit(1)
 
     click.echo("❯ Preparing feature context...")
     if feature:
         click.echo(f"  Feature: {feature}")
+        if logger:
+            logger.info(f"Preparing context for: {feature}")
 
     try:
         # Load vault
         vault = load_vault(str(vault_path))
         decisions = vault.load_decisions()
         patterns = vault.load_patterns()
+
+        if logger:
+            logger.debug(f"Loaded {len(decisions)} decisions, {len(patterns)} patterns")
 
         click.echo()
         click.echo("## Prior Decisions")
@@ -137,8 +158,9 @@ def prepare(ctx: click.Context, feature: Optional[str], no_index: bool, compress
             click.echo()
             click.echo("## Codebase Index")
             try:
+                if logger:
+                    logger.debug("Syncing lat.md index...")
                 index = load_index(str(cwd))
-                click.echo("  Syncing lat.md index...")
                 index.sync_index()
 
                 # Query for relevant files
@@ -150,8 +172,13 @@ def prepare(ctx: click.Context, feature: Optional[str], no_index: bool, compress
                     for f in files[:3]:
                         path = f.get("path", f.get("file", "unknown"))
                         click.echo(f"    - {path}")
+                if logger:
+                    logger.debug(f"Found {len(files)} relevant files")
             except Exception as e:
-                click.echo(f"  ⚠ lat.md indexing failed: {e} (using fallback)")
+                warning = f"lat.md indexing failed: {e} (using fallback)"
+                if logger:
+                    logger.warning(warning)
+                click.echo(f"  ⚠ {warning}")
 
         click.echo()
         click.echo("## Context Summary")
@@ -162,7 +189,12 @@ def prepare(ctx: click.Context, feature: Optional[str], no_index: bool, compress
         click.echo()
         click.echo("Ready to plan or implement. Next: spek plan")
 
+        if logger:
+            logger.info("Feature preparation complete")
+
     except Exception as e:
+        if logger:
+            logger.error(f"Prepare failed: {e}", exc_info=ctx.obj.get("debug"))
         click.echo(f"❌ Error: {e}", err=True)
         sys.exit(1)
 
