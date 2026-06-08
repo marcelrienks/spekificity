@@ -73,7 +73,7 @@ Each agent skill (`/spek.prepare`, `/spek.plan`, `/spek.implement`, `/spek.concl
 
 **Context Flow**:
 ```
-vault/ (decisions, patterns, lessons)
+.spek/vault/ (decisions, patterns, lessons)
   ↓
 Load via core/vault.py
   ↓
@@ -91,7 +91,7 @@ Agent executes workflow with context
   ↓
 Capture decisions + write artifacts
   ↓
-Persist to vault/decisions.md + vault/patterns.md + vault/lessons/
+Persist to .spek/vault/decisions.md + .spek/vault/patterns.md + .spek/vault/lessons/
 ```
 
 ### No More Misleading CLI Messages
