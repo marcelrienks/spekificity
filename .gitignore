@@ -41,4 +41,8 @@ build/
 # ── Framework / Config ────────────────────────────────────────
 .specify/
 .github/
+!.github/agents/
+!.github/agents/skills/
+!.github/agents/skills/**/*.md
+!.github/copilot-instructions.md
 .claude/
