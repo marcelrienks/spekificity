@@ -25,6 +25,50 @@ def is_git_repo() -> bool:
         return False
 
 
+def prompt_for_integration() -> str:
+    """Prompt user for AI coding agent integration.
+
+    Returns:
+        Integration name (copilot, claude, gemini, generic)
+    """
+    integrations = ["copilot", "claude", "gemini", "generic"]
+    click.echo("\nSelect AI coding agent integration:")
+    for i, integration in enumerate(integrations, 1):
+        click.echo(f"  {i}. {integration}")
+
+    while True:
+        try:
+            choice = click.prompt("Enter choice (1-4)", type=int)
+            if 1 <= choice <= len(integrations):
+                return integrations[choice - 1]
+            click.echo("Invalid choice. Please try again.")
+        except (ValueError, click.Abort):
+            click.echo("Invalid input. Using default: copilot")
+            return "copilot"
+
+
+def prompt_for_script_type() -> str:
+    """Prompt user for script type.
+
+    Returns:
+        Script type (sh or ps)
+    """
+    script_types = ["sh", "ps"]
+    click.echo("\nSelect script type:")
+    for i, script_type in enumerate(script_types, 1):
+        click.echo(f"  {i}. {script_type}")
+
+    while True:
+        try:
+            choice = click.prompt("Enter choice (1-2)", type=int)
+            if 1 <= choice <= len(script_types):
+                return script_types[choice - 1]
+            click.echo("Invalid choice. Please try again.")
+        except (ValueError, click.Abort):
+            click.echo("Invalid input. Using default: sh")
+            return "sh"
+
+
 def initialize_project() -> bool:
     """Initialize Spekificity in current project.
 
@@ -37,28 +81,28 @@ def initialize_project() -> bool:
         True if initialization successful
     """
     cwd = Path.cwd()
-    
+
     click.echo(f"Initializing Spekificity in {cwd}")
     click.echo()
-    
+
     # Verify dependencies
     if not display_dependency_status():
         return False
-    
+
     click.echo()
-    
+
     # Check git repo
     if not is_git_repo():
         click.echo("❌ Not a git repository. Please run 'git init' first.")
         return False
-    
+
     click.echo("✓ Git repository detected")
-    
+
     # Create vault directory structure
     vault_path = cwd / "vault"
     create_vault_structure(vault_path)
     click.echo(f"✓ Created vault structure at {vault_path}/")
-    
+
     # Create .spek directory
     spek_path = cwd / ".spek"
     spek_path.mkdir(exist_ok=True)
@@ -66,20 +110,35 @@ def initialize_project() -> bool:
     (spek_path / "skills").mkdir(exist_ok=True)
     click.echo(f"✓ Created .spek directory at {spek_path}/")
 
+    # Collect SpecKit configuration inputs
+    click.echo("\nConfiguring SpecKit project...")
+    integration = prompt_for_integration()
+    script_type = prompt_for_script_type()
+
     # Initialize SpecKit per-project (if not already done)
     specify_path = cwd / ".specify"
     if not specify_path.exists():
         try:
-            subprocess.run(
-                ["specify", "init", "."],
-                input=b"y\n",
-                timeout=30
-            )
-            click.echo(f"✓ Initialized SpecKit configuration")
+            cmd = [
+                "specify",
+                "init",
+                ".",
+                "--here",
+                "--force",
+                f"--integration={integration}",
+                f"--script={script_type}"
+            ]
+            subprocess.run(cmd, timeout=60, check=True)
+            click.echo("✓ Initialized SpecKit configuration")
+        except subprocess.CalledProcessError as e:
+            click.echo(f"⚠ SpecKit initialization failed: {e}")
+            click.echo("  (This is optional; you can run 'specify init . --here --force' manually)")
+            return False
         except Exception as e:
             click.echo(f"⚠ SpecKit initialization failed: {e}")
-            click.echo("  (This is optional; you can run 'specify init .' manually)")
-    
+            click.echo("  (This is optional; you can run 'specify init . --here --force' manually)")
+            return False
+
     click.echo()
     click.echo("✓ Spekificity initialized successfully!")
     click.echo()
@@ -89,7 +148,7 @@ def initialize_project() -> bool:
     click.echo("  3. Plan feature: /spek.plan [FEATURE_DESCRIPTION]")
     click.echo("  4. Implement: /spek.implement [FEATURE_NAME]")
     click.echo("  5. Conclude: /spek.conclude [FEATURE_NAME]")
-    
+
     return True
 
 
