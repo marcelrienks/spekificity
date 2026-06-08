@@ -40,9 +40,6 @@ build/
 
 # ── Framework / Config ────────────────────────────────────────
 .specify/
-.github/
-!.github/agents/
-!.github/agents/skills/
-!.github/agents/skills/**/*.md
-!.github/copilot-instructions.md
 .claude/
+
+# Note: .github/ tracked for agent skill definitions and copilot instructions
