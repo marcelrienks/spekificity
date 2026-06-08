@@ -69,13 +69,22 @@ def prompt_for_script_type() -> str:
             return "sh"
 
 
-def initialize_project() -> bool:
+def initialize_project(
+    integration: Optional[str] = None,
+    script_type: Optional[str] = None
+) -> bool:
     """Initialize Spekificity in current project.
 
     Creates:
-    - vault/ (with decisions.md, patterns.md, lessons/)
-    - .spek/ (skills and configuration)
+    - .spek/vault/ (with decisions.md, patterns.md, lessons/)
+    - .spek/ (with memory/, skills/ subdirectories)
     - .specify/ (SpecKit configuration via specify init)
+
+    Args:
+        integration: AI integration to use (copilot, claude, gemini, generic).
+                    If None, prompts user interactively.
+        script_type: Script type to use (sh, ps).
+                    If None, prompts user interactively.
 
     Returns:
         True if initialization successful
@@ -114,8 +123,10 @@ def initialize_project() -> bool:
 
     # Collect SpecKit configuration inputs
     click.echo("\nConfiguring SpecKit project...")
-    integration = prompt_for_integration()
-    script_type = prompt_for_script_type()
+    if integration is None:
+        integration = prompt_for_integration()
+    if script_type is None:
+        script_type = prompt_for_script_type()
 
     # Initialize SpecKit per-project (if not already done)
     specify_path = cwd / ".specify"
@@ -154,8 +165,18 @@ def initialize_project() -> bool:
     return True
 
 
-def run_init(verbose: bool = False) -> None:
-    """CLI command handler for 'spek init'."""
-    success = initialize_project()
+def run_init(
+    verbose: bool = False,
+    integration: Optional[str] = None,
+    script_type: Optional[str] = None
+) -> None:
+    """CLI command handler for 'spek init'.
+
+    Args:
+        verbose: Enable verbose output
+        integration: AI integration to use (copilot, claude, gemini, generic)
+        script_type: Script type to use (sh, ps)
+    """
+    success = initialize_project(integration=integration, script_type=script_type)
     if not success:
         raise SystemExit(1)

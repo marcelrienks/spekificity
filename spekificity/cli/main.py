@@ -42,14 +42,36 @@ def cli(ctx: click.Context, version: bool, verbose: bool, debug: bool) -> None:
 
 
 @cli.command(short_help="Initialize project for Spekificity")
+@click.option(
+    "--integration",
+    type=click.Choice(["copilot", "claude", "gemini", "generic"], case_sensitive=False),
+    help="AI coding agent integration (copilot, claude, gemini, generic). Interactive prompt if not specified."
+)
+@click.option(
+    "--script",
+    type=click.Choice(["sh", "ps"], case_sensitive=False),
+    help="Script type to use (sh, ps). Interactive prompt if not specified."
+)
 @click.pass_context
-def init(ctx: click.Context) -> None:
+def init(ctx: click.Context, integration: str, script: str) -> None:
     """Initialize Spekificity in current project.
 
-    Creates vault/, .spek/ directories and initializes SpecKit configuration.
+    Creates .spek/ directory with vault/, memory/, and skills/ subdirectories.
+    Initializes SpecKit configuration via 'specify init'.
+
+    Interactive by default: prompts for AI integration and script type.
+    Use --integration and --script flags to skip interactive prompts.
+
+    Examples:
+        spek init                                    # Interactive prompts
+        spek init --integration copilot --script sh  # Non-interactive
     """
     try:
-        run_init(verbose=ctx.obj.get("verbose", False))
+        run_init(
+            verbose=ctx.obj.get("verbose", False),
+            integration=integration,
+            script_type=script
+        )
     except SystemExit as e:
         sys.exit(e.code if e.code else 1)
 
