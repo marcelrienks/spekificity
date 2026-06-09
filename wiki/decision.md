@@ -797,16 +797,16 @@ enterprise: TBD
 | 4 | Zettelkasten Architecture | See [architecture.md](architecture.md) and [patterns.md](patterns.md) | Vault setup; all note creation |
 | 5 | Auto-Tagging & Auto-Wikilinks | See [patterns.md](patterns.md) (Pattern 10) | `/spek.conclude` Step 3 (lesson generation) |
 | 6 | 3-Layer Query Rule | See [architecture.md](architecture.md) | `/spek.context` load; `/spek.plan` phases |
-| 7 | Git Hooks Integration | See [setup.md](setup.md) | `spek setup`; post-commit execution |
+| 7 | Git Hooks Integration | See [setup.md](setup.md) | `spek init`; post-commit execution |
 
 ### Planned (see Planned Features section above)
 
 | ID | Title | Related Specs | When Activated |
 |:--:|-------|---------------|---|
-| 8 | Backprop Reflex | See [patterns.md](patterns.md) (Pattern 20) | `/spek.conclude` Step 3 (lesson generation) |
-| 9 | RARV Reflection Cycles | See [patterns.md](patterns.md) (Pattern 21) | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
-| 10 | Anti-Sycophancy Validation | See [patterns.md](patterns.md) (Pattern 18) | `/spek.plan` (specify + plan phases) |
-| 11 | Blind Code Review | See [patterns.md](patterns.md) (Pattern 19) | `/spek.conclude` Step 8 (optional; pre-archival) |
+| 8 | Backprop Reflex | See [decision.md](decision.md#decision-8) | `/spek.conclude` Step 3 (lesson generation) |
+| 9 | RARV Reflection Cycles | See [decision.md](decision.md#decision-9) | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
+| 10 | Anti-Sycophancy Validation | See [decision.md](decision.md#decision-10) | `/spek.plan` (specify + plan phases) |
+| 11 | Blind Code Review | See [decision.md](decision.md#decision-11) | `/spek.conclude` Step 8 (optional; pre-archival) |
 | 12 | Token Budget Model | See [patterns.md](patterns.md) (Pattern 22) | All stages; tracked throughout feature |
 
 ---

@@ -159,10 +159,9 @@ Wraps a single SpecKit skill:
    - Update `.spek/vault/decisions.md` with new decisions
 
 4. **State Refresh:**
-   - Refresh lat.md code index (`/lat.sync`) to reflect new code
-   - Refresh lat.md doc index to reflect vault updates
+   - Refresh lat.md index: `lat init` (reflects new code)
    - Sync repo memory to `.spek/memory/`
-   - Refresh Obsidian vault graph via CLI: `obsidian refresh --vault .spek/vault/`
+   - Obsidian vault graph updates automatically when notes are written via CLI
 
 5. **Completion:**
    - Commit vault changes to git
@@ -241,87 +240,25 @@ The following commands are **first-class and fully documented**, but **not requi
 
 ---
 
-## Context Injection: `/context.*` Namespace
+## lat.md: Native CLI and MCP Tools
 
-For fine-grained context control at specific workflow points:
+`lat.md` is a 3rd party tool installed by `spek init`. These are **not generated skill files** — they are native lat.md commands and MCP tools available after installation.
 
-### `/context.inject`
+### CLI Commands (run in terminal or git hooks)
 
-**Purpose:** Inject context at specific points in workflow  
-**Usage:** `/context.inject --at [stage] --focus [topic]`
+| Command | Purpose |
+|---------|---------|
+| `lat init` | Initialize or rebuild index in current project |
+| `lat locate <symbol>` | Locate where a symbol is defined |
+| `lat refs <symbol>` | Find all references to a symbol |
+| `lat search <query>` | Search codebase by query |
+| `lat mcp` | Start MCP server for agent session |
 
-**Stages:**
-- `prepare`: Pre-feature context
-- `plan`: Implementation plan stage
-- `implement`: During coding
-- `validate`: Validation stage
-- `lessons`: Post-mortem stage
+### MCP Tools (used by agent skills during workflow)
 
-**Topics:** Feature name, code module, architectural layer, decision tree path
+Agent skills access lat.md via its MCP server (started with `lat mcp`). Confirm exact MCP tool names against lat.md documentation — the server exposes tools for symbol lookup, reference traversal, and code search. Skills should reference these tools by their actual MCP-registered names.
 
-**What it does:**
-1. Load core context (from `/context.load`)
-2. Filter context by topic + stage relevance
-3. Compress output (caveman style if requested)
-4. Provide minimal-token-cost context injection
-
-**Output:** Filtered context (decisions, patterns, lessons relevant to stage + topic)  
-**Reference:** [architecture.md](architecture.md)
-
----
-
-## lat.md Skills: `/lat.*` Namespace
-
-### `/lat.query`
-
-**Purpose:** Query code graph for code intelligence  
-**Usage:** `/lat.query [pattern|symbol|impact] [target]`
-
-**Subcommands:**
-
-#### `/lat.query pattern [pattern-name]`
-- Find all uses of design pattern in codebase
-- Return file + line ranges
-- Suggest refactoring if pattern misapplied
-
-#### `/lat.query symbol [symbol-name]`
-- Find all references to function/class/module
-- Return call graph (who calls this symbol?)
-- Identify unused symbols
-
-#### `/lat.query impact [file|symbol]`
-- What specs + features depend on this code?
-- What happens if we change this file/symbol?
-- Identify breaking change risk
-
-**Output:**
-- Matching code references (file + line)
-- Call/dependency graph
-- Risk assessment (if impact query)
-
-**Reference:** [setup.md](setup.md)
-
----
-
-### `/lat.sync`
-
-**Purpose:** Synchronize code graph with current repository state  
-**Usage:** `/lat.sync [--force]`
-
-**What it does:**
-1. Detect file changes since last sync
-2. Update graph incrementally (not full rebuild)
-3. Validate graph integrity (check for stale references)
-4. Report index coverage (qualitative completeness)
-5. Warn if manual rebuild recommended
-
-**Output:**
-- Sync complete (files added/modified/removed)
-- Graph size (nodes + edges)
-- Coverage of codebase
-- Timestamp of last sync
-
-**Reference:** [setup.md](setup.md)
+**Reference:** [setup.md](setup.md), [lat.md documentation](https://github.com/1st1/lat.md)
 
 ---
 

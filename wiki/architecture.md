@@ -48,49 +48,6 @@ All workflow commands are agent skills installed by `spek init` into the project
 
 ---
 
-## Implementation direction: Programmatic pipeline
-
-Spekificity adopts the programmatic pipeline as the project architecture and operational default.
-
-- **Primary architecture — Programmatic pipeline (package):** deterministic outputs, typed contracts (Pydantic), content-addressable IDs (e.g., SHA-256 of normalized body), integrated lint/repair agents, and structural Markdown enforcement (markdown-hero). BM25 lexical retrieval is the default. This path supports large corpora, scheduled runs, CI/CD, auditability, and downstream automation.
-
-Rationale:
-
-- Deterministic runs produce idempotent artifacts, simplify deduplication and merging, and enable robust testing and audit trails.
-- Typed contracts and content-addressable IDs make ingestion, repair, and regression analysis reliable.
-- Structural Markdown enforcement prevents downstream corruption of chunking/indexing and enables safe automated merges.
-
-Markdown structural hygiene (mandatory):
-
-- Enforce strict structural checks before merging generated pages (no duplicate H1s, valid YAML frontmatter, parseable tables, correct heading nesting).
-- Use section-aware chunking to keep chunk windows inside headings.
-- Prefer canonicalization and safe-merge strategies (dedupe_headings=True).
-- Route structural failures to a repair agent or human review; structural noise breaks chunking, dedupe, and indexing.
-
-Retrieval guidance (Canonical Architecture)
-
-Spekificity uses **lat.md as the sole code analysis tool**. Alternatives are not supported; all architecture assumes lat.md's pre-indexed MCP interface.
-
-- lat.md provides lexical (BM25) retrieval for codebase queries: transparent, cost-effective, fast
-- Incremental sync + file watcher ensure index freshness  
-- MCP tool interface optimized for agent workflows
-
-Operational heuristics
-
-- Use deterministic IDs and typed outputs for idempotence, simpler dedupe, and auditability.
-- Run small-batch ingestion tests (5–10 documents) before scaling.
-- Integrate markdown-hero (or equivalent) into Generator → Lint → Consolidate stages.
-- Use git-backed vault with pre-commit structural lints and human approval gates for writes.
-
-HTML artifact policy
-
-- Store generated HTML artifacts outside primary wiki pages under `wiki/artifacts/html/`.
-- Require each HTML artifact to embed or link an export-to-markdown feature that produces a canonical markdown record or a short 3-line summary suitable for PR reviews.
-- Host artifacts on static site (S3/Vercel) where appropriate; link from canonical markdown/PR for review.
-- CI: flag large HTML files and ensure export-to-markdown present when HTML is checked into repo; fail CI when export missing for audited artifacts.
-
----
-
 ## Component Diagram
 
 ```
@@ -256,7 +213,7 @@ START FEATURE
 When a user invokes `/spek.context` or any `/spek.*` command:
 
 1. **Load Vault Context:** Fetch specs, plans, decisions from vault/
-2. **Load Repo Memory:** Read `.git/spek-memory/` for workspace-scoped facts
+2. **Load Repo Memory:** Read `.spek/memory/` for workspace-scoped facts
 3. **Refresh lat.md index:** Sync latest code changes via MCP
 4. **Populate Session State:** Assemble context for SpecKit engine or skill execution, enable downstream commands
 
@@ -267,9 +224,9 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 The "enrichment layer" is the mechanism by which Spekificity's skill files add context to SpecKit before it runs. Concretely: the skill file instructs the agent to read relevant vault decisions + patterns and include that content in the conversation context **before** invoking a SpecKit skill. SpecKit then operates with that context available.
 
 This is not a programmatic API — it is **prompt-level context injection**. The agent skill file contains explicit instructions like:
-1. "Read `.spek/vault/decisions.md` and identify decisions relevant to this feature"
-2. "Read `.spek/vault/patterns.md` and identify patterns applicable here"
-3. "Query lat.md for code symbols affected by this feature"
+1. "Run `obsidian read file=decisions vault=vault` and identify decisions relevant to this feature"
+2. "Run `obsidian read file=patterns vault=vault` and identify patterns applicable here"
+3. "Query lat.md via MCP for code symbols affected by this feature"
 4. "Now invoke `/speckit.specify` with this context available"
 
 SpecKit generates a richer, more accurate spec because the agent already has project decisions and code structure in context when it invokes SpecKit.

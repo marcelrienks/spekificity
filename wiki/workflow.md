@@ -196,8 +196,7 @@ IMPLEMENTATION COMPLETE
     │  └─ Update .spek/vault/decisions.md
     │
     ├─ 4. State Refresh
-    │  ├─ /lat.sync — refresh lat.md code index (new code)
-    │  ├─ /lat.sync — refresh lat.md doc index (vault updates)
+    │  ├─ lat init — refresh lat.md index (reflects new code)
     │  └─ Sync repo memory to .spek/memory/
     │
     └─ 5. Commit

@@ -196,19 +196,20 @@ context = load_context_for_task(
 lat.md is configured per-project in `.spek/lat/` directory.
 
 ```bash
-# Initialize index
-lat init .
+# Initialize / rebuild index
+lat init
 
-# Sync with codebase
-lat sync .
+# Locate a symbol
+lat locate <symbol>
 
-# Full rebuild
-lat sync . --full
+# Find references
+lat refs <symbol>
 
-# Query
-lat query files "authentication"
-lat query functions "authenticate"
-lat query impact src/auth.py
+# Search by query
+lat search "authentication"
+
+# Start MCP server for agent sessions
+lat mcp
 ```
 
 ## Testing
@@ -220,9 +221,8 @@ pytest spekificity/tests/test_vault_and_indexing.py -v
 ```
 
 Tests cover:
-- Semantic search functionality
 - Context loading from vault
-- Code relevance matching
+- Code relevance matching via lat.md MCP
 - Context formatting (normal + compressed)
 - Caveman compression at all intensity levels
 - Full integration pipeline
@@ -253,9 +253,11 @@ compressed = load_context_for_task(..., compressed=True)
 # Check if vault/code paths are correct
 loader.project_path
 loader.vault.path
+```
 
-# Try manual lat sync
-lat sync . --full
+```bash
+# Rebuild lat.md index
+lat init
 
 # Check file permissions
 ```
