@@ -55,14 +55,13 @@ spek init
 
 ## Requirements
 
-Minimal dependencies — all standard tools:
+Minimal prerequisites — all standard tools:
 
 - **Python 3.11+** — Check with `python3 --version`
 - **`uv` package manager** — [Quick install](https://docs.astral.sh/uv/)
-- **Git** — Already initialized in your project
-- **Obsidian CLI** — *(Optional)* Only needed for vault graph exports
+- **Git** — Initialized in your project (`git init` if needed)
 
-All other dependencies install automatically via `uv tool install`.
+All other dependencies (SpecKit, lat.md, Obsidian CLI) are auto-installed by `spek init`.
 
 ---
 

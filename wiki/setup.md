@@ -19,28 +19,27 @@ Spekificity separates two concerns:
 
 ## Tool Requirements
 
-| Tool | Required? | Role | Install |
-|------|-----------|------|---------|
-| **SpecKit** | Required | Spec → plan → implement orchestration engine | `npm install -g @github/spec-kit` (or see [SpecKit docs](https://github.com/github/spec-kit)) |
-| **lat.md** | Required | Code and documentation indexing + MCP queries | See [lat.md install](https://github.com/langchain-ai/lat-md) |
-| **Obsidian CLI** | Required | All vault read/write operations go through Obsidian CLI | [obsidian.md/help/cli](https://obsidian.md/help/cli) |
-| **Obsidian Desktop** | Optional | Vault graph visualization only | [obsidian.md/download](https://obsidian.md/download) |
-| **Caveman** | Optional | Token compression skill; installed by `spek init` if Claude integration | Installed automatically |
+| Tool | Role | Installation |
+|------|------|------|
+| **SpecKit** | Spec → plan → implement orchestration engine | Auto-installed by `spek init` |
+| **lat.md** | Code and documentation indexing + MCP queries | Auto-installed by `spek init` |
+| **Obsidian CLI** | All vault read/write operations | Auto-installed by `spek init` |
+| **Obsidian Desktop** | Vault graph visualization (optional) | Manual install if desired |
+| **Caveman** | Token compression skill (Claude integration) | Auto-installed by `spek init` |
 
-**All vault operations use the Obsidian CLI.** The vault is stored as plain markdown, but skill files read and write through the Obsidian CLI to ensure consistent indexing, backlink updates, and graph state. Agents do not write to vault files directly via filesystem — they use the CLI. Obsidian desktop is optional and only needed for visual graph browsing.
+**All vault operations use the Obsidian CLI** for consistent indexing, backlink updates, and graph state. Obsidian desktop is optional and only needed for interactive graph browsing.
 
 ---
 
 ## Prerequisites
 
-Install these before Spekificity:
+Only these are required before Spekificity:
 
 - **Python 3.11+** — Check: `python3 --version`
 - **Git** — Check: `git --version`
 - **`uv` package manager** — Check: `uv --version`. Install: `curl -LsSf https://astral.sh/uv/install.sh | sh`
-- **SpecKit** — Required. Install per table above, then verify: `specify --version`
-- **lat.md** — Required. Install per table above, then verify: `lat.md --version`
-- **Obsidian CLI** — Required. All vault read/write operations use it. Install: [obsidian.md/help/cli](https://obsidian.md/help/cli), then verify: `obsidian --version`
+
+All other dependencies (SpecKit, lat.md, Obsidian CLI) are auto-installed by `spek init`.
 
 ---
 
@@ -57,8 +56,6 @@ Verify:
 spek --version
 ```
 
-This installs the `spek` CLI tool only. It does **not** install SpecKit, lat.md, or Obsidian.
-
 ### Step 2: Per-Project Initialization
 
 Navigate to a git repository:
@@ -74,7 +71,16 @@ Run:
 spek init
 ```
 
-`spek init` is **interactive** by default. It will prompt for:
+`spek init` **auto-detects and installs missing dependencies** (SpecKit, lat.md, Obsidian CLI). Then it prompts for:
+
+**What `spek init` does:**
+1. Checks for SpecKit, lat.md, Obsidian CLI; installs if missing
+2. Creates `.spek/` directory structure
+3. Initializes lat.md code index + documentation index
+4. Creates agent skill files in correct location
+5. Runs `specify init .` for SpecKit configuration
+
+**Then it prompts for agent integration type and script type:**
 1. **AI agent integration type** — selects which format skill files are generated in:
    - `claude` → installs skills to `.claude/commands/`
    - `copilot` → installs skills to `.github/agents/skills/`
@@ -87,12 +93,12 @@ Non-interactive (CI/scripted):
 spek init --integration claude --script sh
 ```
 
-### What `spek init` Creates
+### Directory Structure Created
 
 ```
 your-project/
 ├── .spek/
-│   ├── vault/                          ← Persistent knowledge vault
+│   ├── vault/ (.spek/vault/)           ← Persistent knowledge vault
 │   │   ├── lessons/                    ← Per-feature retrospectives
 │   │   ├── decisions.md                ← Architectural decisions (append-only)
 │   │   └── patterns.md                 ← Reusable patterns
@@ -300,8 +306,9 @@ token_limits:
 
 - **`spek init` fails with git error** → Not a git repo. Run `git init` first.
 - **`.spek/vault/` missing** → Init didn't complete. Re-run `spek init`
-- **`.specify/` missing** → SpecKit not installed. Install SpecKit first, then re-run `spek init`
+- **`.specify/` missing** → SpecKit installation failed. Check npm/Python; re-run `spek init`
 - **Skill files missing** → Check `.claude/commands/` (or appropriate dir for integration). Re-run `spek init`
+- **Dependency installation fails** → Check npm, Python paths accessible; retry `spek init`
 
 ### Vault Issues
 

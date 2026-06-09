@@ -1,5 +1,7 @@
 # Code Indexing & Context Loading
 
+> **Implementation reference** — describes internal Python API. For agent workflow usage, see [workflow.md](workflow.md) and [skills.md](skills.md).
+
 ## Overview
 
 Code indexing and context injection layer. Spekificity:
@@ -43,7 +45,7 @@ context = query_relevant_context("JWT authentication")
 # Returns: {"files": [...], "functions": [...]}
 ```
 
-**Fallback:** If lat.md times out or is unavailable, context loading falls back to semantic search for graceful degradation.
+**Fallback:** If lat.md is unavailable, context loading falls back to grep-based semantic search for graceful degradation (internal implementation detail — lat.md is the architecturally required tool; see [architecture.md](architecture.md)).
 
 ---
 
@@ -90,7 +92,7 @@ from spekificity.core.context import ContextLoader, load_context_for_task
 # Initialize loader
 loader = ContextLoader(
     project_path=".",
-    vault_path="vault"
+    vault_path=".spek/vault/"
 )
 
 # Load decisions relevant to intent
@@ -247,7 +249,7 @@ context = load_context_for_task(
 
 ### lat.md
 
-lat.md is configured per-project in `.lat/` directory.
+lat.md is configured per-project in `.spek/lat/` directory.
 
 ```bash
 # Initialize index
@@ -296,8 +298,11 @@ Tests cover:
 
 ### lat.md not found
 
+(Shouldn't happen — `spek init` auto-installs lat.md)
+
+Fallback for manual installation:
 ```bash
-# Install lat.md
+# Install lat.md manually (if needed)
 pip install lat-md
 
 # Or use fallback (automatic)
@@ -343,14 +348,6 @@ Phase 3 will integrate context loading with SpecKit wrapper:
 - Inject context into `/speckit.plan` command
 - Inject context into `/speckit.implement` command
 - Enrichment layer to pass vault context to SpecKit
-
----
-
-## Related
-
-- [Vault Engine](../spekificity/core/vault.py)
-- [Type Contracts](../spekificity/core/types.py)
-- [IMPL_PLAN Phase 2](../IMPL_PLAN.md#phase-2-vault--code-indexing-weeks-2-3-50-70-hours)
 
 ---
 

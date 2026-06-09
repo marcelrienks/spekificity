@@ -319,7 +319,7 @@ Spekificity's four pillars (token efficiency, determinism, persistence, autonomy
 **Installation for New Projects:**
 
 ```bash
-spekificity init
+spek init
 # → auto-detects installed tools
 # → prompts for missing tools with recommendations
 # → deploys skills locally
@@ -605,7 +605,7 @@ Note: Spekificity's supported default, lat.md, provides a file-watcher-based aut
 - Optional (users can disable if conflicts with workflow)
 
 **Implementation:**
-- `/spek/bin/spek setup` installs hook automatically
+- `spek init` installs hook automatically
 - User can disable via flag: `.spek/.disable-git-hooks`
 - Works with CI/CD (hook runs locally only)
 

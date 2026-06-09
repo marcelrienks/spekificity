@@ -174,7 +174,7 @@ Wraps a single SpecKit skill:
 
 **What it does:**
 
-`/spek.conclude` owns all post-implementation work. It calls `/spek.lessons` as a sub-step (lessons are not a standalone first-class skill — they run inside conclude).
+`/spek.conclude` owns all post-implementation work. It calls `/spek.lessons` as a sub-step (you can also invoke `/spek.lessons` independently at any point).
 
 1. **Analysis:**
    - Execute `/speckit.analyze` — validate implementation against spec
@@ -240,7 +240,7 @@ The following commands are **first-class and fully documented**, but **not requi
 - Context loaded summary (decisions, lessons, patterns available)
 - Context refresh timestamp
 
-**Reference:** [architecture.md](../architecture.md)
+**Reference:** [architecture.md](architecture.md)
 
 ---
 
@@ -271,7 +271,7 @@ The following commands are **first-class and fully documented**, but **not requi
 - Blocked features (if dependencies unmet)
 - Critical path (longest sequence of dependencies)
 
-**Reference:** [architecture.md](../architecture.md)
+**Reference:** [architecture.md](architecture.md)
 
 ---
 
@@ -300,7 +300,7 @@ For fine-grained context control at specific workflow points:
 4. Provide minimal-token-cost context injection
 
 **Output:** Filtered context (decisions, patterns, lessons relevant to stage + topic)  
-**Reference:** [architecture.md](../architecture.md)
+**Reference:** [architecture.md](architecture.md)
 
 ---
 
@@ -333,7 +333,7 @@ For fine-grained context control at specific workflow points:
 - Call/dependency graph
 - Risk assessment (if impact query)
 
-**Reference:** [setup.md](../setup.md)
+**Reference:** [setup.md](setup.md)
 
 ---
 
@@ -355,7 +355,7 @@ For fine-grained context control at specific workflow points:
 - Coverage of codebase
 - Timestamp of last sync
 
-**Reference:** [setup.md](../setup.md)
+**Reference:** [setup.md](setup.md)
 
 ---
 
@@ -378,7 +378,7 @@ For fine-grained context control at specific workflow points:
 4. Switch back to normal mode with `/caveman off`
 
 **Output:** All subsequent commands respond in compressed format  
-**Reference:** [decision.md](../decision.md#decision-3)
+**Reference:** [decision.md](decision.md#decision-3)
 
 ---
 
@@ -399,7 +399,7 @@ For fine-grained context control at specific workflow points:
 - Summary line (overall quality assessment)
 - Severity classification (critical/high/medium/low)
 
-**Reference:** [decision.md](../decision.md#decision-3)
+**Reference:** [decision.md](decision.md#decision-3)
 
 ---
 
@@ -559,14 +559,6 @@ For fine-grained context control at specific workflow points:
 - **Required Core:** `/spek.prepare`, `/spek.plan`, `/spek.implement`, `/spek.conclude`
 - **Optional Enhancements:** `/spek.context`, `/spek.map`, `/spek.lessons`, `/context.inject`
 - **Note:** `/spek.lessons` is also auto-called as sub-step by `/spek.conclude`
-
----
-
-## Resources
-
-- **Full Skill Specifications:** [wiki/specs/](../specs/)
-- **Workflow Guide:** [wiki/workflow.md](../workflow.md)
-- **Quick Start:** [wiki/quickstart.md](../quickstart.md)
 
 ---
 

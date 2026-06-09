@@ -195,8 +195,8 @@ Before moving to the final stage, verify all quality gates:
 
 **Spekificity Workflow**
 - [ ] `/spek.prepare` passed pre-flight checks
-- [ ] `/spek.plan --phase=specify` produced valid spec
-- [ ] `/spek.plan --phase=plan` produced valid plan
+- [ ] `/spek.plan` produced valid spec (specify step)
+- [ ] `/spek.plan` produced valid plan (plan step)
 - [ ] `/spek.implement` executed all tasks
 - [ ] All `/spek.*` commands worked end-to-end
 
@@ -221,7 +221,7 @@ Before moving to the final stage, verify all quality gates:
 ```
 
 ### Purpose
-All post-implementation functions. `/spek.conclude` is the only conclude command — it handles analysis, lessons, vault archive, and state refresh in a single skill. `/spek.lessons` is a sub-function called inside conclude, not a standalone command.
+All post-implementation functions. `/spek.conclude` is the only conclude command — it handles analysis, lessons, vault archive, and state refresh in a single skill. `/spek.lessons` is called as a sub-step inside conclude; it can also be invoked independently at any point.
 
 ### Workflow
 
@@ -393,7 +393,7 @@ READY: Workspace prepared for feature development
 
 ### Specify Feature
 
-**Command:** `/spek.plan --phase=specify --feature="user-auth-api"`
+**Command:** `/spek.plan "user-auth-api"` (runs specify → plan → tasks in sequence; example below shows specify step output)
 
 ```
 SPEC GENERATION
@@ -426,12 +426,12 @@ SPEC GENERATION
 │     - Tokens: not specified
 │     - Time: not specified
 │
-└─ Output: vault/specs/150-user-auth-api.md (CREATED)
+└─ Output: .spek/vault/specs/150-user-auth-api.md (CREATED)
    └─ Ready for planning phase
 ```
 
 **What was produced:**
-- `/wiki/specs/150-user-auth-api.md` — Complete spec with enrichment layers
+- `.spek/vault/specs/150-user-auth-api.md` — Complete spec with enrichment layers
 - Linked to existing patterns (JWT handling, error handling)
 - Cross-referenced with existing decisions (why we use JWT not sessions)
 - Risk assessment documented
@@ -439,7 +439,7 @@ SPEC GENERATION
 
 ### Create Plan
 
-**Command:** `/spek.plan --phase=plan`
+**Command:** (plan step within `/spek.plan` above — not a separate invocation)
 
 ```
 TASK BREAKDOWN
@@ -475,7 +475,7 @@ TASK BREAKDOWN
 ```
 
 **What was produced:**
-- `/wiki/specs/151-user-auth-plan.md` — Detailed task breakdown
+- `.spek/vault/specs/151-user-auth-plan.md` — Detailed task breakdown
 - Dependencies validated (no blocking issues)
 - Sequence determined (tasks 2/3 depend on task 1, can parallelize after)
 - Ready to implement
@@ -574,16 +574,16 @@ Step 3: Generate Lessons
 │  - Why: JWT chosen over session for statelessness (scalability)
 │  - Why: Token expiry set to 24h (balance security + UX)
 │
-└─ Output: vault/lessons/2026-05-20-user-auth-api-implementation.md (CREATED)
+└─ Output: .spek/vault/lessons/2026-05-20-user-auth-api-implementation.md (CREATED)
 
 Step 4-5: Update Vault
-├─ vault/decision.md (append new architectural decisions)
-├─ vault/patterns.md (log pattern usage + frequency)
+├─ .spek/vault/decisions.md (append new architectural decisions)
+├─ .spek/vault/patterns.md (log pattern usage + frequency)
 └─ Feature marked as COMPLETED
 
 Step 6-7: Sync Repo Memory
-├─ vault/repo/architectural-decisions.md (updated)
-├─ vault/repo/patterns-index.md (updated)
+├─ .spek/vault/repo/architectural-decisions.md (updated)
+├─ .spek/vault/repo/patterns-index.md (updated)
 └─ Ready for next project to use
 
 Step 8: Refresh lat.md index
@@ -592,7 +592,7 @@ Step 8: Refresh lat.md index
 └─ Graph now includes login handler, tests
 
 Step 9: Archive Feature State
-├─ Move vault/session/current-feature.md to vault/archive/
+├─ Move .spek/vault/session/current-feature.md to .spek/vault/archive/
 ├─ Clean up session temporary files
 └─ Ready for next feature
 

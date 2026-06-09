@@ -43,11 +43,12 @@ The `spek` CLI has exactly one command: `spek init`. There are no CLI commands f
 
 **Phase 1: Global Install (Package Only)**
 - `uv tool install spekificity --from git+...` installs the `spek` CLI tool
-- Does NOT auto-install SpecKit, lat.md, or Obsidian — these are separate tools installed by the user
 - Verifies Python 3.11+, git, uv in PATH
 
 **Phase 2: Per-Project Init (`spek init`)**
 - One-time per project
+- **Auto-detects and installs missing dependencies:** SpecKit, lat.md, Obsidian CLI (if not already installed)
+- Initializes lat.md code index + documentation index
 - Prompts for AI agent integration type (Claude, Copilot, Gemini, generic)
 - Prompts for script type (sh, ps)
 - Creates `.spek/` directory structure (vault, memory, config)
@@ -178,8 +179,8 @@ Spekificity is a **specification-driven agent development framework** that ties 
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  ┌──────────────────┐   ┌──────────────────┐                │
-│  │  vault/          │   │   lat.md MCP     │                │
-│  │  vault/          │   │   lat.md Index   │                │
+│  │  Obsidian Vault  │   │   lat.md MCP     │                │
+│  │  .spek/vault/    │   │   lat.md Index   │                │
 │  │  (Knowledge)     │   │   (Code Intel)   │                │
 │  └────────┬─────────┘   └────────┬─────────┘                │
 │           │                      │                          │
@@ -216,7 +217,7 @@ Spekificity is a **specification-driven agent development framework** that ties 
 START FEATURE
     │
     ├─ /spek.prepare ─────────────► Workspace Ready
-    │  (Git state, vault/ fresh, lat.md index synced)
+    │  (Git state, .spek/vault/ fresh, lat.md index synced)
     │
     ├─ /spek.plan ────────────────┐
     │  (Orchestrate SpecKit)           │
@@ -286,7 +287,7 @@ START FEATURE
 - `spek.context`: Load session context (vault, repo memory, graph state) — optional enhancement
 - `spek.map`: Analyze dependencies + impact — optional enhancement
 
-**Note:** `/spek.lessons` is called by `/spek.conclude` as a sub-function. It is not a standalone first-class skill.
+**Note:** `/spek.lessons` is called by `/spek.conclude` as a sub-step. It can also be invoked independently at any point.
 
 ---
 
