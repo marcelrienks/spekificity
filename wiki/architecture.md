@@ -2,7 +2,7 @@
 
 ## Four Design Pillars
 
-Token Efficiency, Determinism, Persistence, Autonomy. See [vision.md](vision.md) for descriptions.
+Token Efficiency, Determinism, Persistence, Autonomy.
 
 **Component Mapping:** Vault (persistence + determinism), lat.md index (token efficiency + determinism), SpecKit (deterministic orchestration), Caveman (token efficiency).
 
@@ -303,6 +303,6 @@ See [patterns](patterns/) directory for detailed deep-dives:
 
 ## References
 
-- **Intention & Philosophy:** [vision.md](vision.md)
+- **Intention & Philosophy:** [README.md](../README.md)
 - **Workflow Details:** [workflow.md](workflow.md)
 - **Naming & Namespacing:** [conventions.md](conventions.md)

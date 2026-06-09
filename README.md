@@ -3,9 +3,7 @@
   <img src="spekificity/assets/logo.png" alt="Spekificity Logo" width="100%">
 </p>
 
-**Specification-Driven Agent Development Framework** — Connects the tools you're already using.
-
-Spekificity ties persistent knowledge (Obsidian vault), code analysis (lat.md), workflow automation (SpecKit), and skill execution into a cohesive system. It enables rapid, deterministic feature development by treating documentation as canonical memory, using a pre-indexed code graph for precise context, and orchestrating feature work with a spec-first workflow — eliminating context loss between sessions, token waste from file scanning, and work without durable specifications or lessons.
+Spekificity is a spec-driven agent development framework that ties persistent knowledge (Obsidian vault), code analysis (lat.md), workflow automation (SpecKit), and skill execution into a cohesive system. It enables rapid, deterministic feature development by treating documentation as canonical memory, using a pre-indexed code graph for precise context, and orchestrating feature work with a spec-first workflow — eliminating context loss between sessions, token waste from file scanning, and work without durable specifications or lessons.
 
 The heavy lifting comes from best-in-class tools. What we built is the **glue**: one setup, clear procedures, and an opinionated workflow that makes them work together instead of in silos.
 
