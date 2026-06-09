@@ -4,12 +4,14 @@
 
 Spekificity implements a deterministic, 4-stage feature development workflow:
 
-- **Prepare** – Pre-flight checks and workspace setup
-- **Plan** – Write feature spec, generate implementation plan & tasks (2 sub-stages: Specification, Task Breakdown)
-- **Implement** – Execute tasks with full context
-- **Conclude** – Archive outcomes, extract lessons, sync vault, update graph
+- **Prepare** – Initialize third-party tools (lat.md code + doc indexes, Obsidian vault) and load context
+- **Plan** – Orchestrate SpecKit: specify → plan → tasks (with remediations)
+- **Implement** – Execute tasks via SpecKit implement
+- **Conclude** – All post-implementation: analysis, lessons, vault archive, state refresh
 
-**Design:** Optional enhancements (context loading, dependency analysis, retrospectives) available at any stage. Each stage produces durable artifacts stored in the vault.
+**All stages are agent skills, not CLI commands.** Run them inside your agent (Claude Code, Copilot, etc.). Only `spek init` is a CLI command.
+
+**Artifacts stored in `.spek/vault/`** (not `vault/` at project root).
 
 ---
 
@@ -21,220 +23,105 @@ Spekificity implements a deterministic, 4-stage feature development workflow:
 ```
 
 ### Purpose
-Perform pre-flight checks before feature development begins. Ensures workspace is ready, vault is current, lat.md index is fresh, and git state is clean.
+Initialize all third-party tools and load context before feature development. `/spek.prepare` does not just check workspace state — it actively builds and stores the indexes that all subsequent skills depend on.
 
 ### Sub-steps
 
-| Step | Action | Validates | Output |
-|------|--------|-----------|--------|
-| Git Status | Check for uncommitted changes | No stale work left | Clean working tree |
-| Vault Fresh | Pull latest from Obsidian git sync | No vault conflicts | Current specs/decisions |
-| lat.md Sync | Refresh lat.md index from latest code (incremental update) | Code index reflects current state | Fresh `lat_index.db` |
-| Session State | Initialize context (vault, repo memory, graph) | All context ready | Session context loaded |
-| Feature Readiness | Verify no blocking issues | Prerequisites met | Ready to start |
+| Step | Action | Output |
+|------|--------|--------|
+| lat.md Code Index | Initialize/refresh lat.md index of source code (symbols, definitions, call graphs) | Code index ready in `.spek/lat/` |
+| lat.md Doc Index | Initialize/refresh lat.md index of documentation (wiki, vault, markdown files) — **separate index** | Doc index ready in `.spek/lat/` |
+| Vault Storage | Store both indexes in Obsidian vault (`.spek/vault/`) for persistent context | Indexes persisted |
+| Context Load | Load vault decisions, patterns, prior lessons into agent session | Session context ready |
+| Constitution Check | Verify `.specify/memory/constitution.md` exists. If missing, invoke `/speckit.constitution` to create it (one-time, interactive). Constitution defines project principles SpecKit embeds into all spec/plan generation. | Constitution present |
+
+**Why two separate indexes:** Code index answers "where is X defined / what calls it." Doc index answers "what decisions or patterns relate to topic X." Merging them degrades both queries.
 
 ### Output Artifacts
-- Clean git working tree
-- Loaded session context (vault, repo memory, lat.md)
-- Ready-to-use project context (specs, decisions, lessons)
+- lat.md code index (fresh, stored in `.spek/lat/`)
+- lat.md doc index (fresh, stored in `.spek/lat/`)
+- Vault context loaded (decisions, patterns, lessons in agent session)
+- Project constitution verified
 
 ### Exit Criteria
-- ✅ Git working tree clean (or staged changes approved)
-- ✅ Vault synced with origin
-- ✅ lat.md up-to-date
-- ✅ Session context available
+- ✅ lat.md code index initialized and current
+- ✅ lat.md doc index initialized and current
+- ✅ Vault context loaded into session
+- ✅ Constitution exists
 
 ---
 
-## Specification (Sub-Stage: Plan Phase)
+## Plan
 
-### Commands
+### Command
 ```
-/spek.plan --phase=specify
-# or directly:
-/speckit.specify --feature="feature-name"
+/spek.plan [feature-name]
 ```
 
 ### Purpose
-Create detailed feature specification with enrichment layers (Success Criteria, Assumptions, Risk Assessment, Metrics).
+Orchestrate full SpecKit planning pipeline in sequence, with user review and remediation at each step.
 
 ### Workflow
 
 ```
-FEATURE INTENT (user describes goal)
+FEATURE INTENT
     ↓
-/speckit.specify
-    ├─ Generate base spec (what, why, scope)
-    ├─ Query lat.md for affected areas
-    ├─ Link to existing decisions/specs
-    │
-    └─ Apply Enrichment Layers:
-       ├─ Success Criteria (how to measure done)
-       ├─ Assumptions (what's true)
-       ├─ Risk Assessment (what could go wrong)
-       ├─ Dependencies (upstream/downstream)
-       └─ Resource Estimate (tokens, time, complexity)
-    ↓
-SPEC DOCUMENT (vault + git commit)
+STEP 1: /speckit.specify
+    ├─ Generate spec (what, why, scope, success criteria)
+    ├─ Query lat.md doc index for related decisions + patterns
+    └─ Surface to user for approval
+    ↓ [if remediation needed: fix + re-run step 1]
+STEP 2: /speckit.plan
+    ├─ Generate implementation plan from approved spec
+    ├─ Query lat.md code index for affected areas
+    └─ Surface to user for approval
+    ↓ [if remediation needed: fix + re-run step 2 (or step 1 if spec was wrong)]
+STEP 3: /speckit.tasks
+    ├─ Break plan into dependency-ordered executable tasks
+    └─ Surface to user for approval
+    ↓ [if remediation needed: fix + re-run from affected step]
+COMPLETE: spec.md + plan.md + tasks.md (stored in .spek/vault/)
 ```
 
-### Enrichment Layers
-
-Each spec includes structured enrichment:
-
-| Layer | Content | Example |
-|-------|---------|---------|
-| **Success Criteria** | Measurable completion conditions | "API returns 200 for valid requests", "All tests pass locally" |
-| **Assumptions** | Preconditions and facts | "User model exists", "Database schema is migrated" |
-| **Risk Assessment** | Potential failures and mitigations | "Breaking change if existing clients depend on old field — need migration plan" |
-| **Dependencies** | Upstream/downstream linked tasks | "Requires PR #123 merged first" |
-| **Resource Estimate** | Effort scope, complexity level | "Medium complexity, involves database schema changes" |
-| **Metrics** | How to measure quality | "Code coverage comprehensive", "API endpoints working" |
+**Remediation loop:** After each step, surface output to user. If user requests changes, apply and reprocess from that step forward. Continue until all three outputs are approved.
 
 ### Output Artifacts
-- Specification document (Markdown, vault-stored)
-- Enrichment layer details embedded in spec
-- Links to lat.md impact analysis
-- Links to relevant architectural decisions
+- `spec.md` — Feature specification with success criteria (stored in `.spek/vault/`)
+- `plan.md` — Architecture, tech choices, affected code areas (stored in `.spek/vault/`)
+- `tasks.md` — Dependency-ordered tasks with IDs (stored in `.spek/vault/`)
 
 ### Exit Criteria
-- ✅ Specification written and clear
-- ✅ Success Criteria defined
-- ✅ Assumptions documented
-- ✅ Risk Assessment complete
-- ✅ Spec committed to vault
-
----
-
-## Task Breakdown (Sub-Stage: Plan Phase)
-
-### Commands
-```
-/spek.plan --phase=plan
-# or separately:
-/speckit.plan --spec="feature-spec-id"
-/speckit.tasks --plan="feature-plan-id"
-```
-
-### Purpose
-Convert specification into detailed execution plan (architecture + tech choices), break plan into dependency-ordered executable tasks. Part of Plan stage (along with spec generation).
-
-### Workflow (Two-Step Process)
-
-```
-SPEC DOCUMENT
-    ↓
-STEP 1: /speckit.plan (Architecture & Tech Design)
-    ├─ Analyze spec requirements
-    ├─ Design architecture + tech choices
-    ├─ Query lat.md for affected areas
-    ├─ Document rationale and technology decisions
-    └─ OUTPUT: plan.md (stored in vault)
-    ↓
-STEP 2: /speckit.tasks (Task Decomposition)
-    ├─ Read plan.md
-    ├─ Break plan into executable tasks
-    ├─ Determine task dependencies (A blocks B)
-    ├─ Estimate per-task resources
-    ├─ Query lat.md for file locations
-    └─ OUTPUT: tasks.md (ordered, IDs, dependencies, risk mitigation)
-    ↓
-COMPLETE: PLAN + TASKS ARTIFACTS (vault + git commit)
-```
-
-### Plan Structure
-
-Example plan excerpt:
-
-```markdown
-## Task Breakdown
-
-### Auth Service Setup
-- Description: Create authentication service with token validation
-- Depends On: None (blocks related tasks)
-- Complexity: Medium
-- Resource notes: Specify project-specific resource estimates in task metadata
-- Files Affected: src/auth/service.ts, test/auth.test.ts
-
-### User Model Extension
-- Description: Add OAuth fields to User model
-- Depends On: Auth Service (API must be defined)
-- Complexity: Low
-- Resource notes: Specify project-specific resource estimates in task metadata
-- Files Affected: src/models/user.ts, migration/001-oauth-fields.sql
-
-### Integration Tests
-- Description: Write E2E tests for OAuth flow
-- Depends On: Auth Service, User Model
-- Complexity: High
-- Resource notes: Specify project-specific resource estimates in task metadata
-- Files Affected: test/e2e/auth.test.ts, test/fixtures/oauth-mock.ts
-
-## Dependency Graph
-
-Auth Service (Auth Service)
-    ├─→ User Model (depends)
-    └─→ Integration Tests (depends)
-```
-
-### Output Artifacts
-- `plan.md` — Architecture, tech choices, rationale, research (Markdown, vault-stored)
-- `tasks.md` — Dependency-ordered executable tasks with IDs, resource estimates, critical path (Markdown, vault-stored)
-- lat.md references for implementation
-- Record architectural decisions and rationale
-
-### Exit Criteria
-- ✅ Architecture documented in plan.md
-- ✅ Tech choices justified in plan.md
-- ✅ All tasks identified and documented in tasks.md
-- ✅ Dependencies clearly mapped in tasks.md
-- ✅ Resource estimates provided per task
-- ✅ Execution order (critical path) defined
-- ✅ Both plan.md and tasks.md committed to vault
+- ✅ Spec approved by user
+- ✅ Plan approved by user
+- ✅ Task list approved by user
+- ✅ All artifacts committed to `.spek/vault/`
 
 ---
 
 ## Implementation
 
-### Commands
+### Command
 ```
-/spek.implement --plan="feature-plan-id"
-# Runs tasks in dependency order
+/spek.implement [--steps N]
 ```
 
 ### Purpose
-Execute each task from the plan with full context (spec, plan, lat.md, enrichment).
+Execute approved tasks by wrapping `/speckit.implement`. `/spek.implement` is intentionally thin — it loads context (spec, plan, tasks from `.spek/vault/`) then delegates execution entirely to SpecKit.
 
-### Workflow Per Task
+### Workflow
 
 ```
-FOR EACH TASK IN PLAN (in dependency order):
-    ├─ Access Task Context (loaded once at /spek.prepare, reused)
-    │  ├─ Spec (what/why)
-    │  ├─ Plan (dependencies, what this task does)
-    │  ├─ lat.md (files to change, impact analysis from prepare)
-    │  └─ Previous Task Outcomes (linking info)
-    │
-    ├─ Implement
-    │  ├─ Write code per task spec
-    │  ├─ Run local tests
-    │  ├─ Validate against Success Criteria
-    │  └─ Document changes (comments, docstrings)
-    │
-    ├─ Enrich Outcome
-    │  ├─ Capture what changed (files, classes, functions)
-    │  ├─ Validate Success Criteria for this task
-    │  ├─ Document lessons learned (what worked, what didn't)
-    │  └─ Flag any blockers or dependencies on future tasks
-    │
-    └─ Persist
-       ├─ Commit code to git (with task ID in message)
-       ├─ Update plan: mark task complete
-       ├─ Add task outcome to plan document
-       └─ Continue to next task
-
-END FOR
+LOAD context from .spek/vault/ (spec + plan + tasks)
+    ↓
+/speckit.implement
+    ├─ Executes all tasks in dependency order
+    ├─ SpecKit owns per-task execution, code generation, step tracking
+    └─ Use --steps N to jump to a specific task (resume)
+    ↓
+IMPLEMENTATION COMPLETE
 ```
+
+SpecKit handles all per-task detail (code writing, test running, commits). Spekificity's role is context loading before the call, not wrapping each step.
 
 ### Implementation Context
 
@@ -328,18 +215,13 @@ Before moving to the final stage, verify all quality gates:
 
 ## Conclude: Feature Conclusion
 
-### Commands
+### Command
 ```
 /spek.conclude
-# Includes: archive, lessons extraction (automatic), state refresh
-
-# Optional (for deeper analysis):
-/spek.lessons --deep
-# Explicit, detailed lesson extraction (runs separately from /spek.conclude)
 ```
 
 ### Purpose
-Archive outcomes, extract lessons learned (automatic), refresh state for future features. `/spek.lessons --deep` available for explicit, detailed reflection.
+All post-implementation functions. `/spek.conclude` is the only conclude command — it handles analysis, lessons, vault archive, and state refresh in a single skill. `/spek.lessons` is a sub-function called inside conclude, not a standalone command.
 
 ### Workflow
 
@@ -347,45 +229,45 @@ Archive outcomes, extract lessons learned (automatic), refresh state for future 
 IMPLEMENTATION COMPLETE
     ↓
 /spek.conclude
-    ├─ Archive Feature Artifacts
-    │  ├─ Spec → Archive folder (vault)
-    │  ├─ Plan → Archive folder (vault)
-    │  ├─ Outcomes → Session memory
-    │  └─ Task commits → Summarized
     │
-    ├─ Extract lessons learned (Automatic)
-    │  ├─ What worked well?
-    │  ├─ What was difficult?
-    │  ├─ Patterns discovered?
-    │  ├─ Future recommendations?
-    │  └─ Link to specs/decisions (why/how)
+    ├─ 1. Analysis
+    │  └─ /speckit.analyze — validate implementation against spec
+    │     ├─ Compare Success Criteria vs actual outcomes
+    │     └─ Flag spec drift or deviations
     │
-    ├─ Refresh State
-    │  ├─ Rebuild lat.md index (full index incorporating feature changes)
-    │  ├─ Update repo memory (project facts)
-    │  ├─ Clean session context
-    │  └─ Prepare for next feature
+    ├─ 2. Lessons (sub-step: /spek.lessons)
+    │  ├─ Prompt for retrospective (what worked, what was difficult)
+    │  ├─ Extract new patterns if workflow diverged from spec
+    │  ├─ Log new decisions if architecture changed
+    │  └─ Write lessons to .spek/vault/lessons/YYYY-MM-DD-feature-name.md
     │
-    └─ Commit
-       ├─ Archive specs/plans to vault
-       ├─ Commit lessons to vault
-       ├─ Update repo memory
-       └─ Tag feature as complete (git tag?)
+    ├─ 3. Vault Archive
+    │  ├─ Archive spec + plan + tasks to .spek/vault/
+    │  ├─ Update .spek/vault/patterns.md
+    │  └─ Update .spek/vault/decisions.md
+    │
+    ├─ 4. State Refresh
+    │  ├─ /lat.sync — refresh lat.md code index (new code)
+    │  ├─ /lat.sync — refresh lat.md doc index (vault updates)
+    │  └─ Sync repo memory to .spek/memory/
+    │
+    └─ 5. Commit
+       ├─ git add .spek/vault/ .spek/memory/
+       └─ git commit
     ↓
 FEATURE ARCHIVED, LESSONS CAPTURED, READY FOR NEXT FEATURE
 ```
 
-### lessons learned Structure
+### Lessons Template
 
-Lessons stored in vault with template:
+Lessons stored at `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`:
 
 ```markdown
 ## Feature: [Feature Name]
-Date: 2026-05-20
+Date: YYYY-MM-DD
 Status: Complete
 
 ### What went well
-- [pattern/approach/tool that worked]
 - [pattern/approach/tool that worked]
 
 ### What was difficult
@@ -401,48 +283,26 @@ Status: Complete
 - [process improvement]
 
 ### Linked Artifacts
-- Spec: [link to archived spec]
-- Plan: [link to archived plan]
+- Spec: [link to spec in .spek/vault/]
+- Plan: [link to plan in .spek/vault/]
 - Decisions Made: [link to decision entries]
 - Pull Requests: [GitHub PR links]
 ```
 
 ### Output Artifacts
-- Archived spec (vault)
-- Archived plan (vault)
-- Lessons learned document (vault)
-- Updated lat.md index (fresh)
-- Updated repo memory
-- Feature complete (tagged in git)
+- Analysis report (spec drift, outcomes vs criteria)
+- Lessons document (`.spek/vault/lessons/YYYY-MM-DD-feature-name.md`)
+- Archived spec + plan + tasks (`.spek/vault/`)
+- Updated patterns + decisions (`.spek/vault/`)
+- lat.md indexes refreshed (code + docs)
+- Repo memory synced (`.spek/memory/`)
 
 ### Exit Criteria
-- ✅ Feature artifacts archived in vault
-- ✅ Lessons learned extracted and committed
-- ✅ lat.md refreshed
+- ✅ Analysis complete (spec drift documented)
+- ✅ Lessons extracted and committed to vault
+- ✅ Feature artifacts archived
+- ✅ lat.md code + doc indexes refreshed
 - ✅ Repo memory updated
-- ✅ Session context cleaned
-
----
-
-### Lesson Extraction Details
-
-**Automatic (via `/spek.conclude`):**
-- Lightweight, structured format
-- Runs as part of standard conclude workflow
-- Suitable for most features
-- Captured: what worked, what was difficult, patterns, recommendations
-
-**Explicit/Deep (via `/spek.lessons --deep`):**
-- Detailed reflection and analysis
-- Cross-references specs, plans, code, and decisions
-- Optional, for complex features or research projects
-- Runs independently after `/spek.conclude`
-- Produces: comprehensive feature retrospective with architectural insights
-
-**When to use:**
-- Standard feature: `/spek.conclude` (automatic lessons)
-- Complex refactor or architectural change: `/spek.conclude` + `/spek.lessons --deep`
-- Research/experimental work: `/spek.lessons --deep` for thorough analysis
 
 ## Timeline Diagram (4 Stages)
 
@@ -485,7 +345,7 @@ TOTAL: multi-day effort (4 stages)
 
 ### Lessons Not Captured
 - **Problem:** `/spek.conclude` completes but lessons are shallow
-- **Recovery:** `/spek.lessons --deep` (explicit, detailed extraction)
+- **Recovery:** Re-run `/spek.conclude` and provide more detailed retrospective input when prompted
 - **Outcome:** Richer lessons in vault
 
 ---
@@ -798,29 +658,34 @@ SpecKit is the spec-driven development workflow engine that Spekificity wraps an
 
 ### SpecKit + Spekificity Integration
 
-Spekificity wraps SpecKit phases with context injection and enrichment:
+Spekificity wraps SpecKit. The relationship:
 
 ```
-/spek.plan (Spekificity wrapper)
-    ├─ PRE: Load vault decisions + patterns + code graph (lat.md)
-    ├─ CORE: /speckit.specify → /speckit.clarify → /speckit.plan → /speckit.tasks → /speckit.analyze
-    └─ POST: Validate output aligns with decisions; flag contradictions
+/spek.plan
+    ├─ Calls /speckit.specify (step 1, with user review + remediation loop)
+    ├─ Calls /speckit.plan    (step 2, with user review + remediation loop)
+    └─ Calls /speckit.tasks   (step 3, with user review + remediation loop)
+    NOTE: /speckit.clarify and /speckit.analyze are NOT called automatically
 
-/spek.implement (Spekificity wrapper)
-    ├─ PRE: Load decisions + patterns + code graph
-    ├─ CORE: /speckit.implement (per-task execution)
-    └─ POST: Collect diff; validate against spec; log decisions
+/spek.implement
+    └─ Calls /speckit.implement (delegates execution entirely)
+
+/spek.conclude
+    ├─ Calls /speckit.analyze  (step 1, analysis)
+    └─ Runs /spek.lessons      (step 2, as sub-function — not a standalone command)
 ```
 
 ### Key Clarifications
 
-**Analyze Output:** Non-blocking; `/speckit.analyze` identifies gaps but doesn't prevent `/speckit.implement`.
+**`/speckit.clarify` is optional:** Call it manually if spec ambiguities need resolution. `/spek.plan` does not auto-invoke it.
 
-**Remediation:** Manual in-place editing (no automatic regeneration loop). After fixing, optionally re-run `/speckit.analyze` to verify.
+**`/speckit.analyze` is called by `/spek.conclude`:** Not by `/spek.plan`. It validates the completed implementation, not the plan.
+
+**`/spek.lessons` is not standalone:** It runs as step 2 inside `/spek.conclude`. There is no separate `/spek.lessons` command in the workflow.
 
 **SpecKit Vanilla vs Spekificity:**
-- Use `/speckit.*` directly for raw SpecKit workflow (no enrichment)
-- Use `/spek.plan` and `/spek.implement` for Spekificity enriched workflow (context injection + validation)
+- `/speckit.*` directly: raw SpecKit, no enrichment, no vault context
+- `/spek.*`: Spekificity wrapper — loads vault context, drives user approval loops, persists to `.spek/vault/`
 
 ---
 

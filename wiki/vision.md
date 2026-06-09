@@ -35,9 +35,12 @@ Spekificity is a spec-driven agent development framework that ties persistent kn
 
 ## Getting Started
 
-1. Run `spek init` to scaffold `.spek/`, vault/, and recommended defaults.
-2. Install lat.md and SpecKit per [setup.md](setup.md).
-3. Use `/spek.prepare` → `/spek.plan` → `/spek.implement` → `/spek.conclude` workflow.
+1. Install prerequisites: SpecKit, lat.md, Obsidian CLI (see [setup.md](setup.md))
+2. Run `spek init` to scaffold `.spek/` infrastructure and install agent skill files
+3. Run `/spek.prepare` in agent (initializes lat.md indexes, loads vault context)
+4. Use `/spek.prepare` → `/spek.plan` → `/spek.implement` → `/spek.conclude` workflow
+
+**Note:** `/spek.*` commands are agent skills, not CLI commands. Only `spek init` is a CLI command.
 
 ---
 

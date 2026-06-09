@@ -35,22 +35,38 @@ Spekificity's design rests on four pillars that guide all implementation decisio
 
 ## Execution Model
 
-Spekificity uses a two-phase setup model:
+Spekificity operates in two distinct layers: a CLI for project scaffolding, and agent skills for workflow execution.
 
-**Phase 1: Global Install (Dependency Resolution)**
-- `uv tool install spekificity --from git+...` resolves and installs all dependencies
-- Auto-installs SpecKit (if missing)
-- Auto-installs lat.md (if missing)
+**CLI Layer: `spek` command**
+
+The `spek` CLI has exactly one command: `spek init`. There are no CLI commands for prepare, plan, implement, or conclude. All workflow operations are agentic skills, not shell commands.
+
+**Phase 1: Global Install (Package Only)**
+- `uv tool install spekificity --from git+...` installs the `spek` CLI tool
+- Does NOT auto-install SpecKit, lat.md, or Obsidian — these are separate tools installed by the user
 - Verifies Python 3.11+, git, uv in PATH
-- Warns if Obsidian CLI missing (optional but recommended)
 
-**Phase 2: Per-Project Init**
-- `spek init` (one-time per project)
+**Phase 2: Per-Project Init (`spek init`)**
+- One-time per project
+- Prompts for AI agent integration type (Claude, Copilot, Gemini, generic)
+- Prompts for script type (sh, ps)
+- Creates `.spek/` directory structure (vault, memory, config)
+- **Installs agentic skill files** in the format required by the selected agent integration
 - Runs `specify init .` for SpecKit per-project configuration
-- Creates vault structure, .spek/ skills, .lat/ index, specs/ directory
-- References to `/spek.*` denote generated agent skills, not shell commands
+- Does NOT create a `specs/` directory at project root — specs are stored inside `.spek/vault/`
 
-**Outcome:** All tools installed globally; each project scaffolded locally. Ready for `/spek.prepare` → feature development.
+**Agent Skill Layer: `/spek.*` commands**
+
+All workflow commands are agent skills installed by `spek init` into the project. They run inside the agent environment (Claude Code, Copilot, Gemini, etc.), not the terminal. Skill file location depends on integration type selected at init:
+
+| Integration | Skill File Location |
+|-------------|-------------------|
+| Claude | `.claude/commands/` |
+| Copilot | `.github/agents/skills/` |
+| Gemini | agent-specific directory |
+| Generic | `.spek/skills/` |
+
+**Outcome:** `spek init` scaffolds infrastructure and installs skill files. All feature development then happens through agent skills (`/spek.prepare` → `/spek.plan` → `/spek.implement` → `/spek.conclude`), not the CLI.
 
 **See also:** [setup.md](setup.md) (detailed setup specification), [workflow.md](workflow.md) (4-stage workflow), [patterns.md](patterns.md) (reusable patterns)
 
@@ -261,15 +277,16 @@ START FEATURE
 
 ### Agent Skills Layer (`/spek.*` commands)
 
-**Deterministic, repeatable workflow steps.**
+**Deterministic, repeatable workflow steps. All run inside agent environment — not CLI.**
 
-- `spek.prepare`: Pre-flight checks (workspace state, graph freshness, vault ready)
-- `spek.plan`: Invoke SpecKit pipeline (specify → plan → analyze)
-- `spek.implement`: Execute approved tasks with full context
-- `spek.conclude`: Archive outcomes, update vault, refresh graph
-- `spek.lessons`: Structured lesson extraction (run standalone or post-feature)
-- `spek.context`: Load session context (vault, repo memory, graph state)
-- `spek.map`: Build/refresh code graph, analyze dependencies
+- `spek.prepare`: Initialize third-party tools (lat.md code index, lat.md doc index, store results in Obsidian vault)
+- `spek.plan`: Wrap SpecKit pipeline in order — `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` — with remediations at each step
+- `spek.implement`: Wrap `/speckit.implement` for task execution
+- `spek.conclude`: All post-implementation functions — analysis, vault archive, lessons extraction (via `/spek.lessons` as sub-step), lat.md refresh
+- `spek.context`: Load session context (vault, repo memory, graph state) — optional enhancement
+- `spek.map`: Analyze dependencies + impact — optional enhancement
+
+**Note:** `/spek.lessons` is called by `/spek.conclude` as a sub-function. It is not a standalone first-class skill.
 
 ---
 
@@ -324,26 +341,33 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 
 ### Command Execution (Example: `/spek.plan`)
 
-**Two-phase enrichment:**
+**Enrichment Layer — What It Is:**
 
-1. **PRE-Execution Enrichment (Context Injection):**
-   - Load vault decisions + patterns
-   - Load code graph via lat.md
-   - Compose enrichment prompt
-   - Prepend to SpecKit inputs
+The "enrichment layer" is the mechanism by which Spekificity's skill files add context to SpecKit before it runs. Concretely: the skill file instructs the agent to read relevant vault decisions + patterns and include that content in the conversation context **before** invoking a SpecKit skill. SpecKit then operates with that context available.
 
-2. **Core Execution:**
-   - `/speckit.specify`: Generate feature spec with injected context
-   - `/speckit.plan`: Create architecture + tech choices (code graph injected)
-   - `/speckit.tasks`: Break plan into executable tasks
-   - `/speckit.analyze`: Validate completeness
+This is not a programmatic API — it is **prompt-level context injection**. The agent skill file contains explicit instructions like:
+1. "Read `.spek/vault/decisions.md` and identify decisions relevant to this feature"
+2. "Read `.spek/vault/patterns.md` and identify patterns applicable here"
+3. "Query lat.md for code symbols affected by this feature"
+4. "Now invoke `/speckit.specify` with this context available"
 
-3. **POST-Execution Enrichment (Compression & Storage):**
-   - Compress output (caveman mode if configured)
-   - Archive spec/plan/tasks in vault/ (Git commit)
-   - Validate output aligns with injected context
+SpecKit generates a richer, more accurate spec because the agent already has project decisions and code structure in context when it invokes SpecKit.
 
-4. **Return:** Hand off to `spek.implement` for task execution, enable downstream usage
+**Three-phase execution:**
+
+1. **PRE (Context Injection):**
+   - Agent reads vault decisions + patterns relevant to the feature
+   - Agent queries lat.md code index for affected symbols and files
+   - Agent holds this context — no separate "enrichment prompt" sent; context is in the conversation
+
+2. **Core (SpecKit Invocation):**
+   - `/speckit.specify`: Agent invokes with vault context already loaded
+   - `/speckit.plan`: Agent invokes with code graph context from lat.md
+   - `/speckit.tasks`: Agent invokes, tasks reference code files found via lat.md
+
+3. **POST (Storage):**
+   - Archive spec/plan/tasks to `.spek/vault/` (git commit)
+   - Compress output if Caveman mode active
 
 ---
 
@@ -351,9 +375,9 @@ When a user invokes `/spek.context` or any `/spek.*` command:
 
 | Layer | Storage | Sync | Lifetime |
 |-------|---------|------|----------|
-| **Knowledge Vault** | Git (vault/ directory) | Manual (user commits) after /spek.conclude | Persistent (feature cycle + beyond) |
-| **Repo Memory** | `.git/spek-memory/` (YAML) | Git hook + manual | Persistent (workspace lifetime) |
-| **lat.md** | Index directory in `.spek/lat/` (primary, non-human-readable) | File watcher (auto) | Persistent (session lifetime) |
+| **Knowledge Vault** | Git (`.spek/vault/` directory) | Manual (user commits) after /spek.conclude | Persistent (feature cycle + beyond) |
+| **Repo Memory** | `.spek/memory/` (YAML) | Manual after /spek.conclude | Persistent (workspace lifetime) |
+| **lat.md** | Index directory in `.spek/lat/` (non-human-readable) | Manual via `/lat.sync` | Persistent (session lifetime) |
 | **Session State** | In-memory + context window | Manual commits to memory | Temporary (single session) |
 
 ---

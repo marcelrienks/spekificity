@@ -16,7 +16,7 @@ For each of Spekificity's four pillars, a tool is recommended that balances matu
 |--------|------|-----|-------|
 | **Token Efficiency** | Caveman (compression) | Simple notation; preserves code; tested | Low (integrated) |
 | **Determinism** | SpecKit/Specify | GitHub official; broad adoption; YAML-first | Medium (install + init) |
-| **Persistence** | Obsidian (vault) | Largest PKM community; markdown portable; git-backed | Low (optional UI; CLI required) |
+| **Persistence** | Obsidian (vault) | Largest PKM community; markdown portable; git-backed | Medium (CLI required for all vault R/W; desktop UI optional for visualization) |
 | **Autonomy & Code Understanding** | lat.md | Agent-optimized; fast queries; framework-aware | Medium (install + MCP config) |
 
 ---
@@ -66,7 +66,7 @@ Each system owns a domain and operates on different rhythms:
 | Multiple tools (not monolithic) | Clear separation; each tool optimized for its domain |
 | lat.md required | Agent workflows depend on indexed queries; fallback to grep is manual overhead |
 | Setup effort | One-time effort; pays for itself in token efficiency and query speed |
-| Obsidian CLI required | Enables automated vault operations; desktop app optional for visualization |
+| Obsidian CLI required | All vault reads and writes go through Obsidian CLI; ensures consistent indexing, backlinks, and graph state. Desktop app optional for visualization only. |
 
 ---
 

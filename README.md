@@ -15,31 +15,31 @@ The heavy lifting comes from best-in-class tools. What we built is the **glue**:
 
 ## Quick Start (5 Minutes)
 
-# 1. Install globally (one time)
+**Step 1: Install prerequisites** (SpecKit, lat.md — see [wiki/setup.md](wiki/setup.md))
+
+**Step 2: Install `spek` CLI (one time)**
 ```bash
 uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
 ```
-# 2. Set up a project
+
+**Step 3: Initialize your project**
 ```bash
 cd /path/to/your/project
-```
-```bash
 spek init
-```
-# 3. Prepare for a feature
-```bash
-spek prepare "Your feature name"
-```
-# 4. Generate a plan
-```bash
-spek plan "Your feature description"
-```
-# 5. Start building
-```bash
-spek implement --task T1.1
+# Select AI agent integration (claude/copilot/gemini/generic) when prompted
 ```
 
-**Next:** Read [Quick Start Workflow](#quick-start-workflow) for detailed walkthrough, or [wiki/vision.md](wiki/vision.md) for design philosophy.
+**Step 4–7: Run in your AI agent** (Claude Code, Copilot, etc.)
+```
+/spek.prepare
+/spek.plan "Your feature description"
+/spek.implement
+/spek.conclude
+```
+
+> **Note:** Steps 4–7 are agent skills, not CLI commands. `spek init` installs them into your project. Only `spek init` runs in the terminal.
+
+**Next:** Read [wiki/setup.md](wiki/setup.md) for prerequisites and setup details, or [wiki/vision.md](wiki/vision.md) for design philosophy.
 
 ---
 
@@ -112,12 +112,6 @@ cd /path/to/your/project && spek init
 
 ---
 
-## Troubleshooting
-
-**Full troubleshooting guide:** [wiki/troubleshooting.md](wiki/troubleshooting.md)
-
----
-
 ## Contributing
 
 Contributions welcome! Please:
@@ -138,11 +132,11 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## Next Steps
 
-1. **Install:** `uv tool install spekificity --from git+...`
-2. **Initialize:** `cd /your/project && spek init`
-3. **Start:** `spek prepare "Your Feature Name"`
+1. **Install prerequisites:** SpecKit, lat.md (see [wiki/setup.md](wiki/setup.md))
+2. **Install CLI:** `uv tool install spekificity --from git+...`
+3. **Initialize:** `cd /your/project && spek init` (select agent integration type)
 4. **Learn:** Read [wiki/vision.md](wiki/vision.md) and [wiki/workflow.md](wiki/workflow.md)
-5. **Build:** Execute your first feature using the 4-stage workflow
+5. **Build:** Run `/spek.prepare` in your agent → 4-stage workflow begins
 
 **Documentation Status**: Production ready ✓
 **Last Updated**: 2026-06-07
