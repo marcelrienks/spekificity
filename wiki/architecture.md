@@ -200,7 +200,7 @@ START FEATURE
 
 **Deterministic, repeatable workflow steps. All run inside agent environment — not CLI.**
 
-- `spek.prepare`: Initialize third-party tools (lat.md code index, lat.md doc index, store results in Obsidian vault)
+- `spek.prepare`: Initialize third-party tools (lat.md code index, lat.md doc index, store index references in Obsidian vault); verify constitution exists, invoke `/speckit.constitution` if missing
 - `spek.plan`: Wrap SpecKit pipeline in order — `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` — with remediations at each step
 - `spek.implement`: Wrap `/speckit.implement` for task execution
 - `spek.conclude`: All post-implementation functions — analysis, vault archive, lessons extraction (via `/spek.lessons` as sub-step), lat.md refresh
@@ -311,9 +311,9 @@ User Intention
 /spek.prepare
     ↓ (invokes)
 /spek.plan
-    ├→ /speckit.specify (reads vault, writes spec with enrichments)
-    ├→ /speckit.plan (reads spec, writes plan with code graph)
-    ├→ /speckit.tasks (reads plan, writes dependency-ordered tasks)
+    ├→ /speckit.specify (reads vault, writes spec to SpecKit-managed path; archived to .spek/vault/)
+    ├→ /speckit.plan (reads spec, writes plan to SpecKit-managed path; archived to .spek/vault/)
+    ├→ /speckit.tasks (reads plan, writes tasks to SpecKit-managed path; archived to .spek/vault/)
     ├→ /speckit.analyze (queries lat.md, validates completeness)
     │
 /spek.implement

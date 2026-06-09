@@ -1,6 +1,6 @@
 # Code Indexing & Context Loading
 
-> **Implementation reference** — describes internal Python API. For agent workflow usage, see [workflow.md](workflow.md) and [skills.md](skills.md).
+> **Implementation reference** — describes the internal Python API of the `spekificity` package. For agent workflow usage, see [workflow.md](workflow.md) and [skills.md](skills.md).
 
 ## Overview
 
@@ -45,43 +45,9 @@ context = query_relevant_context("JWT authentication")
 # Returns: {"files": [...], "functions": [...]}
 ```
 
-**Fallback:** If lat.md is unavailable, context loading falls back to grep-based semantic search for graceful degradation (internal implementation detail — lat.md is the architecturally required tool; see [architecture.md](architecture.md)).
-
 ---
 
-### 2. Semantic Search Fallback (`integrations/semantic_search.py`)
-
-**Purpose:** Grep-based code search when lat.md is unavailable
-
-**API:**
-```python
-from spekificity.integrations.semantic_search import SemanticSearcher, search_relevant_context
-
-# Initialize searcher
-searcher = SemanticSearcher(project_path=".")
-
-# Search for files
-files = searcher.search_files("authentication", limit=5)
-
-# Search for functions
-funcs = searcher.search_functions("def authenticate", limit=5)
-
-# Pattern search
-matches = searcher.search_by_pattern(r"class.*Auth", file_type="*.py")
-
-# Convenience function
-context = search_relevant_context("JWT authentication")
-# Returns: {"files": [...], "functions": [...]}
-```
-
-**Advantages:**
-- No external tool dependency (uses grep)
-- Fast for small codebases
-- Reliable fallback when lat.md unavailable
-
----
-
-### 3. Context Loading (`core/context.py`)
+### 2. Context Loading (`core/context.py`)
 
 **Purpose:** Load decisions, patterns, code for task execution
 
@@ -124,11 +90,11 @@ context_str = load_context_for_task(
 **Context Matching:**
 - Decisions: Title/content matching against intent
 - Patterns: Category + title matching
-- Code: lat.md queries → fallback to semantic search
+- Code: lat.md queries via MCP tools
 
 ---
 
-### 4. Context Compression (`core/compression.py`)
+### 3. Context Compression (`core/compression.py`)
 
 **Purpose:** Compress context using Caveman notation for token efficiency
 
@@ -245,15 +211,6 @@ lat query functions "authenticate"
 lat query impact src/auth.py
 ```
 
-### Fallback Strategy
-
-If lat.md unavailable:
-1. Try semantic search (grep-based)
-2. Return empty context (graceful degradation)
-3. Agent continues without context injection
-
----
-
 ## Testing
 
 Run context loading tests:
@@ -273,19 +230,6 @@ Tests cover:
 ---
 
 ## Troubleshooting
-
-### lat.md not found
-
-(Shouldn't happen — `spek init` auto-installs lat.md)
-
-Fallback for manual installation:
-```bash
-# Install lat.md manually (if needed)
-pip install lat-md
-
-# Or use fallback (automatic)
-# Semantic search will be used instead
-```
 
 ### Slow context loading
 

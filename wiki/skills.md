@@ -26,7 +26,7 @@ Spekificity exposes agent skills and commands for specification-driven developme
 2. Initialize lat.md index for **documentation** (wiki, vault, markdown files) — separate index from code
 3. Store both indexes in Obsidian vault (`.spek/vault/`) for persistent context
 4. Load vault context (decisions, patterns, prior lessons) into agent session
-5. Verify project constitution exists (`specify init .`); create if missing
+5. Verify `.specify/memory/constitution.md` exists; if missing, invoke `/speckit.constitution` to create it (one-time, interactive)
 
 **Why separate code + doc indexes:** Code symbols and documentation serve different query purposes. Code index answers "where is this function defined / what calls it." Doc index answers "what decisions or patterns are relevant to this topic."
 
@@ -72,9 +72,9 @@ Wraps these SpecKit skills in order, performing remediations at each step before
 **What `/spek.plan` does NOT do:** It does not call `/speckit.clarify` or `/speckit.analyze` automatically. Those are optional and can be invoked manually if needed.
 
 **Output:**
-- Approved spec (stored in `.spek/vault/`)
-- Approved implementation plan (stored in `.spek/vault/`)
-- Approved task list with dependency order (stored in `.spek/vault/`)
+- Approved spec (SpecKit-managed path; archived to `.spek/vault/` via Obsidian)
+- Approved implementation plan (SpecKit-managed path; archived to `.spek/vault/` via Obsidian)
+- Approved task list with dependency order (SpecKit-managed path; archived to `.spek/vault/` via Obsidian)
 
 **Reference:** [workflow.md](workflow.md) (plan phase)
 
@@ -92,7 +92,7 @@ Wraps these SpecKit skills in order, performing remediations at each step before
 
 Wraps a single SpecKit skill:
 
-1. Load approved spec + plan + task list from `.spek/vault/`
+1. Load approved spec + plan + task list from SpecKit-managed paths (archived copies available in `.spek/vault/`)
 2. Execute **`/speckit.implement`** — actions all tasks sequentially
    - `/speckit.implement` handles per-task execution, code generation, and step tracking
    - Jump to specific step with `--steps N` if resuming

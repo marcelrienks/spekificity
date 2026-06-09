@@ -5,11 +5,9 @@
 
 **Specification-Driven Agent Development Framework** — Connects the tools you're already using.
 
-It orchestrates **SpecKit** (structured planning) + **lat.md** (code indexing—no manual search) + **Obsidian vault** (decision history) + **Caveman** mode (token efficiency) into one workflow. 
+Spekificity ties persistent knowledge (Obsidian vault), code analysis (lat.md), workflow automation (SpecKit), and skill execution into a cohesive system. It enables rapid, deterministic feature development by treating documentation as canonical memory, using a pre-indexed code graph for precise context, and orchestrating feature work with a spec-first workflow — eliminating context loss between sessions, token waste from file scanning, and work without durable specifications or lessons.
 
-**No new concepts.** Just less friction: setup in minutes, straightforward commands, spec-first procedures that eliminate context-switching.
-
-The heavy lifting comes from best-in-class tools. What we built is the **glue**: one setup, clear procedures, and an opinionated workflow that makes them work together instead of in silos. 🧩
+The heavy lifting comes from best-in-class tools. What we built is the **glue**: one setup, clear procedures, and an opinionated workflow that makes them work together instead of in silos.
 
 ---
 
@@ -39,7 +37,7 @@ spek init
 
 > **Note:** Steps 4–7 are agent skills, not CLI commands. `spek init` installs them into your project. Only `spek init` runs in the terminal.
 
-**Next:** Read [wiki/setup.md](wiki/setup.md) for prerequisites and setup details, or [wiki/vision.md](wiki/vision.md) for design philosophy.
+**Next:** Read [wiki/workflow.md](wiki/workflow.md) for the 4-stage feature workflow.
 
 ---
 
@@ -81,7 +79,7 @@ cd /path/to/your/project && spek init
 
 ---
 
-**Full workflow details, command reference, vault structure examples, and design philosophy:** See [wiki/workflow.md](wiki/workflow.md) and [wiki/vision.md](wiki/vision.md).
+**Full workflow details and command reference:** See [wiki/workflow.md](wiki/workflow.md) and [wiki/skills.md](wiki/skills.md).
 
 ---
 
@@ -90,8 +88,7 @@ cd /path/to/your/project && spek init
 ### First-Time Setup
 
 1. **Install Globally:** `uv tool install spekificity --from git+...`
-2. **Read:** [wiki/vision.md](wiki/vision.md) — Understand core design (four pillars, philosophy)
-3. **Read:** [wiki/architecture.md](wiki/architecture.md) — How components fit together
+2. **Read:** [wiki/architecture.md](wiki/architecture.md) — How components fit together
 
 ### First Feature Development
 
@@ -134,7 +131,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 1. **Install prerequisites:** SpecKit, lat.md (see [wiki/setup.md](wiki/setup.md))
 2. **Install CLI:** `uv tool install spekificity --from git+...`
 3. **Initialize:** `cd /your/project && spek init` (select agent integration type)
-4. **Learn:** Read [wiki/vision.md](wiki/vision.md) and [wiki/workflow.md](wiki/workflow.md)
+4. **Learn:** Read [wiki/workflow.md](wiki/workflow.md) and [wiki/skills.md](wiki/skills.md)
 5. **Build:** Run `/spek.prepare` in your agent → 4-stage workflow begins
 
 **Documentation Status**: Production ready ✓

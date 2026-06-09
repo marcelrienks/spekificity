@@ -20,28 +20,20 @@ Quick index to 24+ patterns. **Full specifications** are in [decision.md](decisi
 | 10 | Auto-Tagging | Memory | Automate knowledge links | 🟢 ADOPT SOON | [decision.md#decision-5](decision.md#decision-5-auto-tagging--auto-wikilink-insertion) |
 | 11 | Skill Chaining | Integration | Sequential execution | ✅ ACTIVE | [workflow.md](workflow.md) |
 | 12 | Post-Processing | Workflow | Artifact → compress → archive | ✅ ACTIVE | [workflow.md](workflow.md) |
-| 13 | Hybrid Graph | Graph | Unify code + doc nodes | 📅 FUTURE | [architecture.md](architecture.md) |
-| 14 | Graph Merge | Graph | Combine node types | 📅 FUTURE | [architecture.md](architecture.md) |
-| 15 | Incremental Sync | Graph | Cache + file watch | 🟢 ADOPT SOON | [decision.md#decision-7](decision.md#decision-7-git-hooks-integration-for-automatic-graph-refresh) |
-| 16 | Feature State | State Mgmt | Track lifecycle phases | ✅ ACTIVE | [workflow.md](workflow.md) |
-| 17 | Session-to-Vault | Memory | Ephemeral → permanent | 🟢 ADOPT SOON | [decision.md#decision-5](decision.md#decision-5-auto-tagging--auto-wikilink-insertion) |
-| 18 | Anti-Sycophancy | Validation | Flag AI drift | 📅 FUTURE | [decision.md#decision-10](decision.md#decision-10-anti-sycophancy-validation-rules) |
-| 19 | Blind Review | Validation | Anon. review | 📅 FUTURE | [decision.md#decision-11](decision.md#decision-11-blind-code-review-optional-second-pass-qa) |
-| 20 | Backprop Reflex | Validation | Test failures → learning | 🟡 CONSIDER | [decision.md#decision-8](decision.md#decision-8-backprop-reflex-test-failures--vault-updates) |
-| 21 | RARV Reflection | Validation | Alignment cycle | 🟡 CONSIDER | [decision.md#decision-9](decision.md#decision-9-rarv-reflection-cycles-reason-act-reflect-verify) |
-| 22 | Token Budget | Compression | Monitor costs | 📅 FUTURE | [decision.md#decision-12](decision.md#decision-12-token-budget-model-soft-limits-not-hard-caps) |
-| 23 | Fallback Hierarchy | Error Handling | Graceful degradation | ✅ ACTIVE | [architecture.md](architecture.md) |
-| 24 | Sequential Recovery | Error Handling | Pre-core-post recovery | ✅ ACTIVE | [architecture.md](architecture.md) |
+| 13 | Incremental Sync | Graph | Cache + file watch | 🟢 ADOPT SOON | [decision.md#decision-7](decision.md#decision-7-git-hooks-integration-for-automatic-graph-refresh) |
+| 14 | Feature State | State Mgmt | Track lifecycle phases | ✅ ACTIVE | [workflow.md](workflow.md) |
+| 15 | Session-to-Vault | Memory | Ephemeral → permanent | 🟢 ADOPT SOON | [decision.md#decision-5](decision.md#decision-5-auto-tagging--auto-wikilink-insertion) |
+| 16 | Fallback Hierarchy | Error Handling | Graceful degradation | ✅ ACTIVE | [architecture.md](architecture.md) |
+| 17 | Sequential Recovery | Error Handling | Pre-core-post recovery | ✅ ACTIVE | [architecture.md](architecture.md) |
 
-**Legend:** ✅ ACTIVE | 🟢 ADOPT SOON | 🟡 CONSIDER | 📅 FUTURE
+**Legend:** ✅ ACTIVE | 🟢 ADOPT SOON
 
 ---
 
 ## Adoption Priority
 
-**HIGH (implement now):** Patterns 1-7, 9, 11-12, 16, 23-24  
-**MEDIUM:** Patterns 8, 10, 15, 17, 20-21  
-**FUTURE:** Patterns 13-14, 18-19, 22
+**Implement now:** Patterns 1-2, 4-7, 9, 11-12, 14, 16-17  
+**Adopt soon:** Patterns 3, 8, 10, 13, 15
 
 ---
 
@@ -51,13 +43,13 @@ Quick index to 24+ patterns. **Full specifications** are in [decision.md](decisi
 Decorator Wrapper, Context Injection, Enrichment Layer, Anti-Sycophancy, Three-Layer Query Rule, Three-Layer Memory
 
 **Planning & Architecture (Plan Phase):**
-Enrichment Layer, Context Injection, Hybrid Graph, Code Graph Query, Token Budget Tracking
+Enrichment Layer, Context Injection, Three-Layer Query Rule
 
 **Implementation (Implement Phase):**
-Decorator Wrapper, Sequential Error Recovery, Fallback Hierarchy, Blind Code Review
+Decorator Wrapper, Sequential Recovery, Fallback Hierarchy
 
 **Post-Feature (Post Phase):**
-Post-Processing, Caveman Compression, Feature State Tracking, Session-to-Vault Archival, Auto-Tagging, RARV Reflection, Backprop Reflex
+Post-Processing, Caveman Compression, Feature State Tracking, Session-to-Vault Archival, Auto-Tagging
 
 **Knowledge Persistence:**
 Three-Layer Memory, Zettelkasten, Auto-Tagging, Session-to-Vault Archival
@@ -66,14 +58,11 @@ Three-Layer Memory, Zettelkasten, Auto-Tagging, Session-to-Vault Archival
 Error Categorization, Fallback Hierarchy, Sequential Error Recovery
 
 **Performance & Efficiency:**
-Three-Layer Query Rule, Code Graph Query, Incremental Sync, Caveman Compression, Token Budget
-
-**Quality & Validation:**
-Anti-Sycophancy, Blind Code Review, RARV Reflection, Backprop Reflex
+Three-Layer Query Rule, Incremental Sync, Caveman Compression
 
 **Orchestration & Workflow:**
 Feature Lifecycle, Skill Chaining, Feature State Tracking
 
 **Knowledge Graphs & Queries:**
-Hybrid Graph, Graph Merge, Incremental Sync, Code Graph Query
+Three-Layer Query Rule, Incremental Sync
 

@@ -1,198 +1,122 @@
-# Setup: Installation & Configuration
+# Setup Implementation Spec
 
-This document describes setup and configuration for Spekificity.
+## Overview
 
----
+`spek` is a Python CLI with one command: `spek init`. Its responsibility is:
 
-## Design Model: CLI for Scaffolding, Agent Skills for Workflow
+1. Verifying prerequisites
+2. Detecting and installing 3rd party dependencies
+3. Scaffolding the `.spek/` directory structure
+4. Generating agent skill files for the chosen integration
+5. Running SpecKit per-project init (`specify init .`)
+6. Installing git hooks
 
-Spekificity separates two concerns:
-
-| Layer | Mechanism | Purpose |
-|-------|-----------|---------|
-| **Scaffolding** | `spek` CLI (`spek init`) | One-time per-project setup of infrastructure and skill files |
-| **Workflow** | Agent skills (`/spek.*`) | Feature development (prepare, plan, implement, conclude) |
-
-**Critical:** `spek` CLI has only one command: `spek init`. There are no CLI commands for `prepare`, `plan`, `implement`, or `conclude`. All workflow operations are agentic skills that run inside the agent environment (Claude Code, Copilot, etc.), installed by `spek init`.
+All workflow execution (prepare, plan, implement, conclude) happens through agent skill files installed by `spek init`. The CLI does not implement workflow logic — it delivers the skill files that do.
 
 ---
 
-## Tool Requirements
+## Prerequisites Verification
 
-| Tool | Role | Installation |
-|------|------|------|
-| **SpecKit** | Spec → plan → implement orchestration engine | Auto-installed by `spek init` |
-| **lat.md** | Code and documentation indexing + MCP queries | Auto-installed by `spek init` |
-| **Obsidian CLI** | All vault read/write operations | Auto-installed by `spek init` |
-| **Obsidian Desktop** | Vault graph visualization (optional) | Manual install if desired |
-| **Caveman** | Token compression skill (Claude integration) | Auto-installed by `spek init` |
+Before proceeding, `spek init` must verify:
 
-**All vault operations use the Obsidian CLI** for consistent indexing, backlink updates, and graph state. Obsidian desktop is optional and only needed for interactive graph browsing.
+- Python 3.11+ in PATH
+- `git` in PATH and current directory is a valid git repository
+- `uv` in PATH
+
+Fail with descriptive error message if any check fails.
 
 ---
 
-## Prerequisites
+## 3rd Party Tool Installation
 
-Only these are required before Spekificity:
+Detect each tool via `shutil.which()`. If not found in PATH, install using the tool's standard package manager.
 
-- **Python 3.11+** — Check: `python3 --version`
-- **Git** — Check: `git --version`
-- **`uv` package manager** — Check: `uv --version`. Install: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+| Tool | Role | Install Method |
+|------|------|---------------|
+| SpecKit (`specify`) | Spec → plan → implement orchestration | TBD — confirm against SpecKit release |
+| lat.md (`lat`) | Code and documentation indexing, MCP interface | TBD — confirm against lat.md release |
+| Obsidian CLI (`obsidian`) | All vault read/write operations | TBD — confirm against Obsidian CLI release |
 
-All other dependencies (SpecKit, lat.md, Obsidian CLI) are auto-installed by `spek init`.
+**Note:** Exact package names and install commands must be resolved against each tool's actual published release. The table above records role and install mechanism — populate the Install Method column once package registry names are confirmed.
+
+Obsidian desktop is **not** installed — it is optional and only needed for interactive graph visualization by a human user. Obsidian CLI is the only Obsidian dependency required by Spekificity.
 
 ---
 
-## Installation
+## Prompts
 
-### Step 1: Install `spek` CLI Globally
+After prerequisite checks and tool installation, prompt the user for:
 
-```bash
-uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
-```
+1. **AI agent integration type** — selects where skill files are generated:
+   - `claude` → `.claude/commands/`
+   - `copilot` → `.github/agents/skills/`
+   - `gemini` → TBD (confirm with Gemini agent specification)
+   - `generic` → `.spek/skills/`
 
-Verify:
-```bash
-spek --version
-```
-
-### Step 2: Per-Project Initialization
-
-Navigate to a git repository:
-
-```bash
-cd /path/to/your/project
-git status  # Must be a valid git repo; run git init first if not
-```
-
-Run:
-
-```bash
-spek init
-```
-
-`spek init` **auto-detects and installs missing dependencies** (SpecKit, lat.md, Obsidian CLI). Then it prompts for:
-
-**What `spek init` does:**
-1. Checks for SpecKit, lat.md, Obsidian CLI; installs if missing
-2. Creates `.spek/` directory structure
-3. Initializes lat.md code index + documentation index
-4. Creates agent skill files in correct location
-5. Runs `specify init .` for SpecKit configuration
-
-**Then it prompts for agent integration type and script type:**
-1. **AI agent integration type** — selects which format skill files are generated in:
-   - `claude` → installs skills to `.claude/commands/`
-   - `copilot` → installs skills to `.github/agents/skills/`
-   - `gemini` → installs skills to agent-specific directory
-   - `generic` → installs skills to `.spek/skills/`
 2. **Script type** — `sh` or `ps` (PowerShell)
 
-Non-interactive (CI/scripted):
+Support non-interactive mode:
 ```bash
 spek init --integration claude --script sh
 ```
 
-### Directory Structure Created
+Flags:
+- `--integration`: `claude` | `copilot` | `gemini` | `generic`
+- `--script`: `sh` | `ps`
+- `--no-git-hooks`: skip git hook installation
+
+---
+
+## Directory Structure
+
+Create under project root:
 
 ```
-your-project/
-├── .spek/
-│   ├── vault/ (.spek/vault/)           ← Persistent knowledge vault
-│   │   ├── lessons/                    ← Per-feature retrospectives
-│   │   ├── decisions.md                ← Architectural decisions (append-only)
-│   │   └── patterns.md                 ← Reusable patterns
-│   ├── memory/                         ← Repo-scoped memory (YAML)
-│   ├── lat/                            ← lat.md code + docs index (non-human-readable)
-│   └── config.yaml                     ← Spekificity project config
-├── .claude/commands/                   ← Agent skill files (if Claude integration)
-│   ├── spek-prepare.md
-│   ├── spek-plan.md
-│   ├── spek-implement.md
-│   └── spek-conclude.md
-└── .specify/                           ← SpecKit per-project config (from specify init .)
-    ├── memory/constitution.md
-    ├── extensions.yml
-    └── templates/
+.spek/
+├── vault/                          ← Persistent knowledge vault (Obsidian-managed)
+│   ├── lessons/                    ← Per-feature retrospectives
+│   ├── decisions.md                ← Architectural decisions (append-only)
+│   └── patterns.md                 ← Reusable patterns
+├── memory/                         ← Repo-scoped memory (YAML)
+├── lat/                            ← lat.md index directory (non-human-readable)
+└── config.yaml                     ← Project configuration
 ```
 
-**Skill file location varies by integration type selected.** Copilot: `.github/agents/skills/`. Generic: `.spek/skills/`.
+Skill file directory depends on integration type selected. SpecKit also creates `.specify/` via `specify init .`.
 
-`spek init` also runs `specify init .` to configure SpecKit for the project.
+---
 
-### Step 3: Verify Setup
+## Vault Initialization
+
+Initialize vault using Obsidian CLI (not direct filesystem writes):
 
 ```bash
-# Check .spek structure
-ls -la .spek/
-ls -la .spek/vault/          # decisions.md, patterns.md, lessons/
-ls -la .spek/memory/
-ls -la .spek/lat/
-
-# Check skill files (Claude integration example)
-ls -la .claude/commands/     # spek-prepare.md, spek-plan.md, etc.
-
-# Check SpecKit config
-ls -la .specify/
+obsidian init --vault .spek/vault/
+obsidian write --vault .spek/vault/ --note decisions.md --content "# Decisions\n"
+obsidian write --vault .spek/vault/ --note patterns.md --content "# Patterns\n"
 ```
+
+All subsequent vault operations by agent skills must also go through the Obsidian CLI. Direct filesystem writes to `.spek/vault/` are not permitted — they bypass Obsidian's indexing, backlink tracking, and graph state.
 
 ---
 
-## Understanding the Infrastructure
+## Agent Skill File Generation
 
-### Vault (`.spek/vault/`)
+Generate one skill file per `/spek.*` command. File name maps from command name with dots replaced by hyphens: `/spek.prepare` → `spek-prepare.md`.
 
-Persistent knowledge base for the project. Plain markdown files, but **all agent reads and writes go through the Obsidian CLI** — not direct filesystem I/O. This ensures Obsidian's link graph and index stay consistent.
+**Required skill files:**
+- `spek-prepare.md`
+- `spek-plan.md`
+- `spek-implement.md`
+- `spek-conclude.md`
+- `spek-lessons.md`
+- `spek-context.md` (optional enhancement)
+- `spek-map.md` (optional enhancement)
 
-```
-.spek/vault/
-├── lessons/                        ← Per-feature retrospectives (written by /spek.conclude)
-│   └── YYYY-MM-DD-feature-name.md  ← Naming: date + feature name
-├── decisions.md                    ← Architectural decisions (append-only)
-└── patterns.md                     ← Reusable patterns and best practices
-```
-
-- Git-tracked. Commit via `git add .spek/vault/; git commit -m "..."`
-- **All vault reads and writes go through Obsidian CLI** — agents do not write vault files directly via filesystem. CLI ensures consistent indexing, backlink updates, and graph state.
-- Obsidian desktop optional — only needed for graph visualization in desktop app.
-
-**Vault is at `.spek/vault/`, not `vault/` at project root.**
-
----
-
-### lat.md (`.spek/lat/`)
-
-Code analysis and indexing tool. Installed separately; `spek init` creates the per-project index directory.
-
-`lat.md` provides:
-- Pre-indexed code symbols, definitions, call graphs
-- Separate indexing for documentation (markdown files, wiki)
-- MCP tool interface for agent queries (`lat_symbols`, `lat_references`, `lat_callers`, `lat_impact`)
-- Framework-aware extractors (Go, Python, TypeScript, etc.)
-
-**Used by `/spek.prepare`**: When `/spek.prepare` runs, it indexes both code and documentation via lat.md and stores the results in the Obsidian vault for context loading.
-
-Usage during workflow:
-- `/lat.query` — Query code/doc intelligence
-- `/lat.sync` — Refresh index after code changes (run after `/spek.conclude`)
-
----
-
-### Agent Skill Files
-
-`spek init` generates skill files — markdown instructions that tell the agent exactly how to execute each skill. These are the core product. `spek init` generates them in the format the chosen integration expects.
-
-**How agents discover skill files:**
-- **Claude Code:** Automatically discovers `.claude/commands/*.md` as slash commands. A file named `spek-prepare.md` becomes `/spek.prepare`.
-- **Copilot:** Agent instruction files at `.github/agents/skills/` following GitHub Copilot agent skill spec.
-- **Generic:** Agent-agnostic markdown files at `.spek/skills/` (agent must be configured to load them).
-
-**Skill file structure (all integrations):**
-
-Each generated skill file must contain:
+**Each skill file must contain:**
 
 ```markdown
-# /spek.prepare
+# /spek.<command>
 
 ## Purpose
 [One line: what this skill does]
@@ -206,12 +130,11 @@ Each generated skill file must contain:
 2. [...]
 
 ## Tool Permissions Required
-[List each tool the agent must have permission to use]
 - lat.md MCP: lat_symbols, lat_references, lat_sync
-- Filesystem: read/write .spek/vault/, read .specify/
+- Obsidian CLI: read/write .spek/vault/
+- SpecKit: specify, speckit.* skill invocations
 
 ## Third-Party Tool Usage
-[Exact syntax for each external tool]
 
 ### lat.md
 - Index code: `lat_sync --path .`
@@ -221,68 +144,59 @@ Each generated skill file must contain:
 ### SpecKit
 - Invoke: `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`
 
-### Obsidian CLI (required — all vault operations)
+### Obsidian CLI (all vault operations)
 - Read note: `obsidian read --vault .spek/vault/ --note decisions.md`
 - Write/create note: `obsidian write --vault .spek/vault/ --note lessons/YYYY-MM-DD-feature.md`
 - Append to note: `obsidian append --vault .spek/vault/ --note decisions.md`
-- Export vault: `obsidian export --vault .spek/vault/ --format json`
-
-### Caveman (if Claude integration)
-- Activate: `/caveman full`
 
 ## Output
 [What artifacts are created, where they are stored]
 ```
 
-**Why explicit tool instructions matter:** Agent skills need to know the exact MCP tool names, filesystem paths, and command syntax for each third-party tool. Without this, the agent will hallucinate or fail silently. `spek init` must generate skill files with complete, accurate tool interaction instructions for the chosen integration.
+Skill files must contain complete, accurate tool interaction instructions for the chosen integration. Without exact MCP tool names, filesystem paths, and command syntax, the agent will fail silently or hallucinate behavior.
 
 ---
 
-### SpecKit (`.specify/`)
+## SpecKit Initialization
 
-`spek init` runs `specify init .` which creates:
+Run after directory creation:
+
+```bash
+specify init .
+```
+
+This creates `.specify/` with:
 
 ```
 .specify/
-├── memory/constitution.md     ← Project principles (edit to add domain constraints)
-├── extensions.yml             ← Hook system (Spekificity registers enrichment skills here)
-└── templates/                 ← Spec/Plan/Task templates (override if needed; defaults work)
+├── memory/constitution.md     ← Project principles (populated by /speckit.constitution skill)
+├── extensions.yml             ← SpecKit hook configuration
+└── templates/                 ← Spec/plan/task templates
 ```
 
-`spek init` is idempotent — safe to re-run. Existing config preserved.
+`.specify/memory/constitution.md` may not exist immediately after `specify init .` — it is created when the `/speckit.constitution` skill is first invoked (one-time, interactive). `spek.prepare` checks for it and triggers the skill if missing.
 
 ---
 
-## Post-Installation: Commit to Git
+## Configuration File
 
-```bash
-git add .spek/ .specify/ .claude/
-git commit -m "Initialize Spekificity: vault, skills, SpecKit, lat.md"
-```
-
----
-
-## Configuration Reference
-
-### `.spek/config.yaml`
+Generate `.spek/config.yaml`:
 
 ```yaml
+integration: claude  # or copilot, gemini, generic
+script_type: sh      # or ps
+
 tools:
   speckit:
     enabled: true
-    mode: global
-
-  code_analysis:
+  lat_md:
     enabled: true
-    tool: lat.md
-    mode: global
-
+    index_path: .spek/lat/
   vault:
     enabled: true
-    location: .spek/vault/
+    path: .spek/vault/
 
 context_loading:
-  enable_cache: true
   cache_expiry_minutes: 60
 
 token_limits:
@@ -293,110 +207,53 @@ token_limits:
 
 ---
 
-## Troubleshooting
+## Memory YAML Schema
 
-### Install Issues
+Files written to `.spek/memory/` use this structure:
 
-- **`spek: command not found`** → Not installed. Run: `uv tool install spekificity --from git+...`
-- **Python 3.11+ missing** → Install from [python.org](https://python.org)
-- **Git not found** → Install from [git-scm.com](https://git-scm.com)
-- **`uv` not in PATH** → Ensure `~/.cargo/bin` or `~/.local/bin` in PATH
-
-### Per-Project Init Issues
-
-- **`spek init` fails with git error** → Not a git repo. Run `git init` first.
-- **`.spek/vault/` missing** → Init didn't complete. Re-run `spek init`
-- **`.specify/` missing** → SpecKit installation failed. Check npm/Python; re-run `spek init`
-- **Skill files missing** → Check `.claude/commands/` (or appropriate dir for integration). Re-run `spek init`
-- **Dependency installation fails** → Check npm, Python paths accessible; retry `spek init`
-
-### Vault Issues
-
-- **Agent says vault does not exist** → Check `.spek/vault/` exists. Re-run `spek init` if missing
-- **Obsidian shows no nodes** → Open `.spek/vault/` as vault root, not project root
-- **Wrong vault path** → Vault is at `.spek/vault/`. Not `vault/` at project root.
-
----
-
-## Configuration Profiles
-
-Answer each question from top to bottom. Each path leads to a recommended configuration. For decision details see [decision.md](decision.md).
-
-```
-START: "Do you use AI agents for development?"
-
-├─ YES → "Is token efficiency critical?"
-│  │
-│  ├─ YES → "Do you need test-driven development?"
-│  │  │
-│  │  ├─ YES → Configuration: FULL STACK + TDD
-│  │  │  • Enable all decisions
-│  │  │  • Use 3-layer query rule (Decision 6)
-│  │  │  • Enable backprop reflex (Decision 8)
-│  │  │  • Enable RARV cycles (Decision 9)
-│  │  │  • Use caveman mode for compression
-│  │  │  • Best for: Production codebases, TDD teams
-│  │  │
-│  │  └─ NO → Configuration: TOKEN-OPTIMIZED
-│  │     • Enable Decisions 6 (3-layer), 10 (anti-sycophancy), 12 (budget)
-│  │     • Skip backprop + RARV (TDD not priority)
-│  │     • Use caveman mode + 3-layer rule
-│  │     • Best for: Tight token budgets, non-TDD teams
-│  │
-│  └─ NO → "Team size?"
-│     │
-│     ├─ solo developer → Configuration: SOLO WITH GUARDRAILS
-│     │  • Enable Decisions 4-5 (zettelkasten, auto-tagging)
-│     │  • Enable Decision 10 (anti-sycophancy) [critical for solo dev]
-│     │  • Enable Decision 12 (budget tracking)
-│     │  • Skip blind review (no team to review)
-│     │  • Best for: Solo developers, token monitoring
-│     │
-│     └─ small team → Configuration: TEAM BASELINE
-│        • Enable Decisions 4-7
-│        • Enable Decisions 8-9 (backprop, RARV)
-│        • Enable Decision 11 (blind review)
-│        • Enable Decision 12 (budget)
-│        • Best for: Collaborative teams, shared vault
-
-└─ NO → "Is this a production codebase?"
-   │
-   ├─ YES → Configuration: MINIMAL AGENT USE
-   │  • Enable Decision 6 (3-layer) for manual queries
-   │  • Use lat.md for code analysis (human-driven)
-   │  • Use Obsidian for vault (human-driven docs)
-   │  • Skip automated features
-   │  • Best for: Human-centric teams with existing tools
-   │
-   └─ NO → "Is this a greenfield project?"
-      │
-      ├─ YES → Configuration: FLEXIBLE EARLY STAGE
-      │  • Zettelkasten vault (Decision 4) + manual vault
-      │  • Skip automated tooling (premature)
-      │  • Best for: New projects, move fast
-      │
-      └─ NO → Configuration: EXPLORATORY / SPIKE
-         • Minimal tooling (plain markdown vault if any)
-         • No automated workflows
-         • Best for: Spike code, prototypes, one-off projects
+```yaml
+# .spek/memory/<scope>.yaml
+scope: repo          # repo | session | user
+updated: YYYY-MM-DD
+entries:
+  - key: string
+    value: string
+    tags: [string]
+    created: YYYY-MM-DD
 ```
 
 ---
 
-## What's Next
+## Git Hooks
 
-Setup complete.
+Install a git post-commit hook for automatic lat.md index refresh (see [decision.md](decision.md#decision-7)).
 
-1. Run `/spek.prepare` in agent (initializes lat.md indexes + vault context)
-2. See [wiki/workflow.md](workflow.md) for 4-stage feature workflow
-3. See [wiki/skills.md](skills.md) for `/spek.*` skill reference
+Create `.git/hooks/post-commit`:
+
+```bash
+#!/bin/sh
+lat sync . --incremental
+```
+
+Mark executable. Opt-out: if `.spek/.disable-git-hooks` exists, skip installation entirely.
 
 ---
 
-## External Resources
+## Idempotency
 
-- [SpecKit](https://github.com/github/spec-kit) — Spec-driven workflow engine
-- [lat.md](https://github.com/langchain-ai/lat-md) — Code and doc analysis tool
-- [Obsidian CLI](https://obsidian.md/help/cli) — Required for all vault read/write operations
-- [Obsidian Desktop](https://obsidian.md) — Optional, graph visualization only
-- [Caveman](https://github.com/marcelrienks/caveman) — Token compression skill
+`spek init` is safe to re-run:
+
+- Skip tools already present in PATH
+- Skip directories that already exist
+- Skip skill files that already exist (do not overwrite)
+- Re-run `specify init .` only if `.specify/` is missing
+- Report what was created vs already present
+
+---
+
+## References
+
+- **Workflow behavior delivered by skills:** [workflow.md](workflow.md)
+- **Skills reference:** [skills.md](skills.md)
+- **Vault and memory conventions:** [conventions.md](conventions.md)
+- **Architectural decisions behind setup choices:** [decision.md](decision.md) (Decisions 1, 7)

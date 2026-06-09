@@ -80,21 +80,21 @@ STEP 3: /speckit.tasks
     ├─ Break plan into dependency-ordered executable tasks
     └─ Surface to user for approval
     ↓ [if remediation needed: fix + re-run from affected step]
-COMPLETE: spec.md + plan.md + tasks.md (stored in .spek/vault/)
+COMPLETE: spec.md + plan.md + tasks.md (stored where SpecKit dictates; archived to .spek/vault/ via Obsidian)
 ```
 
 **Remediation loop:** After each step, surface output to user. If user requests changes, apply and reprocess from that step forward. Continue until all three outputs are approved.
 
 ### Output Artifacts
-- `spec.md` — Feature specification with success criteria (stored in `.spek/vault/`)
-- `plan.md` — Architecture, tech choices, affected code areas (stored in `.spek/vault/`)
-- `tasks.md` — Dependency-ordered tasks with IDs (stored in `.spek/vault/`)
+- `spec.md` — Feature specification with success criteria (SpecKit manages path; archived to `.spek/vault/` via Obsidian)
+- `plan.md` — Architecture, tech choices, affected code areas (SpecKit manages path; archived to `.spek/vault/` via Obsidian)
+- `tasks.md` — Dependency-ordered tasks with IDs (SpecKit manages path; archived to `.spek/vault/` via Obsidian)
 
 ### Exit Criteria
 - ✅ Spec approved by user
 - ✅ Plan approved by user
 - ✅ Task list approved by user
-- ✅ All artifacts committed to `.spek/vault/`
+- ✅ All artifacts archived to `.spek/vault/` via Obsidian CLI
 
 ---
 
@@ -129,8 +129,8 @@ Each task execution includes:
 
 | Context | Source | Purpose |
 |---------|--------|---------|
-| **Feature Spec** | Vault | Why are we doing this? Success Criteria? |
-| **Task Definition** | Plan | What exactly does this task do? |
+| **Feature Spec** | `.spek/vault/` (Obsidian) | Why are we doing this? Success Criteria? |
+| **Task Definition** | SpecKit plan output | What exactly does this task do? |
 | **lat.md** | Live analysis | What files need to change? Who calls what? |
 | **Risk Assessment** | Plan + Spec | What could fail? How to mitigate? |
 | **Previous Outcomes** | Vault (updated) | What did earlier tasks create? |
@@ -161,57 +161,6 @@ Each task execution includes:
 - ✅ Success Criteria validated for each task
 - ✅ Code committed with task references
 - ✅ Plan marked as "Implementation Complete"
-
-### Pre-Shipping Integration Checklist
-
-Before moving to the final stage, verify all quality gates:
-
-**Code Quality**
-- [ ] All functions have docstrings (purpose, args, return)
-- [ ] All classes have docstrings (purpose, key methods)
-- [ ] Complex logic has inline comments explaining *why*
-- [ ] No console.log or debug statements in production code
-- [ ] No unused imports or variables
-- [ ] Code follows project style guide (linting passes)
-
-**Testing**
-- [ ] Unit tests pass locally
-- [ ] Integration tests pass locally
-- [ ] Edge cases covered (null, empty, invalid input)
-- [ ] Error paths tested (exceptions, boundary conditions)
-- [ ] Test coverage is sufficient for new code
-- [ ] Existing tests still pass (no breaking changes)
-- [ ] Full test suite runs locally within acceptable time
-
-**lat.md Integration**
-- [ ] lat.md reflects all new code (symbols, functions, classes)
-- [ ] Impact analysis shows affected downstream components
-- [ ] lat.md queries used during implementation (not file grep)
-
-**Vault Integration**
-- [ ] Spec stored in vault with correct metadata
-- [ ] Plan stored in vault with task linkage
-- [ ] All artifacts committed to git (no uncommitted changes)
-
-**Spekificity Workflow**
-- [ ] `/spek.prepare` passed pre-flight checks
-- [ ] `/spek.plan` produced valid spec (specify step)
-- [ ] `/spek.plan` produced valid plan (plan step)
-- [ ] `/spek.implement` executed all tasks
-- [ ] All `/spek.*` commands worked end-to-end
-
-**Performance**
-- [ ] Token budget not exceeded (if one was set)
-- [ ] lat.md queries working correctly
-- [ ] API responses working (if applicable)
-- [ ] No N+1 queries or unnecessary loops
-
-**Sign-Off**
-- [ ] Code reviewed (if applicable)
-- [ ] All Integration Checklist items checked
-- [ ] Feature ready for archive and conclude
-
----
 
 ## Conclude: Feature Conclusion
 
