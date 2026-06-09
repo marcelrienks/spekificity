@@ -195,15 +195,7 @@ index.sync_index()
 code = loader.load_relevant_code("feature description", limit=5)
 ```
 
-### 2. Plan Stage
-
-```python
-# /spek.plan command
-# Plans already have architectural context from spec
-# No additional context loading needed
-```
-
-### 3. Implement Stage
+### 2. Implement Stage
 
 ```python
 # /spek.implement TASK_ID command
@@ -220,7 +212,7 @@ context = load_context_for_task(
 # Agent executes task with context available
 ```
 
-### 4. Conclude Stage
+### 3. Conclude Stage
 
 ```python
 # /spek.conclude command
@@ -228,20 +220,6 @@ context = load_context_for_task(
 # Updates vault with new decisions/patterns
 # Refreshes context for next feature
 ```
-
----
-
-## Performance Targets
-
-| Operation | Target | Status |
-|-----------|--------|--------|
-| lat.md init | < 10s | — |
-| lat.md sync | < 5s (incremental), < 30s (full) | — |
-| lat.md query | < 1s | — |
-| Semantic search fallback | < 3s | — |
-| Context loading | < 5s | — |
-| Context compression | < 1s | — |
-| /spek.prepare | < 30s total | Depends on above |
 
 ---
 
@@ -338,18 +316,3 @@ lat sync . --full
 # Check file permissions
 ```
 
----
-
-## Next Phase (Phase 3)
-
-Phase 3 will integrate context loading with SpecKit wrapper:
-
-- Inject context into `/speckit.specify` command
-- Inject context into `/speckit.plan` command
-- Inject context into `/speckit.implement` command
-- Enrichment layer to pass vault context to SpecKit
-
----
-
-**Status:** Complete  
-**Last Updated:** 2026-06-07

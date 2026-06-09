@@ -42,18 +42,3 @@ Skill file name matches command (dot replaced with hyphen): `/spek.prepare` → 
 - Wiki file names single-word lowercase: `architecture.md`, `workflow.md`, not `architecture-guide.md`
 - Artifact specs use kebab-case feature names: `001-user-authentication.md`
 
----
-
-## Implementation Approach
-
-Choose based on project scale and automation needs:
-
-**Agentic (.md + AGENTS.md):**
-- Fast start, flexible iteration
-- Best for small vaults (≈<200 docs)
-- Use when discovery and prompt-tuning frequent
-
-**Programmatic (package/pipeline):**
-- Deterministic outputs, typed contracts
-- CI-friendly, token-efficient at scale
-- Use when reproducibility and audit trails required

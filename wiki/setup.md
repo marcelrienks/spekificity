@@ -318,6 +318,71 @@ token_limits:
 
 ---
 
+## Configuration Profiles
+
+Answer each question from top to bottom. Each path leads to a recommended configuration. For decision details see [decision.md](decision.md).
+
+```
+START: "Do you use AI agents for development?"
+
+├─ YES → "Is token efficiency critical?"
+│  │
+│  ├─ YES → "Do you need test-driven development?"
+│  │  │
+│  │  ├─ YES → Configuration: FULL STACK + TDD
+│  │  │  • Enable all decisions
+│  │  │  • Use 3-layer query rule (Decision 6)
+│  │  │  • Enable backprop reflex (Decision 8)
+│  │  │  • Enable RARV cycles (Decision 9)
+│  │  │  • Use caveman mode for compression
+│  │  │  • Best for: Production codebases, TDD teams
+│  │  │
+│  │  └─ NO → Configuration: TOKEN-OPTIMIZED
+│  │     • Enable Decisions 6 (3-layer), 10 (anti-sycophancy), 12 (budget)
+│  │     • Skip backprop + RARV (TDD not priority)
+│  │     • Use caveman mode + 3-layer rule
+│  │     • Best for: Tight token budgets, non-TDD teams
+│  │
+│  └─ NO → "Team size?"
+│     │
+│     ├─ solo developer → Configuration: SOLO WITH GUARDRAILS
+│     │  • Enable Decisions 4-5 (zettelkasten, auto-tagging)
+│     │  • Enable Decision 10 (anti-sycophancy) [critical for solo dev]
+│     │  • Enable Decision 12 (budget tracking)
+│     │  • Skip blind review (no team to review)
+│     │  • Best for: Solo developers, token monitoring
+│     │
+│     └─ small team → Configuration: TEAM BASELINE
+│        • Enable Decisions 4-7
+│        • Enable Decisions 8-9 (backprop, RARV)
+│        • Enable Decision 11 (blind review)
+│        • Enable Decision 12 (budget)
+│        • Best for: Collaborative teams, shared vault
+
+└─ NO → "Is this a production codebase?"
+   │
+   ├─ YES → Configuration: MINIMAL AGENT USE
+   │  • Enable Decision 6 (3-layer) for manual queries
+   │  • Use lat.md for code analysis (human-driven)
+   │  • Use Obsidian for vault (human-driven docs)
+   │  • Skip automated features
+   │  • Best for: Human-centric teams with existing tools
+   │
+   └─ NO → "Is this a greenfield project?"
+      │
+      ├─ YES → Configuration: FLEXIBLE EARLY STAGE
+      │  • Zettelkasten vault (Decision 4) + manual vault
+      │  • Skip automated tooling (premature)
+      │  • Best for: New projects, move fast
+      │
+      └─ NO → Configuration: EXPLORATORY / SPIKE
+         • Minimal tooling (plain markdown vault if any)
+         • No automated workflows
+         • Best for: Spike code, prototypes, one-off projects
+```
+
+---
+
 ## What's Next
 
 Setup complete.

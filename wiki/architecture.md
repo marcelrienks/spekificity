@@ -1,33 +1,8 @@
 # Spekificity Architecture Specification
 
-## Vision Statement
+## Four Design Pillars
 
-Spekificity **is** a spec-driven agent development framework that ties project knowledge (Obsidian vault), code analysis (lat.md), workflow automation (SpecKit), and skill execution (Agent Skills) into a single workflow. It addresses four core problems: token efficiency, deterministic planning, persistent project memory, and agent autonomy.
-
-**Design Problem & Proposed Solution:**
-- **Problem Identified:** AI-assisted development often loses context between sessions, wastes tokens re-reading files, and produces work without durable specifications or lessons.
-- **Design Solution:** Treat documentation as canonical memory (markdown vault), use a code graph/index for precise context (lat.md), and orchestrate feature work with a spec-first engine (SpecKit) wrapped by Spekificity skills.
-
-**Design Principles & Tenets:**
-- **Consolidation, not reinvention:** Integrate best-in-class tools (SpecKit, lat.md, Obsidian-style vault) rather than rebuilding them.
-- **Decorator pattern:** Spekificity will wrap SpecKit commands to inject context and enrichment, without modifying upstream tools.
-- **Modular independence:** Each component (vault, index, spec engine, compression) designed to be upgradeable independently.
-- **Human-in-the-loop safety:** Agent actions will be gated by plan reviews and contradiction flags; human decisions will resolve conflicts.
-- **Token efficiency by design:** Graph queries + cached vault context will replace repeated file scans; Caveman mode will provide optional terse outputs.
-
----
-
-## Four Design Pillars (Core Drivers)
-
-Spekificity's design rests on four pillars that guide all implementation decisions:
-
-1. **Token Efficiency** — Problem: AI-assisted development often re-reads files repeatedly, wasting tokens. Design Solution: Pre-index code and docs; load only minimal, relevant context via lat.md queries and compressed outputs (Caveman mode). Outcome: agents operate with significantly lower token overhead while maintaining full context precision.
-
-2. **Determinism** — Problem: Unstructured agent workflows produce unreproducible outcomes. Design Solution: Enforce spec → plan → implement → conclude workflows via SpecKit, making outcomes reproducible and auditable. Specs serve as canonical records, enabling consistent decision-making across sessions.
-
-3. **Persistence** — Problem: Project knowledge vanishes between sessions. Design Solution: Store all specs, decisions, and lessons in a Git-backed Obsidian-style markdown vault. Knowledge compounds across sessions, enabling agents to reference historical decisions and avoid repeated mistakes.
-
-4. **Autonomy** — Problem: Agents often need hand-holding to navigate context. Design Solution: Equip agents with deterministic tools (lat.md index, SpecKit engine) and indexed context so they execute feature work with minimal human intervention, while maintaining human-in-the-loop safety through plan reviews and contradiction flags.
+Token Efficiency, Determinism, Persistence, Autonomy. See [vision.md](vision.md) for descriptions.
 
 **Component Mapping:** Vault (persistence + determinism), lat.md index (token efficiency + determinism), SpecKit (deterministic orchestration), Caveman (token efficiency).
 
@@ -41,11 +16,11 @@ Spekificity operates in two distinct layers: a CLI for project scaffolding, and 
 
 The `spek` CLI has exactly one command: `spek init`. There are no CLI commands for prepare, plan, implement, or conclude. All workflow operations are agentic skills, not shell commands.
 
-**Phase 1: Global Install (Package Only)**
+**Step 1: Global Install (Package Only)**
 - `uv tool install spekificity --from git+...` installs the `spek` CLI tool
 - Verifies Python 3.11+, git, uv in PATH
 
-**Phase 2: Per-Project Init (`spek init`)**
+**Step 2: Per-Project Init (`spek init`)**
 - One-time per project
 - **Auto-detects and installs missing dependencies:** SpecKit, lat.md, Obsidian CLI (if not already installed)
 - Initializes lat.md code index + documentation index
@@ -72,32 +47,6 @@ All workflow commands are agent skills installed by `spek init` into the project
 **See also:** [setup.md](setup.md) (detailed setup specification), [workflow.md](workflow.md) (4-stage workflow), [patterns.md](patterns.md) (reusable patterns)
 
 ---
-
-## Pillar Implementation Specifications
-
-### 1. Token Efficiency
-- **Design:** All source code and wiki documents are pre-indexed using lat.md.
-- **Context Injection:** Context is injected by querying lat.md for only the most relevant nodes (functions, patterns, lessons, decisions).
-- **Compression:** Caveman skill compresses context (lessons, vault, session) for minimal token usage during agent operations.
-- **Optimization:** Only essential information loads into context window; optimized for speed and cost.
-
-### 2. Determinism
-- **Backbone:** SpecKit’s workflow (specify, clarify, plan, implement) is the backbone for all feature and skill orchestration.
-- **Action Model:** All agent actions are driven by explicit, spec-driven processes; ensuring repeatability and traceability.
-- **Extensibility:** Skillsets extend as needed, always within deterministic SpecKit orchestration model.
-- **Auditability:** Outcomes are reproducible and auditable.
-
-### 3. Persistence
-**Obsidian CLI Requirement:** Automated vault operations (syncs, exports, metadata extractions) enable context loading and lesson extraction during `/spek.conclude`. Obsidian desktop app optional for visualization.
-
-- **Storage:** All decisions, patterns, lessons, and architectural context are stored in vault (single source of truth)
-- **Version Control:** Vault syncs to Git for version control and team collaboration
-- **Automation:** Obsidian CLI performs automated vault operations; desktop app optional for browsing
-
-### 4. Autonomy
-- **Discovery:** lat.md enables autonomous extraction of context, impact analysis, and knowledge mapping.
-- **Execution:** Agents operate with minimal manual intervention, leveraging indexed knowledge base for decision-making and workflow execution.
-- **Support:** Design supports agentic workflows and continuous improvement mechanisms.
 
 ## Implementation direction: Programmatic pipeline
 
@@ -139,35 +88,6 @@ HTML artifact policy
 - Require each HTML artifact to embed or link an export-to-markdown feature that produces a canonical markdown record or a short 3-line summary suitable for PR reviews.
 - Host artifacts on static site (S3/Vercel) where appropriate; link from canonical markdown/PR for review.
 - CI: flag large HTML files and ensure export-to-markdown present when HTML is checked into repo; fail CI when export missing for audited artifacts.
-
-## Exploratory note: Agentic instruction files
-
-Agentic instruction files (AGENTS.md) remain supported as a lightweight experimental path for personal or small-team workflows. They are not the project architecture. Rules for exploratory use:
-
-- Use only for experiments, discovery, or rapid iteration on small vaults.
-- Conform to the same structural hygiene and pre-merge checks as programmatic pipelines.
-- Include plan-before-execute gating and allowlists for tool surface.
-- Do not use agentic path for production ingest, scheduled runs, or pipelines that require reproducibility.
-
----
-
-## Architectural Viability
-- The above principles are enforced in the project’s specifications, implementation roadmap, and workflow documentation.
-- All critical dependencies (`lat.md`, `SpecKit`, `obsidian` CLI, `Caveman` skill) are required and integrated at the architectural level to enable the automation and the four-pillar guarantees. The Obsidian desktop app is optional for interactive use and visualization.
-- This structure ensures the project’s goals of efficiency, determinism, persistence, and autonomy are met.
-
----
-
-**This section should be referenced in architectural reviews and onboarding.**
-
-
----
-
-## Overview
-
-Spekificity is a **specification-driven agent development framework** that ties project knowledge (Obsidian vault), code analysis (lat.md), workflow automation (SpecKit), and skill execution (Agent Skills) into a coherent pipeline.
-
-**Core Goal:** Enable rapid, deterministic feature development with minimal token overhead and maximum context reuse.
 
 ---
 

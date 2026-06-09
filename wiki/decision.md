@@ -96,272 +96,19 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 | Query Performance | low-latency average (vs. much slower for file scan) |
 | **Fit for Agent Workflows** | **high** (purpose-built for this use case) |
 
-#### Why lat.md is Canonical
-
-lat.md is purpose-built for agent-driven development:
-- Pre-indexed queries (no file scans; low token cost)
-- Fast incremental updates (file-watcher optional)
-- MCP tool interface (agent-friendly)
-- Deterministic impact analysis
-- Framework-aware extractors
-
-**Status:** CANONICAL FOR SPEKIFICITY (lat.md is the only code analysis tool supported by Spekificity). Alternatives exist for other frameworks; this decision applies to Spekificity integration only.  
-**Migration Path:** If using legacy tools, rebuild index with `lat.md` per setup.md
-
----
-
-### Trade-offs Accepted
-
-| Trade-off | Reasoning |
-|-----------|-----------|
-| lat.md Required (Not Optional) | Agent workflows depend on indexed queries; fallback to manual grep is manual overhead |
-| MCP Configuration | One-time setup; small cost; enables all downstream automation |
-| Vendor Dependency | Mitigated by pluggable extractors; lat.md open-source |
-
----
-
-### Previous Decision (Archived Reference)
-
-Earlier analysis compared legacy indexers vs newer indexers (see Decision 1 v1 below). This decision confirms and finalizes the choice to standardize on `lat.md` for new projects.
-
-**Previous Comparison (For Reference):**
-- Legacy indexers (archived): moderate fit for agent workflows
-- lat.md (Recommended): high fit for agent workflows
-
----
-
-## Decision 2: Recommended Toolset for Spekificity Users
-
-### Decision
-
-**Recommend dual-system approach for users: Knowledge Vault + Code Analysis Tool.**
-
-Each owns a domain; together they enable fast, informed development with minimal context-switching.
-
----
-
-### Rationale
-
-Knowledge vault and code analysis serve different rhythms and access patterns:
-
-| System | Purpose | Content | Access | Rhythm |
-|--------|---------|---------|--------|--------|
-| **Knowledge Vault** | Knowledge base | Specs, plans, decisions, lessons, raw materials | Git + UI (optional) | Changes once per feature cycle |
-| **Code Analysis Tool** | Code intelligence | Symbols, calls, inheritance, framework routes | MCP tools (agent queries) | Changes on every file save |
-
-**Why separate them?**
-
-1. **Vault changes slowly** — updated once when feature completes
-2. **Code changes constantly** — file watch → instant refresh
-3. **Agent queries code frequently** — during every implementation cycle
-4. **Vault queries once per session** — `/context-load` at start
-
-**With separation:**
-- Vault stays lean + human-navigable
-- Code analysis stays fast + agent-efficient
-- No redundancy between systems
-
-**Recommended Architecture for Users:**
-
-```
-Spekificity Workflow (via agent)
-├── /context-load
-│   └── Loads knowledge vault (specs, decisions, lessons)
-├── /enrich-specify
-│   └── Uses vault context + code analysis tool for related symbols
-├── /enrich-plan
-│   └── Uses vault context + code analysis tool for impact analysis
-├── /enrich-implement
-│   └── Uses vault context + code analysis tool for structure queries
-└── /lessons-learnt
-    └── Writes back to vault
-```
-
-**Result:** Faster development on refactoring/debugging tasks with pre-indexed analysis.
-
----
-
-### Benefits
-
-**For Individual Developers:**
-- Understand codebase intent (vault) + structure (code analysis tool)
-- Refactor with confidence (impact analysis automated)
-- Onboard faster (specs + code structure visible)
-
-**For AI agents:**
-- Fewer token calls (vs. manual exploration)
-- Faster exploration (pre-indexed analysis)
-- Impact radius instant (no missed breaking changes)
-
-**For Teams:**
-- Shared knowledge base (vault; version-controlled)
-- Shared code structure (auto-synced)
-- Faster code reviews (impact clear; rationale documented)
-
----
-
-### Trade-offs
-
-| Aspect | Cost | Benefit |
-|--------|------|---------|
-| Setup | Medium (multiple tools to initialize) | Fast onboarding (both tools visible immediately) |
-| Maintenance | Medium (vault + code analysis tool sync) | High (automated impact analysis saves errors) |
-| Complexity | multiple systems instead of a single tool | Clear separation (no sprawl; each tool optimized) |
-| Token efficiency | Lower (vault queries) | Very high (code analysis tool queries) |
-
----
-
-### When NOT to Use This
-
-- **Greenfield projects with no existing code:** Obsidian alone sufficient initially (add code analysis tool when code grows)
-- **Scripts/utilities without complexity:** Code analysis tool overhead > value
-- **Small projects (few files):** Manual code understanding may be cheaper than indexing
-- **Fully no-code platforms:** Skip code analysis tool; use Obsidian only
-
----
-
-### When to Use This
-
-- **Large production codebases**
-- **Teams using AI agents for implementation**
-- **Refactoring/debugging workflows (frequent changes)**
-- **Onboarding new developers**
-
----
-
-## Decision 3: Toolset Recommendations for the Four Pillars
-
-### Overview
-
-Spekificity's four pillars (token efficiency, determinism, persistence, autonomy) can be addressed by different community tools. This decision evaluates options, rates them by popularity and cohesive fit with Spekificity's architecture, and documents the recommended baseline for each pillar.
-
----
-
-### Pillar 1: Token Efficiency & Verbosity
-
-**Problem:** Agents waste tokens on file scans and verbose outputs; context window fills with noise.
-
-| Tool | Type | Popularity | Fit | Token Savings | Notes |
-|------|------|-----------|-----|---------------|-------|
-| **Caveman (recommended)** | Compression | Medium | high | substantial | Simple notation; preserves code; used in agent workflows |
-| Squeez | Compression | Low | moderate | substantial | Rust-based; multi-CLI support; self-teaching protocol; zero deps |
-| contextzip | Compression | Low | moderate | varies by workload | CLI-focused; stdout compression; session history coming |
-| clipforge-PAKT | Compression | Low | moderate | varies by workload | Lossless for JSON/YAML; library + CLI + MCP + browser extension |
-| claw-compactor | Compression | Low | lower | varies by workload | multi-stage pipeline; AST-aware; reversible; complex setup |
-
-**Recommendation:** Use `Caveman` for token compression. Evaluating additional compression tools for specific use cases.
-
----
-
-### Pillar 2: Planning & Determinism
-
-**Problem:** Ad-hoc agent planning leads to inconsistent specs, hallucinated context, and redundant work.
-
-| Tool | Type | Popularity | Fit | Determinism | Notes |
-|------|------|-----------|-----|-------------|-------|
-| **SpecKit/Specify (recommended)** | Spec Framework | **High** | very high | YAML-first; enforces spec→plan→tasks | GitHub's official tool; active ecosystem; broad adoption |
-| SDD Pilot | Spec Framework | Medium | high | Spec-driven phases + quality gates | VSCode + Windsurf support; strong quality gates; enforces phases |
-| FSPEC | Spec Framework | Low | moderate | Multi-agent factory; DDD/BDD support | TDD/DDD/BDD focus; example mapping; guardrails; newer |
-| spec-driven-steroids | Spec Framework | Low | moderate | Simple toolkit; native AI tool integration | Focus on CLI discipline; minimal overhead; less documented |
-| Paul (Plan-Apply-Unify Loop) | Framework | Low | moderate | Plan-Apply-Unify; quality-over-speed | Interactive agent UI native; roundtable-style; newer |
-| spec2ship | Spec Framework | Low | moderate | Multi-agent; roundtable collaboration | Vendor-specific interactive UI focus; social/collaborative; emerging |
-
-**Recommendation:** Use `SpecKit/Specify` for planning & determinism. Strong ecosystem maturity, broad feature coverage, and active maintenance. Alternatives (SDD Pilot, FSPEC) target specific niches (quality gates, DDD) but require more specialized setup.
-
----
-
-### Pillar 3: Memory Persistence
-
-**Problem:** Context lost at session end; agents can't build knowledge across features; decisions repeat.
-
-| Tool | Type | Popularity | Fit | Persistence | Notes |
-|------|------|-----------|-----|-------------|-------|
-| **Obsidian (recommended)** | Vault | **Very High** | very high | Markdown; git-backed; desktop + vault | Largest PKM community; markdown standard; optional UI; proven |
-| Basic Memory | Vault | Low | high | MCP-based; cross-conversation memory | Privacy-first; Obsidian-compatible; emerging; active development |
-| SilverBullet | Vault | Medium | strong | Markdown + Lua scripting; self-hosted | Open-source; scriptable; more feature-rich; active community |
-| Trilium | Vault | Medium | moderate | Notes + knowledge graph; multi-platform | Desktop app; rich UI; not git-backed; harder to version |
-| ByteRover (byterover-cli) | Memory Layer | Low | moderate | Portable memory for agents; MCP | Emerging; agent-specific; good for session-scoped memory; not file-based |
-| Draft | Chrome Extension | Low | limited | Capture AI chats into KB; cloud | Browser-only; cloud-dependent; not ideal for offline/local |
-| TidGi-Desktop | Vault | Low | moderate | TiddlyWiki + git-backup + REST API | Git-backed; web-clipper; Anki connect; less common; Qt-based |
-
-**Recommendation:** Use `Obsidian` for memory persistence. Large PKM ecosystem, portable markdown, and standard git versioning make it a practical baseline. Alternatives (Basic Memory, SilverBullet) offer better agent integration (MCP) or richer features (scripting); evaluate based on project needs.
-
----
-
-### Pillar 4: Autonomy & Code Understanding
-
-**Problem:** Agents can't answer code questions without scanning files; no architectural understanding; clarifications burn tokens.
-
-| Tool | Type | Popularity | Fit | Autonomy | Notes |
-|------|------|-----------|-----|----------|-------|
-| **lat.md (recommended)** | Code Analysis | Medium | very high | Pluggable extractors; fast incremental queries; framework-aware | Strong fit for agent workflows; lower token cost; faster queries |
-| codebase-memory-mcp | Code Analysis | Low | high | MCP server; persistent knowledge graph; zero deps | Broad language support; fast queries; high-performance; Cypher support |
-| Joern | Code Analysis | Medium | moderate | Code property graph; multi-language; dataflow | Academic-grade; C/C++/Java focus; more complex; strong dataflow |
-| Pylance | Code Analysis | **High** | moderate | Python-specific; language server; fast | Python community standard; not agent-optimized; limited to Python |
-| Legacy markdown indexers | Code Analysis | Low | limited | Markdown vault output; human-browsable | Legacy; outputs readable docs; inefficient for agent queries |
-| codeflow | Visualization | Low | limited | Browser-based; D3.js visualization; GitHub-linked | Great for humans; not agent-efficient; one-off analysis |
-
-**Recommendation:** Use `lat.md` for autonomy & code understanding. It fits agent workflows well through fast queries and impact analysis. Alternative: `codebase-memory-mcp` (slightly better architecture, newer, zero dependencies) for high-performance scenarios.
-
----
-
-### Recommended Baseline Toolset for Spekificity
-
-**Decision:** For each pillar, recommend the tool that best combines popularity, maturity, and cohesive fit with Spekificity's architecture.
-
-| Pillar | Tool | Fit | Rationale |
-|--------|------|-----|-----------|
-| Token Efficiency | Caveman | high | Simple notation; preserves code; tested across tools |
-| Determinism | SpecKit/Specify | very high | YAML-first; GitHub official; broadly adopted |
-| Persistence | Obsidian | very high | Largest PKM community; markdown portable; git-backed |
-| Autonomy | lat.md | very high | Strong fit for agent workflows; lower token cost; fast queries |
-
-**Installation for New Projects:**
-
-```bash
-spek init
-# → auto-detects installed tools
-# → prompts for missing tools with recommendations
-# → deploys skills locally
-```
-
----
-
-### Trade-off Matrix
-
-| Criterion | Caveman | Squeez | contextzip | clipforge | claw-compactor |
-|-----------|---------|---------|-----------|-----------|--------|
-| Token Savings | varies | varies | varies | varies | varies |
-| Ease of Use | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| Community | Medium | Small | Small | Small | Small |
-| Setup Time | varies | varies | varies | varies | varies |
-| Multi-Tool Support | ❌ | ✅ | ✅ | ✅ | ❌ |
-| **Recommendation** | **Yes** | Consider | Consider | Optional | Advanced |
-
----
-
-### Evaluation Methodology
-
-Each tool rated on:
-
-1. **Popularity** — GitHub stars, community size, adoption in production (high/medium/low)
-2. **Fit** — How well it integrates with Spekificity's decorator pattern and four-pillar model (qualitative)
-3. **Technical Metric** — Pillar-specific measure (token savings indicator, determinism level, etc.)
-4. **Maintenance** — Active development, responsiveness to issues, documentation quality
-
 ---
 
 
-### Conclusion
+## Decision 3: Toolset for the Four Pillars
 
-**Spekificity's recommended toolset balances popularity, maturity, and cost-effectiveness:**
-- `Caveman` — sufficient compression; mature; no setup friction
-- `SpecKit/Specify` — strong baseline; active ecosystem; broad community adoption
-- `Obsidian` — de facto PKM standard; markdown portable; proven at scale
-- `lat.md` — strong fit for agent workflows; recommended for teams doing frequent cycles
+| Pillar | Tool | Why |
+|--------|------|-----|
+| Token Efficiency | Caveman | Simplest compression; no setup friction; already integrated |
+| Determinism | SpecKit/Specify | GitHub official; YAML-first; enforces spec→plan→tasks |
+| Persistence | Obsidian | Largest PKM community; portable markdown; git-backed; CLI required |
+| Autonomy | lat.md | Purpose-built for agents; pre-indexed MCP queries; deterministic impact analysis |
 
-**Alternatives exist for each pillar; use matrix above to evaluate against your constraints.**
-- **Projects that need both intent + structure understanding**
+Alternatives exist for each pillar. These four balance maturity, fit, and setup simplicity for Spekificity's architecture.
 
 ---
 
@@ -637,6 +384,14 @@ Note: Spekificity's supported default, lat.md, provides a file-watcher-based aut
 
 ---
 
+---
+
+## Planned Features (Not Yet Implemented)
+
+Decisions 8–12 describe features to build. None are active in the current implementation. They are documented here to preserve the design intent and dependencies.
+
+---
+
 ## Decision 8: Backprop Reflex (Test Failures → Vault Updates)
 
 ### Decision
@@ -790,7 +545,7 @@ VERIFY: Check if factory aligns with "testability-first" goal
 
 ### When to Use
 
-- Long features (>1 week) where scope creep likely
+- Long features where scope creep likely
 - Architectural decisions sensitive (need alignment verification)
 - Team size >1 (spec drift compounds with multiple people)
 - Production codebases (architecture consistency critical)
@@ -799,7 +554,7 @@ VERIFY: Check if factory aligns with "testability-first" goal
 
 - Spike/exploration features (spec intentionally loose)
 - Solo developers on greenfield projects (flexibility more important than spec)
-- Very short features (<1 day; overhead > benefit)
+- Spike/short features (overhead > benefit)
 
 ---
 
@@ -1032,118 +787,27 @@ enterprise: TBD
 
 ---
 
-## Decision Tree: Choosing Your Spekificity Approach
-
-### How to Use This Tree
-
-Answer each question from top to bottom. Each path leads to a recommended configuration.
-
-```
-START: "Do you use AI agents for development?"
-
-├─ YES → "Is token efficiency critical?"
-│  │
-│  ├─ YES → "Do you need test-driven development?"
-│  │  │
-│  │  ├─ YES → Configuration: FULL STACK + TDD
-│  │  │  Recommendations:
-│  │  │  • Enable all Phase 1-2 decisions
-│  │  │  • Use 3-layer query rule (Decision 6)
-│  │  │  • Enable backprop reflex (Decision 8)
-│  │  │  • Enable RARV cycles (Decision 9)
-│  │  │  • Use caveman mode for compression
-│  │  │  • Budget: configured token budget per feature (value omitted)
-│  │  │  • Best for: Production codebases, TDD teams
-│  │  │
-│  │  └─ NO → Configuration: TOKEN-OPTIMIZED
-│  │     Recommendations:
-│  │     • Enable Decisions 6 (3-layer), 10 (anti-sycophancy), 12 (budget)
-│  │     • Skip backprop + RARV (TDD not priority)
-│  │     • Use caveman mode + 3-layer rule
-│  │     • Budget: configured token budget per feature (value omitted)
-│  │     • Best for: Tight token budgets, non-TDD teams
-│  │
-│  └─ NO → "Team size?"
-│     │
-│     ├─ solo developer → Configuration: SOLO WITH GUARDRAILS
-│     │  Recommendations:
-│     │  • Enable Decisions 4-5 (zettelkasten, auto-tagging)
-│     │  • Enable Decision 10 (anti-sycophancy) [critical for solo dev]
-│     │  • Enable Decision 12 (budget tracking)
-│     │  • Skip blind review (no team to review)
-│     │  • Standard mode (no caveman compression)
-│     │  • Budget: configured token budget per feature (value omitted)
-│     │  • Best for: Solo developers, token monitoring
-│     │
-│     └─ small team → Configuration: TEAM BASELINE
-│        Recommendations:
-│        • Enable Decisions 4-7 (full Phase 1)
-│        • Enable Decisions 8-9 (backprop, RARV)
-│        • Enable Decision 11 (blind review)
-│        • Enable Decision 12 (budget)
-│        • Standard mode (caveman optional)
-│        • Budget: configured token budget per feature (value omitted)
-│        • Best for: Collaborative teams, shared vault
-│
-
-└─ NO → "Is this a production codebase?"
-   │
-   ├─ YES → "How large is the codebase?"
-   │  │
-  │  ├─ many files → Configuration: MINIMAL AGENT USE
-   │  │  Recommendations:
-   │  │  • Enable Decision 6 (3-layer) for manual queries
-  │  │  • Use lat.md for code analysis (human-driven)
-   │  │  • Use Obsidian for vault (human-driven docs)
-   │  │  • Skip automated Phase 2 features (not agent-driven)
-   │  │  • Manual reviews via blind review
-   │  │  • Best for: Human-centric teams with existing tools
-   │  │
-  │  └─ moderate-to-large codebase → Configuration: MANUAL FIRST, AGENT OPTIONAL
-   │     Recommendations:
-   │     • Zettelkasten vault (Decision 4)
-  │     • Manual code analysis + optional lat.md
-   │     • Optional auto-tagging (Decision 5)
-   │     • No agent workflows yet
-   │     • Best for: Teams not ready for full agent integration
-   │
-   └─ NO → "Is this a greenfield project?"
-      │
-      ├─ YES → Configuration: FLEXIBLE EARLY STAGE
-      │  Recommendations:
-      │  • Lightweight: Zettelkasten (Decision 4) + Manual vault
-      │  • Skip automated tooling (premature)
-      │  • Focus on code quality (tests, basic linting)
-      │  • Add agent workflows after the codebase reaches large size and architecture stabilizes
-      │  • Budget: Not applicable (no agents)
-      │  • Best for: New projects, move fast
-      │
-      └─ NO → Configuration: EXPLORATORY / SPIKE
-         Recommendations:
-         • Minimal tooling (plain markdown vault if any)
-         • No automated workflows
-         • Manual code understanding
-         • Add structure after exploration confirms direction
-         • Best for: Spike code, prototypes, one-off projects
-```
-
----
 
 ## Decision Mapping: Decisions → Specifications
 
-### Table Format: Decision ID | Title | Related Specs | Activation Phase
+### Active
 
-| ID | Title | Related Specs | Phase | When Activated |
-|:--:|-------|---------------|-------|---|
-| 4 | Zettelkasten Architecture | See [architecture.md](architecture.md) and [patterns.md](patterns.md) | Phase 1 | Vault setup; all note creation |
-| 5 | Auto-Tagging & Auto-Wikilinks | See [patterns.md](patterns.md) (Pattern 10) | Phase 1 | `/spek.conclude` Step 3 (lesson generation) |
-| 6 | 3-Layer Query Rule | See [architecture.md](architecture.md) | Phase 1 | `/spek.context` load; `/spek.plan` phases |
-| 7 | Git Hooks Integration | See [setup.md](setup.md) | Phase 1 | `spek setup`; post-commit execution |
-| 8 | Backprop Reflex | See [patterns.md](patterns.md) (Pattern 20) | Phase 2 | `/spek.conclude` Step 3 (lesson generation) |
-| 9 | RARV Reflection Cycles | See [patterns.md](patterns.md) (Pattern 21) | Phase 2 | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
-| 10 | Anti-Sycophancy Validation | See [patterns.md](patterns.md) (Pattern 18) | Phase 2 | `/spek.plan` (specify + plan phases) |
-| 11 | Blind Code Review | See [patterns.md](patterns.md) (Pattern 19) | Phase 2 | `/spek.conclude` Step 8 (optional; pre-archival) |
-| 12 | Token Budget Model | See [patterns.md](patterns.md) (Pattern 22) | Phase 2 | All phases; tracked throughout feature |
+| ID | Title | Related Specs | When Activated |
+|:--:|-------|---------------|---|
+| 4 | Zettelkasten Architecture | See [architecture.md](architecture.md) and [patterns.md](patterns.md) | Vault setup; all note creation |
+| 5 | Auto-Tagging & Auto-Wikilinks | See [patterns.md](patterns.md) (Pattern 10) | `/spek.conclude` Step 3 (lesson generation) |
+| 6 | 3-Layer Query Rule | See [architecture.md](architecture.md) | `/spek.context` load; `/spek.plan` phases |
+| 7 | Git Hooks Integration | See [setup.md](setup.md) | `spek setup`; post-commit execution |
+
+### Planned (see Planned Features section above)
+
+| ID | Title | Related Specs | When Activated |
+|:--:|-------|---------------|---|
+| 8 | Backprop Reflex | See [patterns.md](patterns.md) (Pattern 20) | `/spek.conclude` Step 3 (lesson generation) |
+| 9 | RARV Reflection Cycles | See [patterns.md](patterns.md) (Pattern 21) | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
+| 10 | Anti-Sycophancy Validation | See [patterns.md](patterns.md) (Pattern 18) | `/spek.plan` (specify + plan phases) |
+| 11 | Blind Code Review | See [patterns.md](patterns.md) (Pattern 19) | `/spek.conclude` Step 8 (optional; pre-archival) |
+| 12 | Token Budget Model | See [patterns.md](patterns.md) (Pattern 22) | All stages; tracked throughout feature |
 
 ---
 
@@ -1152,7 +816,7 @@ START: "Do you use AI agents for development?"
 **Prerequisite Chain (required order):**
 
 ```
-Phase 1 (Foundation):
+Foundation:
   Decision 4 (Zettelkasten) 
     ↓ (required by)
   Decision 5 (Auto-Tagging) 
@@ -1161,11 +825,11 @@ Phase 1 (Foundation):
     ↓ (required by)
   Decision 7 (Git Hooks)
 
-Phase 2 (Enhancement):
-  Decision 8 (Backprop) — requires Phase 1 foundation
-  Decision 9 (RARV) — requires Phase 1 + Decision 8
-  Decision 10 (Anti-Sycophancy) — requires Phase 1 foundation
-  Decision 11 (Blind Review) — requires Phase 1 + testing infrastructure
+Enhancements:
+  Decision 8 (Backprop) — requires Decisions 4-7
+  Decision 9 (RARV) — requires Decisions 4-7 + Decision 8
+  Decision 10 (Anti-Sycophancy) — requires Decisions 4-7
+  Decision 11 (Blind Review) — requires Decisions 4-7 + testing infrastructure
   Decision 12 (Token Budget) — independent; can enable anytime
 ```
 
@@ -1188,11 +852,11 @@ High-Value Combinations:
 - Decision 7 (Git Hooks)
 
 **Standard Setup (Vault + Graph + Automation):**
-- Decisions 4, 5, 6, 7 (Phase 1 complete)
+- Decisions 4, 5, 6, 7
 - Decision 12 (Token Budget)
 
 **Full Stack (All features enabled):**
-- Decisions 4-12 (Phase 1 + Phase 2)
+- Decisions 4-12
 
 **Production-Hardened (Quality + Cost):**
 - Decisions 4, 6, 7, 10, 11, 12
@@ -1212,5 +876,5 @@ High-Value Combinations:
 | **Anti-Sycophancy (10) flags decision 4 contradiction** | Decision 10 raises alert; user reviews vault + spec; either updates spec or documents override rationale |
 | **Backprop (8) + RARV (9) find conflicting failure patterns** | Backprop logs failure; RARV compares to spec; RARV decision takes precedence (architectural); update failure notes accordingly |
 | **Blind Review (11) finds issues backprop missed (8)** | Blind review flags issues; if caught by backprop alert, document; if new issue, create tech debt item |
-| **Token Budget (12) exceeded during Phase 1** | Warning when approaching the configured budget; user can continue (soft limit) or optimize; review 3-layer rule usage for Phase 2 |
+| **Token Budget (12) exceeded** | Warning when approaching the configured budget; user can continue (soft limit) or optimize; review 3-layer rule usage |
 | **Git Hooks (7) conflict with CI/CD** | Disable hooks via `.spek/.disable-git-hooks`; use CI/CD graph refresh instead |
