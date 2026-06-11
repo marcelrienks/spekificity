@@ -22,6 +22,7 @@ Execute approved tasks via SpecKit. Accepts optional `--steps N` to jump to task
    - Commit with message `[Task X] description`
    - Update plan document: mark task complete and document outcome
    - Document any lessons learned or blockers
+3. Track token cost for implementation phase per task; print `[WARN] token budget: implementation phase threshold reached` if configured threshold exceeded; execution continues.
 
 ## Output
 

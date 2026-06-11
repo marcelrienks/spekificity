@@ -78,7 +78,7 @@ class TestInitFlow:
         assert (project / ".git" / "hooks" / "post-commit").exists()
         assert (project / ".claude" / "commands").is_dir()
         skill_files = list((project / ".claude" / "commands").glob("spek-*.md"))
-        assert len(skill_files) == 7
+        assert len(skill_files) == 9
 
     def test_idempotent_rerun_exits_0(self, tmp_path):
         runner = CliRunner()
