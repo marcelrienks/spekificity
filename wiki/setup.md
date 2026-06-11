@@ -35,6 +35,7 @@ Detect each tool via `shutil.which()`. If not found, install or instruct as desc
 | SpecKit | `specify` | `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` | Python; installs via uv |
 | lat.md | `lat` | `npm install -g lat.md` | Requires Node.js 22+ |
 | Obsidian | `obsidian` | `brew install --cask obsidian` / `winget install -e --id Obsidian.Obsidian` (see below for two-phase flow) | v1.12.4+; CLI built into desktop app; one-time manual CLI registration required after install |
+| Caveman | — | SKILL.md fetched from `github:JuliusBrussee/caveman` (plugin cache → GitHub raw fallback) | No CLI binary; installs as a skill file; for `claude` integration also writes project-level activation hooks to `.claude/settings.json` |
 
 ### Obsidian — Install + CLI Registration
 
@@ -371,6 +372,35 @@ Skill files already present at the destination are never overwritten (idempotent
 
 Full skill content is defined in those source files. For the skill format specification see [skills.md](skills.md).
 
+### Caveman Skill Installation
+
+The Caveman skill is installed separately from bundled skills — it is fetched at init time rather than shipped inside the spekificity package.
+
+**Source resolution order** (first success wins):
+1. `~/.claude/skills/caveman/SKILL.md` — already extracted by the Claude Code plugin system
+2. `~/.claude/plugins/cache/caveman/caveman/<sha>/plugins/caveman/skills/caveman/SKILL.md` — plugin cache
+3. `https://raw.githubusercontent.com/JuliusBrussee/caveman/main/plugins/caveman/skills/caveman/SKILL.md` — GitHub raw fallback
+
+**Placement** follows the same flat/subfolder rules as bundled skills:
+
+| Destination format | Integrations | Path |
+|--------------------|--------------|------|
+| Flat `.md` | `claude`, `copilot`, `generic` | `<skills-dir>/caveman.md` |
+| Subfolder `SKILL.md` | all others | `<skills-dir>/caveman/SKILL.md` |
+
+**Claude Code auto-activation:** For the `claude` integration, `spek init` additionally writes two hook entries to the project's `.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "SessionStart": [{ "hooks": [{ "type": "command", "command": "\"<node>\" \"~/.claude/hooks/caveman-activate.js\"", "timeout": 5, "statusMessage": "Loading caveman mode..." }] }],
+    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "\"<node>\" \"~/.claude/hooks/caveman-mode-tracker.js\"", "timeout": 5, "statusMessage": "Tracking caveman mode..." }] }]
+  }
+}
+```
+
+These hooks activate caveman at `full` intensity automatically on every session start. Existing hook entries are preserved; duplicate entries are never written. If caveman installation fails for any reason (network unavailable, source not found), `spek init` logs a warning and continues — caveman failure is non-fatal.
+
 ---
 
 ## SpecKit Initialization
@@ -481,6 +511,7 @@ Mark executable. Opt-out: if `.spek/.disable-git-hooks` exists, skip installatio
 - If `obsidian` now in PATH (user completed GUI registration since last run): proceed with remaining steps
 - Skip directories that already exist
 - Skip skill files that already exist (do not overwrite)
+- Skip caveman skill if already present at destination; skip caveman hooks if already in `.claude/settings.json`
 - Re-run `specify init` only if `.specify/` is missing
 - Re-install git hook only if not present
 - Report what was created vs already present

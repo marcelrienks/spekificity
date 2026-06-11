@@ -396,8 +396,8 @@ Agent skills access lat.md via its MCP server (started with `lat mcp`). Confirm 
 
 ### `/caveman`
 
-**Purpose:** Activate Caveman compression mode (terse, compressed output). Caveman is an internal skill/mode (no external install).
-**Usage:** `/caveman [--intensity lite|full|ultra]`
+**Purpose:** Activate Caveman compression mode (terse, compressed output). Installed automatically by `spek init` from `github:JuliusBrussee/caveman`. For Claude Code, auto-activates on every session start via project-level hooks — no manual invocation needed.
+**Usage:** `/caveman [lite|full|ultra]`
 
 **Modes:**
 - `lite`: modest token reduction (remove explanations)
@@ -409,6 +409,8 @@ Agent skills access lat.md via its MCP server (started with `lat mcp`). Confirm 
 2. Compress responses at each workflow stage where configured
 3. Preserve technical accuracy and searchable keywords
 4. Switch back to normal mode with `/caveman off`
+
+**Installation:** `spek init` installs the caveman skill file into the integration's skills directory and (for `claude` integration) writes `SessionStart` + `UserPromptSubmit` hooks to `.claude/settings.json` for automatic activation. See [setup.md](setup.md#caveman-skill-installation) for details.
 
 **Output:** All subsequent commands respond in compressed format  
 ---

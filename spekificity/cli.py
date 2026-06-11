@@ -97,5 +97,9 @@ def init(path: str, integration: str | None, script_type: str | None, no_git_hoo
     # --- Step 7: Skills ---
     copy_skills(project_path, integration)
 
+    # --- Step 8: Caveman ---
+    from spekificity.caveman.install import install_caveman
+    install_caveman(project_path, integration)
+
     if needs_exit_2:
         sys.exit(2)
