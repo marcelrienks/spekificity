@@ -14,7 +14,7 @@ For each of Spekificity's four pillars, a tool is recommended that balances matu
 
 | Pillar | Tool | Why | Setup |
 |--------|------|-----|-------|
-| **Token Efficiency** | Caveman (compression) | Simple notation; preserves code; tested | Low (integrated) |
+| **Token Efficiency** | Caveman (compression) | Simple notation; preserves code; tested | Low (`spek init` fetches from `github:JuliusBrussee/caveman`; Claude Code gets auto-activation hooks) |
 | **Determinism** | SpecKit/Specify | GitHub official; broad adoption; YAML-first | Medium (`spek init` installs via `uv tool install`) |
 | **Persistence** | Obsidian (vault) | Largest PKM community; markdown portable; git-backed | Medium (`spek init` installs Obsidian desktop via brew/winget; CLI registration is a one-time manual step in Obsidian Settings → General) |
 | **Autonomy & Code Understanding** | lat.md | Agent-optimized; fast queries; framework-aware | Medium (`spek init` installs via `npm install -g lat.md`; MCP config per session) |

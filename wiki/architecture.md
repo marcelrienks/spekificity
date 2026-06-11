@@ -31,6 +31,7 @@ The `spek` CLI has exactly one command: `spek init`. There are no CLI commands f
 - Prompts for script type (sh, ps) and assigns to variable
 - Creates `.spek/` directory structure (vault, memory, config)
 - **Copies bundled skill files** from `spekificity/skills/` (package source) to the integration's skills directory — no code-side generation or string templating
+- **Installs Caveman compression skill** — fetches `SKILL.md` from the `github:JuliusBrussee/caveman` package and places it in the integration's skills directory; for `claude` integration, also writes `SessionStart` and `UserPromptSubmit` hooks to the project's `.claude/settings.json` for automatic per-session activation
 - Runs `specify init` for the given path, or . for present working directory, and supplies the AI agent and script type variables
 
 **Agent Skill Layer: `/spek.*` commands**

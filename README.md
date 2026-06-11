@@ -30,7 +30,7 @@ spek init
 # Select AI agent integration when prompted (claude, copilot, gemini, cursor-agent, windsurf, cline, codex, kiro-cli, amp, qwen, generic)
 ```
 
-`spek init` auto-installs SpecKit, lat.md, and Obsidian if not already present.
+`spek init` auto-installs SpecKit, lat.md, Obsidian, and the Caveman compression skill if not already present. For Claude Code, Caveman is also configured for automatic per-session activation.
 
 **Step 4–7: Run in your AI agent** (Claude Code, Copilot, etc.)
 ```
@@ -68,7 +68,7 @@ Minimal prerequisites — all standard tools:
 - **Node.js 22+** — Required by lat.md; check with `node --version`
 - **Git** — Initialized in your project (`git init` if needed)
 
-All other dependencies (SpecKit, lat.md, Obsidian) are auto-installed by `spek init`.
+All other dependencies (SpecKit, lat.md, Obsidian, Caveman) are auto-installed by `spek init`.
 
 ---
 
