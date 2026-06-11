@@ -9,7 +9,7 @@ All post-implementation: analysis, lessons extraction, vault archive, state refr
 ## Steps
 
 1. Run `/speckit-analyze`. Compare Success Criteria vs actual outcomes. Flag spec drift or deviations.
-2. Run `/spek.lessons` as sub-step. Prompt for retrospective. Extract patterns and decisions. Write to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`.
+2. Run `/spek.lessons` as sub-step. Prompt for retrospective. Extract patterns and decisions. Write to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`. (autolink enrichment runs automatically inside `/spek.lessons` — wikilinks and tags added to lesson file)
 3. Archive spec, plan, and tasks to `.spek/vault/`. Update `.spek/vault/patterns.md` with newly discovered patterns. Update `.spek/vault/decisions.md` with new architectural decisions.
 4. Run `lat init` to refresh the lat.md index (reflects newly committed code). Sync repo memory to `.spek/memory/`.
 5. Run `git add .spek/vault/ .spek/memory/` then `git commit`.

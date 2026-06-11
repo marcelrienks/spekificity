@@ -308,6 +308,103 @@ Update tests: `test_scaffold.py` asserts dirs created, no files; `test_init.py` 
 
 **Execution order:** I2 is independent. I1 requires threading `integration` param through call chain (init.py + cli.py). I3 adds one check to prerequisites.py. I4 is one-line. I5 reshuffles scaffold/init responsibilities — largest change but bounded to two files.
 
+## P8: Auto-Tagging & Auto-Wikilink Insertion
+
+Gap from decision.md: documented as "enabled by default in `/spek.conclude` lesson generation step" — no code existed. This phase closes that gap.
+
+### New Module: `spekificity/vault/autolink.py`
+
+```python
+@dataclass
+class AutolinkResult:
+    links_inserted: int = 0
+    tags_added: list[str] = field(default_factory=list)
+    skipped: bool = False
+
+_STOPWORDS = frozenset({
+    "a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for",
+    "of", "with", "by", "from", "as", "is", "was", "are", "were", "be",
+    "been", "being", "have", "has", "had", "do", "does", "did", "will",
+    "would", "could", "should", "may", "might", "shall", "can", "it",
+    "its", "this", "that", "these", "those", "we", "i", "you", "he",
+    "she", "they", "my", "your", "our", "their", "not", "no", "if",
+    "then", "when", "so", "there", "here",
+})
+
+def _build_vault_index(vault_path: Path) -> dict[str, Path]:
+    # key = normalized stem (lowercase, hyphens → spaces)
+    # scans .spek/vault/ recursively for .md files
+
+def _extract_keywords(text: str) -> list[str]:
+    # strip markdown syntax, split into words/phrases
+    # remove stopwords, deduplicate, return list
+
+def _match_keywords(
+    keywords: list[str],
+    vault_index: dict[str, Path],
+    threshold: float,
+) -> list[tuple[str, Path]]:
+    # SequenceMatcher ratio comparison per keyword vs each vault key
+    # return (keyword, vault_path) pairs where ratio >= threshold
+
+def _insert_wikilinks(text: str, matches: list[tuple[str, Path]]) -> tuple[str, int]:
+    # for each match: replace bare keyword (not inside [[...]]) with [[keyword]]
+    # returns (updated_text, count_inserted)
+
+def _add_frontmatter_tags(text: str, tags: list[str]) -> str:
+    # if YAML block exists (--- lines): merge tags list
+    # if absent: prepend ---\ntags: [t1, t2]\n---\n
+    # no-op if tags list empty
+
+def process_lesson(
+    lesson_path: Path,
+    vault_path: Path,
+    config: dict,
+) -> AutolinkResult:
+    autolink_cfg = config.get("autolink", {})
+    if not autolink_cfg.get("enabled", True):
+        print_status("SKIP", "autolink disabled in config")
+        return AutolinkResult(skipped=True)
+    threshold = autolink_cfg.get("threshold", 0.8)
+    keyword_tags = autolink_cfg.get("keyword_tags", {})
+    # orchestrate: read lesson → extract → match → insert → tag → write
+```
+
+**Dependencies:** `re`, `difflib.SequenceMatcher`, `pathlib` — stdlib only. No external NLP deps.
+
+### Updates to Existing Files
+
+| File | Change |
+|------|--------|
+| `spekificity/speckit/config.py` | Add `autolink` block to YAML template: `enabled: true`, `threshold: 0.8`, `keyword_tags: {}` |
+| `spekificity/skills/spek-lessons.md` | Add Step 5: run `process_lesson()` on lesson file; add `[[wikilinks]] inserted` and `tags generated` to Exit Criteria |
+| `spekificity/skills/spek-conclude.md` | Update Step 2 note to state autolink runs automatically inside `/spek.lessons` |
+
+### New Test File: `tests/unit/vault/test_autolink.py`
+
+Cover: `_build_vault_index` (correct stems), `_extract_keywords` (stopword removal), `_match_keywords` (above/below threshold), `_insert_wikilinks` (bare vs already-linked), `_add_frontmatter_tags` (create/merge), `process_lesson` (skip-if-disabled, idempotency, links count).
+
+### Source Code Changes
+
+```text
+spekificity/
+└── vault/
+    └── autolink.py                   # P8: new module
+
+tests/
+└── unit/
+    └── vault/
+        └── test_autolink.py          # P8: new test file
+```
+
+Plus edits to `speckit/config.py`, `skills/spek-lessons.md`, `skills/spek-conclude.md`.
+
+### Tasks (T052–T056)
+
+See tasks.md for numbered breakdown.
+
+**Execution order:** T052 first (module). T053, T054 can run parallel to each other after T052. T055 and T056 depend on T052 content being settled; parallel to each other.
+
 ## Complexity Tracking
 
 > No constitution violations to justify.

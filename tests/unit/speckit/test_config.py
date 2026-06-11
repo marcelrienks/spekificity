@@ -29,6 +29,9 @@ class TestWriteSpekConfig:
         assert "vault:" in content
         assert "context_loading:" in content
         assert "token_limits:" in content
+        assert "autolink:" in content
+        assert "enabled: true" in content
+        assert "threshold: 0.8" in content
 
     def test_idempotent_skips_existing(self, tmp_path):
         (tmp_path / ".spek").mkdir()

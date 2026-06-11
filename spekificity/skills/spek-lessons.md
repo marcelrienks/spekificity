@@ -12,6 +12,7 @@ Extract and store structured lessons. Callable standalone at any point, or auto-
 2. Extract new patterns if workflow diverged from spec.
 3. Log new decisions if architecture changed from original plan.
 4. Write lessons to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md` using the template below.
+5. Run autolink enrichment: call `process_lesson()` with the generated lesson path, `.spek/vault/`, and loaded config; inserts `[[wikilinks]]` for matched vault entries and adds generated tags to frontmatter (skip if `autolink.enabled: false` in `.spek/config.yaml`).
 
 ## Output
 
@@ -49,3 +50,5 @@ Status: Complete
 - Retrospective captured from user
 - Lessons file written to `.spek/vault/lessons/`
 - New patterns and decisions extracted and logged
+- `[[wikilinks]]` inserted for all vault-matched keywords
+- Tags generated from `keyword_tags` mapping and added to frontmatter

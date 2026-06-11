@@ -35,6 +35,10 @@ token_limits:
   standard: 3500
   lite: 2000
   ultra: 1000
+autolink:
+  enabled: true
+  threshold: 0.8
+  keyword_tags: {{}}
 """
 
 

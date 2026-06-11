@@ -70,6 +70,28 @@ A developer whose project has been initialized opens their agent (Claude Code, C
 
 ---
 
+### User Story 5 - Auto-Tagging & Auto-Wikilink Insertion (Priority: P5)
+
+After a developer runs `/spek.lessons`, the generated lesson file is automatically enriched with `[[wikilinks]]` to related vault entries and consistent tags extracted from keywords — with no manual cross-referencing required.
+
+**Why this priority**: Documented as active in `wiki/decision.md` ("enabled by default in `/spek.conclude` lesson generation step") but missing from the original implementation. Closes the gap between spec and code.
+
+**Independent Test**: Generate a lesson file in a vault with existing `decisions.md` and `patterns.md`. Confirm `[[decisions]]` and `[[patterns]]` wikilinks appear. Confirm tags generated from keyword map. Confirm re-run does not duplicate wikilinks.
+
+**Acceptance Scenarios**:
+
+1. **Given** a lesson file containing the word "decisions" and `.spek/vault/decisions.md` exists, **When** `process_lesson()` runs, **Then** `[[decisions]]` wikilink is inserted at first bare occurrence in lesson text.
+
+2. **Given** `.spek/config.yaml` contains `autolink.keyword_tags: {authentication: [auth, security]}` and lesson text contains "authentication", **When** `process_lesson()` runs, **Then** `tags: [auth, security]` appear in YAML frontmatter.
+
+3. **Given** a lesson with no keywords matching any vault file stem, **When** `process_lesson()` runs with default threshold 0.8, **Then** no wikilinks are inserted (no false positives).
+
+4. **Given** a lesson already containing `[[decisions]]`, **When** `process_lesson()` runs again, **Then** no duplicate `[[decisions]][[decisions]]` is produced (idempotent).
+
+5. **Given** `.spek/config.yaml` contains `autolink.enabled: false`, **When** `/spek.lessons` runs, **Then** autolink step is skipped with `[SKIP]` output.
+
+---
+
 ### User Story 4 - `spek init` Works End-to-End (Priority: P4)
 
 A developer runs `spek init` in a clean project and gets a fully initialized Spekificity workspace in a single command. They can pass flags for non-interactive use. Re-running the command on an already-initialized project produces no errors and no side effects.
@@ -139,6 +161,17 @@ A developer runs `spek init` in a clean project and gets a fully initialized Spe
 - **FR-026**: `spek init` MUST skip git hook installation if `.spek/.disable-git-hooks` exists or `--no-git-hooks` is passed
 - **FR-027**: `spek init` MUST be idempotent — re-running on an initialized project exits 0 with only `[SKIP]` output
 
+**P5 — Auto-Tagging & Auto-Wikilink Insertion**
+- **FR-028**: `spekificity/vault/autolink.py` MUST expose `process_lesson(lesson_path, vault_path, config) -> AutolinkResult`; `AutolinkResult` dataclass has `links_inserted: int`, `tags_added: list[str]`, `skipped: bool`
+- **FR-029**: Vault index MUST be built by scanning `.spek/vault/` recursively for `.md` files; key = normalized stem (lowercase, hyphens/underscores to spaces)
+- **FR-030**: Keyword extraction MUST use regex + hardcoded English stopword removal; no external NLP dependencies; no network calls; works offline
+- **FR-031**: Keyword-to-vault matching MUST use `difflib.SequenceMatcher` normalized ratio; only insert wikilink when ratio ≥ `autolink.threshold` (default `0.8`)
+- **FR-032**: Wikilink insertion MUST be idempotent — bare keyword replaced with `[[keyword]]` only if not already wrapped; existing `[[...]]` blocks preserved
+- **FR-033**: Tag generation MUST read `autolink.keyword_tags` mapping from config; matched keywords add their tags to YAML frontmatter block (created if absent, merged if present)
+- **FR-034**: `.spek/config.yaml` MUST include `autolink.enabled` (default: `true`), `autolink.threshold` (default: `0.8`), `autolink.keyword_tags` (default: `{}`)
+- **FR-035**: `spekificity/skills/spek-lessons.md` MUST include a step to call `process_lesson()` after writing the lesson file
+- **FR-036**: Autolink step MUST print `[SKIP]` when `autolink.enabled: false`; MUST print `[OK]` with count of links inserted otherwise
+
 ### Key Entities
 
 - **`spek` CLI**: Python entry point (`spekificity.cli:main`), sole command is `init`
@@ -161,6 +194,10 @@ A developer runs `spek init` in a clean project and gets a fully initialized Spe
 - **SC-008**: Skill files land in the correct path format for `claude`, `copilot`, `cursor-agent`, and `generic` integrations
 - **SC-009**: The lat.md MCP entry is correctly written for `claude`, `copilot`, and `cursor-agent` without corrupting existing config
 - **SC-010**: Given `obsidian` is in PATH and vault not yet initialized, when vault module runs, then `.spek/vault/` with required content exists and `obsidian open-vault` was called; exit code 0
+- **SC-011**: Given lesson file containing keyword "decisions" and `.spek/vault/decisions.md` exists, when `process_lesson()` runs, then `[[decisions]]` wikilink is present in lesson and `links_inserted == 1`
+- **SC-012**: Given `autolink.enabled: false` in config, when `process_lesson()` is called, then `skipped == True` and lesson file is unchanged
+- **SC-013**: Given lesson already contains `[[decisions]]`, when `process_lesson()` runs again, then wikilink count unchanged (idempotent)
+- **SC-014**: `autolink.py` unit tests pass with no external NLP dependencies installed (stdlib only: `re`, `difflib`, `pathlib`)
 
 ## Assumptions
 

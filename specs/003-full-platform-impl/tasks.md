@@ -168,6 +168,18 @@
 
 ---
 
+## P8: Auto-Tagging & Auto-Wikilink Insertion (gap from decision.md)
+
+**Source**: Gap audit — `decision.md` documents auto-tagging as active in `/spek.conclude`; no implementation existed.
+
+- [X] T052 [US5] Implement `spekificity/vault/autolink.py` — `AutolinkResult` dataclass (`links_inserted: int`, `tags_added: list[str]`, `skipped: bool`); `_build_vault_index(vault_path: Path) -> dict[str, Path]` scans `.spek/vault/` recursively for `.md` files, keys are normalized stems (lowercase, hyphens/underscores → spaces, strip `.md`); `_extract_keywords(text: str) -> list[str]` strips markdown syntax via regex, tokenizes, removes hardcoded English stopwords, deduplicates; `_match_keywords(keywords, vault_index, threshold) -> list[tuple[str, Path]]` uses `difflib.SequenceMatcher(None, kw, key).ratio()` per (keyword, vault-key) pair, returns matches ≥ threshold; `_insert_wikilinks(text, matches) -> tuple[str, int]` replaces bare keyword occurrence (not already inside `[[...]]`) with `[[keyword]]`, returns `(updated_text, count)`; `_add_frontmatter_tags(text, tags) -> str` merges tags into YAML frontmatter block (create `---\ntags: [...]\n---\n` if absent, extend existing `tags:` list if present, no-op if `tags` empty); `process_lesson(lesson_path, vault_path, config) -> AutolinkResult` orchestrates all steps, skips with `[SKIP]` if `config["autolink"]["enabled"]` is False (default True), calls `print_status` for `[OK]`/`[SKIP]`; stdlib only (`re`, `difflib`, `pathlib`)
+- [X] T053 [P] [US5] Write `tests/unit/vault/test_autolink.py` — test `_build_vault_index` returns normalized stem keys for all `.md` files in tmp vault; test `_extract_keywords` removes stopwords ("the", "and", etc.) and strips markdown headers/bullets; test `_match_keywords` returns match above threshold=0.8 for close keyword and skips below; test `_insert_wikilinks` wraps bare "decisions" → `[[decisions]]` but leaves existing `[[decisions]]` untouched; test `_insert_wikilinks` count return matches actual insertions; test `_add_frontmatter_tags` creates YAML block when absent; test `_add_frontmatter_tags` merges new tags into existing block without duplicates; test `process_lesson` returns `skipped=True` when `autolink.enabled=False`; test `process_lesson` idempotency (second call with already-linked text produces same count=0); use `tmp_path`
+- [X] T054 [P] [US5] Update `spekificity/speckit/config.py` — add `autolink` block to YAML template string after `token_limits` section: `autolink:\n  enabled: true\n  threshold: 0.8\n  keyword_tags: {}`; update `tests/unit/speckit/test_config.py` to assert output YAML contains `autolink:`, `enabled: true`, and `threshold: 0.8` fields
+- [X] T055 [P] [US5] Update `spekificity/skills/spek-lessons.md` — add Step 5 under `## Steps`: `Run autolink enrichment: call process_lesson() with the generated lesson path, .spek/vault/, and loaded config; inserts [[wikilinks]] for matched vault entries and adds generated tags to frontmatter`; add two exit criteria: `[[wikilinks]] inserted for all vault-matched keywords` and `tags generated from keyword_tags mapping`; keep all existing content
+- [X] T056 [P] [US5] Update `spekificity/skills/spek-conclude.md` — in Step 2 (lessons sub-step) add parenthetical note: `(autolink enrichment runs automatically inside /spek.lessons — wikilinks and tags added to lesson file)`; keep all existing content
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
