@@ -135,6 +135,18 @@
 
 ---
 
+## Phase 8: Gap Fixes (FR-002, FR-011, FR-020)
+
+**Source**: Post-implementation review identified three FR violations. All independent; can run in parallel.
+
+- [ ] T042 [P] Fix `spekificity/prerequisites.py` — add version validation for Python ≥3.11 and Node.js ≥22; parse `python --version` / `node --version` output via regex; `sys.exit(1)` with descriptive message if version too low; `uv` and `git` remain PATH-presence-only checks; update `tests/unit/test_prerequisites.py` to cover version-too-low cases for Python and Node
+
+- [ ] T043 [P] Fix `spekificity/vault/install.py` — replace `_print_registration_instructions()` body with verbatim text from `wiki/setup.md` "Phase 1 halt — warning output" block (`⚠  Obsidian installed...` through `spek init will complete all remaining setup autonomously.`); update `tests/unit/vault/test_install.py` to assert the verbatim block appears in stderr on `needs_user_action` result
+
+- [ ] T044 [P] Rewrite all 7 skill files (`spekificity/skills/spek-*.md`) to use required H2 section structure in order: `## Prerequisites`, `## Steps`, `## Output`, `## Exit Criteria`; content from existing files preserved and reorganized; steps use imperative mood; no new agent syntax introduced
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies

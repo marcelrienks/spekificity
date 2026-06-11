@@ -106,7 +106,7 @@ A developer runs `spek init` in a clean project and gets a fully initialized Spe
 
 **P1 — Foundation**
 - **FR-001**: Package MUST install as `spek` CLI via `uv tool install spekificity`
-- **FR-002**: `spek init` MUST verify Python 3.11+, `uv`, Node.js 22+, and `git` are in PATH before any setup work
+- **FR-002**: `spek init` MUST verify Python 3.11+, `uv`, Node.js 22+, and `git` are in PATH before any setup work. Version validation is required for Python (≥3.11) and Node.js (≥22); `uv` and `git` require only PATH presence.
 - **FR-003**: Each failed prerequisite check MUST name the missing tool and provide its install command
 - **FR-004**: Package MUST declare `skills/*.md` as package data so skill files are bundled in the distribution
 - **FR-005**: A shared `utils.py` MUST provide the subprocess runner and `[OK]/[SKIP]/[WARN]/[ERROR]` output formatter used by all modules
@@ -117,7 +117,7 @@ A developer runs `spek init` in a clean project and gets a fully initialized Spe
 - **FR-008**: lat.md module MUST write the lat MCP server entry to the integration-specific config file without clobbering existing entries
 - **FR-009**: lat.md module MUST install a git post-commit hook containing `lat update`
 - **FR-010**: Vault module MUST detect Obsidian; if absent, install via `brew` (macOS), `winget` (Windows), or print URL (Linux)
-- **FR-011**: Vault module MUST implement two-phase Obsidian flow: install → check `obsidian` in PATH → halt exit code 2 if not found → complete vault setup on re-run. Halt output MUST include the CLI registration instructions verbatim from `wiki/setup.md` (Phase 1 halt block)
+- **FR-011**: Vault module MUST implement two-phase Obsidian flow: install → check `obsidian` in PATH → halt exit code 2 if not found → complete vault setup on re-run. Halt output MUST print to stderr the CLI registration instructions **verbatim** from `wiki/setup.md` "Phase 1 halt — warning output" block (the `⚠  Obsidian installed...` block ending with `spek init will complete all remaining setup autonomously.`)
 - **FR-012**: Vault module MUST create `.spek/vault/` (with `lessons/`, `decisions.md` (`# Decisions`), `patterns.md` (`# Patterns`), `lessons/.keep`), `.spek/memory/`, and `.spek/lat/` directories
 - **FR-013**: Vault module MUST register and open the vault in Obsidian via `obsidian open-vault`
 - **FR-014**: SpecKit module MUST detect `specify` in PATH; if absent, install via `uv tool install specify-cli`
@@ -128,7 +128,7 @@ A developer runs `spek init` in a clean project and gets a fully initialized Spe
 **P3 — Skill Files**
 - **FR-018**: Seven skill files MUST exist in `spekificity/skills/`: `spek-prepare.md`, `spek-plan.md`, `spek-implement.md`, `spek-conclude.md`, `spek-lessons.md`, `spek-context.md`, `spek-map.md`
 - **FR-019**: All seven skill files MUST be plain markdown with no agent-specific syntax (`@workspace`, `#file:`, `[[wikilink]]`)
-- **FR-020**: Each skill file MUST contain Prerequisites, Steps, Output, and Exit Criteria sections with imperative-mood steps
+- **FR-020**: Each skill file MUST contain exactly these H2 sections in order: `## Prerequisites`, `## Steps`, `## Output`, `## Exit Criteria`. Steps MUST use imperative mood.
 - **FR-021**: `skills_install/` MUST copy flat `.md` files for `claude`, `copilot`, `generic`; subfolder `SKILL.md` for all others
 - **FR-022**: Skill files already present at destination MUST NOT be overwritten
 

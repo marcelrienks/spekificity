@@ -140,6 +140,31 @@ pyproject.toml                      # P1: add pytest dev dep, package-data for s
 
 **Structure Decision**: Single project layout. Modules grouped by phase. `vault/scaffold.py` also owns `.spek/memory/` and `.spek/lat/` directory creation (all `.spek/` subdirs in one place). `skills_install/` is separate from `skills/` — content and distribution are different concerns. `cli.py` is intentionally thin: it reads flags/prompts, calls each module in order, and handles the exit code. No business logic in `cli.py`.
 
+## P5: Gap Fixes (post-review)
+
+Three gaps found in implementation review. All are self-contained fixes.
+
+| Gap | File | Fix |
+|-----|------|-----|
+| FR-002: No version validation | `spekificity/prerequisites.py` | Parse `python --version` / `node --version` output; extract major.minor; `sys.exit(1)` if Python < 3.11 or Node < 22 |
+| FR-011/SC-006: Wrong halt text | `spekificity/vault/install.py` | Replace `_print_registration_instructions()` body with verbatim text from `wiki/setup.md` "Phase 1 halt" block |
+| FR-020: Wrong skill section headers | `spekificity/skills/*.md` (all 7) | Rewrite each file to use `## Prerequisites`, `## Steps`, `## Output`, `## Exit Criteria` in that order |
+
+**Version parsing approach** (FR-002):
+```python
+import re, sys as _sys
+
+def _check_version(cmd: str, min_major: int, min_minor: int) -> bool:
+    raw = _get_version(cmd) or ""
+    m = re.search(r"(\d+)\.(\d+)", raw)
+    if not m:
+        return False
+    return (int(m.group(1)), int(m.group(2))) >= (min_major, min_minor)
+```
+Python check: `python --version` → parse `3.X.Y` → require `(3, 11)`.
+Node check: `node --version` → parse `vX.Y.Z` → require `(22, 0)`.
+`uv` and `git`: PATH presence only, no version constraint.
+
 ## Complexity Tracking
 
 > No constitution violations to justify.
