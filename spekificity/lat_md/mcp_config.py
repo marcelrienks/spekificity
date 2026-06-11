@@ -20,21 +20,28 @@ def write_mcp_config(
     servers_key: str,
     extra_fields: dict[str, Any],
     integration: str,
+    flat_key: bool = False,
 ) -> McpConfigResult:
-    """Merge lat entry into MCP config. Skip if already present. Create file if missing."""
+    """Merge lat entry into MCP config. Skip if already present. Create file if missing.
+
+    flat_key=True: servers_key is a literal JSON key (VS Code dot-notation like
+    "cline.mcpServers"), not a path into nested objects.
+    """
     from spekificity.utils import print_status
 
     config: dict[str, Any] = {}
     if config_path.exists():
         config = json.loads(config_path.read_text())
 
-    # Navigate nested key (e.g. "cline.mcpServers")
-    keys = servers_key.split(".")
-    node = config
-    for key in keys[:-1]:
-        node = node.setdefault(key, {})
-    leaf_key = keys[-1]
-    servers = node.setdefault(leaf_key, {})
+    if flat_key:
+        servers = config.setdefault(servers_key, {})
+    else:
+        # Navigate dot-separated path (e.g. "mcpServers" or future nested keys)
+        keys = servers_key.split(".")
+        node = config
+        for key in keys[:-1]:
+            node = node.setdefault(key, {})
+        servers = node.setdefault(keys[-1], {})
 
     if "lat" in servers:
         print_status("SKIP", f"lat MCP entry already in {config_path}")

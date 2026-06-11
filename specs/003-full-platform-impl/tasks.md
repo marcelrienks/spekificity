@@ -147,6 +147,27 @@
 
 ---
 
+## Phase 9: Gap Fixes (Analysis-Review — P6)
+
+**Source**: Code correctness audit identified two runtime bugs. Both independent; can run in parallel.
+
+- [X] T045 [P] Fix `spekificity/cli.py` — add `elif obsidian_result.status == "skipped"` guard (Linux path) before `else: init_vault()` so `init_vault` is never called when obsidian not available; fixes RuntimeError on Linux where `obsidian open-vault` is not in PATH
+- [X] T046 [P] Fix `spekificity/lat_md/mcp_config.py` + `spekificity/skills_install/integrations.py` — add `flat_key: bool` field to `INTEGRATION_MCP_CONFIG` tuples; pass to `write_mcp_config`; when `flat_key=True` skip `split(".")` navigation and use literal key directly; set `flat_key=True` for `cline`; add test `test_cline_writes_flat_key` to `tests/unit/lat_md/test_mcp_config.py`
+
+---
+
+## Phase 10: Gap Fixes (Wiki-Compliance — P7)
+
+**Source**: Wiki vs implementation audit identified five gaps. I1 and I2 HIGH; I3–I5 MEDIUM.
+
+- [X] T047 [P] Fix `spekificity/speckit/init.py` — add `integration: str` param to `run_specify_init`; change command to `["specify", "init", "--integration", integration]`; update `spekificity/cli.py` call site to pass `integration`; update `tests/unit/speckit/test_init.py` to assert `--integration` flag present in mocked command
+- [X] T048 [P] Fix `spekificity/speckit/install.py` — add `"--from", "git+https://github.com/github/spec-kit.git"` to install command; update `tests/unit/speckit/test_install.py` to assert full command including `--from` arg
+- [X] T049 [P] Fix `spekificity/prerequisites.py` — after all tool PATH checks pass, run `git rev-parse --git-dir` via `subprocess.run`; if non-zero exit, print `[ERROR] Not in a git repository. Run: git init` and `sys.exit(1)`; add test in `tests/unit/test_prerequisites.py` for both valid and invalid git repo cases
+- [X] T050 [P] Fix `spekificity/vault/init.py` — change `["obsidian", "open-vault", str(vault_path)]` to `["obsidian", "open-vault", f"path={vault_path}"]` (named arg per `wiki/setup.md`); update `tests/unit/vault/test_init.py` to assert named-arg form
+- [X] T051 Fix `spekificity/vault/scaffold.py` and `spekificity/vault/init.py` — move initial file creation (`decisions.md`, `patterns.md`, `lessons/.keep`) out of `scaffold_vault` and into `init_vault`; in `init_vault` create files via `obsidian create` CLI calls (not filesystem writes); `scaffold_vault` creates dirs only; update `tests/unit/vault/test_scaffold.py` (dirs only, no file assertions) and `tests/unit/vault/test_init.py` (assert `obsidian create` called for each missing file); T051 depends on T050
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies

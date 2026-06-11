@@ -165,6 +165,149 @@ Python check: `python --version` → parse `3.X.Y` → require `(3, 11)`.
 Node check: `node --version` → parse `vX.Y.Z` → require `(22, 0)`.
 `uv` and `git`: PATH presence only, no version constraint.
 
+## P6: Gap Fixes (analysis-review)
+
+Two bugs found in code correctness audit. Both self-contained fixes.
+
+| Gap | File(s) | Fix |
+|-----|---------|-----|
+| Linux vault crash | `spekificity/cli.py` | `init_vault()` called when `obsidian_result.status == "skipped"` (Linux path) → `RuntimeError` since `obsidian` not in PATH. Add `elif status == "skipped"` guard before `else: init_vault()`. Spec edge case: "Linux → continue remaining steps without vault setup." |
+| Cline MCP flat key | `spekificity/lat_md/mcp_config.py`, `spekificity/skills_install/integrations.py` | `servers_key="cline.mcpServers"` fed into `split(".")` navigation writes nested `{"cline": {"mcpServers": {...}}}`. VS Code `settings.json` requires literal flat key `{"cline.mcpServers": {...}}`. Fix: bypass split-navigation for flat-key integrations; add a test covering the cline case. |
+
+**Linux vault guard** (`spekificity/cli.py`):
+```python
+obsidian_result = install_obsidian()
+scaffold_vault(project_path)
+needs_exit_2 = False
+if obsidian_result.status == "needs_user_action":
+    needs_exit_2 = True
+    print_status("SKIP", "Obsidian CLI not registered — skipping vault init; register CLI and re-run spek init")
+elif obsidian_result.status == "skipped":
+    print_status("SKIP", "vault init skipped (Linux — Obsidian not available)")
+else:
+    init_vault(project_path)
+```
+
+**Cline flat-key fix** (`spekificity/lat_md/mcp_config.py`):
+
+Two options; pick one:
+
+*Option A* — Add `flat_key: bool` field to `INTEGRATION_MCP_CONFIG` tuples; when `True`, use `config.setdefault(servers_key, {})` directly without `split(".")`:
+```python
+# integrations.py
+"cline": (".vscode/settings.json", "cline.mcpServers", {}, True),  # flat_key=True
+
+# mcp_config.py
+def write_mcp_config(config_path, servers_key, extra_fields, integration, flat_key=False):
+    ...
+    if flat_key:
+        servers = config.setdefault(servers_key, {})
+    else:
+        keys = servers_key.split(".")
+        node = config
+        for key in keys[:-1]:
+            node = node.setdefault(key, {})
+        servers = node.setdefault(keys[-1], {})
+```
+
+*Option B* — Keep tuple shape; special-case only `cline` in `write_mcp_config` by checking if `integration == "cline"`.
+
+Option A preferred — generalises cleanly if other integrations need flat keys.
+
+New test required (`tests/unit/lat_md/test_mcp_config.py`):
+```python
+def test_cline_writes_flat_key(self, tmp_path):
+    config_path = tmp_path / ".vscode" / "settings.json"
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    write_mcp_config(config_path, "cline.mcpServers", {}, "cline", flat_key=True)
+    data = json.loads(config_path.read_text())
+    assert "cline.mcpServers" in data          # flat key, not nested
+    assert "cline" not in data                 # no nested {"cline": {...}}
+    assert "lat" in data["cline.mcpServers"]
+```
+
+## P7: Gap Fixes (wiki-compliance audit)
+
+Five gaps found comparing code against `wiki/setup.md`, `wiki/architecture.md`, and `wiki/skills.md`. I1 and I2 are HIGH — block correct SpecKit integration. I3–I5 are MEDIUM.
+
+| ID | Gap | File(s) | Fix |
+|----|-----|---------|-----|
+| I1 | `specify init` missing `--integration` flag | `spekificity/speckit/init.py`, `spekificity/speckit/config.py`, `spekificity/cli.py` | Thread `integration: str` param into `run_specify_init(project_path, integration)`; call `["specify", "init", "--integration", integration]`. Update `tests/unit/speckit/test_init.py` to assert `--integration` in command. |
+| I2 | `specify-cli` installed without `--from git+...` | `spekificity/speckit/install.py` | Add `"--from", "git+https://github.com/github/spec-kit.git"` to install command. Update `tests/unit/speckit/test_install.py` to assert full command. |
+| I3 | No git repo validity check | `spekificity/prerequisites.py` | After `git` PATH check, run `git rev-parse --git-dir`; if non-zero exit, print `[ERROR] Not in a git repository. Run git init first.` and `sys.exit(1)`. Add test for this case. |
+| I4 | `obsidian open-vault` wrong arg format | `spekificity/vault/init.py` | Change `["obsidian", "open-vault", str(vault_path)]` to `["obsidian", "open-vault", f"path={vault_path}"]` per `wiki/setup.md`. Update unit test. |
+| I5 | Initial vault files created via filesystem, not Obsidian CLI | `spekificity/vault/scaffold.py`, `spekificity/vault/init.py` | Move `decisions.md`, `patterns.md`, `lessons/.keep` creation from `scaffold_vault` into `init_vault` (Phase 2 — when obsidian is in PATH). Use `obsidian create` CLI commands instead of `path.write_text`. `scaffold_vault` still creates dirs only. |
+
+**I1 — `run_specify_init` signature change:**
+```python
+# speckit/init.py
+def run_specify_init(project_path: Path, integration: str) -> None:
+    specify_dir = project_path / ".specify"
+    if specify_dir.exists():
+        print_status("SKIP", ".specify/ already exists — skipping specify init")
+        return
+    run_command(["specify", "init", "--integration", integration], "specify init")
+    print_status("OK", "SpecKit initialized (.specify/)")
+
+# cli.py — update call site:
+run_specify_init(project_path, integration)
+```
+
+**I2 — speckit install command:**
+```python
+# speckit/install.py
+run_command(
+    ["uv", "tool", "install", "specify-cli", "--from", "git+https://github.com/github/spec-kit.git"],
+    "install specify-cli via uv",
+)
+```
+
+**I3 — git repo check in prerequisites:**
+```python
+# prerequisites.py — add after git PATH check, before returning results:
+import subprocess as _sp
+try:
+    _sp.run(["git", "rev-parse", "--git-dir"], check=True, capture_output=True)
+except _sp.CalledProcessError:
+    print("[ERROR] Not in a git repository. Run: git init")
+    sys.exit(1)
+```
+Add this check at the END of `check_prerequisites()` after all tool checks pass, so it only runs when `git` is confirmed in PATH.
+
+**I4 — obsidian open-vault named arg:**
+```python
+# vault/init.py
+run_command(["obsidian", "open-vault", f"path={vault_path}"], "obsidian open-vault")
+```
+
+**I5 — move initial file creation into init_vault:**
+```python
+# vault/scaffold.py — create dirs only:
+dirs = [
+    project_path / ".spek" / "vault" / "lessons",
+    project_path / ".spek" / "memory",
+    project_path / ".spek" / "lat",
+]
+# No file writes in scaffold_vault
+
+# vault/init.py — add file creation via Obsidian CLI after open-vault:
+_FILES = [
+    ("file=decisions", "content=# Decisions"),
+    ("file=patterns",  "content=# Patterns"),
+    ("path=lessons/.keep", "content="),
+]
+for file_arg, content_arg in _FILES:
+    dest = ...  # derive expected path from file_arg
+    if not dest.exists():
+        run_command(
+            ["obsidian", "create", file_arg, content_arg, "vault=vault"],
+            f"obsidian create {file_arg}",
+        )
+```
+Update tests: `test_scaffold.py` asserts dirs created, no files; `test_init.py` asserts `obsidian create` called for each missing file.
+
+**Execution order:** I2 is independent. I1 requires threading `integration` param through call chain (init.py + cli.py). I3 adds one check to prerequisites.py. I4 is one-line. I5 reshuffles scaffold/init responsibilities — largest change but bounded to two files.
+
 ## Complexity Tracking
 
 > No constitution violations to justify.

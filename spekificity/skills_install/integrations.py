@@ -20,18 +20,20 @@ INTEGRATION_SKILLS_DIR: dict[str, str] = {
     "qwen": ".qwen/skills",
 }
 
-# (config_file, servers_key, extra_fields)
-INTEGRATION_MCP_CONFIG: dict[str, tuple[str, str, dict[str, Any]]] = {
-    "claude": (".mcp.json", "mcpServers", {}),
-    "cursor-agent": (".cursor/mcp.json", "mcpServers", {}),
-    "copilot": (".vscode/mcp.json", "servers", {"type": "stdio"}),
-    "windsurf": (".windsurf/mcp.json", "mcpServers", {}),
-    "cline": (".vscode/settings.json", "cline.mcpServers", {}),
-    "gemini": (".gemini/settings.json", "mcpServers", {}),
-    "codex": (".codex/mcp.json", "mcpServers", {}),
-    "kiro-cli": (".kiro/mcp.json", "mcpServers", {}),
-    "amp": (".amp/mcp.json", "mcpServers", {}),
-    "qwen": (".qwen/mcp.json", "mcpServers", {}),
+# (config_file, servers_key, extra_fields, flat_key)
+# flat_key=True: servers_key is a literal JSON key (e.g. VS Code "cline.mcpServers"),
+#                NOT a dot-separated path into nested objects.
+INTEGRATION_MCP_CONFIG: dict[str, tuple[str, str, dict[str, Any], bool]] = {
+    "claude": (".mcp.json", "mcpServers", {}, False),
+    "cursor-agent": (".cursor/mcp.json", "mcpServers", {}, False),
+    "copilot": (".vscode/mcp.json", "servers", {"type": "stdio"}, False),
+    "windsurf": (".windsurf/mcp.json", "mcpServers", {}, False),
+    "cline": (".vscode/settings.json", "cline.mcpServers", {}, True),
+    "gemini": (".gemini/settings.json", "mcpServers", {}, False),
+    "codex": (".codex/mcp.json", "mcpServers", {}, False),
+    "kiro-cli": (".kiro/mcp.json", "mcpServers", {}, False),
+    "amp": (".amp/mcp.json", "mcpServers", {}, False),
+    "qwen": (".qwen/mcp.json", "mcpServers", {}, False),
 }
 
 _FALLBACK_DIR = ".agents/skills"

@@ -23,3 +23,5 @@ class TestInstallSpeckit:
         call_args = mock_run.call_args[0][0]
         assert "uv" in call_args
         assert "specify-cli" in call_args
+        assert "--from" in call_args
+        assert "git+https://github.com/github/spec-kit.git" in call_args

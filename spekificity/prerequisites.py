@@ -66,4 +66,18 @@ def check_prerequisites() -> list[PrerequisiteResult]:
             print(f"[ERROR] {name} version too low (need ≥{min_major}.{min_minor}): {version}")
             print(f"  Upgrade: {install_hint}")
             sys.exit(1)
+
+    # All tools present — verify CWD is a valid git repository
+    try:
+        proc = subprocess.run(
+            ["git", "rev-parse", "--git-dir"],
+            capture_output=True,
+            text=True,
+        )
+        if proc.returncode != 0:
+            print("[ERROR] Not in a git repository. Run: git init")
+            sys.exit(1)
+    except FileNotFoundError:
+        pass  # git PATH absence already caught above
+
     return results

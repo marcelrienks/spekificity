@@ -42,7 +42,7 @@ def _mock_which(present_tools=("python", "uv", "node", "git", "lat", "obsidian",
 def _specify_init_side_effect(project_path: Path):
     """Return a run_command side effect that creates .specify/ when specify init is called."""
     def side_effect(cmd, description):
-        if cmd == ["specify", "init"]:
+        if len(cmd) >= 2 and cmd[0] == "specify" and cmd[1] == "init":
             (project_path / ".specify").mkdir(exist_ok=True)
     return side_effect
 

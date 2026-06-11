@@ -21,6 +21,9 @@ def install_speckit() -> ToolInstallResult:
     if shutil.which("specify"):
         print_status("SKIP", "specify-cli already installed")
         return ToolInstallResult(tool="speckit", status="already_present", message="specify already in PATH")
-    run_command(["uv", "tool", "install", "specify-cli"], "install specify-cli via uv")
+    run_command(
+        ["uv", "tool", "install", "specify-cli", "--from", "git+https://github.com/github/spec-kit.git"],
+        "install specify-cli via uv",
+    )
     print_status("OK", "specify-cli installed")
     return ToolInstallResult(tool="speckit", status="installed", message="specify-cli installed via uv")

@@ -41,3 +41,31 @@ class TestWriteMcpConfig:
         config_path = tmp_path / "nested" / "dir" / "mcp.json"
         write_mcp_config(config_path, "mcpServers", {}, "cursor-agent")
         assert config_path.exists()
+
+    def test_cline_writes_flat_key(self, tmp_path):
+        config_path = tmp_path / ".vscode" / "settings.json"
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        write_mcp_config(config_path, "cline.mcpServers", {}, "cline", flat_key=True)
+        data = json.loads(config_path.read_text())
+        assert "cline.mcpServers" in data          # literal flat key
+        assert "cline" not in data                 # NOT nested {"cline": {...}}
+        assert "lat" in data["cline.mcpServers"]
+        assert data["cline.mcpServers"]["lat"]["command"] == "lat"
+
+    def test_cline_flat_key_idempotent(self, tmp_path):
+        config_path = tmp_path / ".vscode" / "settings.json"
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        write_mcp_config(config_path, "cline.mcpServers", {}, "cline", flat_key=True)
+        result = write_mcp_config(config_path, "cline.mcpServers", {}, "cline", flat_key=True)
+        assert result.status == "already_present"
+
+    def test_cline_flat_key_preserves_existing_entries(self, tmp_path):
+        config_path = tmp_path / ".vscode" / "settings.json"
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        existing = {"cline.mcpServers": {"other": {"command": "other"}}, "editor.fontSize": 14}
+        config_path.write_text(json.dumps(existing))
+        write_mcp_config(config_path, "cline.mcpServers", {}, "cline", flat_key=True)
+        data = json.loads(config_path.read_text())
+        assert "other" in data["cline.mcpServers"]
+        assert "lat" in data["cline.mcpServers"]
+        assert data["editor.fontSize"] == 14

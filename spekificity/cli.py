@@ -73,19 +73,21 @@ def init(path: str, integration: str | None, script_type: str | None, no_git_hoo
     if obsidian_result.status == "needs_user_action":
         needs_exit_2 = True
         print_status("SKIP", "Obsidian CLI not registered — skipping vault init; register CLI and re-run spek init")
+    elif obsidian_result.status == "skipped":
+        print_status("SKIP", "vault init skipped (Linux — Obsidian not available)")
     else:
         init_vault(project_path)
 
     # --- Step 4: SpecKit ---
     install_speckit()
-    run_specify_init(project_path)
+    run_specify_init(project_path, integration)
     write_spek_config(project_path, options)
 
     # --- Step 5: MCP config ---
     if integration in INTEGRATION_MCP_CONFIG:
-        config_file_str, servers_key, extra_fields = INTEGRATION_MCP_CONFIG[integration]
+        config_file_str, servers_key, extra_fields, flat_key = INTEGRATION_MCP_CONFIG[integration]
         config_path = project_path / config_file_str
-        write_mcp_config(config_path, servers_key, extra_fields, integration)
+        write_mcp_config(config_path, servers_key, extra_fields, integration, flat_key=flat_key)
     else:
         print_mcp_instructions()
 

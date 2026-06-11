@@ -108,3 +108,40 @@ class TestCheckPrerequisites:
              patch("subprocess.run", side_effect=run_side):
             results = check_prerequisites()
         assert all(r.present for r in results)
+
+    def test_not_in_git_repo_exits_1(self):
+        def run_side(cmd, **kwargs):
+            class R:
+                pass
+            r = R()
+            if cmd[0] == "git" and len(cmd) > 1 and cmd[1] == "rev-parse":
+                r.returncode = 1
+                r.stdout = ""
+            elif cmd[0] == "python":
+                r.returncode = 0
+                r.stdout = "Python 3.11.0"
+            elif cmd[0] == "node":
+                r.returncode = 0
+                r.stdout = "v22.0.0"
+            else:
+                r.returncode = 0
+                r.stdout = "tool 1.0.0"
+            return r
+
+        with patch("shutil.which", return_value="/usr/bin/tool"), \
+             patch("subprocess.run", side_effect=run_side), \
+             pytest.raises(SystemExit) as exc_info:
+            check_prerequisites()
+        assert exc_info.value.code == 1
+
+    def test_valid_git_repo_passes(self):
+        def run_side(cmd, **kwargs):
+            class R:
+                returncode = 0
+                stdout = "Python 3.11.0" if cmd[0] == "python" else "v22.0.0" if cmd[0] == "node" else ".git"
+            return R()
+
+        with patch("shutil.which", return_value="/usr/bin/tool"), \
+             patch("subprocess.run", side_effect=run_side):
+            results = check_prerequisites()
+        assert len(results) == 4

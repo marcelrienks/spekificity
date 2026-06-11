@@ -31,16 +31,4 @@ def scaffold_vault(project_path: Path) -> ScaffoldResult:
             result.created_dirs.append(d)
             print_status("OK", f"created {d.relative_to(project_path)}")
 
-    files = {
-        project_path / ".spek" / "vault" / "decisions.md": "# Decisions\n",
-        project_path / ".spek" / "vault" / "patterns.md": "# Patterns\n",
-        project_path / ".spek" / "vault" / "lessons" / ".keep": "",
-    }
-    for path, content in files.items():
-        if path.exists():
-            print_status("SKIP", f"{path.relative_to(project_path)} already exists")
-        else:
-            path.write_text(content)
-            print_status("OK", f"created {path.relative_to(project_path)}")
-
     return result
