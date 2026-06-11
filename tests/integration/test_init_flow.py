@@ -21,6 +21,18 @@ def _make_subprocess_mock():
     return mock
 
 
+def _version_run_side(cmd, **kwargs):
+    """Version-aware subprocess.run mock for prerequisites._get_version calls."""
+    class R:
+        returncode = 0
+        stdout = (
+            "Python 3.11.0" if cmd[0] == "python"
+            else "v22.0.0" if cmd[0] == "node"
+            else "tool 1.0.0"
+        )
+    return R()
+
+
 def _mock_which(present_tools=("python", "uv", "node", "git", "lat", "obsidian", "specify")):
     def which_side(cmd):
         return f"/usr/bin/{cmd}" if cmd in present_tools else None
@@ -51,6 +63,7 @@ class TestInitFlow:
 
         with patch("shutil.which", side_effect=_mock_which()), \
              patch("spekificity.utils.subprocess.run", return_value=_make_subprocess_mock()), \
+             patch("spekificity.prerequisites.subprocess.run", side_effect=_version_run_side), \
              patch("spekificity.lat_md.index.run_command"), \
              patch("spekificity.vault.init.run_command"), \
              patch("spekificity.speckit.init.run_command", side_effect=_specify_init_side_effect(project)):
@@ -76,6 +89,7 @@ class TestInitFlow:
         # First run — creates all artifacts
         with patch("shutil.which", side_effect=_mock_which()), \
              patch("spekificity.utils.subprocess.run", return_value=_make_subprocess_mock()), \
+             patch("spekificity.prerequisites.subprocess.run", side_effect=_version_run_side), \
              patch("spekificity.lat_md.index.run_command"), \
              patch("spekificity.vault.init.run_command"), \
              patch("spekificity.speckit.init.run_command", side_effect=_specify_init_side_effect(project)):
@@ -84,6 +98,7 @@ class TestInitFlow:
         # Second run — everything should already exist → all [SKIP]
         with patch("shutil.which", side_effect=_mock_which()), \
              patch("spekificity.utils.subprocess.run", return_value=_make_subprocess_mock()), \
+             patch("spekificity.prerequisites.subprocess.run", side_effect=_version_run_side), \
              patch("spekificity.lat_md.index.run_command"), \
              patch("spekificity.vault.init.run_command"), \
              patch("spekificity.speckit.init.run_command", side_effect=_specify_init_side_effect(project)):
@@ -104,6 +119,7 @@ class TestInitFlow:
 
         with patch("shutil.which", side_effect=_mock_which()), \
              patch("spekificity.utils.subprocess.run", return_value=_make_subprocess_mock()), \
+             patch("spekificity.prerequisites.subprocess.run", side_effect=_version_run_side), \
              patch("spekificity.lat_md.index.run_command"), \
              patch("spekificity.vault.init.run_command"), \
              patch("spekificity.speckit.init.run_command", side_effect=_specify_init_side_effect(project_b)):

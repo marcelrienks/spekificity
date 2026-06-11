@@ -2,6 +2,10 @@
 
 Extract and store structured lessons. Callable standalone at any point, or auto-called as step 2 inside `/spek.conclude`.
 
+## Prerequisites
+
+- Implementation work completed or at a meaningful checkpoint
+
 ## Steps
 
 1. Prompt for retrospective: what worked, what was difficult, what would you do differently.
@@ -9,7 +13,9 @@ Extract and store structured lessons. Callable standalone at any point, or auto-
 3. Log new decisions if architecture changed from original plan.
 4. Write lessons to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md` using the template below.
 
-## Lessons Template
+## Output
+
+Lessons file at `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`:
 
 ```markdown
 ## Feature: [Feature Name]
@@ -37,3 +43,9 @@ Status: Complete
 - Decisions Made: [link to decision entries]
 - Pull Requests: [GitHub PR links]
 ```
+
+## Exit Criteria
+
+- Retrospective captured from user
+- Lessons file written to `.spek/vault/lessons/`
+- New patterns and decisions extracted and logged

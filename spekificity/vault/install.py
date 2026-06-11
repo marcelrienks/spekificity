@@ -50,10 +50,21 @@ def install_obsidian() -> ToolInstallResult:
 
 def _print_registration_instructions() -> None:
     import sys as _sys
-    print(file=_sys.stderr)
-    print("Obsidian CLI registration required:", file=_sys.stderr)
-    print("  1. Open Obsidian", file=_sys.stderr)
-    print("  2. Go to Settings → General", file=_sys.stderr)
-    print("  3. Enable 'Obsidian CLI'", file=_sys.stderr)
-    print("  4. Re-run: spek init", file=_sys.stderr)
-    print(file=_sys.stderr)
+    print(
+        "\n"
+        "⚠  Obsidian installed, but vault functionality is not yet active.\n"
+        "\n"
+        "One manual step required in Obsidian:\n"
+        "  1. Open Obsidian\n"
+        "  2. Go to Settings → General → Command line interface → Enable\n"
+        "  3. Follow the prompt to register the CLI (creates the `obsidian` binary in PATH)\n"
+        "     - macOS:   symlink at /usr/local/bin/obsidian\n"
+        "     - Windows: Obsidian.com redirector added to PATH\n"
+        "     - Linux:   binary copied to ~/.local/bin/obsidian\n"
+        "  4. Restart your terminal\n"
+        "\n"
+        "Then re-run:  spek init\n"
+        "\n"
+        "spek init will complete all remaining setup autonomously.",
+        file=_sys.stderr,
+    )

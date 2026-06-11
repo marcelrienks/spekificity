@@ -11,10 +11,14 @@ from spekificity.prerequisites import PrerequisiteResult, check_prerequisites
 
 class TestCheckPrerequisites:
     def test_all_present_returns_list(self):
+        def run_side(cmd, **kwargs):
+            class R:
+                returncode = 0
+                stdout = "Python 3.11.0" if cmd[0] == "python" else "v22.0.0" if cmd[0] == "node" else "tool 1.0.0"
+            return R()
+
         with patch("shutil.which", return_value="/usr/bin/tool"), \
-             patch("subprocess.run") as mock_run:
-            mock_run.return_value.returncode = 0
-            mock_run.return_value.stdout = "tool 1.0.0"
+             patch("subprocess.run", side_effect=run_side):
             results = check_prerequisites()
         assert all(r.present for r in results)
         assert len(results) == 4
@@ -55,3 +59,52 @@ class TestCheckPrerequisites:
             install_hint="curl -LsSf https://astral.sh/uv/install.sh | sh",
         )
         assert result.install_hint != ""
+
+    def test_python_version_too_low_exits_1(self):
+        with patch("shutil.which", return_value="/usr/bin/python"), \
+             patch("subprocess.run") as mock_run, \
+             pytest.raises(SystemExit) as exc_info:
+            mock_run.return_value.returncode = 0
+            mock_run.return_value.stdout = "Python 3.10.0"
+            check_prerequisites()
+        assert exc_info.value.code == 1
+
+    def test_node_version_too_low_exits_1(self):
+        def which_side(cmd):
+            return f"/usr/bin/{cmd}"
+
+        def run_side(cmd, **kwargs):
+            class R:
+                returncode = 0
+                stdout = "v18.0.0" if cmd[0] == "node" else "tool 1.0.0"
+            return R()
+
+        with patch("shutil.which", side_effect=which_side), \
+             patch("subprocess.run", side_effect=run_side), \
+             pytest.raises(SystemExit) as exc_info:
+            check_prerequisites()
+        assert exc_info.value.code == 1
+
+    def test_python_version_ok_passes(self):
+        def run_side(cmd, **kwargs):
+            class R:
+                returncode = 0
+                stdout = "Python 3.11.0" if cmd[0] == "python" else "v22.0.0" if cmd[0] == "node" else "tool 1.0.0"
+            return R()
+
+        with patch("shutil.which", return_value="/usr/bin/tool"), \
+             patch("subprocess.run", side_effect=run_side):
+            results = check_prerequisites()
+        assert all(r.present for r in results)
+
+    def test_node_version_ok_passes(self):
+        def run_side(cmd, **kwargs):
+            class R:
+                returncode = 0
+                stdout = "v22.0.0" if cmd[0] == "node" else "Python 3.11.0" if cmd[0] == "python" else "tool 1.0.0"
+            return R()
+
+        with patch("shutil.which", return_value="/usr/bin/tool"), \
+             patch("subprocess.run", side_effect=run_side):
+            results = check_prerequisites()
+        assert all(r.present for r in results)
