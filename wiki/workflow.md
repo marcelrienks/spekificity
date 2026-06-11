@@ -188,20 +188,36 @@ IMPLEMENTATION COMPLETE
     │  ├─ Prompt for retrospective (what worked, what was difficult)
     │  ├─ Extract new patterns if workflow diverged from spec
     │  ├─ Log new decisions if architecture changed
-    │  └─ Write lessons to .spek/vault/lessons/YYYY-MM-DD-feature-name.md
+    │  ├─ Write lessons to .spek/vault/lessons/YYYY-MM-DD-feature-name.md
+    │  └─ Autolink enrichment: wikilinks + tags inserted into lesson file
     │
-    ├─ 3. Vault Archive
+    ├─ 3. Backprop Reflex
+    │  ├─ Parse test failure output from last test run
+    │  ├─ Append ⚠ blockquotes to .spek/vault/patterns.md for new failures
+    │  └─ Skip if no test failures (idempotent)
+    │
+    ├─ 4. Vault Archive
     │  ├─ Archive spec + plan + tasks to .spek/vault/
-    │  ├─ Update .spek/vault/patterns.md
-    │  └─ Update .spek/vault/decisions.md
+    │  ├─ Update .spek/vault/patterns.md with new patterns
+    │  └─ Update .spek/vault/decisions.md with new decisions
     │
-    ├─ 4. State Refresh
-    │  ├─ lat init — refresh lat.md index (reflects new code)
+    ├─ 5. Token Budget Summary
+    │  ├─ Summarize total token usage for feature
+    │  └─ Print [WARN] if usage exceeds token_budget.per_feature; skip if null
+    │
+    ├─ 6. State Refresh
+    │  ├─ lat init — refresh lat.md index (reflects committed code)
     │  └─ Sync repo memory to .spek/memory/
     │
-    └─ 5. Commit
-       ├─ git add .spek/vault/ .spek/memory/
-       └─ git commit
+    ├─ 7. Commit
+    │  ├─ git add .spek/vault/ .spek/memory/
+    │  └─ git commit
+    │
+    ├─ 8. Blind Review (optional)
+    │  └─ /spek.blind-review — context-free quality pass before archiving
+    │
+    └─ 9. RARV (optional)
+       └─ /spek.rarv — detect and resolve spec drift
     ↓
 FEATURE ARCHIVED, LESSONS CAPTURED, READY FOR NEXT FEATURE
 ```
@@ -242,36 +258,45 @@ Status: Complete
 - Lessons document (`.spek/vault/lessons/YYYY-MM-DD-feature-name.md`)
 - Archived spec + plan + tasks (`.spek/vault/`)
 - Updated patterns + decisions (`.spek/vault/`)
-- lat.md indexes refreshed (code + docs)
+- Backprop warnings in `.spek/vault/patterns.md` (or none if no failures)
+- lat.md index refreshed (code)
 - Repo memory synced (`.spek/memory/`)
 
 ### Exit Criteria
 - ✅ Analysis complete (spec drift documented)
 - ✅ Lessons extracted and committed to vault
+- ✅ Failure patterns from test run captured in vault (or none found)
 - ✅ Feature artifacts archived
-- ✅ lat.md code + doc indexes refreshed
+- ✅ Token usage summarized
+- ✅ lat.md index refreshed
 - ✅ Repo memory updated
+- ✅ Vault changes committed to git
 
 ## Error Handling & Recovery
 
 ### Spec Issues
 - **Problem:** Spec is ambiguous or incomplete
-- **Recovery:** `/speckit.clarify` (request clarifications)
+- **Recovery:** Return to step 1 of `/spek.plan`; revise and re-run `/speckit.specify`
 - **Outcome:** Updated spec document
 
 ### Plan Issues
-- **Problem:** Task dependencies are incorrect or blocking
-- **Recovery:** `/speckit.plan --revise` (replan)
+- **Problem:** Task dependencies incorrect or blocking
+- **Recovery:** Return to step 2 of `/spek.plan`; revise and re-run `/speckit.plan`
 - **Outcome:** Revised plan document
 
 ### Implementation Failure
-- **Problem:** Task fails Success Criteria
-- **Recovery:** `/spek.implement --task=X --retry` (retry single task)
+- **Problem:** Task fails Success Criteria or tests fail
+- **Recovery:** Re-run `/spek.implement [--steps N]` to resume from the failing task
 - **Outcome:** Code correction + test validation
+
+### Obsidian CLI Not Registered
+- **Problem:** `spek init` exits with code 2 (Obsidian installed but CLI not registered)
+- **Recovery:** Open Obsidian → Settings → General → Enable CLI; restart terminal; re-run `spek init`
+- **Outcome:** Init completes; vault initialized
 
 ### Lessons Not Captured
 - **Problem:** `/spek.conclude` completes but lessons are shallow
-- **Recovery:** Re-run `/spek.conclude` and provide more detailed retrospective input when prompted
+- **Recovery:** Run `/spek.lessons` standalone and provide a more detailed retrospective
 - **Outcome:** Richer lessons in vault
 
 ---

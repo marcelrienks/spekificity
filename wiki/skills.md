@@ -215,7 +215,7 @@ Wraps a single SpecKit skill:
 ### `/spek.conclude`
 
 **Purpose:** All post-implementation functions — analysis, archive, lessons, state refresh  
-**Usage:** `/spek.conclude [--caveman-mode=full|lite|ultra] [--dry-run]`  
+**Usage:** `/spek.conclude`  
 **Requires:** Obsidian CLI (all vault operations)
 
 **What it does:**
@@ -225,35 +225,51 @@ Wraps a single SpecKit skill:
 1. **Analysis:**
    - Execute `/speckit.analyze` — validate implementation against spec
    - Compare Success Criteria vs actual outcomes
-   - Identify spec drift or deviations
+   - Flag spec drift or deviations
 
 2. **Lessons (sub-step: calls `/spek.lessons`):**
    - Prompt for retrospective (what worked, what was difficult, patterns, recommendations)
    - Extract new patterns if workflow diverged from spec
    - Log new decisions if architecture changed
-   - Generate lessons document (`vault/lessons/YYYY-MM-DD-feature-name.md`)
+   - Generate lessons document (`.spek/vault/lessons/YYYY-MM-DD-feature-name.md`)
+   - Autolink enrichment runs inside `/spek.lessons` — wikilinks and tags added to lesson file
 
-3. **Vault Archive:**
+3. **Backprop Reflex:**
+   - Parse test failure output from last test run
+   - Append `> ⚠ Backprop warning` blockquotes to `.spek/vault/patterns.md` for each new failure pattern
+   - Skip if no test failures in output (idempotent — second call with same output adds 0 new warnings)
+
+4. **Vault Archive:**
    - Archive spec + plan + tasks to `.spek/vault/`
-   - Update `.spek/vault/patterns.md` with new patterns
-   - Update `.spek/vault/decisions.md` with new decisions
+   - Update `.spek/vault/patterns.md` with newly discovered patterns
+   - Update `.spek/vault/decisions.md` with new architectural decisions
 
-4. **State Refresh:**
-   - Refresh lat.md index: `lat init` (reflects new code)
+5. **Token Budget Summary:**
+   - Summarize total token usage for feature
+   - Compare against `token_budget.per_feature` from `.spek/config.yaml`
+   - Print `[WARN] token budget: feature exceeded budget` if over; skip if `per_feature: null`
+
+6. **State Refresh:**
+   - Refresh lat.md index: `lat init` (reflects committed code)
    - Sync repo memory to `.spek/memory/`
-   - Obsidian vault graph updates automatically when notes are written via CLI
 
-5. **Completion:**
-   - Commit vault changes to git
-   - Report analysis + lessons + synced artifacts
+7. **Commit:**
+   - `git add .spek/vault/ .spek/memory/` then `git commit`
+
+8. **Blind Review (optional):**
+   - Run `/spek.blind-review` for a context-free quality pass before archiving
+
+9. **RARV (optional):**
+   - Run `/spek.rarv` to detect and resolve spec drift (recommended for features with architectural changes)
 
 **Output:**
 - Analysis report (spec drift, outcomes vs criteria)
 - Lessons document (`.spek/vault/lessons/YYYY-MM-DD-feature-name.md`)
 - Updated patterns + decisions (`.spek/vault/`)
+- Failure patterns from test run captured in vault (or none found)
+- Token usage summary
 - Repo memory synced (`.spek/memory/`)
-- lat.md indexes refreshed (code + docs)
-- Completion report
+- lat.md index refreshed
 
 **Note:** `/spek.lessons` is both a first-class skill AND a sub-step of `/spek.conclude`. Conclude calls it automatically. You can also invoke it independently at any point.
 
@@ -266,7 +282,7 @@ The following commands are **first-class and fully documented**, but **not requi
 ### `/spek.context` — Load Project Context
 
 **Purpose:** Load vault context (decisions, patterns, lessons) into current session  
-**Usage:** `/spek.context [--scope user|session|repo]`
+**Usage:** `/spek.context`
 
 **When to use:**
 - Before starting implementation to review past decisions
@@ -274,43 +290,85 @@ The following commands are **first-class and fully documented**, but **not requi
 - At any point to inject project knowledge
 
 **What it does:**
-1. Read memory files from specified scope
-2. Parse YAML frontmatter (if present)
-3. Index into lat.md for quick querying
-4. Make context available to all downstream commands
+1. Read `.spek/vault/decisions.md` — load project decisions into session
+2. Read `.spek/vault/patterns.md` — load reusable patterns into session
+3. Read all files in `.spek/vault/lessons/` — load prior lessons into session
+4. Read `.spek/memory/` — load workspace-scoped facts into session
+5. Session state populated; all downstream `/spek.*` commands have full context available
 
 **Output:**
-- Context loaded summary (decisions, lessons, patterns available)
-- Context refresh timestamp
+- Project decisions, patterns, lessons, and workspace facts loaded into agent session
 
 ---
 
 ### `/spek.map` — Analyze Dependencies & Impact
 
-**Purpose:** Generate impact analysis + dependency map  
-**Usage:** `/spek.map [spec-file] [--show-impact|--show-deps|--show-all]`
+**Purpose:** Query lat.md and vault to map code dependencies for a spec topic  
+**Usage:** `/spek.map [topic]`
 
 **When to use:**
 - To verify what code/specs are affected by a change
 - To identify blockers or dependencies before starting
 - To understand critical paths in feature dependencies
 
-**Flags:**
-- `--show-impact`: What code + specs are affected by changes to this spec?
-- `--show-deps`: What specs does this depend on?
-- `--show-all`: Full dependency graph (specs + code)
-
 **What it does:**
-1. Query lat.md for code references to spec topic
-2. Query `.spek/vault/decisions.md` for related decisions
-3. Query `.spek/vault/specs/` for dependent + related specs
-4. Generate visual dependency graph (text or Mermaid)
-5. Highlight blockers + critical paths
+1. Query lat.md MCP for code references to the spec topic: symbols, callers, definitions, and call graphs
+2. Query `.spek/vault/` for related decisions and dependent specs that touch the same topic
+3. Generate dependency graph: list files, symbols, and specs related to the topic
+4. Highlight blockers (items that must change before this topic can be modified) and critical paths
 
 **Output:**
-- Dependency diagram (text or Mermaid format)
-- Blocked features (if dependencies unmet)
-- Critical path (longest sequence of dependencies)
+- Dependency graph: files, symbols, and specs related to the topic
+- Blockers list: items that must change first
+- Critical paths: sequence of changes required
+
+---
+
+### `/spek.blind-review` — Context-Free Quality Pass
+
+**Purpose:** Run a linter + complexity check with AI attribution anonymized  
+**Usage:** `/spek.blind-review`  
+**Requires:** Linter installed and configured (pylint, flake8, eslint, or equivalent)
+
+**When to use:**
+- After implementation completes, before `/spek.conclude`
+- When AI-generated code needs independent quality verification
+
+**What it does:**
+1. Anonymize source files **in working memory only** — strip AI vendor names from comments, replace service class names with generic aliases; original files are never modified
+2. Run configured linter on anonymized copy; classify findings as CRITICAL / WARNING / INFO
+3. Confirm all tests pass; report failures as CRITICAL with file:line reference
+4. Flag functions exceeding 20 lines or cyclomatic complexity > 10 as WARNING
+5. Write full report to `.spek/memory/blind-review-YYYY-MM-DD.md`; print summary `CRITICAL: N | WARNING: N | INFO: N`
+
+**Output:**
+- Findings report with file:line references and remediation hints
+- Summary count: `CRITICAL: N | WARNING: N | INFO: N`
+- Full report at `.spek/memory/blind-review-YYYY-MM-DD.md`
+
+---
+
+### `/spek.rarv` — Spec Drift Detection & Resolution
+
+**Purpose:** Detect and resolve spec drift via Reason-Act-Reflect-Verify cycle  
+**Usage:** `/spek.rarv`  
+**Requires:** `/spek.conclude` complete; lat.md index current; vault accessible
+
+**When to use:**
+- After `/spek.conclude` for features with architectural changes or complex deviations
+- When spec and implementation may have diverged
+
+**What it does:**
+1. **REASON:** Load original spec from `.spek/vault/specs/`; query lat.md for implemented symbols and changed files; build spec vs implementation map; identify deviations (additions, omissions, architecture changes)
+2. **ACT:** For each deviation, prompt user: Option A (fix code), Option B (update spec + vault), Option C (defer as tech debt)
+3. **REFLECT:** If Option B chosen — update `.spek/vault/decisions.md` or `.spek/vault/patterns.md` with justification; if Option C chosen — append tech debt item to `.spek/vault/patterns.md`
+4. **VERIFY:** Re-read updated vault decisions; confirm no new contradictions; print alignment summary
+
+**Output:**
+- Deviation report: spec vs implementation gaps
+- Updated vault files where Option B chosen
+- Tech debt entries where Option C chosen
+- Alignment summary: `N resolved (A), N justified (B), N deferred (C)`
 
 ---
 
@@ -374,34 +432,6 @@ Agent skills access lat.md via its MCP server (started with `lat mcp`). Confirm 
 
 ---
 
-## Helper Skills: Utilities
-
-### `/help`
-
-**Purpose:** Get help on any skill or command  
-**Usage:** `/help [command-name]`
-
-**Output:**
-- Command signature + short description
-- Usage examples
-- Link to full spec documentation
-- Related commands
-
----
-
-### `/config`
-
-**Purpose:** View or modify project configuration  
-**Usage:** `/config [--show|--set key=value]`
-
-**Keys:**
-- `vault.scope`: Default memory scope (user|session|repo)
-- `context.compression`: Default compression mode (caveman intensity)
-- `lat.sync-interval`: Auto-sync interval (minutes)
-- `token.budget`: Max tokens per feature (advisory)
-
----
-
 *For workflow diagrams and execution patterns, see [workflow.md](workflow.md).*
 
 ---
@@ -414,13 +444,15 @@ Agent skills access lat.md via its MCP server (started with `lat mcp`). Confirm 
 
 | Tier | Command | Purpose |
 |------|---------|----------|
-| **REQUIRED** | `/spek.prepare` | Initialize workspace, git state, lat.md index |
-| **REQUIRED** | `/spek.plan` | Generate specs, plans, task breakdown |
+| **REQUIRED** | `/spek.prepare` | Initialize workspace, lat.md indexes, vault context |
+| **REQUIRED** | `/spek.plan` | Orchestrate spec → plan → tasks with anti-sycophancy check |
 | **REQUIRED** | `/spek.implement` | Execute tasks with context |
-| **REQUIRED** | `/spek.conclude` | Archive outcomes, update vault, sync graph |
+| **REQUIRED** | `/spek.conclude` | Archive outcomes, backprop, lessons, index refresh |
 | *Optional* | `/spek.context` | Load vault decisions, patterns, lessons |
-| *Optional* | `/spek.map` | Analyze dependencies + impact |
+| *Optional* | `/spek.map` | Query code graph + vault for topic dependencies |
 | *Optional (also auto-called by conclude)* | `/spek.lessons` | Capture lessons, patterns, decisions to vault |
+| *Optional* | `/spek.blind-review` | Context-free quality pass (linter + complexity) |
+| *Optional* | `/spek.rarv` | Detect and resolve spec drift (RARV cycle) |
 
 **Design:** All commands keep `spek.` prefix for namespace consistency. Single-word command portions for ergonomics. Required commands form minimal viable path; optional commands enhance without blocking workflow.
 
