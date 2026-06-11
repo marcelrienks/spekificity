@@ -93,6 +93,7 @@ A developer runs `spek init` in a clean project and gets a fully initialized Spe
 ### Edge Cases
 
 - Obsidian installed but CLI never registered (binary missing from PATH after install) → exit code 2, not 1; registration instructions printed.
+- Any module returning exit code 1 halts `spek init` immediately (fail-fast). Vault exit code 2 is different: it halts only vault remaining steps — lat.md, SpecKit, and skills-install steps complete normally before the halt.
 - `.spek/` partially exists (e.g. prior failed run) → idempotency: skip existing, complete missing.
 - Integration type not in known list → fall back to `.agents/skills/` subfolder format; print manual MCP config instructions; no error.
 - `specify init` fails mid-run → surface error, halt; re-run is idempotent and retries only missing steps.
@@ -116,8 +117,8 @@ A developer runs `spek init` in a clean project and gets a fully initialized Spe
 - **FR-008**: lat.md module MUST write the lat MCP server entry to the integration-specific config file without clobbering existing entries
 - **FR-009**: lat.md module MUST install a git post-commit hook containing `lat update`
 - **FR-010**: Vault module MUST detect Obsidian; if absent, install via `brew` (macOS), `winget` (Windows), or print URL (Linux)
-- **FR-011**: Vault module MUST implement two-phase Obsidian flow: install → check `obsidian` in PATH → halt exit code 2 if not found → complete vault setup on re-run
-- **FR-012**: Vault module MUST create `.spek/vault/` with `lessons/`, `decisions.md` (`# Decisions`), and `patterns.md` (`# Patterns`)
+- **FR-011**: Vault module MUST implement two-phase Obsidian flow: install → check `obsidian` in PATH → halt exit code 2 if not found → complete vault setup on re-run. Halt output MUST include the CLI registration instructions verbatim from `wiki/setup.md` (Phase 1 halt block)
+- **FR-012**: Vault module MUST create `.spek/vault/` (with `lessons/`, `decisions.md` (`# Decisions`), `patterns.md` (`# Patterns`), `lessons/.keep`), `.spek/memory/`, and `.spek/lat/` directories
 - **FR-013**: Vault module MUST register and open the vault in Obsidian via `obsidian open-vault`
 - **FR-014**: SpecKit module MUST detect `specify` in PATH; if absent, install via `uv tool install specify-cli`
 - **FR-015**: SpecKit module MUST run `specify init` to create `.specify/`
@@ -159,6 +160,7 @@ A developer runs `spek init` in a clean project and gets a fully initialized Spe
 - **SC-007**: All 7 skill files are valid markdown with the correct section structure and zero agent-specific syntax
 - **SC-008**: Skill files land in the correct path format for `claude`, `copilot`, `cursor-agent`, and `generic` integrations
 - **SC-009**: The lat.md MCP entry is correctly written for `claude`, `copilot`, and `cursor-agent` without corrupting existing config
+- **SC-010**: Given `obsidian` is in PATH and vault not yet initialized, when vault module runs, then `.spek/vault/` with required content exists and `obsidian open-vault` was called; exit code 0
 
 ## Assumptions
 

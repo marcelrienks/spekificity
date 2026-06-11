@@ -40,7 +40,7 @@ Result of installing (or detecting) a single third-party tool.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `tool` | `Literal["speckit", "lat_md", "obsidian"]` | Which tool |
+| `tool` | `Literal["speckit", "lat_md", "obsidian"]` | Which tool. Note: `"obsidian"` is the third-party tool name; the Python module is `vault/`. |
 | `status` | `Literal["installed", "already_present", "skipped", "needs_user_action"]` | What happened |
 | `message` | `str` | Human-readable status message |
 | `exit_code` | `int` | Exit code to use if halting (2 for Obsidian CLI registration) |

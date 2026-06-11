@@ -38,6 +38,8 @@ spek init --integration claude --script sh
 
 ### Expected Outcomes
 
+> **Timing note (SC-004):** Total wall-clock time should be under 5 minutes on a clean machine (excluding user interaction for Obsidian GUI install). Time the run with `time spek init ...` to verify.
+
 - `[OK]` lines for each step that ran
 - `.spek/vault/`, `.spek/memory/`, `.spek/lat/` directories exist
 - `.spek/config.yaml` exists with `integration: claude` and `script_type: sh`
