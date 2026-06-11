@@ -32,6 +32,11 @@ class TestWriteSpekConfig:
         assert "autolink:" in content
         assert "enabled: true" in content
         assert "threshold: 0.8" in content
+        assert "token_budget:" in content
+        assert "per_feature: null" in content
+        assert "antisycophancy:" in content
+        assert "complexity_threshold: 2.0" in content
+        assert "contradiction_pairs:" in content
 
     def test_idempotent_skips_existing(self, tmp_path):
         (tmp_path / ".spek").mkdir()

@@ -13,6 +13,7 @@ Extract and store structured lessons. Callable standalone at any point, or auto-
 3. Log new decisions if architecture changed from original plan.
 4. Write lessons to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md` using the template below.
 5. Run autolink enrichment: call `process_lesson()` with the generated lesson path, `.spek/vault/`, and loaded config; inserts `[[wikilinks]]` for matched vault entries and adds generated tags to frontmatter (skip if `autolink.enabled: false` in `.spek/config.yaml`).
+6. Note token budget: print total estimated token cost for this feature cycle for retrospective context; skip if `token_budget.per_feature` not configured.
 
 ## Output
 

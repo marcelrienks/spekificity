@@ -39,6 +39,13 @@ autolink:
   enabled: true
   threshold: 0.8
   keyword_tags: {{}}
+token_budget:
+  per_feature: null
+  alert_thresholds: []
+antisycophancy:
+  enabled: true
+  complexity_threshold: 2.0
+  contradiction_pairs: []
 """
 
 
