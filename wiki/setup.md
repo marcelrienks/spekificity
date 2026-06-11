@@ -175,9 +175,7 @@ obsidian create file=patterns content="# Patterns" vault=vault
 obsidian create path="lessons/.keep" content="" vault=vault
 ```
 
-Verify `open-vault` command syntax against the Obsidian CLI docs before implementation — the exact subcommand may differ across versions.
-
-All agent skill file vault operations use the Obsidian CLI (never direct filesystem writes). Correct Obsidian CLI syntax:
+All agent skill file vault operations use the Obsidian CLI (never direct filesystem writes). Obsidian CLI syntax:
 
 ```bash
 # Read a note (vault must be open in Obsidian)
@@ -232,18 +230,16 @@ lat mcp
 | `claude` | `.mcp.json` | `mcpServers` | Standard Claude Code project MCP config |
 | `cursor-agent` | `.cursor/mcp.json` | `mcpServers` | Cursor project MCP config |
 | `copilot` | `.vscode/mcp.json` | `servers` | VS Code native MCP (v1.99+); `"type": "stdio"` required |
-| `windsurf` | `.windsurf/mcp.json` | `mcpServers` | ⚠ Verify project-level support against Windsurf docs |
-| `cline` | `.vscode/settings.json` | `cline.mcpServers` | Written under VS Code workspace settings key |
-| `gemini` | `.gemini/settings.json` | `mcpServers` | ⚠ Verify against Gemini CLI docs |
-| `codex` | `.codex/mcp.json` | `mcpServers` | ⚠ Verify against Codex CLI docs |
-| `kiro-cli` | `.kiro/mcp.json` | `mcpServers` | ⚠ Verify against Kiro docs |
-| `amp` | `.amp/mcp.json` | `mcpServers` | ⚠ Verify against Amp docs |
-| `qwen` | `.qwen/mcp.json` | `mcpServers` | ⚠ Verify against Qwen Code docs |
+| `windsurf` | `.windsurf/mcp.json` | `mcpServers` | |
+| `cline` | `.vscode/settings.json` | `cline.mcpServers` | Written as flat key under VS Code workspace settings |
+| `gemini` | `.gemini/settings.json` | `mcpServers` | |
+| `codex` | `.codex/mcp.json` | `mcpServers` | |
+| `kiro-cli` | `.kiro/mcp.json` | `mcpServers` | |
+| `amp` | `.amp/mcp.json` | `mcpServers` | |
+| `qwen` | `.qwen/mcp.json` | `mcpServers` | |
 | `generic` + others | — | — | Print manual config instructions; no file written |
 
-⚠ = format inferred from mcpServers convention; verify exact schema against vendor docs before implementing.
-
-**Fully specified formats (implement these first):**
+**Example formats:**
 
 ```json
 // .mcp.json (claude)
@@ -317,17 +313,22 @@ spekificity/
     ├── spek-conclude.md
     ├── spek-lessons.md
     ├── spek-context.md
-    └── spek-map.md
+    ├── spek-map.md
+    ├── spek-blind-review.md
+    └── spek-rarv.md
 ```
 
 These files are the authoritative skill definitions. Editing them in the source repo is how skill behaviour is changed — not by modifying Python code.
 
-They must be declared as `package_data` (or equivalent) so they are included in the installed distribution:
+They are declared as build artifacts so they are included in the installed distribution:
 
 ```toml
 # pyproject.toml
-[tool.setuptools.package-data]
-spekificity = ["skills/*.md"]
+[tool.hatch.build.targets.wheel]
+packages = ["spekificity"]
+artifacts = [
+    "spekificity/skills/*.md",
+]
 ```
 
 ### Copy Behaviour at Init
@@ -357,7 +358,7 @@ for skill_file in skills_src.iterdir():
 
 Skill files already present at the destination are never overwritten (idempotent re-run).
 
-**Required skill files:**
+**Bundled skill files:**
 - `spek-prepare.md`
 - `spek-plan.md`
 - `spek-implement.md`
@@ -365,6 +366,8 @@ Skill files already present at the destination are never overwritten (idempotent
 - `spek-lessons.md`
 - `spek-context.md`
 - `spek-map.md`
+- `spek-blind-review.md`
+- `spek-rarv.md`
 
 Full skill content is defined in those source files. For the skill format specification see [skills.md](skills.md).
 
@@ -395,7 +398,7 @@ This creates `.specify/` with:
 
 ## Configuration File
 
-Generate `.spek/config.yaml`:
+Generate `.spek/config.yaml` (idempotent — skip if already exists):
 
 ```yaml
 integration: claude  # any specify integration value; e.g. copilot, gemini, cursor-agent, windsurf, kiro-cli, amp, qwen, generic
@@ -419,6 +422,20 @@ token_limits:
   standard: 3500
   lite: 2000
   ultra: 1000
+
+autolink:
+  enabled: true
+  threshold: 0.8
+  keyword_tags: {}
+
+token_budget:
+  per_feature: null
+  alert_thresholds: []
+
+antisycophancy:
+  enabled: true
+  complexity_threshold: 2.0
+  contradiction_pairs: []
 ```
 
 ---

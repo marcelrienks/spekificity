@@ -108,23 +108,32 @@ START FEATURE
     │  (Orchestrate SpecKit)
     │
     │  ├─ /speckit.specify ──────────► Spec Created
-    │  │  (+ enrichment layer)         (Success Criteria,
+    │  │  (+ vault enrichment)         (Success Criteria,
     │  │                                Assumptions, etc.)
     │  │
     │  ├─ /speckit.plan ──────────────► Plan Created
-    │  │  (+ enrichment layer)         (Tasks, Deps,
-    │  │                                Resource Est.)
+    │  │  (+ lat.md enrichment)        (Tasks, Deps,
+    │  │                                Affected Code)
     │  │
-    │  └─ /speckit.analyze ──────────► Readiness Check
-    │     (Validation, Risk Assessment)
+    │  ├─ /speckit.tasks ─────────────► Task List Created
+    │  │                                (Dependency-ordered)
+    │  │
+    │  └─ Anti-Sycophancy ────────────► Violations Logged
+    │     (validate_spec())             (.spek/memory/violations.md)
     │
     ├─ /spek.implement ───────────────► Features Coded
     │  (Per-task execution)            (Tests, Docs)
     │
     └─ /spek.conclude ─────────────► Outcomes Archived
-       (Archive, Refresh)             (vault/ + lat.md index updated)
-       └─ /spek.lessons (sub-step) ─► Lessons Extracted
-          (Structured capture)        (vault/ + memory updated)
+       │  (Archive, Refresh)          (vault/ + lat.md index updated)
+       ├─ /spek.lessons (sub-step) ─► Lessons Extracted
+       │  (Structured capture)        (vault/lessons/ + memory updated)
+       ├─ Backprop Reflex ──────────► Failure Patterns Captured
+       │  (backprop_reflex())         (.spek/vault/patterns.md)
+       ├─ /spek.blind-review ───────► Quality Report (optional)
+       │  (context-free review)       (.spek/memory/blind-review-*.md)
+       └─ /spek.rarv ───────────────► Spec Drift Resolved (optional)
+          (RARV cycle)                (vault decisions updated)
 
     END FEATURE
 ```
@@ -214,6 +223,18 @@ Use these independently to enhance context or inspect state. Not required for ev
 - Query vault for related decisions and dependent specs
 - Generate dependency graph; highlight blockers and critical paths
 
+**`/spek.blind-review`**
+- Anonymize AI attribution in working memory; run linter + complexity checks
+- Report findings with severity tags (CRITICAL / WARNING / INFO)
+- Write full report to `.spek/memory/blind-review-YYYY-MM-DD.md`
+- Optional; run after implementation and before `/spek.conclude`
+
+**`/spek.rarv`**
+- Run Reason-Act-Reflect-Verify cycle to detect spec drift
+- Compare original spec vs implemented artifacts
+- For each deviation: fix code, justify in vault, or defer as tech debt
+- Optional; run after `/spek.conclude` for features with architectural changes
+
 ---
 
 ## Layering: User → Skills → SpecKit → Core
@@ -236,7 +257,9 @@ Use these independently to enhance context or inspect state. Not required for ev
 │  ── Supplementary ─────────────────────────────  │
 │  ├─ spek.lessons        (learn)                  │
 │  ├─ spek.context        (load context)           │
-│  └─ spek.map            (dependencies)           │
+│  ├─ spek.map            (dependencies)           │
+│  ├─ spek.blind-review   (quality pass)           │
+│  └─ spek.rarv           (spec drift)             │
 └──────────────┬───────────────────────────────────┘
                │
 ┌──────────────▼───────────────────────────────────┐
@@ -334,8 +357,13 @@ User Intention
     │
 /spek.conclude
     ├→ /speckit.analyze (queries lat.md, validates completeness)
+    ├→ /spek.lessons (sub-step: extract + commit lessons)
+    ├→ backprop_reflex() (parse test output; append to vault/patterns.md)
     ├→ Archive spec/plan/outcomes in vault
-    ├→ Refresh lat.md index (commit changes)
-    ├→ Update repo memory
-    └→ /spek.lessons (sub-step: extract + commit lessons)
+    ├→ Update vault/patterns.md + vault/decisions.md
+    ├→ Refresh lat.md index (lat init)
+    ├→ Update repo memory (.spek/memory/)
+    ├→ git add .spek/vault/ .spek/memory/ && git commit
+    ├→ /spek.blind-review (optional: context-free quality pass)
+    └→ /spek.rarv (optional: spec drift detection + resolution)
 ```

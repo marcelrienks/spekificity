@@ -386,12 +386,6 @@ Note: Spekificity's supported default, lat.md, provides a file-watcher-based aut
 
 ---
 
-## Planned Features (Not Yet Implemented)
-
-Decisions 8–12 describe features to build. None are active in the current implementation. They are documented here to preserve the design intent and dependencies.
-
----
-
 ## Backprop Reflex (Test Failures → Vault Updates)
 
 ### Decision
@@ -600,7 +594,7 @@ Without validation:
 
 **Implementation:**
 - Checks run during `/spek.plan` phases
-- Violations logged to `/memories/session/violations.md`
+- Violations logged to `.spek/memory/violations.md`
 - User can override via flag (documented in session)
 - Configuration customizable per project
 
@@ -795,19 +789,14 @@ enterprise: TBD
 | Title | Related Specs | When Activated |
 |-------|---------------|---|
 | Zettelkasten Architecture | See [architecture.md](architecture.md) | Vault setup; all note creation |
-| Auto-Tagging & Auto-Wikilinks | — | `/spek.conclude` Step 3 (lesson generation) |
+| Auto-Tagging & Auto-Wikilinks | — | `/spek.conclude` Step 2 (lesson generation via `process_lesson()`) |
 | 3-Layer Query Rule | See [architecture.md](architecture.md) | `/spek.context` load; `/spek.plan` phases |
 | Git Hooks Integration | See [setup.md](setup.md) | `spek init`; post-commit execution |
-
-### Planned (see Planned Features section above)
-
-| Title | When Activated |
-|-------|---|
-| Backprop Reflex | `/spek.conclude` Step 3 (lesson generation) |
-| RARV Reflection Cycles | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
-| Anti-Sycophancy Validation | `/spek.plan` (specify + plan phases) |
-| Blind Code Review | `/spek.conclude` Step 8 (optional; pre-archival) |
-| Token Budget Model | All stages; tracked throughout feature |
+| Backprop Reflex | — | `/spek.conclude` Step 3 (`backprop_reflex()` called on last test run output) |
+| RARV Reflection Cycles | — | `/spek.rarv` (optional; run after `/spek.conclude`) |
+| Anti-Sycophancy Validation | — | `/spek.plan` Step 4 (`validate_spec()` run after tasks approved) |
+| Blind Code Review | — | `/spek.blind-review` (optional; run before archiving) |
+| Token Budget Model | — | All stages; configured in `.spek/config.yaml`; tracked throughout feature |
 
 ---
 
