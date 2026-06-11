@@ -13,8 +13,24 @@ dependencies = [
     "click>=8.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
 [project.scripts]
 spek = "spekificity.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["spekificity"]
+artifacts = [
+    "spekificity/skills/*.md",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]

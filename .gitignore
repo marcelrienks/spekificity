@@ -42,4 +42,15 @@ build/
 .specify/
 .claude/
 
+# ── spek init output dirs (agent integrations) ────────────────
+.gemini/
+.cursor/
+.windsurf/
+.cline/
+.codex/
+.kiro/
+.amp/
+.qwen/
+.agents/
+
 # Note: .github/ tracked for agent skill definitions and copilot instructions
