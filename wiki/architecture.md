@@ -4,7 +4,7 @@
 
 Token Efficiency, Determinism, Persistence, Autonomy.
 
-**Component Mapping:** Vault (persistence + determinism), lat.md index (token efficiency + determinism), SpecKit (deterministic orchestration), Caveman (token efficiency).
+**Component Mapping:** Obsidian Vault (persistence + determinism), lat.md index (token efficiency + determinism), SpecKit (deterministic orchestration), Caveman (token efficiency).
 
 ---
 
@@ -16,35 +16,43 @@ Spekificity operates in two distinct layers: a CLI for project scaffolding, and 
 
 The `spek` CLI has exactly one command: `spek init`. There are no CLI commands for prepare, plan, implement, or conclude. All workflow operations are agentic skills, not shell commands.
 
-**Step 1: Global Install (Package Only)**
+**Step 1: Global Install (Package + Runtime Prerequisites)**
 - `uv tool install spekificity --from git+...` installs the `spek` CLI tool
-- Verifies Python 3.11+, git, uv in PATH
+- **Verifies and installs runtime prerequisites** required to run `spek init`: Python 3.11+, `uv`, Node.js 22+, `git`
+- Does NOT install project-level 3rd party tools (SpecKit, lat.md, Obsidian CLI) — that is `spek init`'s responsibility
 
-**Step 2: Per-Project Init (`spek init`)**
+**Step 2: Per-Project Init (`spek init [path]`)**
 - One-time per project
-- **Auto-detects and installs missing dependencies:** SpecKit, lat.md, Obsidian CLI (if not already installed)
+- Uses supplied path, or . for present working directory
+- **Verifies runtime prerequisites are present** (installed in Step 1); fails with descriptive error if any are missing
+- **Detects and installs missing 3rd party project tools:** SpecKit (`specify` via uv), lat.md (`lat` via npm), Obsidian desktop (via brew/winget); if `obsidian` binary not in PATH after install, outputs CLI registration instructions (one-time manual step: Obsidian Settings → General → Enable CLI) and halts
 - Initializes lat.md code index + documentation index
-- Prompts for AI agent integration type (Claude, Copilot, Gemini, generic)
-- Prompts for script type (sh, ps)
+- Prompts for AI agent integration type — any value from `specify integration list` (e.g. `claude`, `copilot`, `gemini`, `cursor-agent`, `windsurf`, `cline`, `codex`, `kiro-cli`, `amp`, `qwen`, `generic`) — assigns to variable used by both skill file placement and `specify init`
+- Prompts for script type (sh, ps) and assigns to variable
 - Creates `.spek/` directory structure (vault, memory, config)
-- **Installs agentic skill files** in the format required by the selected agent integration
-- Runs `specify init .` for SpecKit per-project configuration
-- Does NOT create a `specs/` directory at project root — specs are stored inside `.spek/vault/`
+- **Copies bundled skill files** from `spekificity/skills/` (package source) to the integration's skills directory — no code-side generation or string templating
+- Runs `specify init` for the given path, or . for present working directory, and supplies the AI agent and script type variables
 
 **Agent Skill Layer: `/spek.*` commands**
 
-All workflow commands are agent skills installed by `spek init` into the project. They run inside the agent environment (Claude Code, Copilot, Gemini, etc.), not the terminal. Skill file location depends on integration type selected at init:
+All workflow commands are agent skills installed by `spek init` into the project. They run inside the agent environment (Claude Code, Copilot, Gemini, Cursor, Windsurf, Cline, Codex, Kiro, etc.), not the terminal. Skill file location depends on integration type selected at init:
 
-| Integration | Skill File Location |
-|-------------|-------------------|
-| Claude | `.claude/commands/` |
-| Copilot | `.github/agents/skills/` |
-| Gemini | agent-specific directory |
-| Generic | `.spek/skills/` |
+| Integration | Agent | Skill File Location |
+|-------------|-------|---------------------|
+| `claude` | Claude Code | `.claude/commands/` |
+| `copilot` | GitHub Copilot | `.github/agents/skills/` |
+| `gemini` | Gemini CLI | `.gemini/skills/` |
+| `cursor-agent` | Cursor | `.cursor/skills/` |
+| `windsurf` | Windsurf | `.windsurf/skills/` |
+| `cline` | Cline | `.cline/skills/` |
+| `codex` | Codex CLI | `.codex/skills/` |
+| `kiro-cli` | Kiro (AWS) | `.kiro/skills/` |
+| `amp` | Amp (Sourcegraph) | `.amp/skills/` |
+| `qwen` | Qwen Code | `.qwen/skills/` |
+| `generic` | Any / tool-agnostic | `.agents/skills/` (default) |
+| *(all other specify values)* | — | `.agents/skills/` (fallback) |
 
-**Outcome:** `spek init` scaffolds infrastructure and installs skill files. All feature development then happens through agent skills (`/spek.prepare` → `/spek.plan` → `/spek.implement` → `/spek.conclude`), not the CLI.
-
-**See also:** [setup.md](setup.md) (detailed setup specification), [workflow.md](workflow.md) (4-stage workflow), [patterns.md](patterns.md) (reusable patterns)
+**Outcome:** `spek init` scaffolds infrastructure and copies bundled skill files into the project. All feature development then happens through agent skills (`/spek.prepare` → `/spek.plan` → `/spek.implement` → `/spek.conclude`), not the CLI.
 
 ---
 
@@ -52,9 +60,9 @@ All workflow commands are agent skills installed by `spek init` into the project
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     SPEKIFICITY SYSTEM                       │
+│                     SPEKIFICITY SYSTEM                      │
 ├─────────────────────────────────────────────────────────────┤
-│                                                               │
+│                                                             │
 │  ┌──────────────────┐   ┌──────────────────┐                │
 │  │  Obsidian Vault  │   │   lat.md MCP     │                │
 │  │  .spek/vault/    │   │   lat.md Index   │                │
@@ -63,26 +71,26 @@ All workflow commands are agent skills installed by `spek init` into the project
 │           │                      │                          │
 │           └──────────┬───────────┘                          │
 │                      │                                      │
-│              ┌───────▼────────┐                            │
-│              │   Context      │                            │
-│              │   Layer        │                            │
-│              └───────┬────────┘                            │
+│              ┌───────▼────────┐                             │
+│              │   Context      │                             │
+│              │   Layer        │                             │
+│              └───────┬────────┘                             │
 │                      │                                      │
-│           ┌──────────┴──────────┐                          │
-│           │                     │                          │
-│     ┌─────▼──────┐       ┌─────▼──────┐                   │
-│     │  SpecKit   │       │  Agent     │                   │
-│     │  Workflow  │       │  Skills    │                   │
-│     │  Engine    │       │  (/spek.*) │                   │
-│     └─────┬──────┘       └──────┬─────┘                   │
-│           │                     │                          │
-│           └──────────┬──────────┘                          │
+│           ┌──────────┴──────────┐                           │
+│           │                     │                           │
+│     ┌─────▼──────┐       ┌─────▼──────┐                     │
+│     │  SpecKit   │       │  Agent     │                     │
+│     │  Workflow  │       │  Skills    │                     │
+│     │  Engine    │       │  (/spek.*) │                     │
+│     └─────┬──────┘       └──────┬─────┘                     │
+│           │                     │                           │
+│           └──────────┬──────────┘                           │
 │                      │                                      │
-│              ┌───────▼────────┐                            │
-│              │   Feature Out  │                            │
-│              │   (Code + Docs)│                            │
-│              └────────────────┘                            │
-│                                                               │
+│              ┌───────▼────────┐                             │
+│              │   Feature Out  │                             │
+│              │   (Code + Docs)│                             │
+│              └────────────────┘                             │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -96,9 +104,9 @@ START FEATURE
     ├─ /spek.prepare ─────────────► Workspace Ready
     │  (Git state, .spek/vault/ fresh, lat.md index synced)
     │
-    ├─ /spek.plan ────────────────┐
-    │  (Orchestrate SpecKit)           │
-    │                                  │
+    ├─ /spek.plan
+    │  (Orchestrate SpecKit)
+    │
     │  ├─ /speckit.specify ──────────► Spec Created
     │  │  (+ enrichment layer)         (Success Criteria,
     │  │                                Assumptions, etc.)
@@ -113,12 +121,11 @@ START FEATURE
     ├─ /spek.implement ───────────────► Features Coded
     │  (Per-task execution)            (Tests, Docs)
     │
-    ├─ /spek.conclude ─────────────→ Outcomes Archived
-    │  (Archive, Lessons, Refresh)     (vault/ + lat.md index updated)
-    │
-    ├─ /spek.lessons ─────────────────► Lessons Extracted
-    │  (Structured capture)            (vault/ + Session Updated)
-    │
+    └─ /spek.conclude ─────────────► Outcomes Archived
+       (Archive, Refresh)             (vault/ + lat.md index updated)
+       └─ /spek.lessons (sub-step) ─► Lessons Extracted
+          (Structured capture)        (vault/ + memory updated)
+
     END FEATURE
 ```
 
@@ -157,14 +164,55 @@ START FEATURE
 
 **Deterministic, repeatable workflow steps. All run inside agent environment — not CLI.**
 
-- `spek.prepare`: Initialize third-party tools (lat.md code index, lat.md doc index, store index references in Obsidian vault); verify constitution exists, invoke `/speckit.constitution` if missing
-- `spek.plan`: Wrap SpecKit pipeline in order — `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` — with remediations at each step
-- `spek.implement`: Wrap `/speckit.implement` for task execution
-- `spek.conclude`: All post-implementation functions — analysis, vault archive, lessons extraction (via `/spek.lessons` as sub-step), lat.md refresh
-- `spek.context`: Load session context (vault, repo memory, graph state) — optional enhancement
-- `spek.map`: Analyze dependencies + impact — optional enhancement
+#### Primary Workflow
 
-**Note:** `/spek.lessons` is called by `/spek.conclude` as a sub-step. It can also be invoked independently at any point.
+Four skills form the core feature development cycle. Run in order for every feature: `prepare → plan → implement → conclude`.
+
+| Step | Skill | Purpose |
+|------|-------|---------|
+| 1 | `spek.prepare` | Pre-flight: sync tools, verify constitution |
+| 2 | `spek.plan` | Orchestrate spec → plan → tasks pipeline |
+| 3 | `spek.implement` | Execute implementation tasks from plan |
+| 4 | `spek.conclude` | Archive outcomes, refresh index, extract lessons |
+
+**`/spek.prepare`**
+- Initialize lat.md code + doc index; store references in vault
+- Verify constitution exists — invoke `/speckit.constitution` if missing
+- Confirm workspace is ready before planning begins
+
+**`/spek.plan`**
+- Invoke SpecKit pipeline in order: `/speckit.specify` → `/speckit.plan` → `/speckit.tasks`
+- Enrich each step with vault context (decisions, patterns) and lat.md code graph
+- Remediate and validate at each step before advancing
+
+**`/spek.implement`**
+- Wrap `/speckit.implement` for per-task execution
+- Load task context from vault and lat.md before each task
+- Execute, test, and document changes
+
+**`/spek.conclude`**
+- Archive spec, plan, and outcomes to `.spek/vault/` (git commit)
+- Refresh lat.md index with committed changes
+- Invoke `/spek.lessons` as sub-step to extract and store lessons
+
+#### Supplementary Skills
+
+Use these independently to enhance context or inspect state. Not required for every cycle.
+
+**`/spek.lessons`**
+- Extract structured lessons from the current session or implementation
+- Commit findings to vault + repo memory (`.spek/memory/`)
+- Called automatically by `/spek.conclude`; can also run standalone at any point
+
+**`/spek.context`**
+- Load vault context (decisions, patterns, lessons) into current session
+- Read `.spek/memory/` for workspace-scoped facts
+- Populate session state; makes context available to all downstream commands
+
+**`/spek.map`**
+- Query lat.md for code references to a spec topic
+- Query vault for related decisions and dependent specs
+- Generate dependency graph; highlight blockers and critical paths
 
 ---
 
@@ -178,12 +226,17 @@ START FEATURE
                │
 ┌──────────────▼───────────────────────────────────┐
 │  SKILLS LAYER: /spek.* commands                  │
+│                                                  │
+│  ── Primary Workflow ──────────────────────────  │
 │  ├─ spek.prepare        (pre-flight)             │
 │  ├─ spek.plan           (orchestrate)            │
 │  ├─ spek.implement      (execute)                │
-│  ├─ spek.conclude           (wrap-up)                │
+│  └─ spek.conclude       (wrap-up)                │
+│                                                  │
+│  ── Supplementary ─────────────────────────────  │
 │  ├─ spek.lessons        (learn)                  │
-│  └─ spek.context        (load)                   │
+│  ├─ spek.context        (load context)           │
+│  └─ spek.map            (dependencies)           │
 └──────────────┬───────────────────────────────────┘
                │
 ┌──────────────▼───────────────────────────────────┐
@@ -197,7 +250,7 @@ START FEATURE
                │
 ┌──────────────▼───────────────────────────────────┐
 │  CORE LAYER: Knowledge + Analysis                │
-│  ├─ vault/ (persistent knowledge)           │
+│  ├─ vault/ (persistent knowledge)                │
 │  ├─ lat.md MCP (real-time index/analysis)        │
 │  ├─ Git (version control)                        │
 │  └─ Session State (temp context)                 │
@@ -210,7 +263,7 @@ START FEATURE
 
 ### Session Initialization
 
-When a user invokes `/spek.context` or any `/spek.*` command:
+When any `/spek.*` command runs:
 
 1. **Load Vault Context:** Fetch specs, plans, decisions from vault/
 2. **Load Repo Memory:** Read `.spek/memory/` for workspace-scoped facts
@@ -262,6 +315,8 @@ SpecKit generates a richer, more accurate spec because the agent already has pro
 
 ## Cross-Component Dependencies
 
+Primary workflow only. Supplementary skills (`/spek.context`, `/spek.map`, `/spek.lessons` standalone) can be invoked at any point and are omitted from this flow.
+
 ```
 User Intention
     ↓
@@ -282,27 +337,5 @@ User Intention
     ├→ Archive spec/plan/outcomes in vault
     ├→ Refresh lat.md index (commit changes)
     ├→ Update repo memory
-    │
-/spek.lessons
-    ├→ Extract structured lessons
-    └→ Commit vault + memory updates
+    └→ /spek.lessons (sub-step: extract + commit lessons)
 ```
-
----
-
-## Design Patterns
-
-See [patterns](patterns/) directory for detailed deep-dives:
-
-- **Enrichment Layer Pattern:** How specs/plans gain context-specific layers (Success Criteria, Assumptions, etc.)
-- **Context Injection Pattern:** Session initialization strategy
-- **Error Categorization Pattern:** Handling failures deterministically
-- **Feature State Tracking Pattern:** Tracking feature development progress
-
----
-
-## References
-
-- **Intention & Philosophy:** [README.md](../README.md)
-- **Workflow Details:** [workflow.md](workflow.md)
-- **Naming & Namespacing:** [conventions.md](conventions.md)

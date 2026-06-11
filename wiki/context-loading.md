@@ -1,7 +1,5 @@
 # Code Indexing & Context Loading
 
-> **Implementation reference** — describes the internal Python API of the `spekificity` package. For agent workflow usage, see [workflow.md](workflow.md) and [skills.md](skills.md).
-
 ## Overview
 
 Code indexing and context injection layer. Spekificity:

@@ -36,8 +36,6 @@ Spekificity exposes agent skills and commands for specification-driven developme
 - Vault context loaded (decisions, patterns, lessons)
 - Agent session ready for planning
 
-**Reference:** [decision.md](decision.md) (preparation phase)
-
 ---
 
 ### `/spek.plan`
@@ -76,11 +74,6 @@ Wraps these SpecKit skills in order, performing remediations at each step before
 - Approved implementation plan (SpecKit-managed path; archived to `.spek/vault/` via Obsidian)
 - Approved task list with dependency order (SpecKit-managed path; archived to `.spek/vault/` via Obsidian)
 
-**Reference:** [workflow.md](workflow.md) (plan phase)
-
----
-
-
 ---
 
 ### `/spek.implement`
@@ -102,8 +95,6 @@ Wraps a single SpecKit skill:
 **Output:**
 - Code changes from `/speckit.implement`
 - Task completion status
-
-**Reference:** [workflow.md](workflow.md)
 
 ---
 
@@ -177,8 +168,6 @@ Wraps a single SpecKit skill:
 
 **Note:** `/spek.lessons` is both a first-class skill AND a sub-step of `/spek.conclude`. Conclude calls it automatically. You can also invoke it independently at any point.
 
-**Reference:** [workflow.md](workflow.md#conclude-feature-conclusion)
-
 ---
 
 ## Optional Enhancements: Context & Analysis
@@ -204,8 +193,6 @@ The following commands are **first-class and fully documented**, but **not requi
 **Output:**
 - Context loaded summary (decisions, lessons, patterns available)
 - Context refresh timestamp
-
-**Reference:** [architecture.md](architecture.md)
 
 ---
 
@@ -236,8 +223,6 @@ The following commands are **first-class and fully documented**, but **not requi
 - Blocked features (if dependencies unmet)
 - Critical path (longest sequence of dependencies)
 
-**Reference:** [architecture.md](architecture.md)
-
 ---
 
 ## lat.md: Native CLI and MCP Tools
@@ -257,8 +242,6 @@ The following commands are **first-class and fully documented**, but **not requi
 ### MCP Tools (used by agent skills during workflow)
 
 Agent skills access lat.md via its MCP server (started with `lat mcp`). Confirm exact MCP tool names against lat.md documentation — the server exposes tools for symbol lookup, reference traversal, and code search. Skills should reference these tools by their actual MCP-registered names.
-
-**Reference:** [setup.md](setup.md), [lat.md documentation](https://github.com/1st1/lat.md)
 
 ---
 
@@ -281,8 +264,6 @@ Agent skills access lat.md via its MCP server (started with `lat mcp`). Confirm 
 4. Switch back to normal mode with `/caveman off`
 
 **Output:** All subsequent commands respond in compressed format  
-**Reference:** [decision.md](decision.md#decision-3)
-
 ---
 
 ### `/caveman.review`
@@ -301,8 +282,6 @@ Agent skills access lat.md via its MCP server (started with `lat mcp`). Confirm 
 - Compressed review comments (1-2 lines each)
 - Summary line (overall quality assessment)
 - Severity classification (critical/high/medium/low)
-
-**Reference:** [decision.md](decision.md#decision-3)
 
 ---
 

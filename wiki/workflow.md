@@ -349,12 +349,3 @@ Spekificity wraps SpecKit. The relationship:
 - `/speckit.*` directly: raw SpecKit, no enrichment, no vault context
 - `/spek.*`: Spekificity wrapper — loads vault context, drives user approval loops, persists to `.spek/vault/`
 
----
-
-## References
-
-- **Architecture:** [architecture.md](architecture.md) — technical design and component responsibilities
-- **Naming & Commands:** [conventions.md](conventions.md) — command naming and file conventions
-- **Patterns:** [patterns.md](patterns.md) — reusable patterns used throughout workflow
-- **Decisions:** [decision.md](decision.md) — architectural decisions and rationale
-- **Skills:** [skills.md](skills.md) — command reference and usage
