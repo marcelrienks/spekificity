@@ -18,8 +18,8 @@
 
 **Purpose**: Package infrastructure — entry point, dependencies, package data declaration
 
-- [ ] T001 Update `pyproject.toml` — add `click>=8.0` runtime dep, `pytest` dev dep, `package-data` for `spekificity/skills/*.md` (hatchling auto-includes but add explicit entry), entry point `spek = spekificity.cli:main`
-- [ ] T002 Create `spekificity/__init__.py` with `__version__ = "0.1.0"`
+- [X] T001 Update `pyproject.toml` — add `click>=8.0` runtime dep, `pytest` dev dep, `package-data` for `spekificity/skills/*.md` (hatchling auto-includes but add explicit entry), entry point `spek = spekificity.cli:main`
+- [X] T002 Create `spekificity/__init__.py` with `__version__ = "0.1.0"`
 
 ---
 
@@ -29,8 +29,8 @@
 
 **⚠️ CRITICAL**: No user story implementation can begin until this phase is complete
 
-- [ ] T003 Implement `spekificity/utils.py` — `run_command(cmd: list[str], description: str) -> subprocess.CompletedProcess` (no `shell=True`, `check=True`, capture stderr, `FileNotFoundError` → `RuntimeError`) + `print_status(tag: str, message: str)` formatter for `[OK]`/`[SKIP]`/`[WARN]`/`[ERROR]`
-- [ ] T004 [P] Write `tests/unit/test_utils.py` — unit tests for `run_command` success/failure/not-found paths and `print_status` output format
+- [X] T003 Implement `spekificity/utils.py` — `run_command(cmd: list[str], description: str) -> subprocess.CompletedProcess` (no `shell=True`, `check=True`, capture stderr, `FileNotFoundError` → `RuntimeError`) + `print_status(tag: str, message: str)` formatter for `[OK]`/`[SKIP]`/`[WARN]`/`[ERROR]`
+- [X] T004 [P] Write `tests/unit/test_utils.py` — unit tests for `run_command` success/failure/not-found paths and `print_status` output format
 
 **Checkpoint**: Foundation ready — US1, US2, US3 can begin in parallel
 
@@ -42,8 +42,8 @@
 
 **Independent Test**: `uv tool install spekificity --from .`; run `spek --version`; remove `uv` from PATH and confirm error message names `uv` with install URL; exit code 1
 
-- [ ] T005 [P] [US1] Implement `spekificity/prerequisites.py` — `PrerequisiteResult` dataclass (`name`, `present`, `version`, `install_hint`); `check_prerequisites() -> list[PrerequisiteResult]` checks Python 3.11+, `uv`, Node.js 22+, `git` via `shutil.which`; halts on first missing tool with exit code 1 printing `install_hint`
-- [ ] T006 [P] [US1] Write `tests/unit/test_prerequisites.py` — one test per tool (present and absent cases); mock `shutil.which` via `unittest.mock.patch`; verify `install_hint` non-empty on failure
+- [X] T005 [P] [US1] Implement `spekificity/prerequisites.py` — `PrerequisiteResult` dataclass (`name`, `present`, `version`, `install_hint`); `check_prerequisites() -> list[PrerequisiteResult]` checks Python 3.11+, `uv`, Node.js 22+, `git` via `shutil.which`; halts on first missing tool with exit code 1 printing `install_hint`
+- [X] T006 [P] [US1] Write `tests/unit/test_prerequisites.py` — one test per tool (present and absent cases); mock `shutil.which` via `unittest.mock.patch`; verify `install_hint` non-empty on failure
 
 **Checkpoint**: US1 complete — package installs and prerequisite checks independently testable
 
@@ -57,32 +57,32 @@
 
 ### lat.md Integration
 
-- [ ] T007 [P] [US2] Create `spekificity/lat_md/__init__.py` and implement `spekificity/lat_md/install.py` — `install_lat() -> ToolInstallResult`: detect `lat` via `shutil.which`; run `npm install -g lat.md` if absent; return `already_present` status if already in PATH
-- [ ] T008 [P] [US2] Implement `spekificity/lat_md/index.py` — `run_lat_index(project_path: Path) -> None`: run `lat init` (code index) then `lat init --docs` (doc index) via `utils.run_command`; idempotent check via `.spek/lat/` existence
-- [ ] T009 [P] [US2] Implement `spekificity/lat_md/mcp_config.py` — `write_mcp_config(config_path: Path, servers_key: str, extra_fields: dict) -> McpConfigResult`: read existing JSON (or `{}`), merge `lat` entry under `servers_key`, write back; skip if `lat` already present; create parent dirs; copilot gets `"type": "stdio"` via `extra_fields`
-- [ ] T010 [P] [US2] Implement `spekificity/lat_md/git_hook.py` — `write_git_hook(project_path: Path, skip: bool) -> None`: write `#!/bin/sh\nlat update` to `.git/hooks/post-commit`; `os.chmod` +x; skip if `skip=True`, `--no-git-hooks` flag, or `.spek/.disable-git-hooks` exists; idempotent (skip if hook already present)
-- [ ] T011 [P] [US2] Write `tests/unit/lat_md/test_install.py` — mock `shutil.which` and `subprocess.run`; test present path returns `already_present`; test absent path runs `npm install -g lat.md`
-- [ ] T012 [P] [US2] Write `tests/unit/lat_md/test_index.py` — mock `utils.run_command`; test both `lat init` calls made; test idempotency via `tmp_path` `.spek/lat/` presence
-- [ ] T013 [P] [US2] Write `tests/unit/lat_md/test_mcp_config.py` — test merge into existing JSON (existing entry preserved); test skip-if-present; test create-if-missing; test copilot extra fields; use `tmp_path`
-- [ ] T014 [P] [US2] Write `tests/unit/lat_md/test_git_hook.py` — test hook written with correct content; test skip when `.spek/.disable-git-hooks` present; test idempotency; use `tmp_path`
+- [X] T007 [P] [US2] Create `spekificity/lat_md/__init__.py` and implement `spekificity/lat_md/install.py` — `install_lat() -> ToolInstallResult`: detect `lat` via `shutil.which`; run `npm install -g lat.md` if absent; return `already_present` status if already in PATH
+- [X] T008 [P] [US2] Implement `spekificity/lat_md/index.py` — `run_lat_index(project_path: Path) -> None`: run `lat init` (code index) then `lat init --docs` (doc index) via `utils.run_command`; idempotent check via `.spek/lat/` existence
+- [X] T009 [P] [US2] Implement `spekificity/lat_md/mcp_config.py` — `write_mcp_config(config_path: Path, servers_key: str, extra_fields: dict) -> McpConfigResult`: read existing JSON (or `{}`), merge `lat` entry under `servers_key`, write back; skip if `lat` already present; create parent dirs; copilot gets `"type": "stdio"` via `extra_fields`
+- [X] T010 [P] [US2] Implement `spekificity/lat_md/git_hook.py` — `write_git_hook(project_path: Path, skip: bool) -> None`: write `#!/bin/sh\nlat update` to `.git/hooks/post-commit`; `os.chmod` +x; skip if `skip=True`, `--no-git-hooks` flag, or `.spek/.disable-git-hooks` exists; idempotent (skip if hook already present)
+- [X] T011 [P] [US2] Write `tests/unit/lat_md/test_install.py` — mock `shutil.which` and `subprocess.run`; test present path returns `already_present`; test absent path runs `npm install -g lat.md`
+- [X] T012 [P] [US2] Write `tests/unit/lat_md/test_index.py` — mock `utils.run_command`; test both `lat init` calls made; test idempotency via `tmp_path` `.spek/lat/` presence
+- [X] T013 [P] [US2] Write `tests/unit/lat_md/test_mcp_config.py` — test merge into existing JSON (existing entry preserved); test skip-if-present; test create-if-missing; test copilot extra fields; use `tmp_path`
+- [X] T014 [P] [US2] Write `tests/unit/lat_md/test_git_hook.py` — test hook written with correct content; test skip when `.spek/.disable-git-hooks` present; test idempotency; use `tmp_path`
 
 ### Vault Integration
 
-- [ ] T015 [P] [US2] Create `spekificity/vault/__init__.py` and implement `spekificity/vault/install.py` — `install_obsidian() -> ToolInstallResult`: check `obsidian` in PATH first; dispatch `sys.platform`: `darwin` → `brew install --cask obsidian`, `win32` → `winget install -e --id Obsidian.Obsidian`, `linux` → print download URL and return `skipped`; after install attempt re-check `obsidian` in PATH → if absent return `needs_user_action` with `exit_code=2` and print CLI registration instructions
-- [ ] T016 [P] [US2] Implement `spekificity/vault/scaffold.py` — `scaffold_vault(project_path: Path) -> ScaffoldResult`: create `.spek/vault/lessons/`, `.spek/memory/`, `.spek/lat/` with `mkdir(parents=True, exist_ok=True)`; write `.spek/vault/decisions.md` (`# Decisions`), `.spek/vault/patterns.md` (`# Patterns`), `.spek/vault/lessons/.keep` (empty) if not exist; track created vs skipped in `ScaffoldResult`
-- [ ] T017 [P] [US2] Implement `spekificity/vault/init.py` — `init_vault(project_path: Path) -> None`: run `obsidian open-vault .spek/vault` via `utils.run_command`; `obsidian open-vault` is idempotent per `wiki/setup.md` (re-opening a registered vault is a no-op); always call if `obsidian` in PATH — no separate registration-state check required
-- [ ] T018 [P] [US2] Write `tests/unit/vault/test_install.py` — test `darwin`/`win32`/`linux` dispatch; test two-phase halt (install succeeds but `obsidian` still not in PATH → `needs_user_action`); mock `shutil.which`, `subprocess.run`, `sys.platform`
-- [ ] T019 [P] [US2] Write `tests/unit/vault/test_scaffold.py` — test all dirs and files created on first run; test idempotency (existing dirs/files → `skipped`); verify `decisions.md` content; use `tmp_path`
-- [ ] T020 [P] [US2] Write `tests/unit/vault/test_init.py` — mock `utils.run_command`; verify `obsidian open-vault` called with correct path; use `tmp_path`
+- [X] T015 [P] [US2] Create `spekificity/vault/__init__.py` and implement `spekificity/vault/install.py` — `install_obsidian() -> ToolInstallResult`: check `obsidian` in PATH first; dispatch `sys.platform`: `darwin` → `brew install --cask obsidian`, `win32` → `winget install -e --id Obsidian.Obsidian`, `linux` → print download URL and return `skipped`; after install attempt re-check `obsidian` in PATH → if absent return `needs_user_action` with `exit_code=2` and print CLI registration instructions
+- [X] T016 [P] [US2] Implement `spekificity/vault/scaffold.py` — `scaffold_vault(project_path: Path) -> ScaffoldResult`: create `.spek/vault/lessons/`, `.spek/memory/`, `.spek/lat/` with `mkdir(parents=True, exist_ok=True)`; write `.spek/vault/decisions.md` (`# Decisions`), `.spek/vault/patterns.md` (`# Patterns`), `.spek/vault/lessons/.keep` (empty) if not exist; track created vs skipped in `ScaffoldResult`
+- [X] T017 [P] [US2] Implement `spekificity/vault/init.py` — `init_vault(project_path: Path) -> None`: run `obsidian open-vault .spek/vault` via `utils.run_command`; `obsidian open-vault` is idempotent per `wiki/setup.md` (re-opening a registered vault is a no-op); always call if `obsidian` in PATH — no separate registration-state check required
+- [X] T018 [P] [US2] Write `tests/unit/vault/test_install.py` — test `darwin`/`win32`/`linux` dispatch; test two-phase halt (install succeeds but `obsidian` still not in PATH → `needs_user_action`); mock `shutil.which`, `subprocess.run`, `sys.platform`
+- [X] T019 [P] [US2] Write `tests/unit/vault/test_scaffold.py` — test all dirs and files created on first run; test idempotency (existing dirs/files → `skipped`); verify `decisions.md` content; use `tmp_path`
+- [X] T020 [P] [US2] Write `tests/unit/vault/test_init.py` — mock `utils.run_command`; verify `obsidian open-vault` called with correct path; use `tmp_path`
 
 ### SpecKit Integration
 
-- [ ] T021 [P] [US2] Create `spekificity/speckit/__init__.py` and implement `spekificity/speckit/install.py` — `install_speckit() -> ToolInstallResult`: detect `specify` via `shutil.which`; run `uv tool install specify-cli` if absent; return `already_present` if already in PATH
-- [ ] T022 [P] [US2] Implement `spekificity/speckit/init.py` — `run_specify_init(project_path: Path) -> None`: check if `.specify/` dir exists (idempotent); run `specify init` via `utils.run_command` if not
-- [ ] T023 [P] [US2] Implement `spekificity/speckit/config.py` — `write_spek_config(project_path: Path, options: InitOptions) -> None`: write `.spek/config.yaml` using inline YAML string template (no PyYAML dep) matching `SpekConfig` schema; idempotent (skip if file exists)
-- [ ] T024 [P] [US2] Write `tests/unit/speckit/test_install.py` — mock `shutil.which` and `subprocess.run`; test present/absent paths; verify `uv tool install specify-cli` command when absent
-- [ ] T025 [P] [US2] Write `tests/unit/speckit/test_init.py` — mock `utils.run_command`; test `.specify/` idempotency check; test `specify init` called when dir absent; use `tmp_path`
-- [ ] T026 [P] [US2] Write `tests/unit/speckit/test_config.py` — test YAML output matches full `SpekConfig` schema (all required fields); test idempotency (skip if `.spek/config.yaml` exists); use `tmp_path`
+- [X] T021 [P] [US2] Create `spekificity/speckit/__init__.py` and implement `spekificity/speckit/install.py` — `install_speckit() -> ToolInstallResult`: detect `specify` via `shutil.which`; run `uv tool install specify-cli` if absent; return `already_present` if already in PATH
+- [X] T022 [P] [US2] Implement `spekificity/speckit/init.py` — `run_specify_init(project_path: Path) -> None`: check if `.specify/` dir exists (idempotent); run `specify init` via `utils.run_command` if not
+- [X] T023 [P] [US2] Implement `spekificity/speckit/config.py` — `write_spek_config(project_path: Path, options: InitOptions) -> None`: write `.spek/config.yaml` using inline YAML string template (no PyYAML dep) matching `SpekConfig` schema; idempotent (skip if file exists)
+- [X] T024 [P] [US2] Write `tests/unit/speckit/test_install.py` — mock `shutil.which` and `subprocess.run`; test present/absent paths; verify `uv tool install specify-cli` command when absent
+- [X] T025 [P] [US2] Write `tests/unit/speckit/test_init.py` — mock `utils.run_command`; test `.specify/` idempotency check; test `specify init` called when dir absent; use `tmp_path`
+- [X] T026 [P] [US2] Write `tests/unit/speckit/test_config.py` — test YAML output matches full `SpekConfig` schema (all required fields); test idempotency (skip if `.spek/config.yaml` exists); use `tmp_path`
 
 **Checkpoint**: US2 complete — all three integration modules independently unit-tested
 
@@ -96,20 +96,20 @@
 
 ### Skills Distribution Infrastructure
 
-- [ ] T027 [P] [US3] Create `spekificity/skills_install/__init__.py` and implement `spekificity/skills_install/integrations.py` — `FLAT_INTEGRATIONS: set[str]` (`{"claude", "copilot", "generic"}`); `INTEGRATION_SKILLS_DIR: dict[str, str]` (all 11 known integrations + fallback); `INTEGRATION_MCP_CONFIG: dict` (per contracts/mcp-config-schemas.md); `get_skills_config(integration: str) -> tuple[str, bool]` returns `(skills_dir, use_subfolder)` with fallback to `.agents/skills/` + subfolder for unknown
-- [ ] T028 [US3] Implement `spekificity/skills_install/copy.py` — `copy_skills(project_path: Path, integration: str) -> SkillInstallResult`: use `importlib.resources.files("spekificity") / "skills"` to iterate source files; flat integrations: copy to `<skills_dir>/spek-*.md`; subfolder integrations: copy to `<skills_dir>/spek-*/SKILL.md`; never overwrite existing files (`dest.exists()` check); create parent dirs; return `SkillInstallResult` (depends on T027 for `get_skills_config`)
-- [ ] T029 [P] [US3] Write `tests/unit/skills_install/test_integrations.py` — test all 11 known integrations return correct dir and format; test unknown integration falls back to `.agents/skills/` with subfolder; test `FLAT_INTEGRATIONS` membership
-- [ ] T030 [P] [US3] Write `tests/unit/skills_install/test_copy.py` — test flat copy produces `spek-prepare.md` at root of skills dir; test subfolder copy produces `spek-prepare/SKILL.md`; test no-overwrite when file already exists; use `tmp_path` with stub skill files
+- [X] T027 [P] [US3] Create `spekificity/skills_install/__init__.py` and implement `spekificity/skills_install/integrations.py` — `FLAT_INTEGRATIONS: set[str]` (`{"claude", "copilot", "generic"}`); `INTEGRATION_SKILLS_DIR: dict[str, str]` (all 11 known integrations + fallback); `INTEGRATION_MCP_CONFIG: dict` (per contracts/mcp-config-schemas.md); `get_skills_config(integration: str) -> tuple[str, bool]` returns `(skills_dir, use_subfolder)` with fallback to `.agents/skills/` + subfolder for unknown
+- [X] T028 [US3] Implement `spekificity/skills_install/copy.py` — `copy_skills(project_path: Path, integration: str) -> SkillInstallResult`: use `importlib.resources.files("spekificity") / "skills"` to iterate source files; flat integrations: copy to `<skills_dir>/spek-*.md`; subfolder integrations: copy to `<skills_dir>/spek-*/SKILL.md`; never overwrite existing files (`dest.exists()` check); create parent dirs; return `SkillInstallResult` (depends on T027 for `get_skills_config`)
+- [X] T029 [P] [US3] Write `tests/unit/skills_install/test_integrations.py` — test all 11 known integrations return correct dir and format; test unknown integration falls back to `.agents/skills/` with subfolder; test `FLAT_INTEGRATIONS` membership
+- [X] T030 [P] [US3] Write `tests/unit/skills_install/test_copy.py` — test flat copy produces `spek-prepare.md` at root of skills dir; test subfolder copy produces `spek-prepare/SKILL.md`; test no-overwrite when file already exists; use `tmp_path` with stub skill files
 
 ### Skill Files (all 7 — fully independent, can be authored in parallel)
 
-- [ ] T031 [P] [US3] Create `spekificity/skills/spek-prepare.md` — heading `# /spek.prepare`; imperative mood; no agent syntax; content from `wiki/workflow.md` "Preparation" section (sub-steps: lat.md code index, lat.md doc index, vault storage, context load, constitution check; exit criteria: indexes current, vault loaded, constitution present)
-- [ ] T032 [P] [US3] Create `spekificity/skills/spek-plan.md` — heading `# /spek.plan`; content from `wiki/workflow.md` "Plan" section (steps: /speckit-specify → user approval → /speckit-plan → user approval → /speckit-tasks → user approval; remediation loop; archive to `.spek/vault/`)
-- [ ] T033 [P] [US3] Create `spekificity/skills/spek-implement.md` — heading `# /spek.implement`; content from `wiki/workflow.md` "Implementation" section (steps: load vault context, run /speckit-implement, per-task checklist from Implementation Checklist; optional `--steps N` flag)
-- [ ] T034 [P] [US3] Create `spekificity/skills/spek-conclude.md` — heading `# /spek.conclude`; content from `wiki/workflow.md` "Conclude" section (steps: /speckit-analyze, /spek.lessons sub-step, vault archive, lat init state refresh, git commit; lessons template format)
-- [ ] T035 [P] [US3] Create `spekificity/skills/spek-lessons.md` — heading `# /spek.lessons`; content from `wiki/workflow.md` Conclude sub-step 2 and `wiki/architecture.md` supplementary skills section (steps: prompt retrospective, extract patterns/decisions, write to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`; callable standalone or auto-called by /spek.conclude)
-- [ ] T036 [P] [US3] Create `spekificity/skills/spek-context.md` — heading `# /spek.context`; content from `wiki/architecture.md` "/spek.context" section (steps: load vault decisions/patterns/lessons into session, read `.spek/memory/` workspace facts, populate session state for downstream commands)
-- [ ] T037 [P] [US3] Create `spekificity/skills/spek-map.md` — heading `# /spek.map`; content from `wiki/architecture.md` "/spek.map" section (steps: query lat.md for code references to spec topic, query vault for related decisions, generate dependency graph, highlight blockers and critical paths)
+- [X] T031 [P] [US3] Create `spekificity/skills/spek-prepare.md` — heading `# /spek.prepare`; imperative mood; no agent syntax; content from `wiki/workflow.md` "Preparation" section (sub-steps: lat.md code index, lat.md doc index, vault storage, context load, constitution check; exit criteria: indexes current, vault loaded, constitution present)
+- [X] T032 [P] [US3] Create `spekificity/skills/spek-plan.md` — heading `# /spek.plan`; content from `wiki/workflow.md` "Plan" section (steps: /speckit-specify → user approval → /speckit-plan → user approval → /speckit-tasks → user approval; remediation loop; archive to `.spek/vault/`)
+- [X] T033 [P] [US3] Create `spekificity/skills/spek-implement.md` — heading `# /spek.implement`; content from `wiki/workflow.md` "Implementation" section (steps: load vault context, run /speckit-implement, per-task checklist from Implementation Checklist; optional `--steps N` flag)
+- [X] T034 [P] [US3] Create `spekificity/skills/spek-conclude.md` — heading `# /spek.conclude`; content from `wiki/workflow.md` "Conclude" section (steps: /speckit-analyze, /spek.lessons sub-step, vault archive, lat init state refresh, git commit; lessons template format)
+- [X] T035 [P] [US3] Create `spekificity/skills/spek-lessons.md` — heading `# /spek.lessons`; content from `wiki/workflow.md` Conclude sub-step 2 and `wiki/architecture.md` supplementary skills section (steps: prompt retrospective, extract patterns/decisions, write to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`; callable standalone or auto-called by /spek.conclude)
+- [X] T036 [P] [US3] Create `spekificity/skills/spek-context.md` — heading `# /spek.context`; content from `wiki/architecture.md` "/spek.context" section (steps: load vault decisions/patterns/lessons into session, read `.spek/memory/` workspace facts, populate session state for downstream commands)
+- [X] T037 [P] [US3] Create `spekificity/skills/spek-map.md` — heading `# /spek.map`; content from `wiki/architecture.md` "/spek.map" section (steps: query lat.md for code references to spec topic, query vault for related decisions, generate dependency graph, highlight blockers and critical paths)
 
 **Checkpoint**: US3 complete — all skill files authored and distribution logic tested
 
@@ -121,8 +121,8 @@
 
 **Independent Test**: `spek init --integration claude --script sh` in clean git repo; verify all artifacts from quickstart.md Scenario 1; re-run verifies Scenario 2 (idempotency)
 
-- [ ] T038 [US4] Implement `spekificity/cli.py` — `@click.group()` with `--version` (from `__version__`); `@cli.command() def init(path, integration, script, no_git_hooks)`: prompt for `integration` and `script` if not provided; instantiate `InitOptions`; call in order: `check_prerequisites()` → `install_lat()` + `run_lat_index()` → `install_obsidian()` + `scaffold_vault()` + `init_vault()` → `install_speckit()` + `run_specify_init()` + `write_spek_config()` → `write_mcp_config()` → `write_git_hook()` → `copy_skills()`; collect results into `InitResult`; error handling: exit-code-1 errors are fail-fast (halt immediately); Obsidian `needs_user_action` (exit code 2) skips vault sub-steps but continues lat.md, SpecKit, and skills-install before halting with `sys.exit(2)`; all steps use `print_status` from `utils`
-- [ ] T039 [US4] Write `tests/integration/test_init_flow.py` — use `click.testing.CliRunner` with `tmp_path` as project root; mock all subprocess calls (`npm install`, `lat init`, `obsidian`, `uv tool install`, `specify init`); (a) run `spek init --integration claude --script sh` — assert all artifacts exist (`.spek/vault/`, `.spek/memory/`, `.spek/lat/`, `.spek/config.yaml`, `.claude/commands/spek-prepare.md` and 6 others, `.mcp.json` with `lat` entry, `.specify/`, `.git/hooks/post-commit`); (b) re-run — assert all output lines contain `[SKIP]`, exit code 0; (c) run `spek init /tmp/other-dir --integration claude --script sh` with a separate `tmp_path` — assert artifacts land under `/tmp/other-dir`, not CWD (tests FR-025 non-default path)
+- [X] T038 [US4] Implement `spekificity/cli.py` — `@click.group()` with `--version` (from `__version__`); `@cli.command() def init(path, integration, script, no_git_hooks)`: prompt for `integration` and `script` if not provided; instantiate `InitOptions`; call in order: `check_prerequisites()` → `install_lat()` + `run_lat_index()` → `install_obsidian()` + `scaffold_vault()` + `init_vault()` → `install_speckit()` + `run_specify_init()` + `write_spek_config()` → `write_mcp_config()` → `write_git_hook()` → `copy_skills()`; collect results into `InitResult`; error handling: exit-code-1 errors are fail-fast (halt immediately); Obsidian `needs_user_action` (exit code 2) skips vault sub-steps but continues lat.md, SpecKit, and skills-install before halting with `sys.exit(2)`; all steps use `print_status` from `utils`
+- [X] T039 [US4] Write `tests/integration/test_init_flow.py` — use `click.testing.CliRunner` with `tmp_path` as project root; mock all subprocess calls (`npm install`, `lat init`, `obsidian`, `uv tool install`, `specify init`); (a) run `spek init --integration claude --script sh` — assert all artifacts exist (`.spek/vault/`, `.spek/memory/`, `.spek/lat/`, `.spek/config.yaml`, `.claude/commands/spek-prepare.md` and 6 others, `.mcp.json` with `lat` entry, `.specify/`, `.git/hooks/post-commit`); (b) re-run — assert all output lines contain `[SKIP]`, exit code 0; (c) run `spek init /tmp/other-dir --integration claude --script sh` with a separate `tmp_path` — assert artifacts land under `/tmp/other-dir`, not CWD (tests FR-025 non-default path)
 
 **Checkpoint**: US4 complete — full end-to-end flow verified
 
@@ -130,8 +130,8 @@
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T040 [P] Run quickstart.md validation — execute Scenarios 1–7 from `specs/003-full-platform-impl/quickstart.md` manually; confirm all expected outcomes match; document any deviations
-- [ ] T041 [P] Verify pytest configuration — ensure all test subdirectories are discovered (`tests/unit/lat_md/`, `tests/unit/vault/`, `tests/unit/speckit/`, `tests/unit/skills_install/`, `tests/integration/`); add `__init__.py` files only if pytest config requires them; run full test suite and confirm green
+- [X] T040 [P] Run quickstart.md validation — execute Scenarios 1–7 from `specs/003-full-platform-impl/quickstart.md` manually; confirm all expected outcomes match; document any deviations
+- [X] T041 [P] Verify pytest configuration — ensure all test subdirectories are discovered (`tests/unit/lat_md/`, `tests/unit/vault/`, `tests/unit/speckit/`, `tests/unit/skills_install/`, `tests/integration/`); add `__init__.py` files only if pytest config requires them; run full test suite and confirm green
 
 ---
 
