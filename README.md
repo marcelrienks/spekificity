@@ -129,24 +129,6 @@ cd /path/to/your/project && spek init
 
 ---
 
-## Contributing
-
-Contributions welcome! Please:
-
-1. Create a feature branch from `main`
-2. Submit specs and documentation following [wiki/conventions.md](wiki/conventions.md)
-3. Include test cases and lessons learned
-
----
-
-## License
-
-MIT License — see [LICENSE](LICENSE) for details.
-
-**Copyright © 2026 Marcel Rienks**
-
----
-
 ## Next Steps
 
 1. **Install prerequisites:** Python 3.11+, uv, Node.js 22+, git
@@ -154,5 +136,3 @@ MIT License — see [LICENSE](LICENSE) for details.
 3. **Initialize:** `cd /your/project && spek init` (select agent integration type)
 4. **Learn:** Read [wiki/workflow.md](wiki/workflow.md) and [wiki/skills.md](wiki/skills.md)
 5. **Build:** Run `/spek.prepare` in your agent → 4-stage workflow begins
-
-**Last Updated**: 2026-06-11
