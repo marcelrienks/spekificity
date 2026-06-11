@@ -334,7 +334,7 @@ Spekificity wraps SpecKit. The relationship:
 
 /spek.conclude
     ├─ Calls /speckit.analyze  (step 1, analysis)
-    └─ Runs /spek.lessons      (step 2, as sub-function — not a standalone command)
+    └─ Calls /spek.lessons     (step 2, as sub-step — also callable standalone)
 ```
 
 ### Key Clarifications

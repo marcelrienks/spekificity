@@ -6,7 +6,7 @@ Architectural and implementation decisions that guide Spekificity design and too
 
 # Section 1: Tooling & Architecture
 
-## Decision 1: Recommended Baseline Toolset
+## Recommended Baseline Toolset
 
 ### Summary
 
@@ -99,7 +99,7 @@ Spekificity is designed for AI agent development workflows. Agent efficiency is 
 ---
 
 
-## Decision 3: Toolset for the Four Pillars
+## Toolset for the Four Pillars
 
 | Pillar | Tool | Why |
 |--------|------|-----|
@@ -112,7 +112,7 @@ Alternatives exist for each pillar. These four balance maturity, fit, and setup 
 
 ---
 
-## Decision 4: Zettelkasten Architecture for Vault Notes (Recommended Default)
+## Zettelkasten Architecture for Vault Notes (Recommended Default)
 
 ### Decision
 
@@ -188,7 +188,7 @@ This approach is validated from:
 
 ---
 
-## Decision 5: Auto-Tagging & Auto-Wikilink Insertion
+## Auto-Tagging & Auto-Wikilink Insertion
 
 ### Decision
 
@@ -224,7 +224,7 @@ Without automation:
 - **Configuration:**
 - `.spek/config.yaml` contains keyword-to-tag mappings
 - Per-project customization (teams can add domain-specific keywords)
--- Scoring threshold configurable (use a high confidence threshold by default)
+- Scoring threshold configurable (use a high confidence threshold by default)
 
 ---
 
@@ -253,7 +253,7 @@ Without automation:
 
 ---
 
-## Decision 6: 3-Layer Query Rule (Hierarchical Context Loading)
+## 3-Layer Query Rule (Hierarchical Context Loading)
 
 ### Decision
 
@@ -318,7 +318,7 @@ Using the 3-layer rule reduces overall query cost significantly compared to naiv
 
 ---
 
-## Decision 7: Git Hooks Integration for Automatic Graph Refresh
+## Git Hooks Integration for Automatic Graph Refresh
 
 ### Decision
 
@@ -392,7 +392,7 @@ Decisions 8–12 describe features to build. None are active in the current impl
 
 ---
 
-## Decision 8: Backprop Reflex (Test Failures → Vault Updates)
+## Backprop Reflex (Test Failures → Vault Updates)
 
 ### Decision
 
@@ -466,7 +466,7 @@ Future features proposing singleton automatically see warning.
 
 ---
 
-## Decision 9: RARV Reflection Cycles (Reason-Act-Reflect-Verify)
+## RARV Reflection Cycles (Reason-Act-Reflect-Verify)
 
 ### Decision
 
@@ -558,7 +558,7 @@ VERIFY: Check if factory aligns with "testability-first" goal
 
 ---
 
-## Decision 10: Anti-Sycophancy Validation Rules
+## Anti-Sycophancy Validation Rules
 
 ### Decision
 
@@ -638,7 +638,7 @@ Without validation:
 
 ---
 
-## Decision 11: Blind Code Review (Optional Second-Pass QA)
+## Blind Code Review (Optional Second-Pass QA)
 
 ### Decision
 
@@ -709,7 +709,7 @@ Without blind review:
 
 ---
 
-## Decision 12: Token Budget Model (Soft Limits, Not Hard Caps)
+## Token Budget Model (Soft Limits, Not Hard Caps)
 
 ### Decision
 
@@ -792,22 +792,22 @@ enterprise: TBD
 
 ### Active
 
-| ID | Title | Related Specs | When Activated |
-|:--:|-------|---------------|---|
-| 4 | Zettelkasten Architecture | See [architecture.md](architecture.md) and [patterns.md](patterns.md) | Vault setup; all note creation |
-| 5 | Auto-Tagging & Auto-Wikilinks | See [patterns.md](patterns.md) (Pattern 10) | `/spek.conclude` Step 3 (lesson generation) |
-| 6 | 3-Layer Query Rule | See [architecture.md](architecture.md) | `/spek.context` load; `/spek.plan` phases |
-| 7 | Git Hooks Integration | See [setup.md](setup.md) | `spek init`; post-commit execution |
+| Title | Related Specs | When Activated |
+|-------|---------------|---|
+| Zettelkasten Architecture | See [architecture.md](architecture.md) | Vault setup; all note creation |
+| Auto-Tagging & Auto-Wikilinks | — | `/spek.conclude` Step 3 (lesson generation) |
+| 3-Layer Query Rule | See [architecture.md](architecture.md) | `/spek.context` load; `/spek.plan` phases |
+| Git Hooks Integration | See [setup.md](setup.md) | `spek init`; post-commit execution |
 
 ### Planned (see Planned Features section above)
 
-| ID | Title | Related Specs | When Activated |
-|:--:|-------|---------------|---|
-| 8 | Backprop Reflex | See [decision.md](decision.md#decision-8) | `/spek.conclude` Step 3 (lesson generation) |
-| 9 | RARV Reflection Cycles | See [decision.md](decision.md#decision-9) | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
-| 10 | Anti-Sycophancy Validation | See [decision.md](decision.md#decision-10) | `/spek.plan` (specify + plan phases) |
-| 11 | Blind Code Review | See [decision.md](decision.md#decision-11) | `/spek.conclude` Step 8 (optional; pre-archival) |
-| 12 | Token Budget Model | See [patterns.md](patterns.md) (Pattern 22) | All stages; tracked throughout feature |
+| Title | When Activated |
+|-------|---|
+| Backprop Reflex | `/spek.conclude` Step 3 (lesson generation) |
+| RARV Reflection Cycles | `/spek.conclude` Step 7 (optional; code vs spec analysis) |
+| Anti-Sycophancy Validation | `/spek.plan` (specify + plan phases) |
+| Blind Code Review | `/spek.conclude` Step 8 (optional; pre-archival) |
+| Token Budget Model | All stages; tracked throughout feature |
 
 ---
 
@@ -817,29 +817,29 @@ enterprise: TBD
 
 ```
 Foundation:
-  Decision 4 (Zettelkasten) 
+  Zettelkasten Architecture
     ↓ (required by)
-  Decision 5 (Auto-Tagging) 
+  Auto-Tagging & Auto-Wikilinks
     ↓ (required by)
-  Decision 6 (3-Layer Query)
+  3-Layer Query Rule
     ↓ (required by)
-  Decision 7 (Git Hooks)
+  Git Hooks Integration
 
 Enhancements:
-  Decision 8 (Backprop) — requires Decisions 4-7
-  Decision 9 (RARV) — requires Decisions 4-7 + Decision 8
-  Decision 10 (Anti-Sycophancy) — requires Decisions 4-7
-  Decision 11 (Blind Review) — requires Decisions 4-7 + testing infrastructure
-  Decision 12 (Token Budget) — independent; can enable anytime
+  Backprop Reflex — requires foundation decisions
+  RARV Reflection Cycles — requires foundation decisions + Backprop Reflex
+  Anti-Sycophancy Validation — requires foundation decisions
+  Blind Code Review — requires foundation decisions + testing infrastructure
+  Token Budget Model — independent; can enable anytime
 ```
 
 **Optional Dependencies:**
 
 ```
 High-Value Combinations:
-  Backprop (8) + RARV (9) → Closed learning loop
-  Anti-Sycophancy (10) + Blind Review (11) → AI drift prevention
-  3-Layer (6) + Token Budget (12) → Cost-aware optimization
+  Backprop Reflex + RARV Reflection Cycles → Closed learning loop
+  Anti-Sycophancy Validation + Blind Code Review → AI drift prevention
+  3-Layer Query Rule + Token Budget Model → Cost-aware optimization
 ```
 
 ---
@@ -847,25 +847,25 @@ High-Value Combinations:
 ### Quick Reference: Which Decisions to Enable
 
 **Minimal Setup (Vault + Graph):**
-- Decision 4 (Zettelkasten)
-- Decision 6 (3-Layer Query)
-- Decision 7 (Git Hooks)
+- Zettelkasten Architecture
+- 3-Layer Query Rule
+- Git Hooks Integration
 
 **Standard Setup (Vault + Graph + Automation):**
-- Decisions 4, 5, 6, 7
-- Decision 12 (Token Budget)
+- Zettelkasten Architecture, Auto-Tagging & Auto-Wikilinks, 3-Layer Query Rule, Git Hooks Integration
+- Token Budget Model
 
 **Full Stack (All features enabled):**
-- Decisions 4-12
+- All decisions
 
 **Production-Hardened (Quality + Cost):**
-- Decisions 4, 6, 7, 10, 11, 12
-- Skip 5, 8, 9 (optional; add if needed)
+- Zettelkasten Architecture, 3-Layer Query Rule, Git Hooks Integration, Anti-Sycophancy Validation, Blind Code Review, Token Budget Model
+- Skip: Auto-Tagging, Backprop Reflex, RARV Reflection Cycles (optional; add if needed)
 
 **Solo Developer Setup:**
-- Decisions 4, 6, 10 (zettelkasten, 3-layer, anti-sycophancy)
-- Decision 12 (budget tracking)
-- Optional: 5, 7 (auto-linking, git hooks)
+- Zettelkasten Architecture, 3-Layer Query Rule, Anti-Sycophancy Validation
+- Token Budget Model
+- Optional: Auto-Tagging & Auto-Wikilinks, Git Hooks Integration
 
 ---
 
@@ -873,8 +873,8 @@ High-Value Combinations:
 
 | Interaction | Resolution |
 |-------------|-----------|
-| **Anti-Sycophancy (10) flags decision 4 contradiction** | Decision 10 raises alert; user reviews vault + spec; either updates spec or documents override rationale |
-| **Backprop (8) + RARV (9) find conflicting failure patterns** | Backprop logs failure; RARV compares to spec; RARV decision takes precedence (architectural); update failure notes accordingly |
-| **Blind Review (11) finds issues backprop missed (8)** | Blind review flags issues; if caught by backprop alert, document; if new issue, create tech debt item |
-| **Token Budget (12) exceeded** | Warning when approaching the configured budget; user can continue (soft limit) or optimize; review 3-layer rule usage |
-| **Git Hooks (7) conflict with CI/CD** | Disable hooks via `.spek/.disable-git-hooks`; use CI/CD graph refresh instead |
+| **Anti-Sycophancy flags Zettelkasten contradiction** | Anti-Sycophancy Validation raises alert; user reviews vault + spec; either updates spec or documents override rationale |
+| **Backprop Reflex + RARV find conflicting failure patterns** | Backprop logs failure; RARV compares to spec; RARV decision takes precedence (architectural); update failure notes accordingly |
+| **Blind Code Review finds issues Backprop Reflex missed** | Blind review flags issues; if caught by backprop alert, document; if new issue, create tech debt item |
+| **Token Budget Model exceeded** | Warning when approaching the configured budget; user can continue (soft limit) or optimize; review 3-layer rule usage |
+| **Git Hooks conflict with CI/CD** | Disable hooks via `.spek/.disable-git-hooks`; use CI/CD graph refresh instead |

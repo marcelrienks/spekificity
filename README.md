@@ -92,7 +92,6 @@ cd /path/to/your/project && spek init
 
 1. **Workflow:** [wiki/workflow.md](wiki/workflow.md) — 4-stage workflow with entry/exit criteria
 2. **Skills Reference:** [wiki/skills.md](wiki/skills.md) — `/spek.*` command reference
-3. **Patterns:** [wiki/patterns.md](wiki/patterns.md) — Reusable patterns for common tasks
 
 ### Daily Reference
 
@@ -101,7 +100,6 @@ cd /path/to/your/project && spek init
 | [wiki/workflow.md](wiki/workflow.md) | Executing a feature |
 | [wiki/skills.md](wiki/skills.md) | Looking up `/spek.*` command syntax |
 | [wiki/conventions.md](wiki/conventions.md) | Naming files, directories, specs |
-| [wiki/patterns.md](wiki/patterns.md) | Finding a reusable pattern |
 | [wiki/decision.md](wiki/decision.md) | Understanding architectural choices |
 
 ---

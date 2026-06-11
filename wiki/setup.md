@@ -247,8 +247,8 @@ spekificity = ["skills/*.md"]
 
 | Destination format | Integrations | Path pattern |
 |--------------------|--------------|--------------|
-| Flat `.md` file | `claude`, `copilot`, `gemini`, `generic` | `<skills-dir>/spek-prepare.md` |
-| Subfolder `SKILL.md` | `cursor`, `windsurf`, `cline`, `codex`, `kiro` | `<skills-dir>/spek-prepare/SKILL.md` |
+| Flat `.md` file | `claude`, `copilot`, `generic` | `<skills-dir>/spek-prepare.md` |
+| Subfolder `SKILL.md` | `gemini`, `cursor-agent`, `windsurf`, `cline`, `codex`, `kiro-cli` | `<skills-dir>/spek-prepare/SKILL.md` |
 
 Where `<skills-dir>` is the integration's root skills directory (see [Prompts](#prompts) table).
 
@@ -353,7 +353,7 @@ entries:
 
 ## Git Hooks
 
-Install a git post-commit hook for automatic lat.md index refresh (see [decision.md](decision.md#decision-7)).
+Install a git post-commit hook for automatic lat.md index refresh (see [decision.md](decision.md#git-hooks-integration-for-automatic-graph-refresh)).
 
 Create `.git/hooks/post-commit`:
 

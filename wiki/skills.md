@@ -213,8 +213,8 @@ The following commands are **first-class and fully documented**, but **not requi
 
 **What it does:**
 1. Query lat.md for code references to spec topic
-2. Query wiki/decision.md for related decisions
-3. Query wiki/specs/ for dependent + related specs
+2. Query `.spek/vault/decisions.md` for related decisions
+3. Query `.spek/vault/specs/` for dependent + related specs
 4. Generate visual dependency graph (text or Mermaid)
 5. Highlight blockers + critical paths
 

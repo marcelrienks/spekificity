@@ -325,8 +325,7 @@ User Intention
 /spek.plan
     ├→ /speckit.specify (reads vault, writes spec to SpecKit-managed path; archived to .spek/vault/)
     ├→ /speckit.plan (reads spec, writes plan to SpecKit-managed path; archived to .spek/vault/)
-    ├→ /speckit.tasks (reads plan, writes tasks to SpecKit-managed path; archived to .spek/vault/)
-    ├→ /speckit.analyze (queries lat.md, validates completeness)
+    └→ /speckit.tasks (reads plan, writes tasks to SpecKit-managed path; archived to .spek/vault/)
     │
 /spek.implement
     ├→ Read plan from vault
@@ -334,6 +333,7 @@ User Intention
     ├→ Generate + execute code changes
     │
 /spek.conclude
+    ├→ /speckit.analyze (queries lat.md, validates completeness)
     ├→ Archive spec/plan/outcomes in vault
     ├→ Refresh lat.md index (commit changes)
     ├→ Update repo memory
