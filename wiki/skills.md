@@ -14,6 +14,95 @@ Spekificity exposes agent skills and commands for specification-driven developme
 
 **Critical distinction:** Slash-prefixed forms (`/spek.prepare`, `/spek.plan`, `/spek.implement`, `/spek.conclude`) are **agent skills** that run inside the agent environment. These are NOT CLI commands. Only `spek init` is a CLI command. Attempting `spek prepare` or `spek plan` from the terminal will fail.
 
+## Skill File Format
+
+Skill files are plain markdown. No frontmatter, no agent-specific syntax. Any agent (Claude Code, Copilot, Gemini, Cursor, etc.) reads them as instruction sets.
+
+### Template
+
+```markdown
+# /spek.COMMAND
+
+One-line description of what this skill does.
+
+## Prerequisites
+- [condition that must be true before running]
+- [tool or state that must exist]
+
+## Steps
+
+1. **[Action] [Object]**
+   [Specific instruction. What to do, what to check, what to call.]
+   Command: `example-command --flag`
+
+2. **[Action] [Object]**
+   [Instruction.]
+
+3. **[Action] [Object]**
+   [Instruction. If step depends on prior step output, say so explicitly.]
+
+## Output
+- [artifact or state created by this skill]
+- [file path if applicable]
+
+## Exit Criteria
+- [ ] [verifiable condition — something checkable, not vague]
+- [ ] [verifiable condition]
+```
+
+### Rules
+
+- **Imperative mood** — "Read the vault", not "You should read the vault"
+- **No agent syntax** — no `@workspace`, `#file:`, `[[wikilink]]`, or tool-use markup in instructions
+- **Commands literal** — wrap shell/CLI calls in backticks; agent runs them verbatim
+- **One action per step** — compound steps split into separate numbered items
+- **Exit criteria checkable** — each criterion must be verifiable (file exists, command exits 0, output matches pattern)
+- **No prose padding** — skip motivation/rationale; keep only what the agent must do
+
+### Example
+
+```markdown
+# /spek.prepare
+
+Initialize workspace tools and load context before feature development.
+
+## Prerequisites
+- `.spek/config.yaml` exists (run `spek init` if missing)
+- Obsidian desktop is running
+- `lat` and `obsidian` are in PATH
+
+## Steps
+
+1. **Refresh lat.md code index**
+   Run: `lat init`
+   Verify exit code 0 before continuing.
+
+2. **Refresh lat.md doc index**
+   Run: `lat init --docs`
+
+3. **Load vault context**
+   Run: `obsidian read file=decisions vault=vault`
+   Run: `obsidian read file=patterns vault=vault`
+   Hold content in session — downstream skills depend on it.
+
+4. **Verify constitution**
+   Check `.specify/memory/constitution.md` exists.
+   If missing: invoke `/speckit.constitution` now (interactive, one-time).
+
+## Output
+- lat.md code index refreshed (`.spek/lat/`)
+- lat.md doc index refreshed (`.spek/lat/`)
+- Vault decisions and patterns loaded into session
+- Constitution present
+
+## Exit Criteria
+- [ ] `lat init` exited 0
+- [ ] Vault decisions loaded (non-empty content returned)
+- [ ] `.specify/memory/constitution.md` exists
+```
+
+---
+
 ## Workflow Skills: `/spek.*` Namespace
 
 ### `/spek.prepare`
