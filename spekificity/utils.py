@@ -54,14 +54,12 @@ def progress_start(action: str) -> None:
     """Show action description."""
     global _progress_action
     _progress_action = action
-    sys.stdout.write(f"{action}... ")
-    sys.stdout.flush()
+    print(f"{action}...", end=" ", flush=True)
 
 
 def progress_ok() -> None:
     """Mark as successful."""
-    sys.stdout.write("✓\n")
-    sys.stdout.flush()
+    print("✓")
 
 
 def progress_error(message: str = "") -> None:
