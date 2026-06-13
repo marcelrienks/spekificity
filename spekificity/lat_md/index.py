@@ -8,14 +8,11 @@ from spekificity.utils import run_command, print_status
 
 
 def run_lat_index(project_path: Path) -> None:
-    """Run lat init (code) and lat init --docs (doc index). Idempotent via .spek/lat/ check."""
+    """Run lat init to initialize knowledge graph. Idempotent via .spek/lat/ check."""
     lat_dir = project_path / ".spek" / "lat"
     if lat_dir.exists():
-        print_status("SKIP", "lat index already present at .spek/lat/")
+        print_status("SKIP", "lat index already present")
         return
-    print_status("INFO", "Indexing code (this may take a few minutes)...")
-    run_command(["lat", "init"], "lat init (code index)", timeout=300)
-    print_status("OK", "lat.md code index initialized")
-    print_status("INFO", "Indexing documentation...")
-    run_command(["lat", "init", "--docs"], "lat init --docs (doc index)", timeout=300)
-    print_status("OK", "lat.md doc index initialized")
+
+    run_command(["lat", "init", str(project_path)], "lat init", timeout=300)
+    print_status("OK", "lat.md initialized")
