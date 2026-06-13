@@ -42,7 +42,11 @@ def run_command(cmd: list[str], description: str, timeout: int | None = None) ->
 
 def print_status(tag: str, message: str) -> None:
     """Print a formatted status line: [TAG] message. Only shown in verbose mode."""
+    global _progress_action
     if VERBOSE:
+        if _progress_action:
+            print()  # Move to new line after progress_start
+            _progress_action = ""
         print(f"[{tag}] {message}")
 
 
