@@ -25,8 +25,16 @@ def install_obsidian() -> ToolInstallResult:
 
     platform = sys.platform
     if platform == "darwin":
-        run_command(["brew", "install", "--cask", "obsidian"], "install Obsidian via brew")
-        print_status("OK", "Obsidian installed via brew")
+        try:
+            run_command(
+                ["brew", "install", "--cask", "--no-quarantine", "obsidian"],
+                "install Obsidian via brew",
+                timeout=300,
+            )
+            print_status("OK", "Obsidian installed via brew")
+        except RuntimeError:
+            print_status("SKIP", "Obsidian install skipped (brew unavailable or timed out)")
+            return ToolInstallResult(tool="obsidian", status="skipped", message="Obsidian install failed")
     elif platform == "win32":
         run_command(["winget", "install", "-e", "--id", "Obsidian.Obsidian"], "install Obsidian via winget")
         print_status("OK", "Obsidian installed via winget")
