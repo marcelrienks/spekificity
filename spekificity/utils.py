@@ -6,11 +6,15 @@ import subprocess
 import sys
 from contextlib import contextmanager
 
+VERBOSE = False
+
 
 def run_command(cmd: list[str], description: str, timeout: int | None = None) -> subprocess.CompletedProcess:
     """Run a command without shell=True. Raises RuntimeError on failure or missing binary."""
+    if VERBOSE:
+        print(f"[DEBUG] Running: {' '.join(cmd)}")
     try:
-        return subprocess.run(
+        result = subprocess.run(
             cmd,
             check=True,
             capture_output=True,
@@ -18,11 +22,16 @@ def run_command(cmd: list[str], description: str, timeout: int | None = None) ->
             stdin=subprocess.DEVNULL,
             timeout=timeout,
         )
+        if VERBOSE and result.stdout:
+            print(f"[DEBUG] Output:\n{result.stdout}")
+        return result
     except FileNotFoundError:
         raise RuntimeError(f"{description}: command not found — {cmd[0]!r}")
     except subprocess.TimeoutExpired:
         raise RuntimeError(f"{description}: timed out after {timeout}s")
     except subprocess.CalledProcessError as exc:
+        if VERBOSE:
+            print(f"[DEBUG] Error output:\n{exc.stderr}")
         # Exit code 130 = SIGINT (Ctrl+C) — propagate as KeyboardInterrupt for clean exit
         if exc.returncode == 130:
             raise KeyboardInterrupt() from exc

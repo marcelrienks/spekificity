@@ -22,16 +22,32 @@ def main() -> None:
 @click.option("--integration", default=None, help="Agent integration type (e.g. claude, copilot, gemini).")
 @click.option("--script", "script_type", default=None, type=click.Choice(["sh", "ps"]), help="Script type.")
 @click.option("--no-git-hooks", is_flag=True, default=False, help="Skip git hook installation.")
-def init(path: str, integration: str | None, script_type: str | None, no_git_hooks: bool) -> None:
+@click.option("--verbose", "-v", is_flag=True, default=False, help="Show detailed output for debugging.")
+def init(
+    path: str,
+    integration: str | None,
+    script_type: str | None,
+    no_git_hooks: bool,
+    verbose: bool,
+) -> None:
     """Initialize Spekificity in a project directory."""
     try:
-        _init_impl(path, integration, script_type, no_git_hooks)
+        _init_impl(path, integration, script_type, no_git_hooks, verbose)
     except KeyboardInterrupt:
         sys.exit(130)
 
 
-def _init_impl(path: str, integration: str | None, script_type: str | None, no_git_hooks: bool) -> None:
+def _init_impl(
+    path: str,
+    integration: str | None,
+    script_type: str | None,
+    no_git_hooks: bool,
+    verbose: bool = False,
+) -> None:
     """Implementation of init command."""
+    # Store verbose flag in a global so run_command can access it
+    import spekificity.utils
+    spekificity.utils.VERBOSE = verbose
     from spekificity.prerequisites import check_prerequisites
     from spekificity.lat_md.install import install_lat
     from spekificity.lat_md.index import run_lat_index
