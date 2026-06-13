@@ -82,7 +82,7 @@ def check_prerequisites() -> list[PrerequisiteResult]:
         if proc.returncode != 0:
             # Not a git repo — initialize it
             subprocess.run(["git", "init"], check=True, capture_output=True)
-            print("[OK] Initialized git repository")
+            print_status("OK", "Initialized git repository")
     except FileNotFoundError:
         pass  # git PATH absence already caught above
 
