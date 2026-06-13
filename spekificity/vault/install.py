@@ -27,7 +27,7 @@ def install_obsidian() -> ToolInstallResult:
     if platform == "darwin":
         try:
             run_command(
-                ["brew", "install", "--cask", "--no-quarantine", "obsidian"],
+                ["brew", "install", "--cask", "obsidian"],
                 "install Obsidian via brew",
                 timeout=300,
             )
