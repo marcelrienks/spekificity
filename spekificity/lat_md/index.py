@@ -13,7 +13,9 @@ def run_lat_index(project_path: Path) -> None:
     if lat_dir.exists():
         print_status("SKIP", "lat index already present at .spek/lat/")
         return
-    run_command(["lat", "init"], "lat init (code index)")
+    print_status("INFO", "Indexing code (this may take a few minutes)...")
+    run_command(["lat", "init"], "lat init (code index)", timeout=300)
     print_status("OK", "lat.md code index initialized")
-    run_command(["lat", "init", "--docs"], "lat init --docs (doc index)")
+    print_status("INFO", "Indexing documentation...")
+    run_command(["lat", "init", "--docs"], "lat init --docs (doc index)", timeout=300)
     print_status("OK", "lat.md doc index initialized")
