@@ -16,7 +16,7 @@ The heavy lifting comes from best-in-class tools. What we built is the **glue**:
 - **Python 3.10+** — `python3 --version`
 - **`uv` 0.1+** — [astral.sh/uv](https://docs.astral.sh/uv/); check with `uv --version`
 - **Node.js 18+** — [nodejs.org](https://nodejs.org/en/download/)
-- **Git 2.0+** — initialized in your project (`git init` if needed); check with `git --version`
+- **Git 2.0+** — auto-initialized by `spek init` if needed; check with `git --version`
 
 **Step 2: Install `spek` CLI (one time)**
 ```bash

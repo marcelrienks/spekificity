@@ -72,7 +72,7 @@ def check_prerequisites() -> list[PrerequisiteResult]:
             print(f"  Upgrade: {install_hint}")
             sys.exit(1)
 
-    # All tools present — verify CWD is a valid git repository
+    # All tools present — verify/initialize git repository if needed
     try:
         proc = subprocess.run(
             ["git", "rev-parse", "--git-dir"],
@@ -80,8 +80,9 @@ def check_prerequisites() -> list[PrerequisiteResult]:
             text=True,
         )
         if proc.returncode != 0:
-            print("[ERROR] Not in a git repository. Run: git init")
-            sys.exit(1)
+            # Not a git repo — initialize it
+            subprocess.run(["git", "init"], check=True, capture_output=True)
+            print("[OK] Initialized git repository")
     except FileNotFoundError:
         pass  # git PATH absence already caught above
 
