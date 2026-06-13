@@ -22,6 +22,9 @@ def run_command(cmd: list[str], description: str, timeout: int | None = None) ->
     except subprocess.TimeoutExpired:
         raise RuntimeError(f"{description}: timed out after {timeout}s")
     except subprocess.CalledProcessError as exc:
+        # Exit code 130 = SIGINT (Ctrl+C) — propagate as KeyboardInterrupt for clean exit
+        if exc.returncode == 130:
+            raise KeyboardInterrupt() from exc
         raise RuntimeError(
             f"{description}: exited {exc.returncode}\n{exc.stderr.strip()}"
         ) from exc

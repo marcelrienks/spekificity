@@ -24,6 +24,14 @@ def main() -> None:
 @click.option("--no-git-hooks", is_flag=True, default=False, help="Skip git hook installation.")
 def init(path: str, integration: str | None, script_type: str | None, no_git_hooks: bool) -> None:
     """Initialize Spekificity in a project directory."""
+    try:
+        _init_impl(path, integration, script_type, no_git_hooks)
+    except KeyboardInterrupt:
+        sys.exit(130)
+
+
+def _init_impl(path: str, integration: str | None, script_type: str | None, no_git_hooks: bool) -> None:
+    """Implementation of init command."""
     from spekificity.prerequisites import check_prerequisites
     from spekificity.lat_md.install import install_lat
     from spekificity.lat_md.index import run_lat_index
