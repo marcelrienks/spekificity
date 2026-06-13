@@ -59,14 +59,17 @@ def init(path: str, integration: str | None, script_type: str | None, no_git_hoo
         no_git_hooks=no_git_hooks,
     )
 
-    # --- Step 1: Prerequisites (fail-fast on missing tool) ---
+    # --- Step 1/8: Prerequisites (fail-fast on missing tool) ---
+    print_status("INIT", "Step 1/8: Verifying prerequisites")
     check_prerequisites()
 
-    # --- Step 2: lat.md ---
+    # --- Step 2/8: lat.md ---
+    print_status("INIT", "Step 2/8: Installing code analysis (lat.md)")
     install_lat()
     run_lat_index(project_path)
 
-    # --- Step 3: Obsidian + vault scaffold ---
+    # --- Step 3/8: Obsidian + vault scaffold ---
+    print_status("INIT", "Step 3/8: Setting up vault (Obsidian)")
     obsidian_result = install_obsidian()
     scaffold_vault(project_path)
     needs_exit_2 = False
@@ -78,12 +81,14 @@ def init(path: str, integration: str | None, script_type: str | None, no_git_hoo
     else:
         init_vault(project_path)
 
-    # --- Step 4: SpecKit ---
+    # --- Step 4/8: SpecKit ---
+    print_status("INIT", "Step 4/8: Installing spec workflow (SpecKit)")
     install_speckit()
     run_specify_init(project_path, integration)
     write_spek_config(project_path, options)
 
-    # --- Step 5: MCP config ---
+    # --- Step 5/8: MCP config ---
+    print_status("INIT", "Step 5/8: Configuring AI agent integration")
     if integration in INTEGRATION_MCP_CONFIG:
         config_file_str, servers_key, extra_fields, flat_key = INTEGRATION_MCP_CONFIG[integration]
         config_path = project_path / config_file_str
@@ -91,15 +96,20 @@ def init(path: str, integration: str | None, script_type: str | None, no_git_hoo
     else:
         print_mcp_instructions()
 
-    # --- Step 6: Git hook ---
+    # --- Step 6/8: Git hook ---
+    print_status("INIT", "Step 6/8: Installing git hooks")
     write_git_hook(project_path, skip=no_git_hooks)
 
-    # --- Step 7: Skills ---
+    # --- Step 7/8: Skills ---
+    print_status("INIT", "Step 7/8: Installing agent skills")
     copy_skills(project_path, integration)
 
-    # --- Step 8: Caveman ---
+    # --- Step 8/8: Caveman ---
+    print_status("INIT", "Step 8/8: Enabling Caveman compression")
     from spekificity.caveman.install import install_caveman
     install_caveman(project_path, integration)
+
+    print_status("OK", "Setup complete!")
 
     if needs_exit_2:
         sys.exit(2)
