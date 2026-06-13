@@ -8,6 +8,8 @@ import subprocess
 import sys
 from dataclasses import dataclass
 
+from spekificity.utils import print_status
+
 
 @dataclass
 class PrerequisiteResult:
