@@ -15,6 +15,7 @@ def run_command(cmd: list[str], description: str, timeout: int | None = None) ->
             check=True,
             capture_output=True,
             text=True,
+            stdin=subprocess.DEVNULL,
             timeout=timeout,
         )
     except FileNotFoundError:
