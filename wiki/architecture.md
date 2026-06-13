@@ -18,7 +18,7 @@ The `spek` CLI has exactly one command: `spek init`. There are no CLI commands f
 
 **Step 1: Global Install (Package + Runtime Prerequisites)**
 - `uv tool install spekificity --from git+...` installs the `spek` CLI tool
-- **Verifies and installs runtime prerequisites** required to run `spek init`: Python 3.11+, `uv`, Node.js 22+, `git`
+- **Verifies and installs runtime prerequisites** required to run `spek init`: Python 3.10+, `uv`, Node.js 22+, `git`
 - Does NOT install project-level 3rd party tools (SpecKit, lat.md, Obsidian CLI) — that is `spek init`'s responsibility
 
 **Step 2: Per-Project Init (`spek init [path]`)**

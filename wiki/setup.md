@@ -19,7 +19,7 @@ All workflow execution (prepare, plan, implement, conclude) happens through agen
 
 These runtime prerequisites are installed during the global `spek` setup step (`uv tool install spekificity`). `spek init` verifies they are present — it does not install them. Fail with a descriptive error if any are missing, directing the user to re-run setup.
 
-- Python 3.11+ in PATH
+- Python 3.10+ in PATH
 - `git` in PATH and current directory is a valid git repository
 - `uv` in PATH
 - Node.js 22+ in PATH (required by lat.md)

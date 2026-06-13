@@ -18,7 +18,7 @@ class PrerequisiteResult:
 
 
 _PREREQS: list[tuple[str, str, str, int | None, int | None]] = [
-    ("python", "Python 3.11+", "https://www.python.org/downloads/", 3, 11),
+    ("python", "Python 3.10+", "https://www.python.org/downloads/", 3, 10),
     ("uv", "uv", "curl -LsSf https://astral.sh/uv/install.sh | sh", None, None),
     ("node", "Node.js 22+", "https://nodejs.org/en/download/", 22, 0),
     ("git", "git", "https://git-scm.com/downloads", None, None),
@@ -49,8 +49,13 @@ def check_prerequisites() -> list[PrerequisiteResult]:
     """Check all prerequisites. Halts (sys.exit(1)) on first missing or out-of-date tool."""
     results: list[PrerequisiteResult] = []
     for cmd, name, install_hint, min_major, min_minor in _PREREQS:
-        present = shutil.which(cmd) is not None
-        version = _get_version(cmd) if present else None
+        # For Python, accept both python and python3 (prefer python3)
+        check_cmd = cmd
+        if cmd == "python":
+            check_cmd = "python3" if shutil.which("python3") else "python"
+
+        present = shutil.which(check_cmd) is not None
+        version = _get_version(check_cmd) if present else None
         result = PrerequisiteResult(
             name=name,
             present=present,
