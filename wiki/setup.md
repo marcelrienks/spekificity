@@ -20,9 +20,9 @@ All workflow execution (prepare, plan, implement, conclude) happens through agen
 These runtime prerequisites are installed during the global `spek` setup step (`uv tool install spekificity`). `spek init` verifies they are present — it does not install them. Fail with a descriptive error if any are missing, directing the user to re-run setup.
 
 - Python 3.10+ in PATH
-- `git` in PATH and current directory is a valid git repository
-- `uv` in PATH
-- Node.js 22+ in PATH (required by lat.md)
+- git 2.0+ in PATH and current directory is a valid git repository
+- uv 0.1+ in PATH
+- Node.js 18+ in PATH (required by lat.md)
 
 ---
 
@@ -33,7 +33,7 @@ Detect each tool via `shutil.which()`. If not found, install or instruct as desc
 | Tool | CLI Name | Install Method | Notes |
 |------|----------|---------------|-------|
 | SpecKit | `specify` | `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` | Python; installs via uv |
-| lat.md | `lat` | `npm install -g lat.md` | Requires Node.js 22+ |
+| lat.md | `lat` | `npm install -g lat.md` | Requires Node.js 18+ |
 | Obsidian | `obsidian` | `brew install --cask obsidian` / `winget install -e --id Obsidian.Obsidian` (see below for two-phase flow) | v1.12.4+; CLI built into desktop app; one-time manual CLI registration required after install |
 | Caveman | — | SKILL.md fetched from `github:JuliusBrussee/caveman` (plugin cache → GitHub raw fallback) | No CLI binary; installs as a skill file; for `claude` integration also writes project-level activation hooks to `.claude/settings.json` |
 

@@ -19,9 +19,9 @@ class PrerequisiteResult:
 
 _PREREQS: list[tuple[str, str, str, int | None, int | None]] = [
     ("python", "Python 3.10+", "https://www.python.org/downloads/", 3, 10),
-    ("uv", "uv", "curl -LsSf https://astral.sh/uv/install.sh | sh", None, None),
-    ("node", "Node.js 22+", "https://nodejs.org/en/download/", 22, 0),
-    ("git", "git", "https://git-scm.com/downloads", None, None),
+    ("uv", "uv 0.1+", "curl -LsSf https://astral.sh/uv/install.sh | sh", 0, 1),
+    ("node", "Node.js 18+", "https://nodejs.org/en/download/", 18, 0),
+    ("git", "git 2.0+", "https://git-scm.com/downloads", 2, 0),
 ]
 
 

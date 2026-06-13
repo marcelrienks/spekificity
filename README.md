@@ -14,9 +14,9 @@ The heavy lifting comes from best-in-class tools. What we built is the **glue**:
 **Step 1: Install prerequisites** (manual — everything else is auto-installed by `spek init`)
 
 - **Python 3.10+** — `python3 --version`
-- **`uv`** — [astral.sh/uv](https://docs.astral.sh/uv/)
-- **Node.js 22+** — [nodejs.org](https://nodejs.org/en/download/)
-- **Git** — initialized in your project (`git init` if needed)
+- **`uv` 0.1+** — [astral.sh/uv](https://docs.astral.sh/uv/); check with `uv --version`
+- **Node.js 18+** — [nodejs.org](https://nodejs.org/en/download/)
+- **Git 2.0+** — initialized in your project (`git init` if needed); check with `git --version`
 
 **Step 2: Install `spek` CLI (one time)**
 ```bash
@@ -64,9 +64,9 @@ spek init
 Minimal prerequisites — all standard tools:
 
 - **Python 3.10+** — Check with `python3 --version`
-- **`uv` package manager** — [Quick install](https://docs.astral.sh/uv/)
-- **Node.js 22+** — Required by lat.md; check with `node --version`
-- **Git** — Initialized in your project (`git init` if needed)
+- **`uv` 0.1+** — [Quick install](https://docs.astral.sh/uv/); check with `uv --version`
+- **Node.js 18+** — Required by lat.md; check with `node --version`
+- **Git 2.0+** — Initialized in your project (`git init` if needed); check with `git --version`
 
 All other dependencies (SpecKit, lat.md, Obsidian, Caveman) are auto-installed by `spek init`.
 
@@ -77,6 +77,11 @@ All other dependencies (SpecKit, lat.md, Obsidian, Caveman) are auto-installed b
 Global install (one-time):
 ```bash
 uv tool install spekificity --from git+https://github.com/marcelrienks/spekificity.git
+```
+
+Update to latest version:
+```bash
+uv tool upgrade spekificity
 ```
 
 Per-project setup:
@@ -131,7 +136,7 @@ cd /path/to/your/project && spek init
 
 ## Next Steps
 
-1. **Install prerequisites:** Python 3.10+, uv, Node.js 22+, git
+1. **Install prerequisites:** Python 3.10+, uv 0.1+, Node.js 18+, git 2.0+
 2. **Install CLI:** `uv tool install spekificity --from git+...`
 3. **Initialize:** `cd /your/project && spek init` (select agent integration type)
 4. **Learn:** Read [wiki/workflow.md](wiki/workflow.md) and [wiki/skills.md](wiki/skills.md)

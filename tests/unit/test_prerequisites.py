@@ -76,7 +76,7 @@ class TestCheckPrerequisites:
         def run_side(cmd, **kwargs):
             class R:
                 returncode = 0
-                stdout = "v18.0.0" if cmd[0] == "node" else "tool 1.0.0"
+                stdout = "v17.0.0" if cmd[0] == "node" else "tool 1.0.0"
             return R()
 
         with patch("shutil.which", side_effect=which_side), \
