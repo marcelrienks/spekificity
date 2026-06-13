@@ -46,8 +46,10 @@ def _init_impl(
 ) -> None:
     """Implementation of init command."""
     # Store verbose flag in a global so run_command can access it
+    # Also enable SILENT mode to suppress nested output during progress
     import spekificity.utils
     spekificity.utils.VERBOSE = verbose
+    spekificity.utils.SILENT = not verbose
     from spekificity.prerequisites import check_prerequisites
     from spekificity.lat_md.install import install_lat
     from spekificity.lat_md.index import run_lat_index

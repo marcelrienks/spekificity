@@ -7,6 +7,7 @@ import sys
 from contextlib import contextmanager
 
 VERBOSE = False
+SILENT = False
 
 
 def run_command(cmd: list[str], description: str, timeout: int | None = None) -> subprocess.CompletedProcess:
@@ -41,8 +42,9 @@ def run_command(cmd: list[str], description: str, timeout: int | None = None) ->
 
 
 def print_status(tag: str, message: str) -> None:
-    """Print a formatted status line: [TAG] message."""
-    print(f"[{tag}] {message}")
+    """Print a formatted status line: [TAG] message. Suppressed if SILENT=True."""
+    if not SILENT:
+        print(f"[{tag}] {message}")
 
 
 _progress_action = ""
