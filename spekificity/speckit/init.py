@@ -13,5 +13,8 @@ def run_specify_init(project_path: Path, integration: str) -> None:
     if specify_dir.exists():
         print_status("SKIP", ".specify/ already exists — skipping specify init")
         return
-    run_command(["specify", "init", "--integration", integration], "specify init")
+    run_command(
+        ["specify", "init", str(project_path), "--integration", integration],
+        "specify init",
+    )
     print_status("OK", "SpecKit initialized (.specify/)")
