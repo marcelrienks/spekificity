@@ -8,7 +8,7 @@ from pathlib import Path
 import click
 
 from spekificity import __version__
-from spekificity.utils import print_status
+from spekificity.utils import print_status, progress_start, progress_ok, progress_error
 
 
 @click.group()
@@ -59,56 +59,67 @@ def init(path: str, integration: str | None, script_type: str | None, no_git_hoo
         no_git_hooks=no_git_hooks,
     )
 
-    # --- Step 1/8: Prerequisites (fail-fast on missing tool) ---
-    print_status("INIT", "Step 1/8: Verifying prerequisites")
+    # --- Step 1: Prerequisites (fail-fast on missing tool) ---
+    progress_start("Verifying prerequisites")
     check_prerequisites()
+    progress_ok()
 
-    # --- Step 2/8: lat.md ---
-    print_status("INIT", "Step 2/8: Installing code analysis (lat.md)")
+    # --- Step 2: lat.md ---
+    progress_start("Installing code analysis")
     install_lat()
     run_lat_index(project_path)
+    progress_ok()
 
-    # --- Step 3/8: Obsidian + vault scaffold ---
-    print_status("INIT", "Step 3/8: Setting up vault (Obsidian)")
+    # --- Step 3: Obsidian + vault scaffold ---
+    progress_start("Setting up vault")
     obsidian_result = install_obsidian()
     scaffold_vault(project_path)
     needs_exit_2 = False
     if obsidian_result.status == "needs_user_action":
         needs_exit_2 = True
-        print_status("SKIP", "Obsidian CLI not registered — skipping vault init; register CLI and re-run spek init")
+        progress_ok()
+        print_status("SKIP", "Obsidian CLI not registered — register CLI and re-run spek init")
     elif obsidian_result.status == "skipped":
-        print_status("SKIP", "vault init skipped (Linux — Obsidian not available)")
+        progress_ok()
+        print_status("SKIP", "Obsidian skipped (Linux)")
     else:
         init_vault(project_path)
+        progress_ok()
 
-    # --- Step 4/8: SpecKit ---
-    print_status("INIT", "Step 4/8: Installing spec workflow (SpecKit)")
+    # --- Step 4: SpecKit ---
+    progress_start("Installing spec workflow")
     install_speckit()
     run_specify_init(project_path, integration)
     write_spek_config(project_path, options)
+    progress_ok()
 
-    # --- Step 5/8: MCP config ---
-    print_status("INIT", "Step 5/8: Configuring AI agent integration")
+    # --- Step 5: MCP config ---
+    progress_start("Configuring AI agent integration")
     if integration in INTEGRATION_MCP_CONFIG:
         config_file_str, servers_key, extra_fields, flat_key = INTEGRATION_MCP_CONFIG[integration]
         config_path = project_path / config_file_str
         write_mcp_config(config_path, servers_key, extra_fields, integration, flat_key=flat_key)
     else:
         print_mcp_instructions()
+    progress_ok()
 
-    # --- Step 6/8: Git hook ---
-    print_status("INIT", "Step 6/8: Installing git hooks")
+    # --- Step 6: Git hook ---
+    progress_start("Installing git hooks")
     write_git_hook(project_path, skip=no_git_hooks)
+    progress_ok()
 
-    # --- Step 7/8: Skills ---
-    print_status("INIT", "Step 7/8: Installing agent skills")
+    # --- Step 7: Skills ---
+    progress_start("Installing agent skills")
     copy_skills(project_path, integration)
+    progress_ok()
 
-    # --- Step 8/8: Caveman ---
-    print_status("INIT", "Step 8/8: Enabling Caveman compression")
+    # --- Step 8: Caveman ---
+    progress_start("Enabling Caveman compression")
     from spekificity.caveman.install import install_caveman
     install_caveman(project_path, integration)
+    progress_ok()
 
+    print("")
     print_status("OK", "Setup complete!")
 
     if needs_exit_2:

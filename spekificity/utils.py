@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import subprocess
+import sys
+from contextlib import contextmanager
 
 
 def run_command(cmd: list[str], description: str, timeout: int | None = None) -> subprocess.CompletedProcess:
@@ -28,3 +30,29 @@ def run_command(cmd: list[str], description: str, timeout: int | None = None) ->
 def print_status(tag: str, message: str) -> None:
     """Print a formatted status line: [TAG] message."""
     print(f"[{tag}] {message}")
+
+
+_progress_action = ""
+
+
+def progress_start(action: str) -> None:
+    """Show action description."""
+    global _progress_action
+    _progress_action = action
+    sys.stdout.write(f"{action}... ")
+    sys.stdout.flush()
+
+
+def progress_ok() -> None:
+    """Mark as successful."""
+    sys.stdout.write("✓\n")
+    sys.stdout.flush()
+
+
+def progress_error(message: str = "") -> None:
+    """Mark as failed."""
+    if message:
+        sys.stdout.write(f"✗ ({message})\n")
+    else:
+        sys.stdout.write("✗\n")
+    sys.stdout.flush()
