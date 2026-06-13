@@ -42,27 +42,35 @@ def run_command(cmd: list[str], description: str, timeout: int | None = None) ->
 
 def print_status(tag: str, message: str) -> None:
     """Print a formatted status line: [TAG] message. Only shown in verbose mode."""
-    global _progress_action
+    global _progress_action, _progress_has_verbose
     if VERBOSE:
-        if _progress_action:
-            print()  # Move to new line after progress_start
-            _progress_action = ""
+        if _progress_action and not _progress_has_verbose:
+            print()  # Move to new line before first verbose message in this progress action
+            _progress_has_verbose = True
         print(f"[{tag}] {message}")
 
 
 _progress_action = ""
+_progress_has_verbose = False
 
 
 def progress_start(action: str) -> None:
     """Show action description."""
-    global _progress_action
+    global _progress_action, _progress_has_verbose
     _progress_action = action
-    print(f"{action}...", end=" ", flush=True)
+    _progress_has_verbose = False
+    print(f"{action}... ", end="", flush=True)
 
 
 def progress_ok() -> None:
     """Mark as successful."""
-    print("✓")
+    global _progress_action, _progress_has_verbose
+    if _progress_has_verbose:
+        print("✓")  # New line (already moved to new line from verbose messages)
+    else:
+        print(" ✓")  # Same line as progress indicator
+    _progress_action = ""
+    _progress_has_verbose = False
 
 
 def progress_error(message: str = "") -> None:
