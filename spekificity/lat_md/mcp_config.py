@@ -43,16 +43,15 @@ def write_mcp_config(
             node = node.setdefault(key, {})
         servers = node.setdefault(keys[-1], {})
 
-    if "lat" in servers:
-        print_status("SKIP", f"lat MCP entry already in {config_path}")
-        return McpConfigResult(integration=integration, config_file=config_path, status="already_present")
+    was_present = "lat" in servers
 
     entry: dict[str, Any] = {"command": "lat", "args": ["mcp"]}
     entry.update(extra_fields)
     servers["lat"] = entry
     config_path.parent.mkdir(parents=True, exist_ok=True)
     config_path.write_text(json.dumps(config, indent=2))
-    print_status("OK", f"lat MCP entry written to {config_path}")
+    action = "updated" if was_present else "written"
+    print_status("OK", f"lat MCP entry {action} to {config_path}")
     return McpConfigResult(integration=integration, config_file=config_path, status="written")
 
 

@@ -123,7 +123,7 @@ def _fetch_skill_content() -> Optional[bytes]:
 
 
 def _copy_skill(project_path: Path, integration: str, content: Optional[bytes]) -> str:
-    """Write SKILL.md to integration skills dir. Returns 'installed', 'skipped', or 'failed'."""
+    """Write SKILL.md to integration skills dir. Always replaces. Returns 'installed' or 'failed'."""
     if content is None:
         return "failed"
 
@@ -132,13 +132,11 @@ def _copy_skill(project_path: Path, integration: str, content: Optional[bytes]) 
 
     dest = (skills_dir / "caveman" / "SKILL.md") if use_subfolder else (skills_dir / "caveman.md")
 
-    if dest.exists():
-        print_status("SKIP", f"caveman skill already present at {dest.relative_to(project_path)}")
-        return "skipped"
-
     dest.parent.mkdir(parents=True, exist_ok=True)
+    was_present = dest.exists()
     dest.write_bytes(content)
-    print_status("OK", f"caveman skill installed → {dest.relative_to(project_path)}")
+    action = "updated" if was_present else "installed"
+    print_status("OK", f"caveman skill {action} → {dest.relative_to(project_path)}")
     return "installed"
 
 

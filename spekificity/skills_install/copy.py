@@ -20,7 +20,7 @@ class SkillInstallResult:
 
 
 def copy_skills(project_path: Path, integration: str) -> SkillInstallResult:
-    """Copy skill files from package to integration's skills dir. Never overwrites."""
+    """Copy skill files from package to integration's skills dir. Always replaces static files."""
     skills_dir_str, use_subfolder = get_skills_config(integration)
     skills_dir = project_path / skills_dir_str
     result = SkillInstallResult(integration=integration, skills_dir=skills_dir)
@@ -37,15 +37,12 @@ def copy_skills(project_path: Path, integration: str) -> SkillInstallResult:
         else:
             dest = skills_dir / name
 
-        if dest.exists():
-            result.skipped.append(name)
-            print_status("SKIP", f"skill {name} already at {dest.relative_to(project_path)}")
-            continue
-
         dest.parent.mkdir(parents=True, exist_ok=True)
+        was_present = dest.exists()
         with pkg_resources.as_file(skill_resource) as src_path:
             shutil.copy2(src_path, dest)
         result.installed.append(name)
-        print_status("OK", f"skill {name} installed to {dest.relative_to(project_path)}")
+        action = "updated" if was_present else "installed"
+        print_status("OK", f"skill {name} {action} at {dest.relative_to(project_path)}")
 
     return result
