@@ -21,7 +21,6 @@ def scaffold_vault(project_path: Path) -> ScaffoldResult:
     dirs = [
         project_path / ".spek" / "vault" / "lessons",
         project_path / ".spek" / "memory",
-        project_path / ".spek" / "lat",
     ]
     for d in dirs:
         if d.exists():

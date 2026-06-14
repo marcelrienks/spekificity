@@ -11,7 +11,6 @@ class TestScaffoldVault:
         result = scaffold_vault(tmp_path)
         assert (tmp_path / ".spek" / "vault" / "lessons").is_dir()
         assert (tmp_path / ".spek" / "memory").is_dir()
-        assert (tmp_path / ".spek" / "lat").is_dir()
 
     def test_does_not_create_content_files(self, tmp_path):
         scaffold_vault(tmp_path)
@@ -22,10 +21,10 @@ class TestScaffoldVault:
         scaffold_vault(tmp_path)
         result2 = scaffold_vault(tmp_path)
         assert len(result2.created_dirs) == 0
-        assert len(result2.skipped_dirs) == 3
+        assert len(result2.skipped_dirs) == 2
 
     def test_returns_scaffold_result(self, tmp_path):
         result = scaffold_vault(tmp_path)
         assert hasattr(result, "created_dirs")
         assert hasattr(result, "skipped_dirs")
-        assert len(result.created_dirs) == 3
+        assert len(result.created_dirs) == 2

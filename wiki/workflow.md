@@ -29,8 +29,8 @@ Initialize all third-party tools and load context before feature development. `/
 
 | Step | Action | Output |
 |------|--------|--------|
-| lat.md Code Index | Initialize/refresh lat.md index of source code (symbols, definitions, call graphs) | Code index ready in `.spek/lat/` |
-| lat.md Doc Index | Initialize/refresh lat.md index of documentation (wiki, vault, markdown files) — **separate index** | Doc index ready in `.spek/lat/` |
+| lat.md Code Index | Initialize/refresh lat.md index of source code (symbols, definitions, call graphs) | Code index ready in `.spek/lat.md/` |
+| lat.md Doc Index | Initialize/refresh lat.md index of documentation (wiki, vault, markdown files) — **separate index** | Doc index ready in `.spek/lat.md/` |
 | Vault Storage | Store both indexes in Obsidian vault (`.spek/vault/`) for persistent context | Indexes persisted |
 | Context Load | Load vault decisions, patterns, prior lessons into agent session | Session context ready |
 | Constitution Check | Verify `.specify/memory/constitution.md` exists. If missing, invoke `/speckit.constitution` to create it (one-time, interactive). Constitution defines project principles SpecKit embeds into all spec/plan generation. | Constitution present |
@@ -38,8 +38,8 @@ Initialize all third-party tools and load context before feature development. `/
 **Why two separate indexes:** Code index answers "where is X defined / what calls it." Doc index answers "what decisions or patterns relate to topic X." Merging them degrades both queries.
 
 ### Output Artifacts
-- lat.md code index (fresh, stored in `.spek/lat/`)
-- lat.md doc index (fresh, stored in `.spek/lat/`)
+- lat.md code index (fresh, stored in `.spek/lat.md/`)
+- lat.md doc index (fresh, stored in `.spek/lat.md/`)
 - Vault context loaded (decisions, patterns, lessons in agent session)
 - Project constitution verified
 

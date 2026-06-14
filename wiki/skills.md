@@ -90,8 +90,8 @@ Initialize workspace tools and load context before feature development.
    If missing: invoke `/speckit.constitution` now (interactive, one-time).
 
 ## Output
-- lat.md code index refreshed (`.spek/lat/`)
-- lat.md doc index refreshed (`.spek/lat/`)
+- lat.md code index refreshed (`.spek/lat.md/`)
+- lat.md doc index refreshed (`.spek/lat.md/`)
 - Vault decisions and patterns loaded into session
 - Constitution present
 

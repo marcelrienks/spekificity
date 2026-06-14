@@ -72,7 +72,7 @@ class TestInitFlow:
         assert result.exit_code == 0, result.output
         assert (project / ".spek" / "vault").is_dir()
         assert (project / ".spek" / "memory").is_dir()
-        assert (project / ".spek" / "lat").is_dir()
+        assert (project / ".spek" / "lat.md").is_dir()
         assert (project / ".spek" / "config.yaml").exists()
         assert (project / ".mcp.json").exists()
         assert (project / ".git" / "hooks" / "post-commit").exists()

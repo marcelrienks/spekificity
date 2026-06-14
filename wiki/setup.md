@@ -208,7 +208,7 @@ lat init
 lat mcp
 ```
 
-`lat init` creates the index in `.spek/lat/`. `lat mcp` starts the MCP server that agent skills query during workflow. MCP server must be running during agent sessions.
+`lat init` creates the index in `.spek/lat.md/`. `lat mcp` starts the MCP server that agent skills query during workflow. MCP server must be running during agent sessions.
 
 ---
 
@@ -439,7 +439,7 @@ tools:
     enabled: true
   lat_md:
     enabled: true
-    index_path: .spek/lat/
+    index_path: .spek/lat.md/
   vault:
     enabled: true
     path: .spek/vault/

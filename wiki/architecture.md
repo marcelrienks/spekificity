@@ -332,7 +332,7 @@ SpecKit generates a richer, more accurate spec because the agent already has pro
 |-------|---------|------|----------|
 | **Knowledge Vault** | Git (`.spek/vault/` directory) | Manual (user commits) after /spek.conclude | Persistent (feature cycle + beyond) |
 | **Repo Memory** | `.spek/memory/` (YAML) | Manual after /spek.conclude | Persistent (workspace lifetime) |
-| **lat.md** | Index directory in `.spek/lat/` (non-human-readable) | Manual via `/lat.sync` | Persistent (session lifetime) |
+| **lat.md** | Index directory in `.spek/lat.md/` (non-human-readable) | Manual via `/lat.sync` | Persistent (session lifetime) |
 | **Session State** | In-memory + context window | Manual commits to memory | Temporary (single session) |
 
 ---

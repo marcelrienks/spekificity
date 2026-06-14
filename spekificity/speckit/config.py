@@ -24,7 +24,7 @@ tools:
     enabled: true
   lat_md:
     enabled: true
-    index_path: .spek/lat/
+    index_path: .spek/lat.md/
   vault:
     enabled: true
     path: .spek/vault/
