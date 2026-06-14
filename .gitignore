@@ -37,6 +37,8 @@ build/
 
 # Non-human-readable lat.md index storage (keep wiki/ human-readable)
 .spek/lat/
+lat.md/
+lat.md
 
 # ── Framework / Config ────────────────────────────────────────
 .specify/

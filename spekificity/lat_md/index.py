@@ -14,5 +14,5 @@ def run_lat_index(project_path: Path) -> None:
         print_status("SKIP", "lat index already present")
         return
 
-    run_command(["lat", "init", str(project_path)], "lat init", timeout=300)
+    run_command(["lat", "init", str(lat_dir)], "lat init", timeout=300)
     print_status("OK", "lat.md initialized")
