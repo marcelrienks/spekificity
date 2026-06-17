@@ -3,8 +3,11 @@
   <img src="spekificity/assets/logo.png" alt="Spekificity Logo" width="100%">
 </p>
 
+_corporate marketing blurb:_
 Spekificity is a spec-driven agent development framework. It glues four best-in-class tools (**Obsidian** vault, **lat.md** code graph, **SpecKit** workflow, **Caveman** compression) into one coordinated system. One setup command (`spek init`), then use agent skills inside your AI editor (Claude Code, Copilot, Gemini, etc.) to develop features with persistent architecture context, deterministic workflows, and token efficiency.
 
+_or simply put:_
+It’s a combination of spec driven development workflow combined with persistent memory for the agent mixed in with a little bit of compression and reduction and velocity and an understanding of the source code in an index, all accessed through agent skills.
 ---
 
 ## Quick Start
