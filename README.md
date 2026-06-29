@@ -5,6 +5,11 @@
 
 Spekificity is a spec-driven agent development framework. It glues four best-in-class tools (**Obsidian** vault, **lat.md** code graph, **SpecKit** workflow, **Caveman** compression) into one coordinated system. One setup command (`spek init`), then use agent skills inside your AI editor (Claude Code, Copilot, Gemini, etc.) to develop features with persistent architecture context, deterministic workflows, and token efficiency.
 
+**Status**
+
+[![Logic](https://img.shields.io/badge/Logic-Complete-green)](https://github.com/marcelrienks/spekificity)
+[![Testing](https://img.shields.io/badge/Testing-Stress%20Test%20Phase-yellow)](https://github.com/marcelrienks/spekificity)
+
 ---
 
 ## Quick Start
