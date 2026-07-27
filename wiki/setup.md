@@ -111,7 +111,7 @@ After prerequisite checks and tool installation, prompt for:
    | Value | Agent | Skill File Location |
    |-------|-------|---------------------|
    | `claude` | Claude Code | `.claude/commands/` |
-   | `copilot` | GitHub Copilot | `.github/agents/skills/` |
+   | `copilot` | GitHub Copilot | `.github/skills/` |
    | `gemini` | Gemini CLI | `.gemini/skills/` |
    | `cursor-agent` | Cursor | `.cursor/skills/` |
    | `windsurf` | Windsurf | `.windsurf/skills/` |

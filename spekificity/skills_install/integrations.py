@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import Any
 
-FLAT_INTEGRATIONS: set[str] = {"claude", "copilot", "generic"}
+FLAT_INTEGRATIONS: set[str] = {"claude", "generic"}
 
 INTEGRATION_SKILLS_DIR: dict[str, str] = {
     "claude": ".claude/commands",
-    "copilot": ".github/agents/skills",
+    "copilot": ".github/skills",
     "generic": ".agents/skills",
     "gemini": ".gemini/skills",
     "cursor-agent": ".cursor/skills",

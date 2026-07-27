@@ -21,9 +21,10 @@ class TestGetSkillsConfig:
         assert skills_dir == ".cursor/skills"
         assert use_subfolder is True
 
-    def test_copilot_returns_flat(self):
+    def test_copilot_returns_subfolder(self):
         skills_dir, use_subfolder = get_skills_config("copilot")
-        assert use_subfolder is False
+        assert skills_dir == ".github/skills"
+        assert use_subfolder is True
 
     def test_generic_returns_flat(self):
         skills_dir, use_subfolder = get_skills_config("generic")
@@ -43,7 +44,7 @@ class TestGetSkillsConfig:
 
     def test_flat_integrations_membership(self):
         assert "claude" in FLAT_INTEGRATIONS
-        assert "copilot" in FLAT_INTEGRATIONS
+        assert "copilot" not in FLAT_INTEGRATIONS
         assert "generic" in FLAT_INTEGRATIONS
         assert "gemini" not in FLAT_INTEGRATIONS
         assert "cursor-agent" not in FLAT_INTEGRATIONS

@@ -41,7 +41,7 @@ All workflow commands are agent skills installed by `spek init` into the project
 | Integration | Agent | Skill File Location |
 |-------------|-------|---------------------|
 | `claude` | Claude Code | `.claude/commands/` |
-| `copilot` | GitHub Copilot | `.github/agents/skills/` |
+| `copilot` | GitHub Copilot | `.github/skills/` |
 | `gemini` | Gemini CLI | `.gemini/skills/` |
 | `cursor-agent` | Cursor | `.cursor/skills/` |
 | `windsurf` | Windsurf | `.windsurf/skills/` |

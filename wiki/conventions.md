@@ -11,7 +11,7 @@ Lightweight guide to file/directory naming for Spekificity projects. For command
 | Integration | Agent | Location | Example |
 |-------------|-------|----------|---------|
 | `claude` | Claude Code | `.claude/commands/` | `.claude/commands/spek-prepare.md` |
-| `copilot` | GitHub Copilot | `.github/agents/skills/` | `.github/agents/skills/spek-prepare.md` |
+| `copilot` | GitHub Copilot | `.github/skills/` | `.github/skills/spek-prepare/SKILL.md` |
 | `gemini` | Gemini CLI | `.gemini/skills/` | `.gemini/skills/spek-prepare/SKILL.md` |
 | `cursor-agent` | Cursor | `.cursor/skills/` | `.cursor/skills/spek-prepare/SKILL.md` |
 | `windsurf` | Windsurf | `.windsurf/skills/` | `.windsurf/skills/spek-prepare/SKILL.md` |
