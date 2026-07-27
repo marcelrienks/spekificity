@@ -1,3 +1,8 @@
+---
+name: spek-lessons
+description: 'Extract and store structured lessons. Callable standalone at any point, or auto-called inside spek.conclude.'
+---
+
 # /spek.lessons
 
 Extract and store structured lessons. Callable standalone at any point, or auto-called as step 2 inside `/spek.conclude`.

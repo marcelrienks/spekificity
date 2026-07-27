@@ -1,3 +1,8 @@
+---
+name: spek-blind-review
+description: 'Run a context-free quality pass by anonymizing AI attribution before reviewing.'
+---
+
 # /spek.blind-review
 
 Run a context-free quality pass by anonymizing AI attribution before reviewing.

@@ -1,3 +1,8 @@
+---
+name: spek-plan
+description: 'Orchestrate SpecKit planning pipeline with user review and remediation at each step.'
+---
+
 # /spek.plan
 
 Orchestrate SpecKit planning pipeline with user review and remediation at each step.

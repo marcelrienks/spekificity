@@ -1,3 +1,8 @@
+---
+name: spek-rarv
+description: 'Detect and resolve spec drift via four-phase Reason-Act-Reflect-Verify cycle.'
+---
+
 # /spek.rarv
 
 Detect and resolve spec drift via four-phase Reason-Act-Reflect-Verify cycle.

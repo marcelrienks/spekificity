@@ -1,3 +1,8 @@
+---
+name: spek-conclude
+description: 'All post-implementation: analysis, lessons extraction, vault archive, state refresh, and commit.'
+---
+
 # /spek.conclude
 
 All post-implementation: analysis, lessons extraction, vault archive, state refresh, and commit.

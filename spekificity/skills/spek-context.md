@@ -1,3 +1,8 @@
+---
+name: spek-context
+description: 'Load vault context and repo memory into the current agent session.'
+---
+
 # /spek.context
 
 Load vault context and repo memory into the current agent session.

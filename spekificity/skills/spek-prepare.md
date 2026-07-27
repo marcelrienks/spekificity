@@ -1,3 +1,8 @@
+---
+name: spek-prepare
+description: 'Initialize third-party tools and load context before feature development.'
+---
+
 # /spek.prepare
 
 Initialize third-party tools and load context before feature development.

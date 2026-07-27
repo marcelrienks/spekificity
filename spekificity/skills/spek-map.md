@@ -1,3 +1,8 @@
+---
+name: spek-map
+description: 'Query lat.md and vault to map code dependencies for a spec topic.'
+---
+
 # /spek.map
 
 Query lat.md and vault to map code dependencies for a spec topic.

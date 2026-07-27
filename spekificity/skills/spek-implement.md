@@ -1,3 +1,8 @@
+---
+name: spek-implement
+description: 'Execute approved tasks via SpecKit. Accepts optional --steps N to jump to task N (resume from a specific task).'
+---
+
 # /spek.implement
 
 Execute approved tasks via SpecKit. Accepts optional `--steps N` to jump to task N (resume from a specific task).
