@@ -20,3 +20,18 @@ class TestRunLatIndex:
         with patch("spekificity.lat_md.index.run_command") as mock_run:
             run_lat_index(tmp_path)
         mock_run.assert_not_called()
+
+    def test_creates_symlink_at_project_root(self, tmp_path):
+        # Create the .spek/lat.md directory that lat init would create
+        lat_md_dir = tmp_path / ".spek" / "lat.md"
+        lat_md_dir.mkdir(parents=True)
+        
+        with patch("spekificity.lat_md.index.run_command"):
+            run_lat_index(tmp_path)
+        
+        # Verify symlink exists at project root
+        root_symlink = tmp_path / "lat.md"
+        assert root_symlink.exists()
+        assert root_symlink.is_symlink()
+        assert root_symlink.resolve() == lat_md_dir
+
