@@ -29,12 +29,12 @@ Initialize third-party tools and load context before feature development.
    - `.cursor/rules.md` — Cursor agent equivalent (if .cursor/ exists)
    - `.windsurf/rules.md` — Windsurf agent equivalent (if .windsurf/ exists)
    - Other agent-specific config files as needed
-6. **Verify Caveman compression activation**: Caveman should already be active in this session via automatic `SessionStart` hook (configured by `spek init`). Validate the hook exists:
-   - For Claude: check `.claude/settings.json` for `SessionStart` hook pointing to Caveman activation (should be set by `spek init --no-git-hooks`)
-   - If hook missing, print `[WARN] Caveman SessionStart hook not found. Re-run 'spek init' to install.`
-   - If hook present, Caveman active in all sessions automatically (no manual action needed)
-   - Note: Caveman reduces token spend by ~75%; particularly valuable for `/spek.conclude` and pattern analysis phases
-   - Users can manually override with `/caveman lite|full|ultra` anytime if needed
+6. **Enable Caveman compression by default**: Caveman reduces token spend by ~75% and is particularly valuable for analysis/pattern/lessons phases. Activate Caveman:
+   - Check if SessionStart hook exists in `.claude/settings.json` pointing to Caveman activation
+   - If hook missing, print `[WARN] SessionStart hook not configured. Enabling Caveman for this session manually.` and run `/caveman full`
+   - If hook present and Caveman active, continue (already enabled automatically)
+   - If hook present but Caveman not yet active in this session, run `/caveman full` to enable
+   - Users can adjust compression level with `/caveman lite|full|ultra` anytime if needed
 7. Validate tooling: Check that `lat` command available in PATH (run `which lat` or equivalent). If not found, halt with error. Also validate symlink: check if `./lat.md` exists and points to `.spek/lat.md/` (should exist after init, but if missing run `ln -s .spek/lat.md ./lat.md`). If symlink missing, create it — required for `lat mcp` server startup.
 8. Validate Obsidian CLI: Check that Obsidian CLI accessible (run `osascript` or `which obsidian` on macOS, equivalent on Linux/Windows). If not found, print warning but continue (vault operations may still work via file ops).
 9. Validate write access: Check directories writable — `.spek/vault/`, `.spek/memory/`, project root for `CLAUDE.md`. If any lack write access, halt with error.

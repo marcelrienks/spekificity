@@ -13,19 +13,22 @@ Load vault context and repo memory into the current agent session.
 
 ## Steps
 
-0. **Pre-check**: Validate vault structure exists. Check `.spek/vault/` directory exists. Check that `decisions.md` and `patterns.md` exist in vault; if missing, create empty stubs with minimal structure (e.g., `## Decisions` header for decisions.md). Check `.spek/memory/` exists; create if missing.
-0.5. **Obsidian Desktop Sync (Optional)**: If using Obsidian Desktop for vault browsing:
+0. **Caveman activation check**: Ensure Caveman compression is active. If not active in this session, run `/caveman full` to enable ~75% token reduction (valuable for context loading phase).
+
+0.5. **Pre-check**: Validate vault structure exists. Check `.spek/vault/` directory exists. Check that `decisions.md` and `patterns.md` exist in vault; if missing, create empty stubs with minimal structure (e.g., `## Decisions` header for decisions.md). Check `.spek/memory/` exists; create if missing.
+
+1. **Obsidian Desktop Sync (Optional)**: If using Obsidian Desktop for vault browsing:
    - Pull latest vault changes from git: `git pull origin main` (ensures decisions/patterns from other features loaded into local git)
    - Open `.spek/vault/` folder in Obsidian Desktop (if not already open; vault may be pinned as vault in settings)
    - Obsidian will detect backlinks, wikilinks, and tags from decision/pattern entries and prior lessons
    - Do NOT push Obsidian-generated metadata files (`.obsidian/`) to git (add to .gitignore if not already)
    - Obsidian Desktop provides visual graph view of decision/pattern network — useful for understanding decision dependencies and pattern reuse chains
    - Note: Obsidian Desktop is optional; all vault operations work via file I/O without it
-1. Read `.spek/vault/decisions.md` — load project decisions into session.
-2. Read `.spek/vault/patterns.md` — load reusable patterns into session.
-3. Read all files in `.spek/vault/lessons/` — load prior lessons into session (skip gracefully if lessons/ directory empty or missing).
-4. Read `.spek/memory/` — load workspace-scoped facts into session.
-5. Session state now populated. All downstream `/spek.*` commands have full context available.
+2. Read `.spek/vault/decisions.md` — load project decisions into session.
+3. Read `.spek/vault/patterns.md` — load reusable patterns into session.
+4. Read all files in `.spek/vault/lessons/` — load prior lessons into session (skip gracefully if lessons/ directory empty or missing).
+5. Read `.spek/memory/` — load workspace-scoped facts into session.
+6. Session state now populated. All downstream `/spek.*` commands have full context available.
 
 ## Output
 

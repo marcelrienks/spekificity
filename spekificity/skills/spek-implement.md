@@ -15,9 +15,11 @@ Execute approved tasks via SpecKit. Accepts optional `--steps N` to jump to task
 
 ## Steps
 
-0. **Validation**: Check git initialized (`.git/` directory exists). If not, halt with error. Check all prerequisite files exist in `.spek/vault/` — `spec.md`, `plan.md`, `tasks.md`; fail fast with error if missing. Validate lat.md symlink: check `./lat.md` exists and points to `.spek/lat.md/` (required for lat.md symbol tracking during implementation). If symlink missing, halt with error (symlink should be created by prepare; contact user to run `/spek.prepare` if missing). If `--steps N` provided, validate N is positive integer and task N exists in tasks list; fail fast with error if invalid.
-0.5. **Approval Validation**: Check YAML frontmatter in each of spec.md, plan.md, tasks.md. Verify all three have `status: approved`. If any show `status: draft`, halt with error and report which file(s) need approval. Verify `approved_by` and `approved_date` populated in all three. If missing, prompt user to update frontmatter via spek-plan and rerun.
-0.6. **Token Budget Advisory**: Read `token_budget.per_feature` from `.spek/config.yaml` (if exists). Print `[INFO] Token budget: X remaining for this feature. If trending high, Caveman mode (~75% reduction) available via /caveman full`; skip if not configured.
+0. **Caveman activation check**: Ensure Caveman compression is active. If not active in this session, run `/caveman full` to enable ~75% token reduction (valuable for implementation-heavy phase).
+
+0.5. **Validation**: Check git initialized (`.git/` directory exists). If not, halt with error. Check all prerequisite files exist in `.spek/vault/` — `spec.md`, `plan.md`, `tasks.md`; fail fast with error if missing. Validate lat.md symlink: check `./lat.md` exists and points to `.spek/lat.md/` (required for lat.md symbol tracking during implementation). If symlink missing, halt with error (symlink should be created by prepare; contact user to run `/spek.prepare` if missing). If `--steps N` provided, validate N is positive integer and task N exists in tasks list; fail fast with error if invalid.
+0.6. **Approval Validation**: Check YAML frontmatter in each of spec.md, plan.md, tasks.md. Verify all three have `status: approved`. If any show `status: draft`, halt with error and report which file(s) need approval. Verify `approved_by` and `approved_date` populated in all three. If missing, prompt user to update frontmatter via spek-plan and rerun.
+0.7. **Token Budget Advisory**: Read `token_budget.per_feature` from `.spek/config.yaml` (if exists). Print `[INFO] Token budget: X remaining for this feature. Caveman enabled for ~75% token reduction.`; skip if not configured.
 1. Check working directory clean: run `git status --porcelain`; if uncommitted changes exist, print `[WARN] uncommitted changes exist — stash or commit before continuing`. Continue only after user confirms.
 2. Load context from `.spek/vault/` (spec + plan + tasks).
 3. Run `/speckit-implement` (optionally with `--steps N`). SpecKit executes all tasks in dependency order and owns per-task execution, code generation, and step tracking.
@@ -39,7 +41,7 @@ Execute approved tasks via SpecKit. Accepts optional `--steps N` to jump to task
    - Commit with message `[Task X] description`
    - Update plan document: mark task complete and document outcome
    - Document any lessons learned or blockers
-5. Track token cost for implementation phase per task; print `[WARN] token budget: implementation phase threshold reached` if configured threshold exceeded. If token cost trending high, print `[TIP] Consider Caveman compression mode (e.g., /caveman full) to reduce token spend by ~75% during later analysis/conclude phases`; execution continues.
+5. Track token cost for implementation phase per task; print `[WARN] token budget: implementation phase threshold reached` if configured threshold exceeded. If token cost trending high, note that Caveman is already enabled for ~75% token reduction; execution continues.
 
 ## Output
 

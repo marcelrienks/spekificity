@@ -16,9 +16,11 @@ All post-implementation: analysis, lessons extraction, vault archive, state refr
 
 ## Steps
 
-0. **Pre-check**: Validate git initialized (`.git/` exists). Validate both `.spek/vault/` and `.spek/memory/` exist and are writable. Validate plan document shows "Implementation Complete" or all tasks marked done. Validate `/speckit-analyze` command available. Validate lat.md symlink at `./lat.md` exists (should be created by prepare). If any pre-check fails, halt with error.
+0. **Caveman activation check**: Ensure Caveman compression is active. If not active in this session, run `/caveman full` to enable ~75% token reduction (particularly valuable for analysis and lessons extraction phases).
 
-1. Run `/speckit-analyze`. Validate command exists before running; if not found, halt with error. Compare Success Criteria vs actual outcomes. Flag spec drift or deviations. **Token efficiency tip**: Analysis phase often requires reading multiple spec/code artifacts; if Caveman not active, consider `/caveman full` for analysis output compression (~75% token reduction).
+0.5. **Pre-check**: Validate git initialized (`.git/` exists). Validate both `.spek/vault/` and `.spek/memory/` exist and are writable. Validate plan document shows "Implementation Complete" or all tasks marked done. Validate `/speckit-analyze` command available. Validate lat.md symlink at `./lat.md` exists (should be created by prepare). If any pre-check fails, halt with error.
+
+1. Run `/speckit-analyze`. Validate command exists before running; if not found, halt with error. Compare Success Criteria vs actual outcomes. Flag spec drift or deviations. Caveman compression active reduces output size by ~75%.
 2. Run `/spek.lessons` as sub-step. Prompt for retrospective. Extract patterns and decisions. Write to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`. (autolink enrichment runs automatically inside `/spek.lessons` — wikilinks and tags added to lesson file; see spek-lessons skill for details).
 3. Run Backprop Reflex: Validate `backprop_reflex()` function exists and callable. Parse test failure output from last test run; call `backprop_reflex()` with vault path; append `> ⚠ Backprop warning` blockquotes to `.spek/vault/patterns.md` for each new failure pattern; skip if no test failures in output or function unavailable.
 4. Archive spec, plan, and tasks to `.spek/vault/`. Update `.spek/vault/patterns.md` with newly discovered patterns. Update `.spek/vault/decisions.md` with new architectural decisions.

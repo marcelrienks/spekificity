@@ -16,7 +16,9 @@ Detect and resolve spec drift via four-phase Reason-Act-Reflect-Verify cycle.
 
 ## Steps
 
-0. **Pre-check**: Validate original spec file exists in `.spek/vault/specs/` (check for `spec.md` or matching feature name file). If missing, halt with error — spec required for comparison. Check `.spek/lat.md/` indexes exist and are recent (run timestamp check or compare against last git commit). If lat.md stale, run `lat init` to refresh before continuing.
+0. **Caveman activation check**: Ensure Caveman compression is active. If not active in this session, run `/caveman full` to enable ~75% token reduction (valuable for reason/reflect/verify phases).
+
+0.5. **Pre-check**: Validate original spec file exists in `.spek/vault/specs/` (check for `spec.md` or matching feature name file). If missing, halt with error — spec required for comparison. Check `.spek/lat.md/` indexes exist and are recent (run timestamp check or compare against last git commit). If lat.md stale, run `lat init` to refresh before continuing.
 1. **Vault Contradiction Check**: Before proceeding, load `.spek/vault/decisions.md` and `.spek/vault/patterns.md`. Run internal contradiction validator; report any contradictions found (decisions that conflict with each other or patterns). If contradictions exist, halt and prompt user to resolve via `/speckit-constitution` or manual vault edit before continuing.
 2. REASON: Load original spec from `.spek/vault/specs/`; query lat.md for all implemented symbols and files changed this feature; build a side-by-side map of spec requirements vs implemented artifacts.
 3. REASON: Identify deviations — additions (code has X, spec does not mention it), omissions (spec requires Y, code lacks it), architecture changes (different pattern used than specified).
