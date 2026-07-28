@@ -29,10 +29,12 @@ Initialize third-party tools and load context before feature development.
    - `.cursor/rules.md` — Cursor agent equivalent (if .cursor/ exists)
    - `.windsurf/rules.md` — Windsurf agent equivalent (if .windsurf/ exists)
    - Other agent-specific config files as needed
-6. **Activate Caveman compression**: If Caveman skill installed in `.claude/commands/` (or agent-specific skills dir), confirm per-session auto-activation:
-   - For Claude: check `.claude/settings.json` for `SessionStart` and `UserPromptSubmit` hooks pointing to Caveman activation (should be set by `spek init --no-git-hooks`)
-   - For other agents: print `[INFO] Caveman compression skill installed. Optional: activate via /caveman full or use default caveman mode`
+6. **Verify Caveman compression activation**: Caveman should already be active in this session via automatic `SessionStart` hook (configured by `spek init`). Validate the hook exists:
+   - For Claude: check `.claude/settings.json` for `SessionStart` hook pointing to Caveman activation (should be set by `spek init --no-git-hooks`)
+   - If hook missing, print `[WARN] Caveman SessionStart hook not found. Re-run 'spek init' to install.`
+   - If hook present, Caveman active in all sessions automatically (no manual action needed)
    - Note: Caveman reduces token spend by ~75%; particularly valuable for `/spek.conclude` and pattern analysis phases
+   - Users can manually override with `/caveman lite|full|ultra` anytime if needed
 7. Validate tooling: Check that `lat` command available in PATH (run `which lat` or equivalent). If not found, halt with error. Also validate symlink: check if `./lat.md` exists and points to `.spek/lat.md/` (should exist after init, but if missing run `ln -s .spek/lat.md ./lat.md`). If symlink missing, create it — required for `lat mcp` server startup.
 8. Validate Obsidian CLI: Check that Obsidian CLI accessible (run `osascript` or `which obsidian` on macOS, equivalent on Linux/Windows). If not found, print warning but continue (vault operations may still work via file ops).
 9. Validate write access: Check directories writable — `.spek/vault/`, `.spek/memory/`, project root for `CLAUDE.md`. If any lack write access, halt with error.
@@ -49,7 +51,7 @@ Initialize third-party tools and load context before feature development.
   - `CLAUDE.md` — Claude agent rules
   - `.cursor/rules.md` — Cursor agent rules (if applicable)
   - `.windsurf/rules.md` — Windsurf agent rules (if applicable)
-- Caveman compression confirmed active (auto-activation via session hooks or manual if needed)
+- Caveman compression active in all sessions (SessionStart hook verified or installed)
 - Obsidian Desktop vault synced (if used) and ready for optional manual editing
 - Ready to call `/spek.plan` or `/spek.map` next
 
@@ -65,6 +67,6 @@ Initialize third-party tools and load context before feature development.
 - Vault context (decisions, patterns, lessons) loaded from git
 - Constitution present and core principles extracted from `.spek/memory/constitution.md`
 - Agent config files (CLAUDE.md, .cursor/rules.md, .windsurf/rules.md, etc.) populated from constitution
-- Caveman compression confirmed active or available for manual activation
+- Caveman compression verified active (SessionStart hook present and functional in all sessions)
 - Obsidian Desktop vault synchronized (latest decisions/patterns from prior features)
 - Token budget checked (or skipped if not configured)
