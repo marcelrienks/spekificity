@@ -29,21 +29,27 @@ Initialize third-party tools and load context before feature development.
    - `.cursor/rules.md` — Cursor agent equivalent (if .cursor/ exists)
    - `.windsurf/rules.md` — Windsurf agent equivalent (if .windsurf/ exists)
    - Other agent-specific config files as needed
-6. Validate tooling: Check that `lat` command available in PATH (run `which lat` or equivalent). If not found, halt with error.
-7. Validate Obsidian CLI: Check that Obsidian CLI accessible (run `osascript` or `which obsidian` on macOS, equivalent on Linux/Windows). If not found, print warning but continue (vault operations may still work via file ops).
-8. Validate write access: Check directories writable — `.spek/vault/`, `.spek/memory/`, project root for `CLAUDE.md`. If any lack write access, halt with error.
-9. Check token budget: read `token_budget.per_feature` from `.spek/config.yaml` (if file exists); print `[WARN] token budget: check remaining before starting` if `per_feature` is set; skip silently if config missing or `per_feature: null`.
+6. **Activate Caveman compression**: If Caveman skill installed in `.claude/commands/` (or agent-specific skills dir), confirm per-session auto-activation:
+   - For Claude: check `.claude/settings.json` for `SessionStart` and `UserPromptSubmit` hooks pointing to Caveman activation (should be set by `spek init --no-git-hooks`)
+   - For other agents: print `[INFO] Caveman compression skill installed. Optional: activate via /caveman full or use default caveman mode`
+   - Note: Caveman reduces token spend by ~75%; particularly valuable for `/spek.conclude` and pattern analysis phases
+7. Validate tooling: Check that `lat` command available in PATH (run `which lat` or equivalent). If not found, halt with error. Also validate symlink: check if `./lat.md` exists and points to `.spek/lat.md/` (should exist after init, but if missing run `ln -s .spek/lat.md ./lat.md`). If symlink missing, create it — required for `lat mcp` server startup.
+8. Validate Obsidian CLI: Check that Obsidian CLI accessible (run `osascript` or `which obsidian` on macOS, equivalent on Linux/Windows). If not found, print warning but continue (vault operations may still work via file ops).
+9. Validate write access: Check directories writable — `.spek/vault/`, `.spek/memory/`, project root for `CLAUDE.md`. If any lack write access, halt with error.
+10. Check token budget: read `token_budget.per_feature` from `.spek/config.yaml` (if file exists); print `[WARN] token budget: check remaining before starting` if `per_feature` is set; skip silently if config missing or `per_feature: null`.
 
 ## Output
 
-- lat.md code index current in `.spek/lat.md/code/`
+- lat.md code index current in `.spek/lat.md/code/` (symlink at `./lat.md` verified/created)
 - lat.md doc index current in `.spek/lat.md/docs/`
+- lat.md MCP server ready (symlink allows `lat mcp` to find knowledge base)
 - Vault context (decisions, patterns, lessons) loaded into session from git (latest from all prior features)
 - Constitution confirmed present at `.spek/memory/constitution.md`
 - Agent config files populated from constitution principles:
   - `CLAUDE.md` — Claude agent rules
   - `.cursor/rules.md` — Cursor agent rules (if applicable)
   - `.windsurf/rules.md` — Windsurf agent rules (if applicable)
+- Caveman compression confirmed active (auto-activation via session hooks or manual if needed)
 - Obsidian Desktop vault synced (if used) and ready for optional manual editing
 - Ready to call `/spek.plan` or `/spek.map` next
 
@@ -55,8 +61,10 @@ Initialize third-party tools and load context before feature development.
 ## Exit Criteria
 
 - lat.md code index initialized and current in `.spek/lat.md/code/` and `.spek/lat.md/docs/`
+- lat.md symlink at `./lat.md` → `.spek/lat.md/` verified (created if missing)
 - Vault context (decisions, patterns, lessons) loaded from git
 - Constitution present and core principles extracted from `.spek/memory/constitution.md`
 - Agent config files (CLAUDE.md, .cursor/rules.md, .windsurf/rules.md, etc.) populated from constitution
+- Caveman compression confirmed active or available for manual activation
 - Obsidian Desktop vault synchronized (latest decisions/patterns from prior features)
 - Token budget checked (or skipped if not configured)

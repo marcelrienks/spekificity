@@ -27,7 +27,7 @@ Query lat.md and vault to map code dependencies for a spec topic.
 
 ## Steps
 
-0. **Validation**: Require explicit topic parameter. If topic not provided, halt with error and prompt user to provide feature area or topic name. Validate lat.md code index exists in `.spek/lat.md/code/` before querying. Pre-check: load vault decisions to flag any blockers already documented.
+0. **Validation**: Require explicit topic parameter. If topic not provided, halt with error and prompt user to provide feature area or topic name. Validate lat.md code index exists in `.spek/lat.md/code/` before querying. Validate lat.md symlink at `./lat.md` points to `.spek/lat.md/` (required for `lat mcp` server). Pre-check: load vault decisions to flag any blockers already documented.
 1. Query lat.md MCP for code references to the spec topic: symbols, callers, definitions, and call graphs.
 2. Query `.spek/vault/` for related decisions and dependent specs that touch the same topic. Also check if any prior patterns apply to this topic.
 3. Generate dependency graph: list files, symbols, specs, and patterns related to the topic.

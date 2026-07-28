@@ -16,20 +16,33 @@ All post-implementation: analysis, lessons extraction, vault archive, state refr
 
 ## Steps
 
-0. **Pre-check**: Validate git initialized (`.git/` exists). Validate both `.spek/vault/` and `.spek/memory/` exist and are writable. Validate plan document shows "Implementation Complete" or all tasks marked done. Validate `/speckit-analyze` command available. If any pre-check fails, halt with error.
+0. **Pre-check**: Validate git initialized (`.git/` exists). Validate both `.spek/vault/` and `.spek/memory/` exist and are writable. Validate plan document shows "Implementation Complete" or all tasks marked done. Validate `/speckit-analyze` command available. Validate lat.md symlink at `./lat.md` exists (should be created by prepare). If any pre-check fails, halt with error.
 
-1. Run `/speckit-analyze`. Validate command exists before running; if not found, halt with error. Compare Success Criteria vs actual outcomes. Flag spec drift or deviations.
-2. Run `/spek.lessons` as sub-step. Prompt for retrospective. Extract patterns and decisions. Write to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`. (autolink enrichment runs automatically inside `/spek.lessons` — wikilinks and tags added to lesson file)
+1. Run `/speckit-analyze`. Validate command exists before running; if not found, halt with error. Compare Success Criteria vs actual outcomes. Flag spec drift or deviations. **Token efficiency tip**: Analysis phase often requires reading multiple spec/code artifacts; if Caveman not active, consider `/caveman full` for analysis output compression (~75% token reduction).
+2. Run `/spek.lessons` as sub-step. Prompt for retrospective. Extract patterns and decisions. Write to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`. (autolink enrichment runs automatically inside `/spek.lessons` — wikilinks and tags added to lesson file; see spek-lessons skill for details).
 3. Run Backprop Reflex: Validate `backprop_reflex()` function exists and callable. Parse test failure output from last test run; call `backprop_reflex()` with vault path; append `> ⚠ Backprop warning` blockquotes to `.spek/vault/patterns.md` for each new failure pattern; skip if no test failures in output or function unavailable.
 4. Archive spec, plan, and tasks to `.spek/vault/`. Update `.spek/vault/patterns.md` with newly discovered patterns. Update `.spek/vault/decisions.md` with new architectural decisions.
 5. Summarize total token usage for feature; compare against `token_budget.per_feature`; print `[WARN] token budget: feature exceeded budget` if over; skip if `per_feature: null`.
 6. Run `lat init` to refresh the lat.md index (reflects newly committed code). Sync repo memory to `.spek/memory/`.
-6.5. **lat.md Drift Report**: Aggregate symbol additions/removals from `.spek/memory/task-X-symbols.md` files. Generate `.spek/memory/lat-drift-report.md`:
-   - Symbols added in implementation but not in pre-task lat.md (new code)
-   - Symbols removed (refactored or deleted)
-   - Compare against spec: were additions/removals intentional?
-   - Link to relevant Success Criteria if drift justified
-   - Flag any drift that contradicts spec (escalate as potential bug)
+6.5. **lat.md Drift Report**: Aggregate symbol additions/removals from `.spek/memory/task-X-symbols.md` files (populated during implement). Generate `.spek/memory/lat-drift-report.md`:
+   - **New Symbols**: List all symbols (functions, classes, methods) added during implementation but not in pre-task lat.md snapshots. For each, note: file location, symbol name, task introduced in, purpose from commit message.
+   - **Removed Symbols**: List symbols deleted or refactored away. Note file location and task that removed them.
+   - **Spec Alignment**: For each symbol addition, check against original `spec.md` Success Criteria. Mark as "justified" (mentioned in spec) or "unplanned" (spec didn't mention this code). Link to relevant Success Criteria line number if justified.
+   - **Drift Severity**: Flag any additions marked "unplanned" that significantly increase scope or complexity (e.g., new API endpoints, new database tables). These indicate spec drift and should be reviewed.
+   - **Recommendations**: If drift detected, note whether it should be addressed now (Option A in rarv: fix code) or justified/deferred (Options B/C).
+   - Example structure:
+   ```
+   ## New Symbols (Implementation Phase)
+   
+   ### Added Functions
+   - `helpers.format_timestamp()` [task-2, utils.py:45] — Justified (spec: "timestamps formatted per spec")
+   - `auth.validate_token_expiry()` [task-3, auth.py:120] — Unplanned (spec says "validate token" but not specific implementation details)
+   
+   ### Severity Assessment
+   - Unplanned additions: 2 (validate_token_expiry, middleware_retry_handler)
+   - Scope change: +2 functions, +1 class, +0 breaking changes
+   - Recommendation: Review Option A (fix) or Option B (justify new design) before merging
+   ```
 7. Run `git add .spek/vault/ .spek/memory/` then `git commit`.
 
 ## Optional Steps

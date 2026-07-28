@@ -21,7 +21,10 @@ Detect and resolve spec drift via four-phase Reason-Act-Reflect-Verify cycle.
 2. REASON: Load original spec from `.spek/vault/specs/`; query lat.md for all implemented symbols and files changed this feature; build a side-by-side map of spec requirements vs implemented artifacts.
 3. REASON: Identify deviations — additions (code has X, spec does not mention it), omissions (spec requires Y, code lacks it), architecture changes (different pattern used than specified).
 4. ACT: For each deviation, prompt user to choose: Option A (fix code to match spec — revert or add code), Option B (update spec and vault with new rationale — spec was wrong or evolved), Option C (defer as tech debt — note and move on).
-5. REFLECT: If Option B chosen, update relevant `.spek/vault/decisions.md` or `.spek/vault/patterns.md` with justification; mark deviation as `justified` in vault notes.
+5. REFLECT: If Option B chosen, update relevant `.spek/vault/decisions.md` or `.spek/vault/patterns.md` with justification; mark deviation as `justified` in vault notes. When adding new entries, follow schema:
+   - For decisions: include `Related Decisions:` section with `[[wikilinks]]` to other impacted decisions
+   - For patterns: include `Related Patterns:` section with `[[wikilinks]]` to similar or conflicting patterns
+   - Format wikilinks as `[[Decision: pattern-name]]` or `[[Pattern: pattern-name]]` for auto-resolution to vault headers
 6. REFLECT: If Option C chosen, append tech debt item to `.spek/vault/patterns.md` with context: feature name, deviation description, date deferred.
 7. VERIFY: Re-read updated vault decisions; confirm no new contradictions introduced by vault changes; print alignment summary listing resolved/deferred/fixed counts.
 
