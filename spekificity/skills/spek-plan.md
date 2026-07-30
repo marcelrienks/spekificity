@@ -7,6 +7,10 @@ description: 'Orchestrate SpecKit planning pipeline with user review and remedia
 
 Orchestrate SpecKit planning pipeline with user review and remediation at each step.
 
+**Key Detail: Artifacts & Vault Storage**
+
+This skill generates three core artifacts: `spec.md`, `plan.md`, and `tasks.md`. All three **must be stored in `.spek/vault/`** (or in `.spek/vault/specs/` per naming conventions) before `/spek.implement` can run. If SpecKit is configured to write elsewhere by default, files must be moved/ensured to exist in vault after approval. The approval frontmatter (`status: approved`, `approved_by`, `approved_date`) signals that these vault artifacts are stable and ready for implementation — they should NOT change between plan and implement phases.
+
 ## Prerequisites
 
 - `/spek.prepare` completed (lat.md indexes current, vault context loaded, constitution present)
@@ -39,7 +43,7 @@ Orchestrate SpecKit planning pipeline with user review and remediation at each s
 6. **[Optional]** Validate lat.md architecture sections: check if lat.md sections for affected code areas exist; if present, run lat validation check; if missing, skip gracefully (not all specs require lat.md updates); if validation fails, present remediation options and re-run validation.
 7. Run anti-sycophancy validation: check spec against vault decisions (Rule 1: contradiction), word-count baseline (Rule 2: complexity), pattern history (Rule 3: consistency), tech names (Rule 4: stack drift); print `[WARN]` per violation; violations logged to `.spek/memory/violations.md`; execution continues regardless of violations.
 8. Track token cost for spec/plan generation phase; print `[WARN] token budget: plan phase cost high` if cost approaches configured `alert_thresholds`; non-blocking.
-9. Archive `spec.md`, `plan.md`, and `tasks.md` to `.spek/vault/specs/` directory via git (commits with vault updates in spek-conclude).
+9. **Persist artifacts to vault**: Confirm that `spec.md`, `plan.md`, and `tasks.md` exist in `.spek/vault/specs/` with naming convention `NNNN-feature-name.md` (4-digit prefix). SpecKit is configured at initialization time to write artifacts directly to `.spek/vault/specs/` (vault-native design), so no manual movement needed. These files will be committed to git during `/spek.conclude`.
 
 ## Output
 
@@ -54,7 +58,7 @@ Orchestrate SpecKit planning pipeline with user review and remediation at each s
 - Plan approved by user
 - Task list approved by user
 - Lat.md validation run (if applicable); violations documented or skipped if not required
-- All artifacts archived to `.spek/vault/`
+- All artifacts persisted in `.spek/vault/` with approval frontmatter
 - Anti-sycophancy check run; violations documented if any
 - Token cost within budget or warning issued
 

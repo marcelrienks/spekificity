@@ -147,11 +147,12 @@ Create under project root:
 ```
 .spek/
 ├── vault/                          ← Persistent knowledge vault (Obsidian-managed)
+│   ├── specs/                      ← Feature artifacts (spec/plan/tasks)
 │   ├── lessons/                    ← Per-feature retrospectives
 │   ├── decisions.md                ← Architectural decisions (append-only)
 │   └── patterns.md                 ← Reusable patterns
+├── lat.md/                         ← lat.md index directory
 ├── memory/                         ← Repo-scoped memory (YAML)
-├── lat/                            ← lat.md index directory
 └── config.yaml                     ← Project configuration
 ```
 

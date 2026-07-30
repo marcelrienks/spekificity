@@ -75,4 +75,5 @@ Inside Claude Code, Copilot, or other agent:
 - **[wiki/architecture.md](wiki/architecture.md)** — How components fit together
 - **[wiki/setup.md](wiki/setup.md)** — Detailed setup for special cases (Obsidian CLI, MCP config, git hooks)
 - **[wiki/conventions.md](wiki/conventions.md)** — File naming, directory structure
+- **[wiki/speckit-vault-integration.md](wiki/speckit-vault-integration.md)** — How SpecKit artifacts are created, stored, and accessed (clarifies vault-native design)
 - **[wiki/decision.md](wiki/decision.md)** — 9 architectural decisions + trade-offs

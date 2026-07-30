@@ -143,6 +143,12 @@ def _init_impl(
     install_caveman(project_path, integration)
     progress_ok()
 
+    # --- Step 9: Populate agent configs ---
+    progress_start("Populating agent configuration")
+    from spekificity.speckit.populate_agent_configs import populate_agent_configs
+    populate_agent_configs(project_path)
+    progress_ok()
+
     print("")
     print_status("OK", "Setup complete!")
 

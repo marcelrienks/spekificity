@@ -80,21 +80,21 @@ STEP 3: /speckit.tasks
     ├─ Break plan into dependency-ordered executable tasks
     └─ Surface to user for approval
     ↓ [if remediation needed: fix + re-run from affected step]
-COMPLETE: spec.md + plan.md + tasks.md (stored where SpecKit dictates; archived to .spek/vault/ via Obsidian)
+COMPLETE: spec.md + plan.md + tasks.md (persisted in `.spek/vault/` with approval frontmatter; ready for implement)
 ```
 
 **Remediation loop:** After each step, surface output to user. If user requests changes, apply and reprocess from that step forward. Continue until all three outputs are approved.
 
 ### Output Artifacts
-- `spec.md` — Feature specification with success criteria (SpecKit manages path; archived to `.spek/vault/` via Obsidian)
-- `plan.md` — Architecture, tech choices, affected code areas (SpecKit manages path; archived to `.spek/vault/` via Obsidian)
-- `tasks.md` — Dependency-ordered tasks with IDs (SpecKit manages path; archived to `.spek/vault/` via Obsidian)
+- `spec.md` — Feature specification with success criteria (stored in `.spek/vault/` with approval frontmatter)
+- `plan.md` — Architecture, tech choices, affected code areas (stored in `.spek/vault/` with approval frontmatter)
+- `tasks.md` — Dependency-ordered tasks with IDs (stored in `.spek/vault/` with approval frontmatter)
 
 ### Exit Criteria
 - ✅ Spec approved by user
 - ✅ Plan approved by user
 - ✅ Task list approved by user
-- ✅ All artifacts archived to `.spek/vault/` via Obsidian CLI
+- ✅ All artifacts persisted in `.spek/vault/` with approval frontmatter
 
 ---
 
@@ -170,7 +170,7 @@ Each task execution includes:
 ```
 
 ### Purpose
-All post-implementation functions. `/spek.conclude` is the only conclude command — it handles analysis, lessons, vault archive, and state refresh in a single skill. `/spek.lessons` is called as a sub-step inside conclude; it can also be invoked independently at any point.
+All post-implementation functions. `/spek.conclude` is the only conclude command — it handles analysis, lessons extraction, vault persistence (ensuring artifacts are committed to git), and state refresh in a single skill. `/spek.lessons` is called as a sub-step inside conclude; it can also be invoked independently at any point.
 
 ### Workflow
 

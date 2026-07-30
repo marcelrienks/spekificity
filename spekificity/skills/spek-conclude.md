@@ -1,11 +1,11 @@
 ---
 name: spek-conclude
-description: 'All post-implementation: analysis, lessons extraction, vault archive, state refresh, and commit.'
+description: 'All post-implementation: analysis, lessons extraction, vault persistence, state refresh, and commit.'
 ---
 
 # /spek.conclude
 
-All post-implementation: analysis, lessons extraction, vault archive, state refresh, and commit.
+All post-implementation: analysis, lessons extraction, vault persistence, state refresh, and commit.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ All post-implementation: analysis, lessons extraction, vault archive, state refr
 1. Run `/speckit-analyze`. Validate command exists before running; if not found, halt with error. Compare Success Criteria vs actual outcomes. Flag spec drift or deviations. Caveman compression active reduces output size by ~75%.
 2. Run `/spek.lessons` as sub-step. Prompt for retrospective. Extract patterns and decisions. Write to `.spek/vault/lessons/YYYY-MM-DD-feature-name.md`. (autolink enrichment runs automatically inside `/spek.lessons` — wikilinks and tags added to lesson file; see spek-lessons skill for details).
 3. Run Backprop Reflex: Validate `backprop_reflex()` function exists and callable. Parse test failure output from last test run; call `backprop_reflex()` with vault path; append `> ⚠ Backprop warning` blockquotes to `.spek/vault/patterns.md` for each new failure pattern; skip if no test failures in output or function unavailable.
-4. Archive spec, plan, and tasks to `.spek/vault/`. Update `.spek/vault/patterns.md` with newly discovered patterns. Update `.spek/vault/decisions.md` with new architectural decisions.
+4. **Vault Persistence**: Confirm spec, plan, and tasks exist in `.spek/vault/`. Update `.spek/vault/patterns.md` with newly discovered patterns. Update `.spek/vault/decisions.md` with new architectural decisions.
 5. Summarize total token usage for feature; compare against `token_budget.per_feature`; print `[WARN] token budget: feature exceeded budget` if over; skip if `per_feature: null`.
 6. Run `lat init` to refresh the lat.md index (reflects newly committed code). Sync repo memory to `.spek/memory/`.
 6.5. **lat.md Drift Report**: Aggregate symbol additions/removals from `.spek/memory/task-X-symbols.md` files (populated during implement). Generate `.spek/memory/lat-drift-report.md`:
@@ -75,7 +75,7 @@ All post-implementation: analysis, lessons extraction, vault archive, state refr
 - Analysis complete (spec drift documented)
 - Lessons extracted and committed to vault
 - Failure patterns from this feature captured in vault (or none found)
-- Feature artifacts archived to `.spek/vault/`
+- Feature artifacts persisted in `.spek/vault/` and committed to git
 - Token usage summarized
 - lat.md code and doc indexes refreshed
 - Repo memory updated at `.spek/memory/`

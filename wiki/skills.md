@@ -159,9 +159,9 @@ Wraps these SpecKit skills in order, performing remediations at each step before
 **What `/spek.plan` does NOT do:** It does not call `/speckit.clarify` or `/speckit.analyze` automatically. Those are optional and can be invoked manually if needed.
 
 **Output:**
-- Approved spec (SpecKit-managed path; archived to `.spek/vault/` via Obsidian)
-- Approved implementation plan (SpecKit-managed path; archived to `.spek/vault/` via Obsidian)
-- Approved task list with dependency order (SpecKit-managed path; archived to `.spek/vault/` via Obsidian)
+- Approved spec (stored in `.spek/vault/` with approval frontmatter)
+- Approved implementation plan (stored in `.spek/vault/` with approval frontmatter)
+- Approved task list with dependency order (stored in `.spek/vault/` with approval frontmatter)
 
 ---
 
@@ -174,7 +174,7 @@ Wraps these SpecKit skills in order, performing remediations at each step before
 
 Wraps a single SpecKit skill:
 
-1. Load approved spec + plan + task list from SpecKit-managed paths (archived copies available in `.spek/vault/`)
+1. Load approved spec + plan + task list from `.spek/vault/` (vault is the single source of truth for approved artifacts)
 2. Execute **`/speckit.implement`** — actions all tasks sequentially
    - `/speckit.implement` handles per-task execution, code generation, and step tracking
    - Jump to specific step with `--steps N` if resuming
@@ -214,7 +214,7 @@ Wraps a single SpecKit skill:
 
 ### `/spek.conclude`
 
-**Purpose:** All post-implementation functions — analysis, archive, lessons, state refresh  
+**Purpose:** All post-implementation functions — analysis, vault persistence (git commit), lessons, state refresh  
 **Usage:** `/spek.conclude`  
 **Requires:** Obsidian CLI (all vault operations)
 
@@ -239,7 +239,7 @@ Wraps a single SpecKit skill:
    - Append `> ⚠ Backprop warning` blockquotes to `.spek/vault/patterns.md` for each new failure pattern
    - Skip if no test failures in output (idempotent — second call with same output adds 0 new warnings)
 
-4. **Vault Archive:**
+4. **Vault Persistence:**
    - Archive spec + plan + tasks to `.spek/vault/`
    - Update `.spek/vault/patterns.md` with newly discovered patterns
    - Update `.spek/vault/decisions.md` with new architectural decisions

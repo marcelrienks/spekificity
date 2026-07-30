@@ -125,8 +125,8 @@ START FEATURE
     ├─ /spek.implement ───────────────► Features Coded
     │  (Per-task execution)            (Tests, Docs)
     │
-    └─ /spek.conclude ─────────────► Outcomes Archived
-       │  (Archive, Refresh)          (vault/ + lat.md index updated)
+    └─ /spek.conclude ─────────────► Outcomes Persisted
+       │  (Commit to git)             (vault/ + lat.md index updated)
        ├─ /spek.lessons (sub-step) ─► Lessons Extracted
        │  (Structured capture)        (vault/lessons/ + memory updated)
        ├─ Backprop Reflex ──────────► Failure Patterns Captured
@@ -183,7 +183,7 @@ Four skills form the core feature development cycle. Run in order for every feat
 | 1 | `spek.prepare` | Pre-flight: sync tools, verify constitution |
 | 2 | `spek.plan` | Orchestrate spec → plan → tasks pipeline |
 | 3 | `spek.implement` | Execute implementation tasks from plan |
-| 4 | `spek.conclude` | Archive outcomes, refresh index, extract lessons |
+| 4 | `spek.conclude` | Persist outcomes to git, refresh index, extract lessons |
 
 **`/spek.prepare`**
 - Initialize lat.md code + doc index; store references in vault
@@ -201,7 +201,7 @@ Four skills form the core feature development cycle. Run in order for every feat
 - Execute, test, and document changes
 
 **`/spek.conclude`**
-- Archive spec, plan, and outcomes to `.spek/vault/` (git commit)
+- Persist spec, plan, and outcomes in `.spek/vault/` (git commit)
 - Refresh lat.md index with committed changes
 - Invoke `/spek.lessons` as sub-step to extract and store lessons
 
@@ -347,7 +347,7 @@ User Intention
 /spek.prepare
     ↓ (invokes)
 /spek.plan
-    ├→ /speckit.specify (reads vault, writes spec to SpecKit-managed path; archived to .spek/vault/)
+    ├→ /speckit.specify (reads vault, writes spec to `.spek/vault/` with approval frontmatter)
     ├→ /speckit.plan (reads spec, writes plan to SpecKit-managed path; archived to .spek/vault/)
     └→ /speckit.tasks (reads plan, writes tasks to SpecKit-managed path; archived to .spek/vault/)
     │

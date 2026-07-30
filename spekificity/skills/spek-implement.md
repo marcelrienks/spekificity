@@ -9,7 +9,7 @@ Execute approved tasks via SpecKit. Accepts optional `--steps N` to jump to task
 
 ## Prerequisites
 
-- `/spek.plan` completed (spec, plan, tasks approved and archived)
+- `/spek.plan` completed (spec, plan, tasks approved and stored in `.spek/vault/`)
 - `/spek.prepare` completed (lat.md indexes current, vault context loaded)
 - All artifact files exist: `spec.md`, `plan.md`, `tasks.md` in `.spek/vault/`
 
